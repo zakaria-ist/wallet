@@ -83,20 +83,20 @@ const LoginScreen = ({navigation}) => {
       return;
     }
     let auth_url = request.getAuthUrl();
-    let params = JSON.stringify({username: userName, password: password}); //?username=kenny&password=KN@July21
+    let params = JSON.stringify({username: userName, password: password}); //admin username=kenny & password=KN@July21
     const content = await request.post(auth_url, params);
     console.log(content);
-    // if (content.authorizeToken && content.authorizeToken != '') {
+    if (content.authorizeToken && content.authorizeToken != '') {
         // update the async storage
         AsyncStorage.setItem('isUser', '1');
-        // AsyncStorage.setItem('authType', content.userRole);
-        AsyncStorage.setItem('authType', 'agent');
-        // AsyncStorage.setItem('authorizeToken', content.authorizeToken);
+        AsyncStorage.setItem('authType', content.userRole);
+        // AsyncStorage.setItem('authType', 'agent');
+        AsyncStorage.setItem('authorizeToken', content.authorizeToken);
         // navigate to user pages
         navigation.replace('DrawerStack');
-    // } else {
-    //   alert.warning("Sign in is unsuccessful. Check the username or password. ");
-    // }
+    } else {
+      alert.warning("Sign in is unsuccessful. Check the username or password. ");
+    }
   }
 
   return (
