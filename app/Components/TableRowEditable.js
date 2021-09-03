@@ -19,10 +19,12 @@ import {
   Text,
   TextInput,
   useColorScheme,
+  TouchableOpacity
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
 import Format from "../lib/format";
 import { RFValue } from 'react-native-responsive-fontsize';
+const format = new Format();
 
 const TableRowEditable = ({header, rowData, type, sendCallback}) => {
   const [rowId, setRowId] = useStateIfMounted('');
@@ -67,7 +69,7 @@ const TableRowEditable = ({header, rowData, type, sendCallback}) => {
 
     midCell.push(
       <View style={styles.view_input}>
-          <Text>Pin No.    : </Text>
+          <Text>Pin No.         : </Text>
           <TextInput 
               style={styles.text_input}
               onChangeText={setPinNo}
@@ -79,10 +81,10 @@ const TableRowEditable = ({header, rowData, type, sendCallback}) => {
       </View>
     )
     midCell.push(
-      <Text style={styles.cell_text}>Amount     : {format.separator(cellData.amount)}</Text>
+      <Text style={styles.cell_text}>Amount      : {format.separator(cellData.amount)}</Text>
     )
     midCell.push(
-      <Text style={styles.cell_text}>Wallet     : {cellData.wallet}</Text>
+      <Text style={styles.cell_text}>Wallet         : {cellData.wallet}</Text>
     )
     midCell.push(
       <Text style={styles.cell_text}>Mobile No. : {cellData.mobile}</Text>
@@ -117,7 +119,7 @@ const TableRowEditable = ({header, rowData, type, sendCallback}) => {
                 </View>
             </View>
             <View style={styles.view_center}>
-                <View style={styles.view_lineNumber}>
+                <View style={styles.view_lineNumber_center}>
                     {cellTwo}
                 </View>
             </View>
@@ -152,7 +154,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   view_center: {
-    flex: 1,
+    flex: 2,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -162,10 +164,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text_input: {
-    width: widthPercentageToDP("60%"),
-    height: heightPercentageToDP("5%"),
+    width: widthPercentageToDP("25%"),
+    height: heightPercentageToDP("3%"),
     // marginTop: heightPercentageToDP("4%"),
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: 1,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
@@ -176,25 +178,28 @@ const styles = StyleSheet.create({
   view_input: {
     flexDirection: "row", 
     alignItems: "center",
-    padding:widthPercentageToDP("2%")
+    // padding:widthPercentageToDP("2%")
   },
   view_lineNumber: {
     flexDirection: "column", 
-    // flex: 1, 
     alignItems: "center",
     justifyContent: "center"
-    // padding:widthPercentageToDP("5%")
+  },
+  view_lineNumber_center: {
+    flexDirection: "column",
+    justifyContent: "flex-start",
+    paddingBottom: heightPercentageToDP("1%"),
   },
   cell_text: {
-    fontSize: RFValue(14),
+    fontSize: RFValue(13),
   },
   cell_text_header: {
     fontSize: RFValue(14),
     fontWeight: "bold"
   },
   send_button: {
-    width: widthPercentageToDP("40%"),
-    height: heightPercentageToDP("5%"),
+    width: widthPercentageToDP("20%"),
+    height: heightPercentageToDP("4%"),
     marginTop: heightPercentageToDP("2%"),
     borderRadius: 20,
     borderWidth: 2,
@@ -206,7 +211,7 @@ const styles = StyleSheet.create({
   },
   send_button_text: {
     color: WalletColors.white,
-    fontSize: 20
+    fontSize: RFValue(10)
   },
 });
 

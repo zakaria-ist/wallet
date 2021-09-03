@@ -290,7 +290,7 @@ const Deposit = () => {
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
               </View>
-              [transType == "Today" ? 
+              {transType == "Today" ? 
                 <View style={styles.checkboxContainer}>
                   <Text style={styles.label}>Rejected</Text>
                   <CheckBox
@@ -312,7 +312,7 @@ const Deposit = () => {
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
                 </View>
-              ]
+              }
             </View>
           }
           <View style={styles.view_rectangle}>

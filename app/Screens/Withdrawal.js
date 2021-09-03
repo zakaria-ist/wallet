@@ -83,7 +83,7 @@ const Withdrawal = () => {
     ["Message"],
     ["Status"],
   ];
-  const agetTableHeader = [
+  const agentTableHeader = [
     ["Time", "(HDL Time)"],
     ["Message"],
     ["Action"],
