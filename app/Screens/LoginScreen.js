@@ -8,6 +8,7 @@
 
 import React, {useState, useEffect} from 'react';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
+
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -22,6 +23,8 @@ import {
   Text,
   TextInput,
   Image,
+  Dimensions,
+  PixelRatio,
   useColorScheme,
   TouchableOpacity,
   InteractionManager
@@ -29,6 +32,8 @@ import {
 import { WalletColors } from "../assets/Colors.js";
 import CustomAlert from "../lib/alert";
 import Request from "../lib/request";
+import { height, width } from 'styled-system';
+import { Icon } from 'react-native-elements/dist/icons/Icon';
 
 const request = new Request();
 const alert = new CustomAlert();
@@ -99,22 +104,23 @@ const LoginScreen = ({navigation}) => {
     }
   }
 
+  
+
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
         style={backgroundStyle}>
-          <View style={styles.view_logo}>
-            <View style={styles.view_logo_logo}>
+          <View style={ styles.view_logo}>
+            <View style={isSmallScreen ? styles.view_small_logo_logo : styles.view_large_logo_logo}>
               {/* <Text style={styles.view_logo_logo_text}>LOGO</Text> */}
-              <Image
-                source={require('../assets/images/wallet_logo_128.png')}
-              />
+              <Image source={isLargeScreen}/>
             </View>
           </View>
           <View style={styles.view_input}>
               <TextInput 
-                style={styles.text_input}
+                style={isSmallScreen ? styles.small_text_input : 
+                  styles.large_text_input}
                 onChangeText={setUserName}
                 value={userName}
                 textAlign={'center'}
@@ -123,7 +129,8 @@ const LoginScreen = ({navigation}) => {
               />
 
               <TextInput 
-                style={styles.text_input}
+                style={isSmallScreen ? styles.small_text_input : 
+                  styles.large_text_input}
                 onChangeText={setPassword}
                 value={password}
                 textAlign={'center'}
@@ -135,7 +142,8 @@ const LoginScreen = ({navigation}) => {
                 onPress={handleLogin}
               >
                 <View style={styles.sign_button}>
-                  <Text style={styles.sign_button_text}>
+                  <Text style={isSmallScreen ? styles.small_sign_button_text:
+                  styles.large_sign_button_text}>
                     Sign In
                   </Text>
                 </View>
@@ -147,24 +155,45 @@ const LoginScreen = ({navigation}) => {
   );
 
 };
-
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+ const isSmallScreen = PixelRatio.getPixelSizeForLayoutSize(windowWidth)<1000 
+ && PixelRatio.getPixelSizeForLayoutSize(windowHeight)<=1500;
+ const isLargeScreen = PixelRatio.getPixelSizeForLayoutSize(windowWidth)>=1000 
+ && PixelRatio.getPixelSizeForLayoutSize(windowHeight)>=1500
+ ? require('../assets/images/wallet_logo_128.png')
+ : require('../assets/images/wallet_logo_64.png');
 const styles = StyleSheet.create({
-  text_input: {
+   small_text_input: {
     width: widthPercentageToDP("70%"),
-    height: 50,
+    height: heightPercentageToDP("8%"),
     marginTop: heightPercentageToDP("4%"),
     borderRadius: 20,
     borderWidth: 2,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
-    color: WalletColors.black
+    color: WalletColors.black,
+    flex: 1, 
+  },
+  large_text_input: {
+    width: widthPercentageToDP("70%"),
+    height: heightPercentageToDP("6%"),
+    marginTop: heightPercentageToDP("4%"),
+    borderRadius: 30,
+    borderWidth: 2,
+    borderColor: WalletColors.Wblue,
+    borderStyle: 'solid',
+    justifyContent: 'center',
+    color: WalletColors.black,
+    flex: 1, 
   },
   sign_button: {
-    width: widthPercentageToDP("40%"),
-    height: 60,
+    width: widthPercentageToDP("35%"),
+    //height: 60,
+    height: heightPercentageToDP("8%"),
     marginTop: heightPercentageToDP("8%"),
-    borderRadius: 20,
+    borderRadius: 30,
     borderWidth: 2,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
@@ -172,27 +201,58 @@ const styles = StyleSheet.create({
     backgroundColor: WalletColors.Wblue,
     alignItems: 'center'
   },
-  sign_button_text: {
+  small_sign_button_text: {
     color: WalletColors.white,
-    fontSize: 20
+    fontSize: 15,
+    //flex: 1
+  },
+  large_sign_button_text: {
+    color: WalletColors.white,
+    fontSize: 20,
+    //flex: 1
   },
   view_logo: {
-    flexDirection: "column", 
-    flex: 1, 
-    alignItems: "center", 
-    height: heightPercentageToDP("40%")
+     flexDirection: "column", 
+     alignItems: "center", 
+     marginTop: heightPercentageToDP("4%"),
+   // flex: 1
   },
-  view_logo_logo: {
-    width: 200,
-    height: 200,
-    top: widthPercentageToDP("25%"),
+  view_small_logo_logo: {
+      // width: 200,
+      // height: 200,
+        // width: screenWidth,
+    // height: screenHeight,
+    // width: widthPercentageToDP("50%"),
+    // height: heightPercentageToDP("50%"),
+    //  width: swidth,
+    //  height: sheight,
+    // width: 200,
+    // height: 200,
+    width: 100,
+    height: 100,
+    flex: 1,
     borderRadius: 100,
     borderWidth: 2,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    justifyContent: 'center',
-    alignItems: 'center'
+    marginTop: heightPercentageToDP("8%"),
+   justifyContent: 'center',
+   alignItems: 'center'
   },
+  view_large_logo_logo: {
+    width: 200,
+    height: 200,
+  // width: widthPercentageToDP("30%"),
+  // height: heightPercentageToDP("22%"),
+  flex: 1,
+  borderRadius: 100,
+  borderWidth: 2,
+  borderColor: WalletColors.Wblue,
+  borderStyle: 'solid',
+  marginTop: heightPercentageToDP("8%"),
+ justifyContent: 'center',
+ alignItems: 'center'
+},
   view_logo_logo_text: {
     fontSize: 30, 
     fontWeight: "bold", 
@@ -202,8 +262,8 @@ const styles = StyleSheet.create({
     flexDirection: "column", 
     flex: 1, 
     alignItems: "center", 
-    height: heightPercentageToDP("60%"),
-    top: widthPercentageToDP("10%"),
+    marginTop: heightPercentageToDP("8%"),
+    // top: widthPercentageToDP("10%"),
   }
 });
 
