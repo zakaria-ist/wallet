@@ -27,8 +27,8 @@ import { RFValue } from 'react-native-responsive-fontsize';
 const format = new Format();
 
 const TableRowEditable = ({header, rowData, type, sendCallback}) => {
-  const [rowId, setRowId] = useStateIfMounted('');
-  const [pinNo, setPinNo] = useStateIfMounted('');
+  const [rowId, setRowId] = useStateIfMounted(rowData.rowId);
+  const [pinNo, setPinNo] = useStateIfMounted(String(rowData.rowId));
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
   const [cellThree, setCellThree] = useStateIfMounted([]);
@@ -43,17 +43,18 @@ const TableRowEditable = ({header, rowData, type, sendCallback}) => {
       setCellThree(handleHeaderCell(rowData[2]));
     } else {
       setRowId(rowData.rowId);
+      setPinNo(String(rowData.rowId));
       handleCell(rowData);
     }
   }, [rowData]);
 
   const handleHeaderCell = (cellData) => {
     let testCell = [];
-    for(let i=0; i<cellData.length; i++) {
+    cellData.map((cell) => {
       testCell.push(
-        <Text style={header ? styles.cell_text_header : styles.cell_text}>{cellData[i]}</Text>
+        <Text style={header ? styles.cell_text_header : styles.cell_text}>{cell}</Text>
       )
-    }
+    })
     return testCell;
   }
 
@@ -73,9 +74,11 @@ const TableRowEditable = ({header, rowData, type, sendCallback}) => {
           <TextInput 
               style={styles.text_input}
               onChangeText={setPinNo}
+              // onChangeText={text => {console.log('text', text); setPinNo(String(text))}}
               value={pinNo}
               textAlign={'left'}
               placeholderTextColor={WalletColors.grey}
+              keyboardType={'numeric'}
           />
 
       </View>
@@ -106,7 +109,8 @@ const TableRowEditable = ({header, rowData, type, sendCallback}) => {
   }
 
   const onSend = () => {
-    sendCallback(id, pin);
+    console.log('send', rowId, pinNo);
+    // sendCallback(rowId, pinNo);
   }
 
   return useMemo(() => {
@@ -164,16 +168,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text_input: {
-    width: widthPercentageToDP("25%"),
-    height: heightPercentageToDP("3%"),
+    width: widthPercentageToDP("18%"),
+    height: heightPercentageToDP("4%"),
     // marginTop: heightPercentageToDP("4%"),
-    borderRadius: 10,
+    borderRadius: 5,
     borderWidth: 1,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
     color: WalletColors.Wblue,
-    padding: 10
+    fontSize: RFValue(10),
   },
   view_input: {
     flexDirection: "row", 
@@ -200,7 +204,7 @@ const styles = StyleSheet.create({
   send_button: {
     width: widthPercentageToDP("20%"),
     height: heightPercentageToDP("4%"),
-    marginTop: heightPercentageToDP("2%"),
+    marginTop: heightPercentageToDP("-2%"),
     borderRadius: 20,
     borderWidth: 2,
     borderColor: WalletColors.Wgreen,

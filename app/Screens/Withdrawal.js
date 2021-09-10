@@ -131,9 +131,9 @@ const Withdrawal = () => {
         setWalletData(JSON.parse(walletData));
         let data = JSON.parse(walletData);
         let wData = [];
-        for (var i=0; i<data.length; i++) {
-          wData.push({label: data[i].name, value: data[i].name})
-        }
+        data.map((wallet) => {
+          wData.push({label: wallet.name, value: wallet.name})
+        })
         setWalletPickerList(wData);
       });
 
@@ -174,6 +174,9 @@ const Withdrawal = () => {
     renderTablesData();
   }
   const renderTablesData = () => {
+    
+  }
+  const sendCallback = () => {
     
   }
 
@@ -317,10 +320,10 @@ const Withdrawal = () => {
           {authType == 'agent' ?
             [transType == 'Today' ? 
               <View style={styles.view_rectangle}>
-                <TableRowEditable header={true} rowData={agentTableHeader} />
-                <TableRowEditable header={false} rowData={agentTableRowOne} />
-                <TableRowEditable header={false} rowData={agentTableRowTwo} />
-                <TableRowEditable header={false} rowData={agentTableRowThree} />
+                <TableRowEditable header={true} rowData={agentTableHeader} type={transType} sendCallback={sendCallback} />
+                <TableRowEditable header={false} rowData={agentTableRowOne} type={transType} sendCallback={sendCallback} />
+                <TableRowEditable header={false} rowData={agentTableRowTwo} type={transType} sendCallback={sendCallback} />
+                <TableRowEditable header={false} rowData={agentTableRowThree} type={transType} sendCallback={sendCallback} />
               </View>
             :
             <>

@@ -105,9 +105,9 @@ const Deposit = () => {
         setWalletData(JSON.parse(walletData));
         let data = JSON.parse(walletData);
         let wData = [];
-        for (var i=0; i<data.length; i++) {
-          wData.push({label: data[i].name, value: data[i].name})
-        }
+        data.map((wallet) => {
+          wData.push({label: wallet.name, value: wallet.name})
+        })
         setWalletPickerList(wData);
       });
 

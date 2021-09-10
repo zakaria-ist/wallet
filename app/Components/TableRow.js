@@ -39,11 +39,11 @@ const TableRow = ({header, rowData}) => {
 
   const handleCell = (cellData) => {
     let testCell = [];
-    for(let i=0; i<cellData.length; i++) {
+    cellData.map((cell) => {
       testCell.push(
-        <Text style={header ? styles.cell_text_header : styles.cell_text}>{cellData[i]}</Text>
+        <Text style={header ? styles.cell_text_header : styles.cell_text}>{cell}</Text>
       )
-    }
+    })
     return testCell;
   }
   const handleCellThree = (cellData) => {

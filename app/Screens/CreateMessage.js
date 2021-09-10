@@ -30,6 +30,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
 
+import CustomHeader from "../Components/CustomHeader";
 import CommonTop from "../Components/CommonTop";
 import MessageBlock from "../Components/MessageBlock";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -151,6 +152,9 @@ const CreateMessage = () => {
       <ScrollView
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
+          <CustomHeader 
+            title={"Create Message"}
+          />
           <CommonTop
             admin={false}
             LeftButton={LeftButton}
