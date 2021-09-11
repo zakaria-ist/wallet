@@ -12,10 +12,10 @@ class Request {
     return loginUrl;
   }
   async get(url) {
-    const rawResponse = await fetch(url, {
+    const response = await fetch(url, {
       method: 'GET',
-    });
-    return(await rawResponse.json())
+    })
+    return(await response.json())
   }
   async post(url, body) {
     const rawResponse = await fetch(url, {
