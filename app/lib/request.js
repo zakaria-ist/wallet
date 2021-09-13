@@ -2,14 +2,14 @@
 // import * as Localization from "expo-localization";
 
 const authUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/authentication";
-const loginUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/readWallets";
+const walletUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/readWallets";
 
 class Request {
   getAuthUrl() {
     return authUrl;
   }
-  getLoginUrl() {
-    return loginUrl;
+  getWalletUrl() {
+    return walletUrl;
   }
   async get(url) {
     const response = await fetch(url, {

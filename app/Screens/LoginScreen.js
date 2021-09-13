@@ -49,21 +49,11 @@ const LoginScreen = ({navigation}) => {
 
   useEffect(() => {
     InteractionManager.runAfterInteractions( async () => {
-      const loginUrl = request.getLoginUrl();  
-      await request.get(loginUrl)
-      .then(data => {
-        AsyncStorage.setItem('walletData',JSON.stringify(Object.values(data['wallets'])));
-        AsyncStorage.getItem('isUser').then((isUser) => {
-          if (isUser != null) {
-            AsyncStorage.getItem('authType').then((authType) => {
-              if (authType != null) {
-                navigation.replace('DrawerStack');
-              }
-            })
-          }
-          }
-        ); 
-      })
+      const walletUrl = request.getWalletUrl();  
+      await request.get(walletUrl)
+        .then(data => {
+          AsyncStorage.setItem('walletData',JSON.stringify(Object.values(data['wallets'])));
+        })
     })
   }, []);
 
@@ -73,19 +63,22 @@ const LoginScreen = ({navigation}) => {
       return;
     }
     const auth_url = request.getAuthUrl();
-    let params = JSON.stringify({username: userName, password: password}); //admin username=kenny & password=KN@July21
-    const content = await request.get(auth_url + "?username=" + userName + "&password=" + password, params);
-     if (content.authorizeToken && content.authorizeToken != '') {
-        // update the async storage
-        AsyncStorage.setItem('isUser', '1');
-        AsyncStorage.setItem('authType', content.userRole);
-        // AsyncStorage.setItem('authType', 'agent');
-        AsyncStorage.setItem('authorizeToken', content.authorizeToken);
-        // navigate to user pages
-        navigation.replace('DrawerStack');
-    } else {
-      alert.warning("Sign in is unsuccessful. Check the username or password. ");
-    }
+    //let params = JSON.stringify({username: userName, password: password}); //admin username=kenny & password=KN@July21
+    await request.get(auth_url + "?username=" + userName + "&password=" + password)
+      .then(content => {
+        console.log('content', content);
+        if (content.authorizeToken && content.authorizeToken != '') {
+          // update the async storage
+          AsyncStorage.setItem('isUser', '1');
+          AsyncStorage.setItem('authType', content.userRole);
+          // AsyncStorage.setItem('authType', 'agent');
+          AsyncStorage.setItem('authorizeToken', content.authorizeToken);
+          // navigate to user pages
+          navigation.replace('DrawerStack');
+        } else {
+          alert.warning("Sign in is unsuccessful. Check the username or password. ");
+        }
+      })
   }
 
   return (
