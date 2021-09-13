@@ -22,6 +22,8 @@ import {
   Text,
   TextInput,
   Image,
+  Dimensions,
+  PixelRatio,
   useColorScheme,
   TouchableOpacity,
   InteractionManager
@@ -29,6 +31,7 @@ import {
 import { WalletColors } from "../assets/Colors.js";
 import CustomAlert from "../lib/alert";
 import Request from "../lib/request";
+import { RFValue } from "react-native-responsive-fontsize";
 
 const request = new Request();
 const alert = new CustomAlert();
@@ -45,36 +48,13 @@ const LoginScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    InteractionManager.runAfterInteractions(() => {
-      let walletData = [
-        {
-          id: 1,
-          name: "Alipay"
-        },
-        {
-          id: 2,
-          name: "Touch & Go"
-        },
-        {
-          id: 3,
-          name: "Wechat"
-        },
-      ];
-      walletData = JSON.stringify(walletData);
-      AsyncStorage.setItem('walletData', walletData);
-      // check if user already logged in
-      AsyncStorage.getItem('isUser').then((isUser) => {
-          if (isUser != null) {
-            AsyncStorage.getItem('authType').then((authType) => {
-              if (authType != null) {
-                navigation.replace('DrawerStack');
-              }
-            })
-          }
-        }
-      );
-    });
-    
+    InteractionManager.runAfterInteractions( async () => {
+      const walletUrl = request.getWalletUrl();  
+      await request.get(walletUrl)
+        .then(data => {
+          AsyncStorage.setItem('walletData',JSON.stringify(Object.values(data['wallets'])));
+        })
+    })
   }, []);
 
   const handleLogin = async () => {
@@ -82,21 +62,23 @@ const LoginScreen = ({navigation}) => {
       alert.warning("Field cannot be empty. Check the username or password. ");
       return;
     }
-    let auth_url = request.getAuthUrl();
-    let params = JSON.stringify({username: userName, password: password}); //admin username=kenny & password=KN@July21
-    const content = await request.post(auth_url, params);
-    console.log(content);
-    if (content.authorizeToken && content.authorizeToken != '') {
-        // update the async storage
-        AsyncStorage.setItem('isUser', '1');
-        AsyncStorage.setItem('authType', content.userRole);
-        // AsyncStorage.setItem('authType', 'agent');
-        AsyncStorage.setItem('authorizeToken', content.authorizeToken);
-        // navigate to user pages
-        navigation.replace('DrawerStack');
-    } else {
-      alert.warning("Sign in is unsuccessful. Check the username or password. ");
-    }
+    const auth_url = request.getAuthUrl();
+    //let params = JSON.stringify({username: userName, password: password}); //admin username=kenny & password=KN@July21
+    await request.get(auth_url + "?username=" + userName + "&password=" + password)
+      .then(content => {
+        console.log('content', content);
+        if (content.authorizeToken && content.authorizeToken != '') {
+          // update the async storage
+          AsyncStorage.setItem('isUser', '1');
+          AsyncStorage.setItem('authType', content.userRole);
+          // AsyncStorage.setItem('authType', 'agent');
+          AsyncStorage.setItem('authorizeToken', content.authorizeToken);
+          // navigate to user pages
+          navigation.replace('DrawerStack');
+        } else {
+          alert.warning("Sign in is unsuccessful. Check the username or password. ");
+        }
+      })
   }
 
   return (
@@ -106,10 +88,7 @@ const LoginScreen = ({navigation}) => {
         style={backgroundStyle}>
           <View style={styles.view_logo}>
             <View style={styles.view_logo_logo}>
-              {/* <Text style={styles.view_logo_logo_text}>LOGO</Text> */}
-              <Image
-                source={require('../assets/images/wallet_logo_128.png')}
-              />
+              <Image style={styles.logo} source={isSmallScreen || isMediumScreen || isLargeScreen}/>
             </View>
           </View>
           <View style={styles.view_input}>
@@ -121,7 +100,6 @@ const LoginScreen = ({navigation}) => {
                 placeholder="Username"
                 placeholderTextColor={WalletColors.grey}
               />
-
               <TextInput 
                 style={styles.text_input}
                 onChangeText={setPassword}
@@ -130,10 +108,8 @@ const LoginScreen = ({navigation}) => {
                 placeholder="Password"
                 placeholderTextColor={WalletColors.grey}
               />
-
               <TouchableOpacity
-                onPress={handleLogin}
-              >
+                onPress={handleLogin}>
                 <View style={styles.sign_button}>
                   <Text style={styles.sign_button_text}>
                     Sign In
@@ -141,30 +117,42 @@ const LoginScreen = ({navigation}) => {
                 </View>
               </TouchableOpacity>
           </View>
-        
       </ScrollView>
     </SafeAreaView>
   );
-
 };
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+const isSmallScreen = (PixelRatio.getPixelSizeForLayoutSize(windowWidth) <330 
+&& PixelRatio.getPixelSizeForLayoutSize(windowHeight) <490)
+? require('../assets/images/wallet_logo_64.png') : isMediumScreen;
+const isMediumScreen = (330 < PixelRatio.getPixelSizeForLayoutSize(windowWidth) <999 
+&& 490 < PixelRatio.getPixelSizeForLayoutSize(windowHeight) <1000)
+? require('../assets/images/wallet_logo_128.png') : isLargeScreen;
+const isLargeScreen = (PixelRatio.getPixelSizeForLayoutSize(windowWidth)>=999 
+&& PixelRatio.getPixelSizeForLayoutSize(windowHeight)>=1000)
+? require('../assets/images/wallet_logo.png') : isSmallScreen;
 
 const styles = StyleSheet.create({
   text_input: {
     width: widthPercentageToDP("70%"),
-    height: 50,
-    marginTop: heightPercentageToDP("4%"),
+    height: heightPercentageToDP("6.5%"),
+    marginTop: heightPercentageToDP("2.5%"),
     borderRadius: 20,
     borderWidth: 2,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
-    color: WalletColors.black
+    color: WalletColors.black,
+    flex: 1, 
+    fontSize: RFValue(14)
   },
   sign_button: {
-    width: widthPercentageToDP("40%"),
-    height: 60,
+    width: widthPercentageToDP("35%"),
+    height: heightPercentageToDP("8%"),
     marginTop: heightPercentageToDP("8%"),
-    borderRadius: 20,
+    borderRadius: 30,
     borderWidth: 2,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
@@ -174,22 +162,26 @@ const styles = StyleSheet.create({
   },
   sign_button_text: {
     color: WalletColors.white,
-    fontSize: 20
+    fontSize: RFValue(18)
+  },
+  logo:{
+    width: windowHeight / 2 - heightPercentageToDP("37%"),
+    height: windowHeight / 2 - heightPercentageToDP("37%"),
   },
   view_logo: {
-    flexDirection: "column", 
-    flex: 1, 
-    alignItems: "center", 
-    height: heightPercentageToDP("40%")
+     flexDirection: "column", 
+     alignItems: "center", 
+     marginTop: heightPercentageToDP("4%"),
   },
   view_logo_logo: {
-    width: 200,
-    height: 200,
-    top: widthPercentageToDP("25%"),
+    width: windowHeight / 2 - heightPercentageToDP("30%"),
+    height: windowHeight / 2 - heightPercentageToDP("30%"),
+    flex: 1,
     borderRadius: 100,
     borderWidth: 2,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
+    marginTop: heightPercentageToDP("8%"),
     justifyContent: 'center',
     alignItems: 'center'
   },
@@ -202,8 +194,7 @@ const styles = StyleSheet.create({
     flexDirection: "column", 
     flex: 1, 
     alignItems: "center", 
-    height: heightPercentageToDP("60%"),
-    top: widthPercentageToDP("10%"),
+    marginTop: heightPercentageToDP("8%"),
   }
 });
 
