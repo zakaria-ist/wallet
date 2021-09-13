@@ -32,7 +32,7 @@ import CheckBox from "@react-native-community/checkbox";
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import CustomHeader from "../Components/CustomHeader";
-import TableRowEditable from "../Components/TableRowEditable";
+import TableRowEditWithdra from "../Components/TableRowEditWithdra";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -56,18 +56,11 @@ const Withdrawal = () => {
   const [openAdminPickerWallet, setOpenAdminPickerWallet] = useStateIfMounted(false);
   const [pickerUser, setPickerUser] = useStateIfMounted(null);
   const [pickergroup, setPickerGroup] = useStateIfMounted(null);
-  const [userList, setUserList] = useStateIfMounted([
-    {label: 'Australia', value: 'Australia'},
-    {label: 'Canada', value: 'Canada'},
-    {label: 'Bangladesh', value: 'Bangladesh'},
-    {label: 'Egypt', value: 'Egypt'},
-    {label: 'Ireland', value: 'Ireland'},
-  ]);
-  const [groupList, setGroupList] = useStateIfMounted([
-    {label: 'Group 1', value: 'Group 1'},
-    {label: 'Group 2', value: 'Group 2'},
-    {label: 'Group 3', value: 'Group 3'},
-  ]);
+  const [pickerGroupList, setPickerGroupList] = useStateIfMounted([]);
+  const [groupList, setGroupList] = useStateIfMounted([]);
+  const [userList, setUserList] = useStateIfMounted([]);
+  const [pickerUserList, setPickerUserList] = useStateIfMounted([]);
+  
 
   const backgroundStyle = {
     backgroundColor: Colors.white,
@@ -138,8 +131,37 @@ const Withdrawal = () => {
       });
 
       AsyncStorage.getItem('authType').then((auth_type) => {
-        if (authType != null) {
+        if (auth_type != null) {
           setAuthType(auth_type);
+          if (auth_type == 'admin' || auth_type == 'subadmin') {
+            AsyncStorage.getItem('groupList').then((groups) => {
+              if (groups != null) {
+                groups = JSON.parse(groups);
+                setGroupList(groups);
+
+                let pickerGroupList = [];
+                groups.map(group => {
+                  pickerGroupList.push({label: group.username, value: group.username})
+                })
+                setPickerGroupList(pickerGroupList);
+              }
+            });
+          } else if (auth_type == 'client' || auth_type == 'agent') {
+            AsyncStorage.getItem('userList').then((users) => {
+              if (users != null) {
+                users = JSON.parse(users);
+                setUserList(users);
+
+                if (auth_type == 'client') {
+                  let pickerUserList = [];
+                  users.map(user => {
+                    pickerUserList.push({label: user.username, value: user.username})
+                  })
+                  setPickerUserList(pickerUserList);
+                }
+              }
+            });
+          }
         }
       });
     })
@@ -210,10 +232,10 @@ const Withdrawal = () => {
                 }}
                 open={openClientPicker}
                 value={pickerUser}
-                items={userList}
+                items={pickerUserList}
                 setOpen={setOpenClientPicker}
                 setValue={setPickerUser}
-                setItems={setUserList}
+                setItems={setPickerUserList}
                 textStyle={{fontSize: RFValue(16)}}
                 labelStyle={{fontWeight: "bold"}}
               />
@@ -229,10 +251,10 @@ const Withdrawal = () => {
                     }}
                     open={openAdminPickerGroup}
                     value={pickergroup}
-                    items={groupList}
+                    items={pickerGroupList}
                     setOpen={setOpenAdminPickerGroup}
                     setValue={setPickerGroup}
-                    setItems={setGroupList}
+                    setItems={setPickerGroupList}
                     textStyle={{fontSize: RFValue(16)}}
                     labelStyle={{fontWeight: "bold"}}
                   />
@@ -320,10 +342,30 @@ const Withdrawal = () => {
           {authType == 'agent' ?
             [transType == 'Today' ? 
               <View style={styles.view_rectangle}>
-                <TableRowEditable header={true} rowData={agentTableHeader} type={transType} sendCallback={sendCallback} />
-                <TableRowEditable header={false} rowData={agentTableRowOne} type={transType} sendCallback={sendCallback} />
-                <TableRowEditable header={false} rowData={agentTableRowTwo} type={transType} sendCallback={sendCallback} />
-                <TableRowEditable header={false} rowData={agentTableRowThree} type={transType} sendCallback={sendCallback} />
+                <TableRowEditWithdra key={1}
+                  header={true} 
+                  rowData={agentTableHeader} 
+                  type={transType} 
+                  sendCallback={sendCallback} 
+                />
+                <TableRowEditWithdra  key={2}
+                  header={false} 
+                  rowData={agentTableRowOne} 
+                  type={transType} 
+                  sendCallback={sendCallback} 
+                />
+                <TableRowEditWithdra  key={3}
+                  header={false} 
+                  rowData={agentTableRowTwo} 
+                  ype={transType} 
+                  sendCallback={sendCallback} 
+                />
+                <TableRowEditWithdra  key={4}
+                  header={false} 
+                  rowData={agentTableRowThree} 
+                  type={transType} 
+                  sendCallback={sendCallback} 
+                />
               </View>
             :
             <>

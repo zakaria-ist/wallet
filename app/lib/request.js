@@ -3,6 +3,10 @@
 
 const authUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/authentication";
 const walletUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/readWallets";
+const adminClientListUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/adminListClients";
+const subAdminClientListUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/subAdminListClients";
+const clientUserListUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/clientListOwnUsers";
+const agentUserListUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/agentListOwnUsers";
 
 class Request {
   getAuthUrl() {
@@ -10,6 +14,18 @@ class Request {
   }
   getWalletUrl() {
     return walletUrl;
+  }
+  getAdminClientListUrl() {
+    return adminClientListUrl;
+  }
+  getSubAdminClientListUrl() {
+    return subAdminClientListUrl;
+  }
+  getClientUserListUrl() {
+    return clientUserListUrl;
+  }
+  getAgentUserListUrl() {
+    return agentUserListUrl;
   }
   async get(url) {
     const response = await fetch(url, {

@@ -52,7 +52,7 @@ const LoginScreen = ({navigation}) => {
       const walletUrl = request.getWalletUrl();  
       await request.get(walletUrl)
         .then(data => {
-          AsyncStorage.setItem('walletData',JSON.stringify(Object.values(data['wallets'])));
+          AsyncStorage.setItem('walletData', JSON.stringify(Object.values(data['wallets'])));
         })
     })
   }, []);
@@ -65,7 +65,7 @@ const LoginScreen = ({navigation}) => {
     const auth_url = request.getAuthUrl();
     //let params = JSON.stringify({username: userName, password: password}); //admin username=kenny & password=KN@July21
     await request.get(auth_url + "?username=" + userName + "&password=" + password)
-      .then(content => {
+      .then( async (content) => {
         console.log('content', content);
         if (content.authorizeToken && content.authorizeToken != '') {
           // update the async storage
@@ -73,6 +73,26 @@ const LoginScreen = ({navigation}) => {
           AsyncStorage.setItem('authType', content.userRole);
           // AsyncStorage.setItem('authType', 'agent');
           AsyncStorage.setItem('authorizeToken', content.authorizeToken);
+          let clientUrl = null;
+          if (content.userRole == 'admin') {
+            clientUrl = request.getAdminClientListUrl();
+          } else if (content.userRole == 'subadmin') {
+            clientUrl = request.getSubAdminClientListUrl();
+          } else if (content.userRole == 'client') {
+            clientUrl = request.getClientUserListUrl();
+          } else if (content.userRole == 'agent') {
+            clientUrl = request.getAgentUserListUrl();
+          }
+          if (clientUrl) {
+            await request.get(clientUrl + '?token=' + content.authorizeToken)
+              .then(result => {
+                if (content.userRole == 'admin' || content.userRole == 'subadmin') {
+                  AsyncStorage.setItem('groupList', JSON.stringify(Object.values(result['clients'])));
+                } else if (content.userRole == 'client' || content.userRole == 'agent') {
+                  AsyncStorage.setItem('userList', JSON.stringify(Object.values(result['users'])));
+                }
+              })
+          }
           // navigate to user pages
           navigation.replace('DrawerStack');
         } else {

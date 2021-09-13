@@ -32,6 +32,7 @@ import CheckBox from "@react-native-community/checkbox";
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import CustomHeader from "../Components/CustomHeader";
+import TableRowEditDeposit from "../Components/TableRowEditDeposit";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -56,18 +57,22 @@ const Deposit = () => {
   const [openAdminPickerWallet, setOpenAdminPickerWallet] = useStateIfMounted(false);
   const [pickerUser, setPickerUser] = useStateIfMounted(null);
   const [pickergroup, setPickerGroup] = useStateIfMounted(null);
-  const [userList, setUserList] = useStateIfMounted([
-    {label: 'Australia', value: 'Australia'},
-    {label: 'Canada', value: 'Canada'},
-    {label: 'Bangladesh', value: 'Bangladesh'},
-    {label: 'Egypt', value: 'Egypt'},
-    {label: 'Ireland', value: 'Ireland'},
-  ]);
-  const [groupList, setGroupList] = useStateIfMounted([
-    {label: 'Group 1', value: 'Group 1'},
-    {label: 'Group 2', value: 'Group 2'},
-    {label: 'Group 3', value: 'Group 3'},
-  ]);
+  const [pickerGroupList, setPickerGroupList] = useStateIfMounted([]);
+  const [groupList, setGroupList] = useStateIfMounted([]);
+  const [userList, setUserList] = useStateIfMounted([]);
+  const [pickerUserList, setPickerUserList] = useStateIfMounted([]);
+  // const [userList, setUserList] = useStateIfMounted([
+  //   {label: 'Australia', value: 'Australia'},
+  //   {label: 'Canada', value: 'Canada'},
+  //   {label: 'Bangladesh', value: 'Bangladesh'},
+  //   {label: 'Egypt', value: 'Egypt'},
+  //   {label: 'Ireland', value: 'Ireland'},
+  // ]);
+  // const [groupList, setGroupList] = useStateIfMounted([
+  //   {label: 'Group 1', value: 'Group 1'},
+  //   {label: 'Group 2', value: 'Group 2'},
+  //   {label: 'Group 3', value: 'Group 3'},
+  // ]);
 
   const backgroundStyle = {
     backgroundColor: Colors.white,
@@ -98,6 +103,32 @@ const Deposit = () => {
     ["Ref. No. : 12345", "Amount : 11,320", "Wallet  : Alipay"],
     ["Rejected"],
   ];
+  const agentTableHeader = [
+    ["Time", "(HDL Time)"],
+    ["Message"],
+    ["Action"],
+  ];
+  const agentTableRowOne = {
+    rowId: 1,
+    time: "10:10 AM",
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 1212121212
+  };
+  const agentTableRowTwo = {
+    rowId: 2,
+    time: "10:10 AM",
+    wallet: "Alipay",
+    amount: 12320,
+    refNo: 1313131313
+  };
+  const agentTableRowThree = {
+    rowId: 3,
+    time: "10:10 AM",
+    wallet: "Alipay",
+    amount: 13320,
+    refNo: 1414141414
+  };
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -112,8 +143,37 @@ const Deposit = () => {
       });
 
       AsyncStorage.getItem('authType').then((auth_type) => {
-        if (authType != null) {
+        if (auth_type != null) {
           setAuthType(auth_type);
+          if (auth_type == 'admin' || auth_type == 'subadmin') {
+            AsyncStorage.getItem('groupList').then((groups) => {
+              if (groups != null) {
+                groups = JSON.parse(groups);
+                setGroupList(groups);
+
+                let pickerGroupList = [];
+                groups.map(group => {
+                  pickerGroupList.push({label: group.username, value: group.username})
+                })
+                setPickerGroupList(pickerGroupList);
+              }
+            });
+          } else if (auth_type == 'client' || auth_type == 'agent') {
+            AsyncStorage.getItem('userList').then((users) => {
+              if (users != null) {
+                users = JSON.parse(users);
+                setUserList(users);
+
+                if (auth_type == 'client') {
+                  let pickerUserList = [];
+                  users.map(user => {
+                    pickerUserList.push({label: user.username, value: user.username})
+                  })
+                  setPickerUserList(pickerUserList);
+                }
+              }
+            });
+          }
         }
       });
     })
@@ -151,6 +211,13 @@ const Deposit = () => {
     
   }
 
+  const rejectCallback = () => {
+    
+  }
+  const acceptCallback = () => {
+    
+  }
+
   return (
     <SafeAreaView>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -181,10 +248,10 @@ const Deposit = () => {
                 }}
                 open={openClientPicker}
                 value={pickerUser}
-                items={userList}
+                items={pickerUserList}
                 setOpen={setOpenClientPicker}
                 setValue={setPickerUser}
-                setItems={setUserList}
+                setItems={setPickerUserList}
                 textStyle={{fontSize: RFValue(16)}}
                 labelStyle={{fontWeight: "bold"}}
               />
@@ -200,10 +267,10 @@ const Deposit = () => {
                     }}
                     open={openAdminPickerGroup}
                     value={pickergroup}
-                    items={groupList}
+                    items={pickerGroupList}
                     setOpen={setOpenAdminPickerGroup}
                     setValue={setPickerGroup}
-                    setItems={setGroupList}
+                    setItems={setPickerGroupList}
                     textStyle={{fontSize: RFValue(16)}}
                     labelStyle={{fontWeight: "bold"}}
                   />
@@ -315,16 +382,65 @@ const Deposit = () => {
               }
             </View>
           }
-          <View style={styles.view_rectangle}>
-            <TableRow header={true} rowData={tableHeader} />
-            <TableRow header={false} rowData={tableRowOne} />
-            <TableRow header={false} rowData={tableRowTwo} />
-            <TableRow header={false} rowData={tableRowThree} />
-          </View>
-          <View styles={styles.total}>
-            <Text style={styles.total_text}>Pending  : TK {pendingTotal}</Text>
-            <Text style={styles.total_text}>Accepted : TK {acceptedTotal}</Text>
-          </View>
+          {authType == 'agent' ?
+            [transType == 'Today' ? 
+              <View style={styles.view_rectangle}>
+                <TableRowEditDeposit 
+                  header={true} 
+                  rowData={agentTableHeader} 
+                  type={transType} 
+                  rejectCallback={rejectCallback}
+                  acceptCallback={acceptCallback}
+                />
+                <TableRowEditDeposit 
+                  header={false} 
+                  rowData={agentTableRowOne} 
+                  type={transType} 
+                  rejectCallback={rejectCallback}
+                  acceptCallback={acceptCallback}
+                />
+                <TableRowEditDeposit 
+                  header={false} 
+                  rowData={agentTableRowTwo} 
+                  type={transType} 
+                  rejectCallback={rejectCallback}
+                  acceptCallback={acceptCallback}
+                />
+                <TableRowEditDeposit 
+                  header={false} 
+                  rowData={agentTableRowThree} 
+                  type={transType} 
+                  rejectCallback={rejectCallback}
+                  acceptCallback={acceptCallback}
+                />
+              </View>
+            :
+            <>
+              <View style={styles.view_rectangle}>
+                <TableRow header={true} rowData={tableHeader} />
+                <TableRow header={false} rowData={tableRowOne} />
+                <TableRow header={false} rowData={tableRowTwo} />
+                <TableRow header={false} rowData={tableRowThree} />
+              </View>
+              <View styles={styles.total}>
+                <Text style={styles.total_text}>Total Amount  : TK {acceptedTotal}</Text>
+              </View>
+            </>
+            ]
+          :
+            <>
+              <View style={styles.view_rectangle}>
+                <TableRow header={true} rowData={tableHeader} />
+                <TableRow header={false} rowData={tableRowOne} />
+                <TableRow header={false} rowData={tableRowTwo} />
+                <TableRow header={false} rowData={tableRowThree} />
+              </View>
+              <View styles={styles.total}>
+                <Text style={styles.total_text}>Pending  : TK {pendingTotal}</Text>
+                <Text style={styles.total_text}>Accepted : TK {acceptedTotal}</Text>
+              </View>
+            </>
+          }
         </View>
       </ScrollView>
     </SafeAreaView>

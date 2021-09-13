@@ -26,14 +26,12 @@ import Format from "../lib/format";
 import { RFValue } from 'react-native-responsive-fontsize';
 const format = new Format();
 
-const TableRowEditable = ({header, rowData, type, sendCallback}) => {
+const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallback}) => {
   const [rowId, setRowId] = useStateIfMounted(rowData.rowId);
-  const [pinNo, setPinNo] = useStateIfMounted(String(rowData.rowId));
+  const [amount, setAmount] = useStateIfMounted(format.separator(rowData.amount));
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
   const [cellThree, setCellThree] = useStateIfMounted([]);
-  // const isFocused = useIsFocused();
-  let data = {};
  
 
   useEffect(() => {
@@ -43,7 +41,7 @@ const TableRowEditable = ({header, rowData, type, sendCallback}) => {
       setCellThree(handleHeaderCell(rowData[2]));
     } else {
       setRowId(rowData.rowId);
-      setPinNo(String(rowData.rowId));
+      setAmount(format.separator(rowData.amount));
       handleCell(rowData);
     }
   }, [rowData]);
@@ -69,14 +67,17 @@ const TableRowEditable = ({header, rowData, type, sendCallback}) => {
     setCellOne(leftCell);
 
     midCell.push(
+      <Text style={styles.cell_text}>Ref. No.  : {cellData.refNo}</Text>
+    )
+    midCell.push(
       <View style={styles.view_input}>
-          <Text>Pin No.         : </Text>
+          <Text>Amount  : </Text>
           <TextInput 
               style={styles.text_input}
-              onChangeText={setPinNo}
-              // onChangeText={text => {console.log('text', text); setPinNo(String(text))}}
-              value={pinNo}
-              textAlign={'left'}
+              // onChangeText={setPinNo}
+              onChangeText={text => {console.log('text', text); setAmount(format.separator(text))}}
+              value={amount}
+              textAlign={'right'}
               placeholderTextColor={WalletColors.grey}
               keyboardType={'numeric'}
           />
@@ -84,33 +85,47 @@ const TableRowEditable = ({header, rowData, type, sendCallback}) => {
       </View>
     )
     midCell.push(
-      <Text style={styles.cell_text}>Amount      : {format.separator(cellData.amount)}</Text>
+      <Text style={styles.cell_text}>Wallet    : {cellData.wallet}</Text>
     )
-    midCell.push(
-      <Text style={styles.cell_text}>Wallet         : {cellData.wallet}</Text>
-    )
-    midCell.push(
-      <Text style={styles.cell_text}>Mobile No. : {cellData.mobile}</Text>
-    )
+    
     setCellTwo(midCell);
 
     rightCell.push(
+      <View style={styles.button_view}>
       <TouchableOpacity
-        onPress={onSend}
+        onPress={onReject}
       >
         <View style={styles.send_button}>
           <Text style={styles.send_button_text}>
-            Send
+            Reject
           </Text>
         </View>
       </TouchableOpacity>
+      </View>
+    )
+    rightCell.push(
+      <View style={styles.button_view}>
+      <TouchableOpacity
+        onPress={onAccept}
+      >
+        <View style={styles.send_button}>
+          <Text style={styles.send_button_text}>
+            Accept
+          </Text>
+        </View>
+      </TouchableOpacity>
+      </View>
     )
     setCellThree(rightCell);
   }
 
-  const onSend = () => {
-    console.log('send', rowId, pinNo);
-    // sendCallback(rowId, pinNo);
+  const onReject = () => {
+    console.log('onReject', rowId, amount);
+    // rejectCallback(rowId, amount);
+  }
+  const onAccept = () => {
+    console.log('onAccept', rowId, amount);
+    // acceptCallback(rowId, amount);
   }
 
   return useMemo(() => {
@@ -118,7 +133,6 @@ const TableRowEditable = ({header, rowData, type, sendCallback}) => {
         <View style={styles.view_rectangle}>
             <View style={styles.view_left}>
                 <View style={styles.view_lineNumber}>
-                    {/* <Text style={header ? styles.cell_text_header : styles.cell_text}>{cellOne}</Text> */}
                     {cellOne}
                 </View>
             </View>
@@ -170,7 +184,6 @@ const styles = StyleSheet.create({
   text_input: {
     width: widthPercentageToDP("18%"),
     height: heightPercentageToDP("4%"),
-    // marginTop: heightPercentageToDP("4%"),
     borderRadius: 5,
     borderWidth: 1,
     borderColor: WalletColors.Wblue,
@@ -182,7 +195,6 @@ const styles = StyleSheet.create({
   view_input: {
     flexDirection: "row", 
     alignItems: "center",
-    // padding:widthPercentageToDP("2%")
   },
   view_lineNumber: {
     flexDirection: "column", 
@@ -201,10 +213,14 @@ const styles = StyleSheet.create({
     fontSize: RFValue(14),
     fontWeight: "bold"
   },
+  button_view: {
+    paddingTop: heightPercentageToDP("1%"),
+    paddingBottom: heightPercentageToDP("1%"),
+  },
   send_button: {
     width: widthPercentageToDP("20%"),
     height: heightPercentageToDP("4%"),
-    marginTop: heightPercentageToDP("-2%"),
+    marginTop: heightPercentageToDP("-1%"),
     borderRadius: 20,
     borderWidth: 2,
     borderColor: WalletColors.Wgreen,
@@ -220,4 +236,4 @@ const styles = StyleSheet.create({
 });
 
 
-export default TableRowEditable;
+export default TableRowEditDeposit;
