@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "98434948322",
+    "project_id": "kenny-wallet",
+    "storage_bucket": "kenny-wallet.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:98434948322:android:3cec9b472d38c4d58fd2bb",
+        "android_client_info": {
+          "package_name": "ten.binary.wallet"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "98434948322-ij5bb544md22p9vsbgaprart91l8hl3s.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfEqQjciaR7sjWwu2JO0tShm7OUhPbFfU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "98434948322-ij5bb544md22p9vsbgaprart91l8hl3s.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

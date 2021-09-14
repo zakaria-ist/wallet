@@ -1,4 +1,4 @@
-package com.wallet;
+package ten.binary.wallet;
 
 import com.facebook.react.ReactActivity;
 
