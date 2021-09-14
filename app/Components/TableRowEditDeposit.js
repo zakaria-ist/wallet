@@ -71,17 +71,16 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
     )
     midCell.push(
       <View style={styles.view_input}>
-          <Text>Amount  : </Text>
-          <TextInput 
-              style={styles.text_input}
-              // onChangeText={setPinNo}
-              onChangeText={text => {console.log('text', text); setAmount(format.separator(text))}}
-              value={amount}
-              textAlign={'right'}
-              placeholderTextColor={WalletColors.grey}
-              keyboardType={'numeric'}
-          />
-
+        <Text>Amount  : </Text>
+        <TextInput 
+          style={styles.text_input}
+          // onChangeText={setPinNo}
+          onChangeText={text => {console.log('text', text); setAmount(format.separator(text))}}
+          value={amount}
+          textAlign={'right'}
+          placeholderTextColor={WalletColors.grey}
+          keyboardType={'numeric'}
+        />
       </View>
     )
     midCell.push(
@@ -130,23 +129,23 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
 
   return useMemo(() => {
     return (
-        <View style={styles.view_rectangle}>
-            <View style={styles.view_left}>
-                <View style={styles.view_lineNumber}>
-                    {cellOne}
-                </View>
-            </View>
-            <View style={styles.view_center}>
-                <View style={styles.view_lineNumber_center}>
-                    {cellTwo}
-                </View>
-            </View>
-            <View style={styles.view_right}>
-                <View style={styles.view_lineNumber}>
-                    {cellThree}
-                </View>
-            </View>
+      <View style={styles.view_rectangle}>
+        <View style={styles.view_left}>
+          <View style={styles.view_lineNumber}>
+            {cellOne}
+          </View>
         </View>
+        <View style={styles.view_center}>
+          <View style={styles.view_lineNumber_center}>
+            {cellTwo}
+          </View>
+        </View>
+        <View style={styles.view_right}>
+          <View style={styles.view_lineNumber}>
+            {cellThree}
+          </View>
+        </View>
+      </View>
     );
   })
 

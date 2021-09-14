@@ -82,6 +82,11 @@ const LoginScreen = ({navigation}) => {
             clientUrl = request.getClientUserListUrl();
           } else if (content.userRole == 'agent') {
             clientUrl = request.getAgentUserListUrl();
+            AsyncStorage.setItem('superiorClient', JSON.stringify(content.superiorClient));
+          } else if (content.userRole == 'user') {
+            clientUrl = request.getAgentUserListUrl();
+            AsyncStorage.setItem('superiorClient', JSON.stringify(content.superiorClient));
+            AsyncStorage.setItem('superiorAgent', JSON.stringify(content.superiorAgent));
           }
           if (clientUrl) {
             await request.get(clientUrl + '?token=' + content.authorizeToken)

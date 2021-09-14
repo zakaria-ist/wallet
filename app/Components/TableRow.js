@@ -12,7 +12,6 @@ import {
   widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
-// import { useIsFocused } from "@react-navigation/native";
 import {
   StyleSheet,
   View,
@@ -27,8 +26,6 @@ const TableRow = ({header, rowData}) => {
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
   const [cellThree, setCellThree] = useStateIfMounted([]);
-  // const isFocused = useIsFocused();
-  let data = {};
  
 
   useEffect(() => {
@@ -75,24 +72,23 @@ const TableRow = ({header, rowData}) => {
 
   return useMemo(() => {
     return (
-        <View style={styles.view_rectangle}>
-            <View style={styles.view_left}>
-                <View style={styles.view_lineNumber}>
-                    {/* <Text style={header ? styles.cell_text_header : styles.cell_text}>{cellOne}</Text> */}
-                    {cellOne}
-                </View>
-            </View>
-            <View style={styles.view_center}>
-                <View style={styles.view_lineNumber}>
-                    {cellTwo}
-                </View>
-            </View>
-            <View style={styles.view_right}>
-                <View style={styles.view_lineNumber}>
-                    {cellThree}
-                </View>
-            </View>
+      <View style={styles.view_rectangle}>
+        <View style={styles.view_left}>
+          <View style={styles.view_lineNumber}>
+            {cellOne}
+          </View>
         </View>
+        <View style={styles.view_center}>
+          <View style={styles.view_lineNumber}>
+            {cellTwo}
+          </View>
+        </View>
+        <View style={styles.view_right}>
+          <View style={styles.view_lineNumber}>
+            {cellThree}
+          </View>
+        </View>
+      </View>
     );
   })
 

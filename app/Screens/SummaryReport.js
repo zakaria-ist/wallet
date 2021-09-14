@@ -42,10 +42,7 @@ const SummaryReport = () => {
   const [walletData, setWalletData] = useStateIfMounted([]);
 
   const backgroundStyle = {
-    backgroundColor: Colors.white,
-    borderTopColor: WalletColors.Wblue,
-    borderWidth: 1,
-    borderStyle: 'solid',
+    backgroundColor: Colors.white
   };
 
   const LeftButton = "Yesterday";
@@ -132,6 +129,7 @@ const SummaryReport = () => {
     <SafeAreaView>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
+        stickyHeaderIndices={[0]}
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
           <CustomHeader 

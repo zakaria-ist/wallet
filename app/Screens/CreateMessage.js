@@ -30,15 +30,24 @@ import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
 
+import Request from "../lib/request";
+import CustomAlert from "../lib/alert";
+
 import CustomHeader from "../Components/CustomHeader";
 import CommonTop from "../Components/CommonTop";
 import MessageBlock from "../Components/MessageBlock";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
+import { alignContent, fontWeight } from 'styled-system';
+
+const request = new Request();
+const alert = new CustomAlert();
 
 const CreateMessage = () => {
   const isDarkMode = useColorScheme() === 'dark';
-  const [transType, setTransType] = useStateIfMounted("Deposit");
+  const [transType, setTransType] = useStateIfMounted("Withdrawal");
+  const [token, setToken] = useStateIfMounted("");
+  const [superiorAgent, setSuperiorAgent] = useStateIfMounted("");
   const [walletType, setWalletType] = useStateIfMounted(1);
   const [messageOne, setMessageOne] = useStateIfMounted({refCode: "", amount: ""});
   const [messageTwo, setMessageTwo] = useStateIfMounted({refCode: "", amount: ""});
@@ -50,10 +59,7 @@ const CreateMessage = () => {
   const [walletData, setWalletData] = useStateIfMounted([]);
 
   const backgroundStyle = {
-    backgroundColor: Colors.white,
-    borderTopColor: WalletColors.Wblue,
-    borderWidth: 1,
-    borderStyle: 'solid',
+    backgroundColor: Colors.white
   };
 
   const LeftButton = "Deposit";
@@ -63,6 +69,12 @@ const CreateMessage = () => {
     InteractionManager.runAfterInteractions(() => {
       AsyncStorage.getItem('walletData').then((walletData) => {
         setWalletData(JSON.parse(walletData));
+      })
+      AsyncStorage.getItem('authorizeToken').then((token) => {
+        setToken(token);
+      })
+      AsyncStorage.getItem('superiorAgent').then((superiorAgent) => {
+        setSuperiorAgent(JSON.parse(superiorAgent));
       })
     })
   }, []);
@@ -87,8 +99,54 @@ const CreateMessage = () => {
     setWalletType(3);
   }
 
+  const sendMessageToAgent = async (message, url) => {
+    if (token && superiorAgent && superiorAgent.username) {
+      let walletId = walletType;
+      let purpose = "deposit";
+      if (transType == "Withdrawal") {
+        purpose = "withdrawal";
+      }
+
+      let messageUrl = "";
+      if (purpose == "deposit") {
+        messageUrl = url + "?token=" + token + "&purpose=" + purpose + "&refNo=" + message.refCode + 
+          "&amount=" + message.amount + "&walletId=" + walletId + "&receiveUsername=" + superiorAgent.username
+      } else {
+        messageUrl = url + "?token=" + token + "&purpose=" + purpose + "&mobile=" + message.refCode + 
+          "&amount=" + message.amount + "&walletId=" + walletId + "&receiveUsername=" + superiorAgent.username
+      }
+
+      if (messageUrl) {
+        console.log('messageUrl', messageUrl);
+        await request.get(messageUrl)
+          .then(result => {
+            console.log('result', result);
+          })
+      }
+    } else {
+      alert.warning("Empty token or Superior Agent is missing");
+    }
+    
+  }
+
   const handleSubmit = () => {
     console.log('handleSubmit');
+    const userSendMessageUrl = request.getUserSendMessageUrl();
+    if (messageOne.refCode != "" && messageOne.amount != "") {
+      sendMessageToAgent(messageOne, userSendMessageUrl);
+    }
+    if (messageTwo.refCode != "" && messageTwo.amount != "") {
+      sendMessageToAgent(messageTwo, userSendMessageUrl);
+    }
+    if (messageThree.refCode != "" && messageThree.amount != "") {
+      sendMessageToAgent(messageThree, userSendMessageUrl);
+    }
+    if (messageFour.refCode != "" && messageFour.amount != "") {
+      sendMessageToAgent(messageFour, userSendMessageUrl);
+    }
+    if (messageFive.refCode != "" && messageFive.amount != "") {
+      sendMessageToAgent(messageFive, userSendMessageUrl);
+    }
   }
 
   const handleQuickInsert = () => {
@@ -122,27 +180,27 @@ const CreateMessage = () => {
   }
 
   const handleMessageOne = (data) => {
-    console.log('data', data);
+    console.log('handleMessageOne', data);
     setMessageOne(data);
   }
   
   const handleMessageTwo = (data) => {
-    console.log('data', data);
+    console.log('handleMessageTwo', data);
     setMessageTwo(data);
   }
 
   const handleMessageThree = (data) => {
-    console.log('data', data);
+    console.log('handleMessageThree', data);
     setMessageThree(data);
   }
 
   const handleMessageFour = (data) => {
-    console.log('data', data);
+    console.log('handleMessageFour', data);
     setMessageFour(data);
   }
 
   const handleMessageFive = (data) => {
-    console.log('data', data);
+    console.log('handleMessageFive', data);
     setMessageFive(data);
   }
 
@@ -150,6 +208,7 @@ const CreateMessage = () => {
     <SafeAreaView>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
+        stickyHeaderIndices={[0]}
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
           <CustomHeader 
@@ -171,11 +230,11 @@ const CreateMessage = () => {
           <TouchableOpacity
             onPress={handleQuickInsert}
           >
-              <View style={styles.insert_button}>
-                <Text style={styles.insert_button_text}>
-                  Quick Insert
-                </Text>
-              </View>
+            <View style={styles.insert_button}>
+              <Text style={styles.insert_button_text}>
+                Quick Insert
+              </Text>
+            </View>
           </TouchableOpacity>
           <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
           <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
@@ -206,20 +265,36 @@ const CreateMessage = () => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <View styles={styles.modal_header}>
-                  <Text styles={{ fontSize: 25 }}>                                               Data Insert</Text>
+                  <View
+                    style={styles.modal_title}
+                  >
+                    <Text
+                      style={{
+                        color: WalletColors.black,
+                        fontSize: RFValue(18),
+                        fontWeight: "bold"
+                      }}
+                    >
+                      Data Insert
+                    </Text>
+                  </View>
                   <TouchableOpacity
                     onPress={() => {
                       handleQuickInsert()
                     }}
                   >
-                    <Fontisto name="close" color={WalletColors.black} size={35} />
+                    <View
+                      style={styles.modal_close}
+                    >
+                      <Fontisto name="close" color={WalletColors.red} size={35} />
+                    </View>
                   </TouchableOpacity>
                 </View>
                 <TextInput
                   placeholderTextColor="gray"
                   backgroundColor="white"
                   placeholder="Please insert only upto 5 messages only"
-                  maxLength={500}
+                  maxLength={300}
                   multiline={true}
                   value={quickMessages}
                   onChangeText={(value) => {
@@ -278,11 +353,11 @@ const styles = StyleSheet.create({
   },
   sumbit_button_text: {
     color: WalletColors.white,
-    fontSize: 20
+    fontSize: RFValue(20)
   },
   insert_button: {
-    width: widthPercentageToDP("35%"),
-    height: heightPercentageToDP("5%"),
+    width: widthPercentageToDP("30%"),
+    height: heightPercentageToDP("4%"),
     marginTop: heightPercentageToDP("-2%"),
     marginBottom: heightPercentageToDP("1%"),
     borderRadius: 20,
@@ -292,11 +367,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.Worange,
     alignItems: 'center',
-    marginLeft: widthPercentageToDP("55%"),
+    marginLeft: widthPercentageToDP("60%"),
   },
   insert_button_text: {
     color: WalletColors.white,
-    fontSize: 20
+    fontSize: RFValue(16)
   },
   centeredView: {
     flex: 1,
@@ -311,8 +386,7 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     borderWidth: 5,
     borderRadius: 20,
-    padding: 15,
-    // alignItems: "center",
+    padding: widthPercentageToDP("4%"),
     shadowColor: "#000",
     shadowOffset: {
       width: 0,
@@ -323,22 +397,21 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modal_header: {
-    flex: 1,
     flexDirection: "row",
-    alignSelf: "flex-end",
+    alignItems: "center",
+    justifyContent: "center"
   },
   modal_text_input: {
     fontSize: RFValue(15),
     color: "black",
     alignSelf: "center",
     width: widthPercentageToDP("85%"),
-    height: heightPercentageToDP("30%"),
-    marginLeft: widthPercentageToDP("1%"),
-    marginTop: heightPercentageToDP("5%"),
+    height: heightPercentageToDP("25%"),
+    marginTop: heightPercentageToDP("2%"),
     borderColor: WalletColors.Wblue,
     borderRadius: 15,
     borderStyle: 'solid',
-    borderWidth: 1,
+    borderWidth: 2
   },
   confirm: {
     width: widthPercentageToDP("30%"),
@@ -352,6 +425,18 @@ const styles = StyleSheet.create({
     borderColor: WalletColors.Wgreen,
     borderStyle: 'solid',
     marginTop: 10
+  },
+  modal_title: {
+    alignSelf: "center",
+    color: WalletColors.black,
+    textAlign: "center",
+  },
+  modal_close: {
+    alignSelf: "flex-end",
+    color: WalletColors.black,
+    textAlign: "center",
+    marginTop: heightPercentageToDP("-3%"),
+    width: widthPercentageToDP("10%"),
   }
 });
 

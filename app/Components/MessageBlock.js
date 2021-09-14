@@ -12,7 +12,6 @@ import {
   widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
-// import { useIsFocused } from "@react-navigation/native";
 import {
   StyleSheet,
   View,
@@ -25,9 +24,6 @@ import { WalletColors } from "../assets/Colors.js";
 const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
   const [refCode, setRefCode] = useStateIfMounted(mData.refCode);
   const [amount, setAmount] = useStateIfMounted(mData.amount);
-  // const isFocused = useIsFocused();
-  let data = {};
- 
 
   useEffect(() => {
     setRefCode(mData.refCode);
@@ -35,48 +31,48 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
   }, [mData]);
 
   const handleChange = () => {
-    data = {
-        refCode: refCode,
-        amount: amount
+    let data = {
+      refCode: refCode,
+      amount: amount
     }
     parentReference(data);
   }
 
   return useMemo(() => {
     return (
-        <View style={styles.view_rectangle}>
-            <View style={styles.view_left}>
-                <View style={styles.view_lineNumber}>
-                    <Text>{lineNumber}. </Text>
-                </View>
-            </View>
-            <View style={styles.view_right}>
-                <View style={styles.view_input}>
-                    {transType == "Deposit" ? (<Text>Ref. Code : </Text>) : (<Text>Mobile No. : </Text>)}
-                    <TextInput 
-                        style={styles.text_input}
-                        onChangeText={setRefCode}
-                        value={refCode}
-                        textAlign={'left'}
-                        onBlur={handleChange}
-                        placeholderTextColor={WalletColors.grey}
-                    />
-
-                </View>
-                <View style={styles.view_input}>
-                    <Text>Amount    : </Text>
-                    <TextInput 
-                        style={styles.text_input}
-                        onChangeText={setAmount}
-                        value={amount}
-                        textAlign={'right'}
-                        onBlur={handleChange}
-                        placeholderTextColor={WalletColors.grey}
-                        keyboardType={'numeric'}
-                    />
-                </View>
-            </View>
+      <View style={styles.view_rectangle}>
+        <View style={styles.view_left}>
+          <View style={styles.view_lineNumber}>
+            <Text>{lineNumber}. </Text>
+          </View>
         </View>
+        <View style={styles.view_right}>
+          <View style={styles.view_input}>
+            {transType == "Deposit" ? (<Text>Ref. Code : </Text>) : (<Text>Mobile No. : </Text>)}
+            <TextInput 
+              style={styles.text_input}
+              onChangeText={setRefCode}
+              value={refCode}
+              textAlign={'left'}
+              onBlur={handleChange}
+              placeholderTextColor={WalletColors.grey}
+              keyboardType={'numeric'}
+            />
+          </View>
+          <View style={styles.view_input}>
+            <Text>Amount    : </Text>
+            <TextInput 
+              style={styles.text_input}
+              onChangeText={setAmount}
+              value={amount}
+              textAlign={'right'}
+              onBlur={handleChange}
+              placeholderTextColor={WalletColors.grey}
+              keyboardType={'numeric'}
+            />
+          </View>
+        </View>
+      </View>
     );
   })
 

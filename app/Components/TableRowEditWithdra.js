@@ -28,7 +28,7 @@ const format = new Format();
 
 const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
   const [rowId, setRowId] = useStateIfMounted(rowData.rowId);
-  const [pinNo, setPinNo] = useStateIfMounted(String(rowData.rowId));
+  const [pinNo, setPinNo] = useStateIfMounted("");
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
   const [cellThree, setCellThree] = useStateIfMounted([]);
@@ -41,10 +41,14 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
       setCellThree(handleHeaderCell(rowData[2]));
     } else {
       setRowId(rowData.rowId);
-      setPinNo(String(rowData.rowId));
+      // setPinNo(String(rowData.rowId));
       handleCell(rowData);
     }
   }, [rowData]);
+
+  const handleChange = () => {
+    console.log('handleChange', 'pinNo', pinNo);
+  }
 
   const handleHeaderCell = (cellData) => {
     let testCell = [];
@@ -68,17 +72,17 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
 
     midCell.push(
       <View style={styles.view_input}>
-          <Text>Pin No.         : </Text>
-          <TextInput 
-              style={styles.text_input}
-              onChangeText={setPinNo}
-              // onChangeText={text => {console.log('text', text); setPinNo(String(text))}}
-              value={pinNo}
-              textAlign={'left'}
-              placeholderTextColor={WalletColors.grey}
-              keyboardType={'numeric'}
-          />
-
+        <Text>Pin No.         : </Text>
+        <TextInput 
+          style={styles.text_input}
+          onChangeText={setPinNo}
+          // onChangeText={text => {console.log('text', text); setPinNo(String(text))}}
+          value={pinNo}
+          textAlign={'left'}
+          placeholderTextColor={WalletColors.grey}
+          keyboardType={'numeric'}
+          onBlur={handleChange}
+        />
       </View>
     )
     midCell.push(
@@ -113,23 +117,23 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
 
   return useMemo(() => {
     return (
-        <View style={styles.view_rectangle}>
-            <View style={styles.view_left}>
-                <View style={styles.view_lineNumber}>
-                    {cellOne}
-                </View>
-            </View>
-            <View style={styles.view_center}>
-                <View style={styles.view_lineNumber_center}>
-                    {cellTwo}
-                </View>
-            </View>
-            <View style={styles.view_right}>
-                <View style={styles.view_lineNumber}>
-                    {cellThree}
-                </View>
-            </View>
+      <View style={styles.view_rectangle}>
+        <View style={styles.view_left}>
+          <View style={styles.view_lineNumber}>
+            {cellOne}
+          </View>
         </View>
+        <View style={styles.view_center}>
+          <View style={styles.view_lineNumber_center}>
+            {cellTwo}
+          </View>
+        </View>
+        <View style={styles.view_right}>
+          <View style={styles.view_lineNumber}>
+            {cellThree}
+          </View>
+        </View>
+      </View>
     );
   })
 

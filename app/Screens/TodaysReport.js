@@ -46,10 +46,7 @@ const TodaysReport = () => {
   const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("20,000.00");
 
   const backgroundStyle = {
-    backgroundColor: Colors.white,
-    borderTopColor: WalletColors.Wblue,
-    borderWidth: 1,
-    borderStyle: 'solid',
+    backgroundColor: Colors.white
   };
 
   const LeftButton = "Deposit";
@@ -114,6 +111,7 @@ const TodaysReport = () => {
     <SafeAreaView>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <ScrollView
+        stickyHeaderIndices={[0]}
         contentInsetAdjustmentBehavior="automatic"
         style={backgroundStyle}>
           <CustomHeader 
