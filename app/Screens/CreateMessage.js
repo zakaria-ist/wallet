@@ -29,6 +29,12 @@ import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
+import firebase from "@react-native-firebase/app";
+import firestore from '@react-native-firebase/firestore';
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 import Request from "../lib/request";
 import CustomAlert from "../lib/alert";
@@ -42,6 +48,7 @@ import { alignContent, fontWeight } from 'styled-system';
 
 const request = new Request();
 const alert = new CustomAlert();
+const db = firestore();
 
 const CreateMessage = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -70,7 +77,7 @@ const CreateMessage = () => {
       AsyncStorage.getItem('walletData').then((walletData) => {
         setWalletData(JSON.parse(walletData));
       })
-      AsyncStorage.getItem('authorizeToken').then((token) => {
+      AsyncStorage.getItem('token').then((token) => {
         setToken(token);
       })
       AsyncStorage.getItem('superiorAgent').then((superiorAgent) => {
@@ -100,33 +107,58 @@ const CreateMessage = () => {
   }
 
   const sendMessageToAgent = async (message, url) => {
-    if (token && superiorAgent && superiorAgent.username) {
-      let walletId = walletType;
+    if (token) {
       let purpose = "deposit";
       if (transType == "Withdrawal") {
         purpose = "withdrawal";
       }
 
-      let messageUrl = "";
-      if (purpose == "deposit") {
-        messageUrl = url + "?token=" + token + "&purpose=" + purpose + "&refNo=" + message.refCode + 
-          "&amount=" + message.amount + "&walletId=" + walletId + "&receiveUsername=" + superiorAgent.username
-      } else {
-        messageUrl = url + "?token=" + token + "&purpose=" + purpose + "&mobile=" + message.refCode + 
-          "&amount=" + message.amount + "&walletId=" + walletId + "&receiveUsername=" + superiorAgent.username
-      }
-
-      if (messageUrl) {
-        console.log('messageUrl', messageUrl);
-        await request.get(messageUrl)
-          .then(result => {
+      let params = JSON.stringify(
+        {
+          token: token, 
+          receiveUsername: superiorAgent.username, 
+          walletId: walletType, 
+          purpose: purpose,
+          refNo: message.refCode,
+          mobile: message.refCode,
+          amount: message.amount,
+        }
+      );
+      if (url) {
+        const result = await request.post(url, params);
+        console.log('result', result);
+        if (result.ok && result.message) {
+          let agentName = result.myAgent;
+          if (agentName && agentName != "") {
+            const tokenDB = await getUserTokenPromise(agentName);
+            console.log('agentToken', tokenDB._data.deviceId);
+            const deviceId = tokenDB._data.deviceId;
+            const message = result.message;
+            const key = 'AIzaSyBfEqQjciaR7sjWwu2JO0tShm7OUhPbFfU';
+            let params = JSON.stringify(
+              {
+                deviceId: deviceId, 
+                message: message, 
+                key: key
+              }
+            );
+            let pushUrl = request.getPushNotificationUrl();
+            const result = await request.post(pushUrl, params);
             console.log('result', result);
-          })
+          }
+
+        }
       }
     } else {
       alert.warning("Empty token or Superior Agent is missing");
     }
     
+  }
+
+  const getUserTokenPromise = (userName) => {
+    return db.collection("users")
+        .doc(String(userName))
+        .get()
   }
 
   const handleSubmit = () => {

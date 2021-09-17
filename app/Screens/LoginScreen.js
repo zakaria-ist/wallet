@@ -26,15 +26,28 @@ import {
   PixelRatio,
   useColorScheme,
   TouchableOpacity,
-  InteractionManager
+  InteractionManager,
+  Platform
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
 import CustomAlert from "../lib/alert";
 import Request from "../lib/request";
+import notificationHelper from "../lib/notificationHelper";
 import { RFValue } from "react-native-responsive-fontsize";
+import { firebaseConfig } from "../../firebaseConfig.js";
+import { Notifications } from 'react-native-notifications'
+import PushNotification from "react-native-push-notification";
+import messaging from "@react-native-firebase/messaging";
+import firebase from "@react-native-firebase/app";
+import firestore from '@react-native-firebase/firestore';
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 const request = new Request();
 const alert = new CustomAlert();
+const db = firestore();
 
 const LoginScreen = ({navigation}) => {
   const [userName, setUserName] = useState('');
@@ -47,7 +60,97 @@ const LoginScreen = ({navigation}) => {
     flex: 1
   };
 
+  // Must be outside of any component LifeCycle (such as `componentDidMount`).
+  PushNotification.configure({
+
+    // (required) Called when a remote is received or opened, or local notification is opened
+    onNotification: function (notification) {
+      console.log("NOTIFICATION:", notification);
+      (Platform.OS === "ios" ||  notification.userInteraction) && processNoti(notification)
+      // process the notification
+      // alert.warning(notification.data.b)
+      // (required) Called when a remote is received or opened, or local notification is opened
+      // notification.finish(PushNotificationIOS.FetchResult.NoData);
+    },
+
+    // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
+    onAction: function (notification) {
+      // alert.warning(JSON.stringify(notification))
+      processNoti(notification)
+      // process the action
+    },
+
+    // IOS ONLY (optional): default: all - Permissions to register.
+    permissions: {
+      alert: true,
+      badge: true,
+      sound: true,
+    },
+
+    // Should the initial notification be popped automatically
+    // default: true
+    popInitialNotification: true,
+
+    /**
+     * (optional) default: true
+     * - Specified if permissions (ios) and token (android and ios) will requested or not,
+     * - if not, you must call PushNotificationsHandler.requestPermissions() later
+     * - if you are not using remote notification or do not have Firebase installed, use this:
+     *     requestPermissions: Platform.OS === 'ios'
+     */
+    requestPermissions: true,
+  });
+
+  const processNoti = (remoteMessage) => {
+    if (remoteMessage) {
+      console.log('remoteMessage', remoteMessage.data);
+      // let groupID = remoteMessage.data.groupID;
+      // let groupName = remoteMessage.data.groupName;
+      // let groupType = remoteMessage.data.groupType;
+      // props.navigation.navigate("ChatScreen", {
+      //   type: String(groupType),
+      //   groupID: String(groupID),
+      //   groupName: String(groupName),
+      // });
+    }
+  }
+
+  async function createNotificationChannel() {
+    Notifications.setNotificationChannel({
+      channelId: 'message',
+      name: 'Message Channel',
+      description: 'Message Channel',
+      importance: 5
+    })
+  }
+
   useEffect(() => {
+    messaging()
+      .getInitialNotification()
+      .then((remoteMessage) => {
+        // alert.warning('on init'+ JSON.stringify(remoteMessage))
+        console.log('remoteMessage', 'getInitialNotification', remoteMessage);
+        processNoti(remoteMessage)
+      });
+
+    messaging()
+      .onNotificationOpenedApp((remoteMessage) => {
+        console.log('remoteMessage', 'onNotificationOpenedApp', remoteMessage);
+        processNoti(remoteMessage)
+      });
+
+   messaging()
+      .onMessage(({ notification,data, messageId }) => {
+        notificationHelper.sendLocalNotification({
+          title: notification.title,
+          body: notification.body,
+          data,
+          messageId
+        })
+      });
+
+    createNotificationChannel();
+
     InteractionManager.runAfterInteractions( async () => {
       const walletUrl = request.getWalletUrl();  
       await request.get(walletUrl)
@@ -63,45 +166,75 @@ const LoginScreen = ({navigation}) => {
       return;
     }
     const auth_url = request.getAuthUrl();
-    //let params = JSON.stringify({username: userName, password: password}); //admin username=kenny & password=KN@July21
-    await request.get(auth_url + "?username=" + userName + "&password=" + password)
-      .then( async (content) => {
-        console.log('content', content);
-        if (content.authorizeToken && content.authorizeToken != '') {
-          // update the async storage
-          AsyncStorage.setItem('isUser', '1');
-          AsyncStorage.setItem('authType', content.userRole);
-          // AsyncStorage.setItem('authType', 'agent');
-          AsyncStorage.setItem('authorizeToken', content.authorizeToken);
-          let clientUrl = null;
-          if (content.userRole == 'admin') {
-            clientUrl = request.getAdminClientListUrl();
-          } else if (content.userRole == 'subadmin') {
-            clientUrl = request.getSubAdminClientListUrl();
-          } else if (content.userRole == 'client') {
-            clientUrl = request.getClientUserListUrl();
-          } else if (content.userRole == 'agent') {
-            clientUrl = request.getAgentUserListUrl();
-            AsyncStorage.setItem('superiorClient', JSON.stringify(content.superiorClient));
-          } else if (content.userRole == 'user') {
-            clientUrl = request.getAgentUserListUrl();
-            AsyncStorage.setItem('superiorClient', JSON.stringify(content.superiorClient));
-            AsyncStorage.setItem('superiorAgent', JSON.stringify(content.superiorAgent));
-          }
-          if (clientUrl) {
-            await request.get(clientUrl + '?token=' + content.authorizeToken)
-              .then(result => {
-                if (content.userRole == 'admin' || content.userRole == 'subadmin') {
-                  AsyncStorage.setItem('groupList', JSON.stringify(Object.values(result['clients'])));
-                } else if (content.userRole == 'client' || content.userRole == 'agent') {
-                  AsyncStorage.setItem('userList', JSON.stringify(Object.values(result['users'])));
-                }
-              })
-          }
-          // navigate to user pages
-          navigation.replace('DrawerStack');
-        } else {
-          alert.warning("Sign in is unsuccessful. Check the username or password. ");
+    let params = JSON.stringify({username: userName, password: password}); //admin username=kenny & password=KN@July21
+    const content = await request.post(auth_url, params);
+    //await request.get(auth_url + "?username=" + userName + "&password=" + password)
+    console.log('content', content);
+    if (content.authorizeToken && content.authorizeToken != '') {
+      // update the async storage
+      AsyncStorage.setItem('isUser', '1');
+      AsyncStorage.setItem('username', userName);
+      AsyncStorage.setItem('password', password);
+      AsyncStorage.setItem('authType', content.userRole);
+      // AsyncStorage.setItem('authType', 'agent');
+      AsyncStorage.setItem('token', content.authorizeToken);
+      let clientUrl = null;
+      if (content.userRole == 'admin') {
+        clientUrl = request.getAdminClientListUrl();
+      } else if (content.userRole == 'subadmin') {
+        clientUrl = request.getSubAdminClientListUrl();
+      } else if (content.userRole == 'client') {
+        clientUrl = request.getClientUserListUrl();
+      } else if (content.userRole == 'agent') {
+        clientUrl = request.getAgentUserListUrl();
+        AsyncStorage.setItem('superiorClient', JSON.stringify(content.superiorClient));
+      } else if (content.userRole == 'user') {
+        clientUrl = request.getAgentUserListUrl();
+        AsyncStorage.setItem('superiorClient', JSON.stringify(content.superiorClient));
+        AsyncStorage.setItem('superiorAgent', JSON.stringify(content.superiorAgent));
+      }
+      if (clientUrl) {
+        await request.get(clientUrl + '?token=' + content.authorizeToken)
+          .then(result => {
+            if (content.userRole == 'admin' || content.userRole == 'subadmin') {
+              AsyncStorage.setItem('groupList', JSON.stringify(Object.values(result['clients'])));
+            } else if (content.userRole == 'client' || content.userRole == 'agent') {
+              AsyncStorage.setItem('userList', JSON.stringify(Object.values(result['users'])));
+            }
+          })
+      }
+      if (content.userRole == 'agent') {
+        //get user permission and save user device token
+        requestUserPermission(userName);
+      }
+      // navigate to user pages
+      navigation.replace('DrawerStack');
+    } else {
+      alert.warning("Sign in is unsuccessful. Check the username or password. ");
+    }
+  }
+
+  async function requestUserPermission(userName) {
+    await messaging().requestPermission()
+      .then((authStatus) => {
+        const enabled =
+          authStatus === messaging.AuthorizationStatus.AUTHORIZED ||
+          authStatus === messaging.AuthorizationStatus.PROVISIONAL;
+        if (enabled) {
+          messaging().getToken()
+            .then((deviceToken) => {
+              db.collection("users")
+                .doc(String(userName))
+                .set({
+                  deviceId: deviceToken,
+                })
+                .then(() => {
+                  console.log("tokenID successfully written!", deviceToken);
+                })
+                .catch((error) => {
+                  console.error("Error writing tokenID: ", error);
+                });
+            });
         }
       })
   }

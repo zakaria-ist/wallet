@@ -9,6 +9,7 @@ const clientUserListUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/clientL
 const agentUserListUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/agentListOwnUsers";
 
 const userSendMessageUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/userSendMessage";
+const pushNotificationUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/pushNotification";
 
 class Request {
   getAuthUrl() {
@@ -31,6 +32,9 @@ class Request {
   }
   getUserSendMessageUrl() {
     return userSendMessageUrl;
+  }
+  getPushNotificationUrl() {
+    return pushNotificationUrl;
   }
   async get(url) {
     const response = await fetch(url, {
