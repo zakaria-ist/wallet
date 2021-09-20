@@ -1,8 +1,12 @@
 import React, {useState, useEffect} from 'react';
 import {
+  heightPercentageToDP,
+} from "react-native-responsive-screen";
+import {
   ActivityIndicator,
   View,
   StyleSheet,
+  Dimensions,
   Image
 } from 'react-native';
 
@@ -44,6 +48,8 @@ const SplashOut = ({navigation}) => {
 
 export default SplashOut;
 
+const windowHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -53,6 +59,7 @@ const styles = StyleSheet.create({
   },
   activityIndicator: {
     alignItems: 'center',
-    height: 80,
+    //height: 80,
+    height: windowHeight / 2 - heightPercentageToDP("60%"),
   },
 });

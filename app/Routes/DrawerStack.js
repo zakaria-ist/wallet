@@ -1,12 +1,16 @@
 import React, {useState, useEffect} from "react";
 // import { NavigationContainer } from "@react-navigation/native";
-import { Text, StyleSheet, Image, View } from 'react-native';
+import { Text, StyleSheet, Image, View} from 'react-native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
   DrawerItemList,
-  DrawerItem,
+  DrawerItem
 } from '@react-navigation/drawer';
+import { RFValue } from "react-native-responsive-fontsize";
+import {
+  heightPercentageToDP, widthPercentageToDP,
+} from "react-native-responsive-screen";
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from "@react-native-community/async-storage";
@@ -30,6 +34,7 @@ import {
   TabNavigationGroup, 
   TabNavigationGroupWithdrawal} from "./TabStack";
 import { color } from "react-native-reanimated";
+import { marginRight, padding } from "styled-system";
 
 const alert = new CustomAlert();
 
@@ -60,7 +65,9 @@ const CustomDrawerContent = (props) => (
       </View>
     <DrawerItemList {...props} />
     <DrawerItem
+          style={styles.drawerItem}
           label="Sign Out"
+          labelStyle={{fontSize: RFValue(15)}}
           icon={({ color, size }) => <AntDesign name="logout" color={color} size={size} />}
           onPress={() => {
             alert.ask('Are you sure? You want to sign out?', ()=>{
@@ -96,10 +103,17 @@ export default function DrawerStack() {
   return (
       <Drawer.Navigator
         drawerContent={(props) => <CustomDrawerContent {...props} />}
+        style={styles.drawerItem}
         screenOptions={{
             // drawerActiveTintColor: '#265684',
-            drawerItemStyle: styles.drawerItem,
             headerShown: false,
+            drawerStyle: {width: widthPercentageToDP("65%")},
+            drawerItemStyle: styles.drawerItem,
+            drawerLabelStyle:{fontSize: RFValue(15)},
+            // style:{ padding: 0, margin: 0, border: 0 }
+            // style: { padding: 5 },
+           // drawerContent: { padding: 10 },
+            
         }}
       >
         {authType == ('admin' || 'subadmin') ? (
@@ -107,7 +121,7 @@ export default function DrawerStack() {
             <Drawer.Screen name="TabNavigationAdmin" component={TabNavigationAdmin} key={TabNavigationAdmin}
               options={{
                 title: "Summary Report",
-                drawerIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
+                drawerIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size}/>,
               }} 
             />
             <Drawer.Screen name="TabNavigationAdminDeposit" component={TabNavigationAdminDeposit} key={TabNavigationAdminDeposit}
@@ -205,24 +219,26 @@ const styles = StyleSheet.create({
     flexDirection: 'column'
   },
   drawerHeader: {
-    height: 100,
+    height: heightPercentageToDP("10%"),
     backgroundColor: 'white',
-    flexDirection: 'column'
+    flexDirection: 'column',
+    marginBottom: heightPercentageToDP("5%")
   },
   drawerImage: {
-    height: 100,
-    width: 100,
+    height: heightPercentageToDP("15%"),
+    width: heightPercentageToDP("15%"),
     borderRadius: 75
   },
   userName: {
     paddingTop: 10,
     alignContent:'center',
-    alignSelf:'center'
+    alignSelf:'center',
   },
   drawerItem: {
     // borderRadius: 0,
+    marginHorizontal:0,
     marginVertical: 0,
-    borderBottomWidth: 2, 
+    borderBottomWidth: StyleSheet.hairlineWidth, 
     borderBottomColor:'#265684',
   }
 

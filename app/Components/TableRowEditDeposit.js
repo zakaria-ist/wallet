@@ -71,7 +71,7 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
     )
     midCell.push(
       <View style={styles.view_input}>
-        <Text>Amount  : </Text>
+        <Text>Amount     : </Text>
         <TextInput 
           style={styles.text_input}
           // onChangeText={setPinNo}
@@ -84,7 +84,7 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
       </View>
     )
     midCell.push(
-      <Text style={styles.cell_text}>Wallet    : {cellData.wallet}</Text>
+      <Text style={styles.cell_text}>Wallet      : {cellData.wallet}</Text>
     )
     
     setCellTwo(midCell);
@@ -184,7 +184,7 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("18%"),
     height: heightPercentageToDP("4%"),
     borderRadius: 5,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
@@ -221,7 +221,7 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("4%"),
     marginTop: heightPercentageToDP("-1%"),
     borderRadius: 20,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wgreen,
     borderStyle: 'solid',
     justifyContent: 'center',

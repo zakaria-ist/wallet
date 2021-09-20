@@ -17,8 +17,11 @@ import {
   View,
   Text,
   TextInput,
+  PixelRatio,
+  Dimensions,
   useColorScheme,
 } from 'react-native';
+import { RFValue } from "react-native-responsive-fontsize";
 import { WalletColors } from "../assets/Colors.js";
 
 const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
@@ -65,7 +68,7 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
               style={styles.text_input}
               onChangeText={setAmount}
               value={amount}
-              textAlign={'right'}
+              textAlign={'left'}
               onBlur={handleChange}
               placeholderTextColor={WalletColors.grey}
               keyboardType={'numeric'}
@@ -78,16 +81,21 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
 
 };
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+const isSmallScreen = (PixelRatio.getPixelSizeForLayoutSize(windowWidth) <330 
+&& PixelRatio.getPixelSizeForLayoutSize(windowHeight) <490)
+
 const styles = StyleSheet.create({
   view_rectangle: {
     flexDirection: "row", 
     alignItems: "center",
     borderRadius: 10,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
-    height: heightPercentageToDP("15%"),
+    height: heightPercentageToDP("20%"),
     width: widthPercentageToDP("90%"),
     marginBottom: heightPercentageToDP("3%"),
   },
@@ -102,27 +110,28 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text_input: {
-    width: widthPercentageToDP("60%"),
-    height: heightPercentageToDP("5%"),
+    width: widthPercentageToDP("50%"),
+    height: heightPercentageToDP("8%"),
     // marginTop: heightPercentageToDP("4%"),
     borderRadius: 20,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
     color: WalletColors.Wblue,
-    padding: 10
+    // padding: 10,
+    fontSize: RFValue(18),
   },
   view_input: {
     flexDirection: "row", 
     alignItems: "center",
-    padding:widthPercentageToDP("2%")
+    padding:widthPercentageToDP("1%")
   },
   view_lineNumber: {
     flexDirection: "column", 
     // flex: 1, 
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
     // padding:widthPercentageToDP("5%")
   }
 });

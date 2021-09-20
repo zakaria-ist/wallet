@@ -18,6 +18,8 @@ import {
   StyleSheet,
   View,
   Text,
+  Dimensions,
+  PixelRatio
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import { Button } from 'react-native-elements';
@@ -39,7 +41,7 @@ const CustomHeader = ({title}) => {
           <View style={{flex: 2, marginTop: heightPercentageToDP("-1%")}}>
             <Button 
               onPress={() => navigation.openDrawer()}
-              icon={<Feather name="menu" color={WalletColors.Wblue} size={RFValue(32)} />}
+              icon={<Feather name="menu" color={WalletColors.Wblue} size={isSmallRF || isMediumRF || isLargeRF} />}
               buttonStyle={{backgroundColor: "white"}}
             />
           </View>
@@ -52,11 +54,23 @@ const CustomHeader = ({title}) => {
 
 };
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+const isSmallRF = (PixelRatio.getPixelSizeForLayoutSize(windowWidth) <320 
+&& PixelRatio.getPixelSizeForLayoutSize(windowHeight) <480)
+? RFValue(12) : isMediumRF;
+const isMediumRF = (320 <= PixelRatio.getPixelSizeForLayoutSize(windowWidth) <999 
+&& 480 <= PixelRatio.getPixelSizeForLayoutSize(windowHeight) <1000)
+? RFValue(19) : isLargeRF;
+const isLargeRF = (PixelRatio.getPixelSizeForLayoutSize(windowWidth)>=999 
+&& PixelRatio.getPixelSizeForLayoutSize(windowHeight)>=1000)
+? RFValue(32) : isSmallRF;
+
 const styles = StyleSheet.create({
   view_root: {
     flexDirection: "row", 
     flex: 1,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     alignItems: 'center',
     height: heightPercentageToDP("5%"),

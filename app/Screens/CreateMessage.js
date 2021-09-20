@@ -286,7 +286,7 @@ const CreateMessage = () => {
                     <View
                       style={styles.modal_close}
                     >
-                      <Fontisto name="close" color={WalletColors.red} size={35} />
+                      <Fontisto name="close" color={WalletColors.red} size={heightPercentageToDP("5%")} />
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -343,8 +343,8 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("40%"),
     height: heightPercentageToDP("5%"),
     marginTop: heightPercentageToDP("2%"),
-    borderRadius: 20,
-    borderWidth: 2,
+    borderRadius: 6,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wgreen,
     borderStyle: 'solid',
     justifyContent: 'center',
@@ -361,7 +361,7 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP("-2%"),
     marginBottom: heightPercentageToDP("1%"),
     borderRadius: 20,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Worange,
     borderStyle: 'solid',
     justifyContent: 'center',
@@ -384,7 +384,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    borderWidth: 5,
+    borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 20,
     padding: widthPercentageToDP("4%"),
     shadowColor: "#000",
@@ -402,16 +402,16 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   modal_text_input: {
-    fontSize: RFValue(15),
+    fontSize: RFValue(19),
     color: "black",
-    alignSelf: "center",
+    alignItems: "flex-start",
     width: widthPercentageToDP("85%"),
     height: heightPercentageToDP("25%"),
     marginTop: heightPercentageToDP("2%"),
     borderColor: WalletColors.Wblue,
     borderRadius: 15,
     borderStyle: 'solid',
-    borderWidth: 2
+    borderWidth: StyleSheet.hairlineWidth,
   },
   confirm: {
     width: widthPercentageToDP("30%"),
@@ -421,7 +421,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 15,
     borderRadius: 20,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wgreen,
     borderStyle: 'solid',
     marginTop: 10
@@ -435,8 +435,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     color: WalletColors.black,
     textAlign: "center",
-    marginTop: heightPercentageToDP("-3%"),
-    width: widthPercentageToDP("10%"),
+    marginTop: heightPercentageToDP("-5%"),
+    width: widthPercentageToDP("13%"),
   }
 });
 
