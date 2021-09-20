@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">wallet</string>
+    <string name="default_notification_channel_id">message</string>
 </resources>
