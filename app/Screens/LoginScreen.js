@@ -66,11 +66,7 @@ const LoginScreen = ({navigation}) => {
     // (required) Called when a remote is received or opened, or local notification is opened
     onNotification: function (notification) {
       console.log("NOTIFICATION:", notification);
-      (Platform.OS === "ios" ||  notification.userInteraction) && processNoti(notification)
-      // process the notification
-      // alert.warning(notification.data.b)
-      // (required) Called when a remote is received or opened, or local notification is opened
-      // notification.finish(PushNotificationIOS.FetchResult.NoData);
+      notification.userInteraction && processNoti(notification)
     },
 
     // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
@@ -78,13 +74,6 @@ const LoginScreen = ({navigation}) => {
       // alert.warning(JSON.stringify(notification))
       processNoti(notification)
       // process the action
-    },
-
-    // IOS ONLY (optional): default: all - Permissions to register.
-    permissions: {
-      alert: true,
-      badge: true,
-      sound: true,
     },
 
     // Should the initial notification be popped automatically

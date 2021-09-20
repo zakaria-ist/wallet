@@ -42,11 +42,6 @@ const notificationHelper = {
         // });
         // } else {
         if (msgSent.indexOf(messageId) > -1) return
-        Platform.OS === 'ios' && Notifications.postLocalNotification({
-            title,
-            body,
-            ...data
-        })
         msgSent.push(messageId)
         // }
     }

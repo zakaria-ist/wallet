@@ -133,18 +133,27 @@ const CreateMessage = () => {
             const tokenDB = await getUserTokenPromise(agentName);
             console.log('agentToken', tokenDB._data.deviceId);
             const deviceId = tokenDB._data.deviceId;
-            const message = result.message;
-            const key = 'AIzaSyBfEqQjciaR7sjWwu2JO0tShm7OUhPbFfU';
+            const key = 'AAAAFusuHOI:APA91bFmsoK3xCuADeTunV7kCDrI5cBTd-wXN7WTZi-_fxT0NuZtVXkxcjzzZnD_uqeuHEqZ7ojrMK0SjCrNEkWtEewfPV8DTGtAxPeQBPQs_SCZNWlntcTm3bsYVYcuVI2dOY3f1WdI';
+            // message build
+            let sender = result.message.fromuser;
+            let body = "fromuser: " + result.message.fromuser + ", toagent: " + result.message.toagent + ", refno: " + result.message.refNo + ", mobile: " + result.message.mobile + ", purpose: " + result.message.purpose + ", payment: " + result.message.payment + ", amount: " + result.message.amount;
+            body += ", belongclient: " + result.message.belongclient + ", cct_status: " + result.message.cct_status + ", cct_author_id: " + result.message.cct_author_id + ", status: " + result.message.status;
+            const message = {
+              sender: sender,
+              body: body
+            };
+
             let params = JSON.stringify(
               {
                 deviceId: deviceId, 
-                message: message, 
+                message: JSON.stringify(message), 
                 key: key
               }
             );
+            // call the API to send push notification
             let pushUrl = request.getPushNotificationUrl();
-            const result = await request.post(pushUrl, params);
-            console.log('result', result);
+            const results = await request.post(pushUrl, params);
+            console.log('results', results);
           }
 
         }
