@@ -445,10 +445,9 @@ const styles = StyleSheet.create({
   },
   checkbox: {
     height: heightPercentageToDP("1%"),
-    width: widthPercentageToDP("2%"),
     transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
     alignSelf: "center",
-    marginRight: widthPercentageToDP("9%"),
+    marginRight: widthPercentageToDP("3%"),
   },
   label: {
     marginLeft: widthPercentageToDP("2%"),
