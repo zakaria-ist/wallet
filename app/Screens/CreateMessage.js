@@ -327,7 +327,7 @@ const CreateMessage = () => {
                     <View
                       style={styles.modal_close}
                     >
-                      <Fontisto name="close" color={WalletColors.red} size={35} />
+                      <Fontisto name="close" color={WalletColors.red} size={heightPercentageToDP("5%")} />
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -382,10 +382,10 @@ const styles = StyleSheet.create({
   },
   sumbit_button: {
     width: widthPercentageToDP("40%"),
-    height: heightPercentageToDP("5%"),
-    marginTop: heightPercentageToDP("2%"),
-    borderRadius: 20,
-    borderWidth: 2,
+    height: heightPercentageToDP("4%"),
+    marginTop: heightPercentageToDP("1%"),
+    borderRadius: 6,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wgreen,
     borderStyle: 'solid',
     justifyContent: 'center',
@@ -399,10 +399,10 @@ const styles = StyleSheet.create({
   insert_button: {
     width: widthPercentageToDP("30%"),
     height: heightPercentageToDP("4%"),
-    marginTop: heightPercentageToDP("-2%"),
+    marginTop: heightPercentageToDP("-3%"),
     marginBottom: heightPercentageToDP("1%"),
-    borderRadius: 20,
-    borderWidth: 2,
+    borderRadius: 8,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Worange,
     borderStyle: 'solid',
     justifyContent: 'center',
@@ -412,7 +412,7 @@ const styles = StyleSheet.create({
   },
   insert_button_text: {
     color: WalletColors.white,
-    fontSize: RFValue(16)
+    fontSize: RFValue(14)
   },
   centeredView: {
     flex: 1,
@@ -425,7 +425,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    borderWidth: 5,
+    borderWidth: StyleSheet.hairlineWidth,
     borderRadius: 20,
     padding: widthPercentageToDP("4%"),
     shadowColor: "#000",
@@ -445,14 +445,14 @@ const styles = StyleSheet.create({
   modal_text_input: {
     fontSize: RFValue(15),
     color: "black",
-    alignSelf: "center",
+    alignItems: "flex-start",
     width: widthPercentageToDP("85%"),
     height: heightPercentageToDP("25%"),
     marginTop: heightPercentageToDP("2%"),
     borderColor: WalletColors.Wblue,
     borderRadius: 15,
     borderStyle: 'solid',
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     textAlignVertical: 'top'
   },
   confirm: {
@@ -463,7 +463,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     padding: 15,
     borderRadius: 20,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wgreen,
     borderStyle: 'solid',
     marginTop: 10
@@ -477,8 +477,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     color: WalletColors.black,
     textAlign: "center",
-    marginTop: heightPercentageToDP("-3%"),
-    width: widthPercentageToDP("10%"),
+    marginTop: heightPercentageToDP("-2%"),
+    marginRight: heightPercentageToDP("2%"),
   }
 });
 

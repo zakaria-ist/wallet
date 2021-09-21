@@ -68,7 +68,7 @@ const SummaryTableRow = ({header, rowData}) => {
             </View>
             <View style={styles.view_sub_column}>
               <Text style={styles.cell_text}>:(D)</Text>
-              <Text style={styles.cell_text}> :(W)</Text>
+              <Text style={styles.cell_text}>:(W)</Text>
             </View>
             <View style={styles.view_sub_column}>
               <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.count)}</Text>
@@ -132,7 +132,7 @@ const styles = StyleSheet.create({
   view_rectangle: {
     flexDirection: "row", 
     alignItems: "center",
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.black,
     borderStyle: 'solid',
     justifyContent: 'center',
@@ -143,7 +143,7 @@ const styles = StyleSheet.create({
   view_left: {
     flex: 3,
     justifyContent: "space-between",
-    borderRightWidth: 1,
+    borderRightWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.black,
     borderStyle: 'solid',
   },
