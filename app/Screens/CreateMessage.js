@@ -435,8 +435,8 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     color: WalletColors.black,
     textAlign: "center",
-    marginTop: heightPercentageToDP("-5%"),
-    width: widthPercentageToDP("13%"),
+    marginTop: heightPercentageToDP("-2%"),
+    marginRight: heightPercentageToDP("2%"),
   }
 });
 
