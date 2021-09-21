@@ -390,9 +390,25 @@ const Withdrawal = () => {
                 <TableRow header={false} rowData={tableRowTwo} />
                 <TableRow header={false} rowData={tableRowThree} />
               </View>
-              <View styles={styles.total}>
-                <Text style={styles.total_text}>Pending   :  TK    {pendingTotal}</Text>
-                <Text style={styles.total_text}>Accepted :  TK    {acceptedTotal}</Text>
+              <View style={styles.total}>
+                <View style={{flexDirection:"row"}}>
+                  <View style={{flexDirection: "column"}}>
+                    <Text style={styles.total_text}>Pending</Text>
+                    <Text style={styles.total_text}>Accepted</Text>
+                  </View>  
+                  <View style={{flexDirection: "column"}}>
+                  <View style={{flexDirection: "row"}}>
+                    <Text style={styles.total_text}>:</Text>
+                    <Text style={styles.total_text}>TK</Text>
+                    <Text style={styles.total_text}>{pendingTotal}</Text>
+                  </View> 
+                  <View style={{flexDirection: "row"}}>
+                    <Text style={styles.total_text}>:</Text>
+                    <Text style={styles.total_text}>TK</Text>
+                    <Text style={styles.total_text}>{acceptedTotal}</Text>
+                  </View>
+                  </View>    
+                </View>
               </View>
             </>
           }
@@ -473,7 +489,8 @@ const styles = StyleSheet.create({
   },
   total_text: {
     fontSize: RFValue(15),
-    fontWeight: "bold"
+    fontWeight: "bold",
+    marginLeft: heightPercentageToDP("1%"),
   }
 });
 
