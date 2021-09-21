@@ -32,6 +32,7 @@ import { WalletColors } from "../assets/Colors.js";
 import CustomAlert from "../lib/alert";
 import Request from "../lib/request";
 import { RFValue } from "react-native-responsive-fontsize";
+import { useStateIfMounted } from 'use-state-if-mounted';
 
 const request = new Request();
 const alert = new CustomAlert();
@@ -105,8 +106,8 @@ const LoginScreen = ({navigation}) => {
         }
       })
   }
-  const [placeholder,setPlaceholder] = useState("password");
-  const [placeholder1,setPlaceholder1] = useState("username");
+  const [passwordplaceholder,setpasswordPlaceholder] = useStateIfMounted("password");
+  const [usernameplaceholder,setusernamePlaceholder] = useStateIfMounted("username");
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -119,12 +120,11 @@ const LoginScreen = ({navigation}) => {
           </View>
           <View style={styles.view_input}>
               <TextInput 
-                placeholder={placeholder1}
+                placeholder={usernameplaceholder}
                 style={styles.text_input}
                 onChangeText={setUserName}
                 value={userName}
-                setPlaceholder={setPlaceholder1}
-                multiline={true}
+                setPlaceholder={setusernamePlaceholder}
                 textAlign={'center'}
                 placeholderTextColor={WalletColors.grey}
               />
@@ -133,8 +133,8 @@ const LoginScreen = ({navigation}) => {
                 onChangeText={setPassword}
                 value={password}
                 textAlign={'center'}
-                placeholder={placeholder}
-                setPlaceholder={setPlaceholder}
+                placeholder={passwordplaceholder}
+                setPlaceholder={setpasswordPlaceholder}
                 //placeholder="password"
                 placeholderTextColor={WalletColors.grey}
                 secureTextEntry={true}
