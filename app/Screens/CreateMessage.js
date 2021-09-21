@@ -341,8 +341,8 @@ const styles = StyleSheet.create({
   },
   sumbit_button: {
     width: widthPercentageToDP("40%"),
-    height: heightPercentageToDP("5%"),
-    marginTop: heightPercentageToDP("2%"),
+    height: heightPercentageToDP("4%"),
+    marginTop: heightPercentageToDP("1%"),
     borderRadius: 6,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wgreen,
@@ -358,9 +358,9 @@ const styles = StyleSheet.create({
   insert_button: {
     width: widthPercentageToDP("30%"),
     height: heightPercentageToDP("4%"),
-    marginTop: heightPercentageToDP("-2%"),
+    marginTop: heightPercentageToDP("-3%"),
     marginBottom: heightPercentageToDP("1%"),
-    borderRadius: 20,
+    borderRadius: 8,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Worange,
     borderStyle: 'solid',
@@ -371,7 +371,7 @@ const styles = StyleSheet.create({
   },
   insert_button_text: {
     color: WalletColors.white,
-    fontSize: RFValue(16)
+    fontSize: RFValue(14)
   },
   centeredView: {
     flex: 1,
@@ -402,7 +402,7 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   modal_text_input: {
-    fontSize: RFValue(19),
+    fontSize: RFValue(15),
     color: "black",
     alignItems: "flex-start",
     width: widthPercentageToDP("85%"),

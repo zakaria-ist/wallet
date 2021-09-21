@@ -51,24 +51,24 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
         </View>
         <View style={styles.view_right}>
           <View style={styles.view_input}>
-            {transType == "Deposit" ? (<Text>Ref. Code : </Text>) : (<Text>Mobile No. : </Text>)}
+            {transType == "Deposit" ? (<Text>Ref. Code : </Text>) : (<Text>Mobile No. :  </Text>)}
             <TextInput 
               style={styles.text_input}
               onChangeText={setRefCode}
               value={refCode}
-              textAlign={'left'}
+              //textAlign={'center'}
               onBlur={handleChange}
               placeholderTextColor={WalletColors.grey}
               keyboardType={'numeric'}
             />
           </View>
           <View style={styles.view_input}>
-            <Text>Amount    : </Text>
+            <Text>Amount     :  </Text>
             <TextInput 
               style={styles.text_input}
               onChangeText={setAmount}
               value={amount}
-              textAlign={'left'}
+              //textAlignVertical={'center'}
               onBlur={handleChange}
               placeholderTextColor={WalletColors.grey}
               keyboardType={'numeric'}
@@ -95,9 +95,9 @@ const styles = StyleSheet.create({
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
-    height: heightPercentageToDP("20%"),
+    height: heightPercentageToDP("12%"),
     width: widthPercentageToDP("90%"),
-    marginBottom: heightPercentageToDP("3%"),
+    marginBottom: heightPercentageToDP("1%"),
   },
   view_left: {
     flex: 1,
@@ -111,19 +111,22 @@ const styles = StyleSheet.create({
   },
   text_input: {
     width: widthPercentageToDP("50%"),
-    height: heightPercentageToDP("8%"),
+    height: heightPercentageToDP("4.5%"),
     // marginTop: heightPercentageToDP("4%"),
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    justifyContent: 'center',
+    justifyContent: 'center', 
+    alignItems: 'center',
+    marginLeft: 3,
+    // textAlignVertical: 'center',
     color: WalletColors.Wblue,
-    // padding: 10,
-    fontSize: RFValue(18),
+    fontSize: RFValue(11),
   },
   view_input: {
     flexDirection: "row", 
+    justifyContent: "center",
     alignItems: "center",
     padding:widthPercentageToDP("1%")
   },
