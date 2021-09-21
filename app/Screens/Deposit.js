@@ -109,22 +109,25 @@ const Deposit = () => {
     rowId: 1,
     time: "10:10 AM",
     wallet: "Alipay",
-    amount: 11320,
-    refNo: 1212121212
+    amount: "11320",
+    refNo: 1212121212,
+    sent: false
   };
   const agentTableRowTwo = {
     rowId: 2,
     time: "10:10 AM",
     wallet: "Alipay",
-    amount: 12320,
-    refNo: 1313131313
+    amount: "12320",
+    refNo: 1313131313,
+    sent: false
   };
   const agentTableRowThree = {
     rowId: 3,
     time: "10:10 AM",
     wallet: "Alipay",
-    amount: 13320,
-    refNo: 1414141414
+    amount: "13320",
+    refNo: 1414141414,
+    sent: false
   };
 
   useEffect(() => {

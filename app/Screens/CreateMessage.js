@@ -452,7 +452,8 @@ const styles = StyleSheet.create({
     borderColor: WalletColors.Wblue,
     borderRadius: 15,
     borderStyle: 'solid',
-    borderWidth: 2
+    borderWidth: 2,
+    textAlignVertical: 'top'
   },
   confirm: {
     width: widthPercentageToDP("30%"),

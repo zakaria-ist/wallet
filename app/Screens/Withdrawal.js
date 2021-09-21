@@ -98,21 +98,27 @@ const Withdrawal = () => {
     time: "10:10 AM",
     wallet: "Alipay",
     amount: 11320,
-    mobile: 1212121212
+    mobile: 1212121212,
+    pinNo: "",
+    sent: false
   };
   const agentTableRowTwo = {
     rowId: 2,
     time: "10:10 AM",
     wallet: "Alipay",
     amount: 12320,
-    mobile: 1313131313
+    mobile: 1313131313,
+    pinNo: "",
+    sent: false
   };
   const agentTableRowThree = {
     rowId: 3,
     time: "10:10 AM",
     wallet: "Alipay",
     amount: 13320,
-    mobile: 1414141414
+    mobile: 1414141414,
+    pinNo: "",
+    sent: false
   };
 
   useEffect(() => {
