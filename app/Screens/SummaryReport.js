@@ -163,19 +163,19 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",
-    paddingBottom: heightPercentageToDP("5%"),
+    paddingBottom: heightPercentageToDP("1%"),
   },
   view_rectangle: {
     flexDirection: "column", 
     alignItems: "center",
     borderRadius: 20,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
-    marginTop: heightPercentageToDP("3%"),
+    marginTop: heightPercentageToDP("1%"),
     width: widthPercentageToDP("95%"),
-    marginBottom: heightPercentageToDP("3%"),
+    marginBottom: heightPercentageToDP("1%"),
   },
 });
 

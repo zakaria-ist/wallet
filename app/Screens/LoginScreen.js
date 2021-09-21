@@ -40,10 +40,12 @@ import PushNotification from "react-native-push-notification";
 import messaging from "@react-native-firebase/messaging";
 import firebase from "@react-native-firebase/app";
 import firestore from '@react-native-firebase/firestore';
+import { useStateIfMounted } from 'use-state-if-mounted';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
+
 
 const request = new Request();
 const alert = new CustomAlert();
@@ -227,7 +229,8 @@ const LoginScreen = ({navigation}) => {
         }
       })
   }
-
+  const [passwordplaceholder,setpasswordPlaceholder] = useStateIfMounted("password");
+  const [usernameplaceholder,setusernamePlaceholder] = useStateIfMounted("username");
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -240,11 +243,12 @@ const LoginScreen = ({navigation}) => {
           </View>
           <View style={styles.view_input}>
               <TextInput 
+                placeholder={usernameplaceholder}
                 style={styles.text_input}
                 onChangeText={setUserName}
                 value={userName}
+                setPlaceholder={setusernamePlaceholder}
                 textAlign={'center'}
-                placeholder="Username"
                 placeholderTextColor={WalletColors.grey}
               />
               <TextInput 
@@ -252,8 +256,11 @@ const LoginScreen = ({navigation}) => {
                 onChangeText={setPassword}
                 value={password}
                 textAlign={'center'}
-                placeholder="Password"
+                placeholder={passwordplaceholder}
+                setPlaceholder={setpasswordPlaceholder}
+                //placeholder="password"
                 placeholderTextColor={WalletColors.grey}
+                secureTextEntry={true}
               />
               <TouchableOpacity
                 onPress={handleLogin}>
@@ -274,8 +281,8 @@ const windowHeight = Dimensions.get('window').height;
 const isSmallScreen = (PixelRatio.getPixelSizeForLayoutSize(windowWidth) <330 
 && PixelRatio.getPixelSizeForLayoutSize(windowHeight) <490)
 ? require('../assets/images/wallet_logo_64.png') : isMediumScreen;
-const isMediumScreen = (330 < PixelRatio.getPixelSizeForLayoutSize(windowWidth) <999 
-&& 490 < PixelRatio.getPixelSizeForLayoutSize(windowHeight) <1000)
+const isMediumScreen = (330 <= PixelRatio.getPixelSizeForLayoutSize(windowWidth) <999 
+&& 490 <= PixelRatio.getPixelSizeForLayoutSize(windowHeight) <1000)
 ? require('../assets/images/wallet_logo_128.png') : isLargeScreen;
 const isLargeScreen = (PixelRatio.getPixelSizeForLayoutSize(windowWidth)>=999 
 && PixelRatio.getPixelSizeForLayoutSize(windowHeight)>=1000)
@@ -287,20 +294,21 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("6.5%"),
     marginTop: heightPercentageToDP("2.5%"),
     borderRadius: 20,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
     color: WalletColors.black,
     flex: 1, 
-    fontSize: RFValue(14)
+    fontSize: RFValue(14),
+    textAlignVertical: 'top'
   },
   sign_button: {
     width: widthPercentageToDP("35%"),
     height: heightPercentageToDP("8%"),
     marginTop: heightPercentageToDP("8%"),
     borderRadius: 30,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
@@ -325,7 +333,7 @@ const styles = StyleSheet.create({
     height: windowHeight / 2 - heightPercentageToDP("30%"),
     flex: 1,
     borderRadius: 100,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     marginTop: heightPercentageToDP("8%"),

@@ -53,16 +53,16 @@ const TableRow = ({header, rowData}) => {
       } else {
         if (cellData[0] == "Accepted") {
           testCell.push(
-            <Text style={{color: WalletColors.Wgreen}}>{cellData[0]}</Text>
+            <Text style={{fontSize: RFValue(14), color: WalletColors.Wgreen}}>{cellData[0]}</Text>
           )
         }
         else if (cellData[0] == "Rejected") {
           testCell.push(
-            <Text style={{color: WalletColors.Wred}}>{cellData[0]}</Text>
+            <Text style={{fontSize: RFValue(14), color: WalletColors.Wred}}>{cellData[0]}</Text>
           )
         } else {
           testCell.push(
-            <Text style={{color: WalletColors.black}}>{cellData[0]}</Text>
+            <Text style={{fontSize: RFValue(14), color: WalletColors.black}}>{cellData[0]}</Text>
           )
         }
       }
@@ -99,7 +99,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", 
     alignItems: "center",
     // borderRadius: 10,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.black,
     borderStyle: 'solid',
     justifyContent: 'center',
@@ -128,12 +128,13 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("5%"),
     // marginTop: heightPercentageToDP("4%"),
     borderRadius: 20,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
     color: WalletColors.Wblue,
-    padding: 10
+    padding: 10,
+    fontSize: RFValue(10),
   },
   view_input: {
     flexDirection: "row", 
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
     // padding:widthPercentageToDP("5%")
   },
   cell_text: {
-    fontSize: RFValue(14),
+    fontSize: RFValue(13),
   },
   cell_text_header: {
     fontSize: RFValue(14),

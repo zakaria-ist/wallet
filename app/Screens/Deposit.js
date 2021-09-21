@@ -16,6 +16,7 @@ import {
   TextInput,
   useColorScheme,
   View,
+  Dimensions,
   InteractionManager,
   TouchableOpacity,
   KeyboardAvoidingView
@@ -37,6 +38,7 @@ import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
+import { height, marginBottom } from 'styled-system';
 
 const Deposit = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -240,6 +242,7 @@ const Deposit = () => {
           {authType == "client" ? 
             <View style={styles.picker}>
               <DropDownPicker
+                style={{height: heightPercentageToDP("5%")}}
                 onChangeValue={(value) => {
                   setPickerUser(value); 
                   renderTablesData();
@@ -259,6 +262,7 @@ const Deposit = () => {
               <View style={{flexDirection: "row"}}>
                 <View style={styles.picker_admin}>
                   <DropDownPicker
+                    style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
                       setPickerGroup(value); 
                       renderTablesData();
@@ -275,6 +279,7 @@ const Deposit = () => {
                 </View>
                 <View style={styles.picker_admin}>
                   <DropDownPicker
+                    style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
                       setWalletPickerType(value); 
                       renderTablesData();
@@ -298,7 +303,7 @@ const Deposit = () => {
             [transType == 'Yesterday' ?
               <View style={styles.status_row}>
                 <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>Status:   </Text>
+                  <Text style={styles.label}>Status:  </Text>
                   <Text style={styles.label}>Accepted</Text>
                   <CheckBox
                     value={accepted}
@@ -433,9 +438,25 @@ const Deposit = () => {
                 <TableRow header={false} rowData={tableRowTwo} />
                 <TableRow header={false} rowData={tableRowThree} />
               </View>
-              <View styles={styles.total}>
-                <Text style={styles.total_text}>Pending  : TK {pendingTotal}</Text>
-                <Text style={styles.total_text}>Accepted : TK {acceptedTotal}</Text>
+              <View style={styles.total}>
+                <View style={{flexDirection:"row"}}>
+                  <View style={{flexDirection: "column"}}>
+                    <Text style={styles.total_text}>Pending</Text>
+                    <Text style={styles.total_text}>Accepted</Text>
+                  </View>  
+                  <View style={{flexDirection: "column"}}>
+                  <View style={{flexDirection: "row"}}>
+                    <Text style={styles.total_text}>:</Text>
+                    <Text style={styles.total_text}>TK</Text>
+                    <Text style={styles.total_text}>{pendingTotal}</Text>
+                  </View> 
+                  <View style={{flexDirection: "row"}}>
+                    <Text style={styles.total_text}>:</Text>
+                    <Text style={styles.total_text}>TK</Text>
+                    <Text style={styles.total_text}>{acceptedTotal}</Text>
+                  </View>
+                  </View>    
+                </View>
               </View>
             </>
           }
@@ -445,32 +466,34 @@ const Deposit = () => {
   );
 };
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   body: {
     backgroundColor: Colors.white,
     flexDirection: 'column',
     flex: 1,
     alignItems: "center",
-    paddingBottom: heightPercentageToDP("5%"),
+    paddingBottom: heightPercentageToDP("1%"),
   },
   picker: {
     marginTop: heightPercentageToDP("2%"),
-    height: heightPercentageToDP("5%"),
-    width: widthPercentageToDP("50%"),
+    width:  windowWidth/2 - widthPercentageToDP("10%"),
     flexDirection: "row",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   picker_admin: {
     marginTop: heightPercentageToDP("2%"),
-    height: heightPercentageToDP("5%"),
-    width: widthPercentageToDP("40%"),
+    height: 5,
+    width:  windowWidth/2 - widthPercentageToDP("10%"),
     flexDirection: "row",
     alignItems: "center",
     marginRight: 10, 
-    marginLeft: 10
+    marginLeft: 10,
   },
   status_row: {
     marginTop: heightPercentageToDP("2%"),
@@ -478,43 +501,45 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   checkboxContainer: {
     flexDirection: "row",
     marginTop: heightPercentageToDP("1%"),
   },
   checkbox: {
+    height: heightPercentageToDP("1%"),
+    transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
     alignSelf: "center",
     marginRight: widthPercentageToDP("3%"),
   },
-   label: {
-    marginTop: widthPercentageToDP("1%"),
+  label: {
     marginLeft: widthPercentageToDP("2%"),
-    paddingRight: widthPercentageToDP("0%"),
     fontSize: RFValue(14)
   },
   view_rectangle: {
     flexDirection: "column", 
     alignItems: "center",
     borderRadius: 20,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
-    marginTop: heightPercentageToDP("3%"),
+    marginTop: heightPercentageToDP("2%"),
     width: widthPercentageToDP("90%"),
-    marginBottom: heightPercentageToDP("3%"),
+    marginBottom: heightPercentageToDP("1%"),
   },
   total: {
     flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
+    textAlign: "left",
+    // alignItems: "center",
+    // justifyContent: "center",
     marginTop: heightPercentageToDP("1%"),
   },
   total_text: {
-    fontSize: RFValue(20),
-    fontWeight: "bold"
+    fontSize: RFValue(15),
+    fontWeight: "bold",
+    marginLeft: heightPercentageToDP("1%"),
   }
 });
 

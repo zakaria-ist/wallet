@@ -206,7 +206,7 @@ const styles = StyleSheet.create({
     flexDirection: "column", 
     alignItems: "center",
     borderRadius: 20,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',

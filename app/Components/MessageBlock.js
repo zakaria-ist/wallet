@@ -17,8 +17,11 @@ import {
   View,
   Text,
   TextInput,
+  PixelRatio,
+  Dimensions,
   useColorScheme,
 } from 'react-native';
+import { RFValue } from "react-native-responsive-fontsize";
 import { WalletColors } from "../assets/Colors.js";
 
 const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
@@ -48,24 +51,24 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
         </View>
         <View style={styles.view_right}>
           <View style={styles.view_input}>
-            {transType == "Deposit" ? (<Text>Ref. Code : </Text>) : (<Text>Mobile No. : </Text>)}
+            {transType == "Deposit" ? (<Text>Ref. Code : </Text>) : (<Text>Mobile No. :  </Text>)}
             <TextInput 
               style={styles.text_input}
               onChangeText={setRefCode}
               value={refCode}
-              textAlign={'left'}
+              //textAlign={'center'}
               onBlur={handleChange}
               placeholderTextColor={WalletColors.grey}
               keyboardType={'numeric'}
             />
           </View>
           <View style={styles.view_input}>
-            <Text>Amount    : </Text>
+            <Text>Amount     :  </Text>
             <TextInput 
               style={styles.text_input}
               onChangeText={setAmount}
               value={amount}
-              textAlign={'right'}
+              //textAlignVertical={'center'}
               onBlur={handleChange}
               placeholderTextColor={WalletColors.grey}
               keyboardType={'numeric'}
@@ -78,18 +81,23 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
 
 };
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+const isSmallScreen = (PixelRatio.getPixelSizeForLayoutSize(windowWidth) <330 
+&& PixelRatio.getPixelSizeForLayoutSize(windowHeight) <490)
+
 const styles = StyleSheet.create({
   view_rectangle: {
     flexDirection: "row", 
     alignItems: "center",
     borderRadius: 10,
-    borderWidth: 2,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
-    height: heightPercentageToDP("15%"),
+    height: heightPercentageToDP("12%"),
     width: widthPercentageToDP("90%"),
-    marginBottom: heightPercentageToDP("3%"),
+    marginBottom: heightPercentageToDP("1%"),
   },
   view_left: {
     flex: 1,
@@ -102,27 +110,31 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text_input: {
-    width: widthPercentageToDP("60%"),
-    height: heightPercentageToDP("5%"),
+    width: widthPercentageToDP("50%"),
+    height: heightPercentageToDP("4.5%"),
     // marginTop: heightPercentageToDP("4%"),
     borderRadius: 20,
-    borderWidth: 1,
+    borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    justifyContent: 'center',
+    justifyContent: 'center', 
+    alignItems: 'center',
+    marginLeft: 3,
+    // textAlignVertical: 'center',
     color: WalletColors.Wblue,
-    padding: 10
+    fontSize: RFValue(11),
   },
   view_input: {
     flexDirection: "row", 
+    justifyContent: "center",
     alignItems: "center",
-    padding:widthPercentageToDP("2%")
+    padding:widthPercentageToDP("1%")
   },
   view_lineNumber: {
     flexDirection: "column", 
     // flex: 1, 
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
     // padding:widthPercentageToDP("5%")
   }
 });
