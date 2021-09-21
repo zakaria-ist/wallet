@@ -110,9 +110,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text_input: {
-    width: widthPercentageToDP("50%"),
-    height: heightPercentageToDP("4.5%"),
+    width: widthPercentageToDP("40%"),
+    height: heightPercentageToDP("4%"),
     // marginTop: heightPercentageToDP("4%"),
+    padding: 4,
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,

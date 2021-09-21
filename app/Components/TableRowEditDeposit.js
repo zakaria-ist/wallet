@@ -67,24 +67,25 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
     setCellOne(leftCell);
 
     midCell.push(
-      <Text style={styles.cell_text}>Ref. No.  : {cellData.refNo}</Text>
+      <Text style={styles.cell_text}>Ref. No.   : {cellData.refNo}</Text>
     )
     midCell.push(
       <View style={styles.view_input}>
-        <Text>Amount     : </Text>
+        <Text style={{fontSize: RFValue(13)}}>Amount  : </Text>
         <TextInput 
           style={styles.text_input}
           // onChangeText={setPinNo}
           onChangeText={text => {console.log('text', text); setAmount(format.separator(text))}}
           value={amount}
-          textAlign={'right'}
+          textAlign={'left'}
           placeholderTextColor={WalletColors.grey}
           keyboardType={'numeric'}
         />
       </View>
     )
     midCell.push(
-      <Text style={styles.cell_text}>Wallet      : {cellData.wallet}</Text>
+        <Text style={styles.cell_text}>Wallet      : {cellData.wallet}</Text>
+
     )
     
     setCellTwo(midCell);
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     flexDirection: "row", 
     alignItems: "center",
     // borderRadius: 10,
-    borderBottomWidth: 1,
+    borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.black,
     borderStyle: 'solid',
     justifyContent: 'center',
@@ -166,28 +167,30 @@ const styles = StyleSheet.create({
     marginBottom: heightPercentageToDP("2%"),
   },
   view_left: {
-    flex: 1,
-    alignItems: "center",
+    flex: 0.9,
+    alignItems: "flex-start",
     justifyContent: "center",
   },
   view_center: {
     flex: 2,
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
   },
   view_right: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "flex-end",
     justifyContent: "center",
   },
   text_input: {
-    width: widthPercentageToDP("18%"),
+    width: heightPercentageToDP("10%"),
     height: heightPercentageToDP("4%"),
-    borderRadius: 5,
+    borderRadius: 6,
+    padding: 3,
+    textAlign: "left",
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    justifyContent: 'center',
+    //justifyContent: "flex-start",
     color: WalletColors.Wblue,
     fontSize: RFValue(10),
   },
@@ -202,13 +205,16 @@ const styles = StyleSheet.create({
   },
   view_lineNumber_center: {
     flexDirection: "column",
-    justifyContent: "flex-start",
+    justifyContent: "center",
     paddingBottom: heightPercentageToDP("1%"),
   },
   cell_text: {
+    alignSelf: "flex-start",
+    textAlign: "left",
     fontSize: RFValue(13),
   },
   cell_text_header: {
+    alignSelf: "flex-start",
     fontSize: RFValue(14),
     fontWeight: "bold"
   },
@@ -220,7 +226,7 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("20%"),
     height: heightPercentageToDP("4%"),
     marginTop: heightPercentageToDP("-1%"),
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wgreen,
     borderStyle: 'solid',

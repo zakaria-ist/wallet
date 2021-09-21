@@ -18,12 +18,15 @@ import {
   View,
   Text,
   TextInput,
+  Dimensions,
+  PixelRatio,
   useColorScheme,
   TouchableOpacity
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
 import Format from "../lib/format";
 import { RFValue } from 'react-native-responsive-fontsize';
+
 const format = new Format();
 
 const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
@@ -32,8 +35,7 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
   const [cellThree, setCellThree] = useStateIfMounted([]);
- 
-
+  
   useEffect(() => {
     if (header) {
       setCellOne(handleHeaderCell(rowData[0]));
@@ -72,7 +74,7 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
 
     midCell.push(
       <View style={styles.view_input}>
-        <Text>Pin No.         : </Text>
+        <Text style={{fontSize: RFValue(13)}}>Pin No.      :  </Text>
         <TextInput 
           style={styles.text_input}
           onChangeText={setPinNo}
@@ -86,13 +88,13 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
       </View>
     )
     midCell.push(
-      <Text style={styles.cell_text}>Amount      : {format.separator(cellData.amount)}</Text>
+      <Text style={styles.cell_text}>Amount      :  {format.separator(cellData.amount)}</Text>
     )
     midCell.push(
-      <Text style={styles.cell_text}>Wallet         : {cellData.wallet}</Text>
+      <Text style={styles.cell_text}>Wallet         :  {cellData.wallet}</Text>
     )
     midCell.push(
-      <Text style={styles.cell_text}>Mobile No. : {cellData.mobile}</Text>
+      <Text style={styles.cell_text}>Mobile No. :  {cellData.mobile}</Text>
     )
     setCellTwo(midCell);
 
@@ -139,48 +141,54 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
 
 };
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   view_rectangle: {
     flexDirection: "row", 
     alignItems: "center",
-    // borderRadius: 10,
+     borderRadius: 5,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.black,
     borderStyle: 'solid',
-    justifyContent: 'center',
+    justifyContent: "flex-start",
     alignContent: "space-between",
     // height: heightPercentageToDP("15%"),
     width: widthPercentageToDP("85%"),
     marginBottom: heightPercentageToDP("2%"),
+    //height: heightPercentageToDP("63%"),
   },
   view_left: {
-    flex: 1,
-    alignItems: "center",
+    flex: 0.9,
+    alignItems: "flex-start",
     justifyContent: "center",
   },
   view_center: {
     flex: 2,
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
   },
   view_right: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
   },
   text_input: {
-    width: widthPercentageToDP("18%"),
+    width: heightPercentageToDP("10%"),
     height: heightPercentageToDP("4%"),
-    // marginTop: heightPercentageToDP("4%"),
-    borderRadius: 5,
+    borderRadius: 6,
+    padding: 3,
+    textAlign: "left",
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    justifyContent: 'center',
+    //justifyContent: "flex-start",
     color: WalletColors.Wblue,
     fontSize: RFValue(10),
   },
   view_input: {
+   // alignItems: "flex-start",
     flexDirection: "row", 
     alignItems: "center",
     // padding:widthPercentageToDP("2%")
@@ -196,9 +204,12 @@ const styles = StyleSheet.create({
     paddingBottom: heightPercentageToDP("1%"),
   },
   cell_text: {
+    textAlign: "left",
+    alignSelf: "flex-start",
     fontSize: RFValue(13),
   },
   cell_text_header: {
+    alignSelf: "flex-start",
     fontSize: RFValue(14),
     fontWeight: "bold"
   },

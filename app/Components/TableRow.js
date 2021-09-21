@@ -97,41 +97,41 @@ const TableRow = ({header, rowData}) => {
 const styles = StyleSheet.create({
   view_rectangle: {
     flexDirection: "row", 
-    alignItems: "center",
+    // alignItems: "center",
     // borderRadius: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.black,
     borderStyle: 'solid',
-    justifyContent: 'center',
-    alignContent: "space-between",
+    // justifyContent: 'center',
+    // alignContent: "space-between",
     // height: heightPercentageToDP("15%"),
     width: widthPercentageToDP("85%"),
-    marginBottom: heightPercentageToDP("2%"),
+    marginBottom: heightPercentageToDP("1%"),
   },
   view_left: {
-    flex: 1,
-    alignItems: "center",
+    flex: 0.7,
+    alignItems: "flex-start",
     justifyContent: "center",
   },
   view_center: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
   },
   view_right: {
     flex: 1,
-    alignItems: "center",
+    alignItems: "flex-end",
     justifyContent: "center",
   },
   text_input: {
     width: widthPercentageToDP("60%"),
     height: heightPercentageToDP("5%"),
     // marginTop: heightPercentageToDP("4%"),
-    borderRadius: 20,
+    borderRadius: 10,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    justifyContent: 'center',
+    // justifyContent: 'center',
     color: WalletColors.Wblue,
     padding: 10,
     fontSize: RFValue(10),
@@ -149,11 +149,14 @@ const styles = StyleSheet.create({
     // padding:widthPercentageToDP("5%")
   },
   cell_text: {
+    padding: 1,
+    alignSelf: "flex-start",
     fontSize: RFValue(13),
   },
   cell_text_header: {
+    alignSelf: "flex-start",
     fontSize: RFValue(14),
-    fontWeight: "bold"
+    fontWeight: "bold",
   }
 });
 
