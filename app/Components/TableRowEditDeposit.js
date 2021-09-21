@@ -71,7 +71,7 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
     )
     midCell.push(
       <View style={styles.view_input}>
-        <Text style={{fontSize: RFValue(13)}}>Amount  : </Text>
+        <Text style={{fontSize: RFValue(13)}}>Amount   : </Text>
         <TextInput 
           style={styles.text_input}
           // onChangeText={setPinNo}
@@ -164,7 +164,7 @@ const styles = StyleSheet.create({
     alignContent: "space-between",
     // height: heightPercentageToDP("15%"),
     width: widthPercentageToDP("85%"),
-    marginBottom: heightPercentageToDP("2%"),
+    marginBottom: heightPercentageToDP("1%"),
   },
   view_left: {
     flex: 0.9,

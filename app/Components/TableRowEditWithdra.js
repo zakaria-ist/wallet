@@ -74,7 +74,7 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
 
     midCell.push(
       <View style={styles.view_input}>
-        <Text style={{fontSize: RFValue(13)}}>Pin No.      :  </Text>
+        <Text style={{fontSize: RFValue(13)}}>Pin No.       :  </Text>
         <TextInput 
           style={styles.text_input}
           onChangeText={setPinNo}
@@ -156,7 +156,7 @@ const styles = StyleSheet.create({
     alignContent: "space-between",
     // height: heightPercentageToDP("15%"),
     width: widthPercentageToDP("85%"),
-    marginBottom: heightPercentageToDP("2%"),
+    marginBottom: heightPercentageToDP("1%"),
     //height: heightPercentageToDP("63%"),
   },
   view_left: {
@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   view_right: {
     flex: 1,
-    alignItems: "flex-start",
+    alignItems: "flex-end",
     justifyContent: "center",
   },
   text_input: {

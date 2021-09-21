@@ -506,14 +506,16 @@ const styles = StyleSheet.create({
   },
   checkboxContainer: {
     flexDirection: "row",
-    marginTop: heightPercentageToDP("3%"),
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: heightPercentageToDP("1%"),
   },
   checkbox: {
    // height: heightPercentageToDP("1%"),
     transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
     //alignSelf: "center",
    // marginBottom: heightPercentageToDP("4%")
-    marginTop: heightPercentageToDP("-1%"),
+    //marginTop: heightPercentageToDP("-1%"),
     marginLeft: widthPercentageToDP("-2%"),
     marginRight: widthPercentageToDP("2%"),
   },
@@ -533,7 +535,7 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP("1%"),
     width: widthPercentageToDP("90%"),
    // height: windowHeight - heightPercentageToDP("47%"),
-    paddingBottom: heightPercentageToDP("1%"),
+    padding: heightPercentageToDP("1%"),
     //paddingBottom: windowHeight/2 - heightPercentageToDP("30%"),
   },
   total: {

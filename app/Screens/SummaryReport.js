@@ -182,6 +182,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     marginTop: heightPercentageToDP("1%"),
     width: widthPercentageToDP("95%"),
+    padding: heightPercentageToDP("1%"),
    // height: windowHeight - heightPercentageToDP("47%"),
     //paddingBottom: heightPercentageToDP("15%"),
   },

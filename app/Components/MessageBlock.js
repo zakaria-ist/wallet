@@ -83,8 +83,6 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const isSmallScreen = (PixelRatio.getPixelSizeForLayoutSize(windowWidth) <330 
-&& PixelRatio.getPixelSizeForLayoutSize(windowHeight) <490)
 
 const styles = StyleSheet.create({
   view_rectangle: {

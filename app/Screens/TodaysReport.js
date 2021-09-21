@@ -218,8 +218,8 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP("1%"),
     width: widthPercentageToDP("90%"),
     //height: windowHeight - heightPercentageToDP("40%"),
-    marginBottom: heightPercentageToDP("1%"),
-    //paddingBottom: heightPercentageToDP("34%"),
+    marginBottom: heightPercentageToDP("2%"),
+    padding: heightPercentageToDP("1%"),
   },
   total: {
     flexDirection: "column",
