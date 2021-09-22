@@ -50,8 +50,8 @@ const Withdrawal = () => {
   const [noStatus, setNoStatus] = useStateIfMounted(true);
   const [pending, setPending] = useStateIfMounted(true);
   const [accepted, setAccepted] = useStateIfMounted(true);
-  const [pendingTotal, setPendingTotal] = useStateIfMounted("10,000.00");
-  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("20,000.00");
+  const [pendingTotal, setPendingTotal] = useStateIfMounted("10,000");
+  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("20,000");
   const [openClientPicker, setOpenClientPicker] = useStateIfMounted(false);
   const [openAdminPickerGroup, setOpenAdminPickerGroup] = useStateIfMounted(false);
   const [openAdminPickerWallet, setOpenAdminPickerWallet] = useStateIfMounted(false);
@@ -81,17 +81,17 @@ const Withdrawal = () => {
   ];
   const tableRowOne = [
     ["10:10 AM",],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet  : Alipay"],
+    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    : Alipay"],
     ["Pending"],
   ];
   const tableRowTwo = [
     ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet  : Alipay"],
+    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    : Alipay"],
     ["Accepted"],
   ];
   const tableRowThree = [
     ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet  : Alipay"],
+    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    : Alipay"],
     ["Accepted"],
   ];
   const agentTableRowOne = {
@@ -433,7 +433,7 @@ const styles = StyleSheet.create({
     flexDirection: 'column',
     flex: 1,
     alignItems: "center",
-    paddingBottom: heightPercentageToDP("1%"),
+    paddingBottom: heightPercentageToDP("2%"),
   },
   picker: {
     marginTop: heightPercentageToDP("2%"),
@@ -454,24 +454,29 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   status_row: {
-    marginTop: heightPercentageToDP("2%"),
+    marginTop: heightPercentageToDP("1%"),
     flexDirection: "row",
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    alignSelf: "center",
+    //alignSelf: "center",
   },
   checkboxContainer: {
     flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: heightPercentageToDP("1%"),
   },
   checkbox: {
-    height: heightPercentageToDP("1%"),
+    // height: heightPercentageToDP("1%"),
     transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
-    alignSelf: "center",
-    marginRight: widthPercentageToDP("3%"),
+    //alignSelf: "center",
+    // marginTop: heightPercentageToDP("-1%"),
+    marginLeft: widthPercentageToDP("-2%"),
+    marginRight: widthPercentageToDP("2%"),
   },
   label: {
+    marginTop: widthPercentageToDP("-1%"),
     marginLeft: widthPercentageToDP("2%"),
     fontSize: RFValue(14)
   },
@@ -482,10 +487,12 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    justifyContent: 'center',
-    marginTop: heightPercentageToDP("2%"),
+    justifyContent: "flex-start",
+    marginTop: heightPercentageToDP("1%"),
     width: widthPercentageToDP("90%"),
-    marginBottom: heightPercentageToDP("1%"),
+    //height: windowHeight - heightPercentageToDP("47%"),
+    padding: heightPercentageToDP("1%"),
+    // paddingBottom: heightPercentageToDP("24%"),
   },
   total: {
     flexDirection: "column",
@@ -494,7 +501,7 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP("1%"),
   },
   total_text: {
-    fontSize: RFValue(15),
+    fontSize: RFValue(13),
     fontWeight: "bold",
     marginLeft: heightPercentageToDP("1%"),
   }

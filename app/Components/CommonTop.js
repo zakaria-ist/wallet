@@ -145,18 +145,18 @@ const styles = StyleSheet.create({
     flexDirection: "row", 
     flex: 1,
   //  top: heightPercentageToDP("1%"),
-    // justifyContent: "space-evenly",
+    justifyContent: "space-evenly",
   },
   view_bottom_button: {
     flexDirection: "row", 
     flex: 1,
     // bottom: heightPercentageToDP("1%"),
    // top: heightPercentageToDP("3%"),
-    // justifyContent: "space-evenly",
+    justifyContent: "space-evenly",
   },
   left_button: {
     width: widthPercentageToDP("30%"),
-    height: heightPercentageToDP("5%"),
+    height: heightPercentageToDP("4%"),
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
@@ -164,11 +164,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.white,
     alignItems: 'center',
-    margin: widthPercentageToDP("3%")
+    margin: widthPercentageToDP("2%")
   },
   left_button_focus: {
     width: widthPercentageToDP("30%"),
-    height: heightPercentageToDP("5%"),
+    height: heightPercentageToDP("4%"),
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
@@ -176,11 +176,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.Wblue,
     alignItems: 'center',
-    margin: widthPercentageToDP("3%")
+    margin: widthPercentageToDP("2%")
   },
   right_button: {
     width: widthPercentageToDP("30%"),
-    height: heightPercentageToDP("5%"),
+    height: heightPercentageToDP("4%"),
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
@@ -188,11 +188,11 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.white,
     alignItems: 'center',
-    margin: widthPercentageToDP("3%")
+    margin: widthPercentageToDP("2%")
   },
   right_button_focus: {
     width: widthPercentageToDP("30%"),
-    height: heightPercentageToDP("5%"),
+    height: heightPercentageToDP("4%"),
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
@@ -200,14 +200,14 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.Wblue,
     alignItems: 'center',
-    margin: widthPercentageToDP("3%")
+    margin: widthPercentageToDP("2%")
   },
   button_text_focus: {
-    fontSize: RFValue(16),
+    fontSize: RFValue(15),
     color: WalletColors.white,
   },
   button_text: {
-    fontSize: RFValue(16),
+    fontSize: RFValue(15),
     color: WalletColors.Wblue,
   },
   wal_left_button: {
@@ -220,6 +220,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.white,
     alignItems: 'center',
+    margin: widthPercentageToDP("1%"),
   },
   wal_left_button_focus: {
     width: widthPercentageToDP("28%"),
@@ -231,6 +232,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.Wblue,
     alignItems: 'center',
+    margin: widthPercentageToDP("1%"),
   },
   wal_mid_button: {
     width: widthPercentageToDP("28%"),
@@ -242,6 +244,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.white,
     alignItems: 'center',
+    margin: widthPercentageToDP("1%"),
   },
   wal_mid_button_focus: {
     width: widthPercentageToDP("28%"),
@@ -253,6 +256,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.Wblue,
     alignItems: 'center',
+    margin: widthPercentageToDP("1%"),
   },
   wal_right_button: {
     width: widthPercentageToDP("28%"),
@@ -264,6 +268,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.white,
     alignItems: 'center',
+    margin: widthPercentageToDP("1%"),
   },
   wal_right_button_focus: {
     width: widthPercentageToDP("28%"),
@@ -275,6 +280,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.Wblue,
     alignItems: 'center',
+    margin: widthPercentageToDP("1%"),
   },
 });
 

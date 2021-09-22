@@ -14,8 +14,10 @@ import {
   StyleSheet,
   Text,
   TextInput,
+  PixelRatio,
   useColorScheme,
   View,
+  Dimensions,
   InteractionManager,
   TouchableOpacity,
   KeyboardAvoidingView
@@ -158,12 +160,17 @@ const SummaryReport = () => {
   );
 };
 
+
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   body: {
+    // height: heightPercentageToDP("82%"),
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",
-    paddingBottom: heightPercentageToDP("1%"),
+    paddingBottom: heightPercentageToDP("2%"),
   },
   view_rectangle: {
     flexDirection: "column", 
@@ -172,10 +179,12 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    justifyContent: 'center',
+    justifyContent: "flex-start",
     marginTop: heightPercentageToDP("1%"),
     width: widthPercentageToDP("95%"),
-    marginBottom: heightPercentageToDP("1%"),
+    padding: heightPercentageToDP("1%"),
+   // height: windowHeight - heightPercentageToDP("47%"),
+    //paddingBottom: heightPercentageToDP("15%"),
   },
 });
 

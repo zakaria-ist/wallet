@@ -24,6 +24,9 @@ import {
 import Feather from 'react-native-vector-icons/Feather';
 import { Button } from 'react-native-elements';
 import { WalletColors } from "../assets/Colors.js";
+import Screensize from '../lib/screensize.js';
+
+const screensize = new Screensize();
 
 const CustomHeader = ({title}) => {
   const navigation = useNavigation();
@@ -54,17 +57,18 @@ const CustomHeader = ({title}) => {
 
 };
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-const isSmallRF = (PixelRatio.getPixelSizeForLayoutSize(windowWidth) <320 
-&& PixelRatio.getPixelSizeForLayoutSize(windowHeight) <480)
-? RFValue(12) : isMediumRF;
-const isMediumRF = (320 <= PixelRatio.getPixelSizeForLayoutSize(windowWidth) <999 
-&& 480 <= PixelRatio.getPixelSizeForLayoutSize(windowHeight) <1000)
-? RFValue(19) : isLargeRF;
-const isLargeRF = (PixelRatio.getPixelSizeForLayoutSize(windowWidth)>=999 
-&& PixelRatio.getPixelSizeForLayoutSize(windowHeight)>=1000)
-? RFValue(32) : isSmallRF;
+// size={screensize.getSmallScreen() || screensize.getMediumScreen() || screensize.getLargeScreen} />}
+
+// screensize.getSmallScreen()
+// ? RFValue(12) : screensize.getMediumScreen();
+// screensize.getMediumScreen()
+// ? RFValue(19) : screensize.getLargeScreen();
+// screensize.getLargeScreen()
+// ? RFValue(32) : screensize.getSmallScreen();
+
+const isSmallRF = screensize.getSmallScreen() ? RFValue(14) : isMediumRF;
+const isMediumRF = screensize.getMediumScreen() ? RFValue(19) : isLargeRF;
+const isLargeRF = screensize.getLargeScreen() ? RFValue(32) : isSmallRF;
 
 const styles = StyleSheet.create({
   view_root: {

@@ -13,6 +13,8 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  Dimensions,
+  PixelRatio,
   TextInput,
   useColorScheme,
   View,
@@ -43,7 +45,7 @@ const TodaysReport = () => {
   const [walletData, setWalletData] = useStateIfMounted([]);
   const [rejected, setRejected] = useStateIfMounted(true);
   const [accepted, setAccepted] = useStateIfMounted(true);
-  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("20,000.00");
+  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("20,000");
 
   const backgroundStyle = {
     backgroundColor: Colors.white
@@ -58,17 +60,17 @@ const TodaysReport = () => {
   ];
   const tableRowOne = [
     ["10:10 AM",],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet  : Alipay"],
+    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    :  Alipay"],
     ["Rejected"],
   ];
   const tableRowTwo = [
     ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet  : Alipay"],
+    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    :  Alipay"],
     ["Accepted"],
   ];
   const tableRowThree = [
     ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet  : Alipay"],
+    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    :  Alipay"],
     ["Accepted"],
   ];
 
@@ -173,12 +175,15 @@ const TodaysReport = () => {
   );
 };
 
+const windowWidth = Dimensions.get('window').width;
+const windowHeight = Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
   body: {
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",
-    paddingBottom: heightPercentageToDP("5%"),
+    paddingBottom: heightPercentageToDP("2%"),
   },
   status_row: {
     marginTop: heightPercentageToDP("2%"),
@@ -209,10 +214,12 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    justifyContent: 'center',
-    marginTop: heightPercentageToDP("3%"),
+    justifyContent: "flex-start",
+    marginTop: heightPercentageToDP("1%"),
     width: widthPercentageToDP("90%"),
-    marginBottom: heightPercentageToDP("3%"),
+    //height: windowHeight - heightPercentageToDP("40%"),
+    marginBottom: heightPercentageToDP("2%"),
+    padding: heightPercentageToDP("1%"),
   },
   total: {
     flexDirection: "column",
@@ -221,7 +228,7 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP("1%"),
   },
   total_text: {
-    fontSize: RFValue(20),
+    fontSize: RFValue(13),
     fontWeight: "bold"
   }
 });

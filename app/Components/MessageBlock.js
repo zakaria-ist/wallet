@@ -83,8 +83,6 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-const isSmallScreen = (PixelRatio.getPixelSizeForLayoutSize(windowWidth) <330 
-&& PixelRatio.getPixelSizeForLayoutSize(windowHeight) <490)
 
 const styles = StyleSheet.create({
   view_rectangle: {
@@ -110,9 +108,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   text_input: {
-    width: widthPercentageToDP("50%"),
-    height: heightPercentageToDP("4.5%"),
+    width: widthPercentageToDP("40%"),
+    height: heightPercentageToDP("4%"),
     // marginTop: heightPercentageToDP("4%"),
+    padding: 4,
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
