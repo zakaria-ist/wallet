@@ -105,7 +105,7 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
         <TouchableOpacity
           onPress={onReject}
         >
-          <View style={styles.send_button}>
+          <View style={styles.reject_button}>
             <Text style={styles.send_button_text}>
               Reject
             </Text>
@@ -118,7 +118,7 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
         <TouchableOpacity
           onPress={onAccept}
         >
-          <View style={styles.send_button}>
+          <View style={styles.accept_button}>
             <Text style={styles.send_button_text}>
               Accept
             </Text>
@@ -252,7 +252,19 @@ const styles = StyleSheet.create({
     paddingTop: heightPercentageToDP("1%"),
     paddingBottom: heightPercentageToDP("1%"),
   },
-  send_button: {
+  reject_button: {
+    width: widthPercentageToDP("20%"),
+    height: heightPercentageToDP("4%"),
+    marginTop: heightPercentageToDP("-1%"),
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: WalletColors.red,
+    borderStyle: 'solid',
+    justifyContent: 'center',
+    backgroundColor: WalletColors.Wgreen,
+    alignItems: 'center'
+  },
+  accept_button: {
     width: widthPercentageToDP("20%"),
     height: heightPercentageToDP("4%"),
     marginTop: heightPercentageToDP("-1%"),
