@@ -32,7 +32,7 @@ const format = new Format();
 const request = new Request();
 const alert = new CustomAlert();
 
-const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallback}) => {
+const TableRowEditDeposit = ({header, rowData}) => {
   const [token, setToken] = useStateIfMounted("");
   const [rowId, setRowId] = useStateIfMounted(rowData.rowId);
   const [amount, setAmount] = useState('');

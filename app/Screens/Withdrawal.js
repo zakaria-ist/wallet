@@ -38,10 +38,15 @@ import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
+import Request from "../lib/request";
+import KTime from '../lib/formatTime';
+
+const request = new Request();
 
 const Withdrawal = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [authType, setAuthType] = useStateIfMounted("");
+  const [token, setToken] = useStateIfMounted("");
   const [transType, setTransType] = useStateIfMounted("Today");
   const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletPickerType, setWalletPickerType] = useStateIfMounted(1);
@@ -56,12 +61,13 @@ const Withdrawal = () => {
   const [openAdminPickerGroup, setOpenAdminPickerGroup] = useStateIfMounted(false);
   const [openAdminPickerWallet, setOpenAdminPickerWallet] = useStateIfMounted(false);
   const [pickerUser, setPickerUser] = useStateIfMounted(null);
-  const [pickergroup, setPickerGroup] = useStateIfMounted(null);
+  const [pickerGroup, setPickerGroup] = useStateIfMounted(null);
   const [pickerGroupList, setPickerGroupList] = useStateIfMounted([]);
   const [groupList, setGroupList] = useStateIfMounted([]);
   const [userList, setUserList] = useStateIfMounted([]);
   const [pickerUserList, setPickerUserList] = useStateIfMounted([]);
-  
+  const [tableRowHtml, setTableRowHtml] = useStateIfMounted([]);
+  const [tableRowEditHtml, setTableRowEditHtml] = useStateIfMounted([]);
 
   const backgroundStyle = {
     backgroundColor: Colors.white
@@ -134,6 +140,10 @@ const Withdrawal = () => {
         setWalletPickerList(wData);
       });
 
+      AsyncStorage.getItem('token').then((token) => {
+        setToken(token);
+      })
+
       AsyncStorage.getItem('authType').then((auth_type) => {
         if (auth_type != null) {
           setAuthType(auth_type);
@@ -168,6 +178,8 @@ const Withdrawal = () => {
           }
         }
       });
+
+      renderTablesData();
     })
   }, []);
 
@@ -199,8 +211,82 @@ const Withdrawal = () => {
   const handleCheckBox = () => {
     renderTablesData();
   }
-  const renderTablesData = () => {
-    
+  const renderTablesData = async () => {
+    const msgsUrl = request.getAllMessageUrl();
+    const params = JSON.stringify(
+      {
+        token: token, 
+        role: authType,
+        purpose: 'deposite',
+
+      }
+    );
+    const content = await request.post(msgsUrl, params);
+
+    if (content.ok) {
+      // ftatus filter
+      let messages = content.msg.filter((msg) => {
+        if (accepted && msg.status == 'accepted') return true;
+        if (rejected && msg.status == 'rejected') return true;
+        if (pending && msg.status == 'pending') return true;
+        if (noStatus && msg.status == null) return true;
+
+        return false;
+      })
+      // wallet filter
+      messages = messages.filter((msg) => {
+        if (parseInt(walletType) == parseInt(msg.walletId)) return true;
+        if (authType == 'admin' || authType == 'subadmin') {
+          if (parseInt(walletPickerType) == parseInt(msg.walletId)) return true;
+        }
+        return false;
+      })
+      // user & client filter
+      if (authType == 'admin' || authType == 'subadmin') {
+        messages = messages.filter((msg) => {
+          if (pickerGroup && pickerGroup == msg.belongclient) return true;
+          return false;
+        })
+      }
+      if (authType == 'client') {
+        messages = messages.filter((msg) => {
+          if (pickerUser && pickerUser == msg.fromuser) return true;
+          return false;
+        })
+      }
+      
+      let msg_html = [];
+      if (authType == 'agent' && transType == 'Today') {
+        msg_html.push(<TableRowEditWithdra key={0} header={true} rowData={agentTableHeader} />)
+        messages.map((msg) => {
+          let msg_data = {
+            rowId: msg.id,
+            time: KTime.format(msg.createdatetime),
+            wallet: msg.walletName,
+            amount: msg.amount,
+            refNo: msg.refno,
+            mobile: msg.mobile,
+            sent: false
+          };
+          msg_html.push(<TableRowEditWithdra key={msg.id} header={false} rowData={msg_data} />)
+        })
+        setTableRowEditHtml(msg_html);
+      } else {
+        msg_html.push(<TableRow key={0} header={true} rowData={tableHeader} />)
+        messages.map((msg) => {
+          let msg_data = [];
+          msg_data.push([KTime.format(msg.createdatetime), "(" + KTime.format(msg.updatedatetime) + ")"]);
+          if (authType == 'agent') {
+            msg_data.push(["Pin No. : " + msg.refno, "Amount : " + msg.amount, "Wallet    : " + msg.walletName, "Mobile No  : " + msg.mobile]);
+          } else {
+            msg_data.push(["Pin No. : " + msg.pinno, "Amount : " + msg.amount, "Wallet    : " + msg.walletName, "Mobile No  : " + msg.mobile, "User      : " + msg.fromuser]);
+          }
+          msg_data.push([msg.status]);
+          msg_html.push(<TableRow key={msg.id} header={false} rowData={msg_data} />)
+        })
+        setTableRowHtml(msg_html);
+      }
+    }
   }
   const sendCallback = () => {
     
@@ -257,7 +343,7 @@ const Withdrawal = () => {
                       renderTablesData();
                     }}
                     open={openAdminPickerGroup}
-                    value={pickergroup}
+                    value={pickerGroup}
                     items={pickerGroupList}
                     setOpen={setOpenAdminPickerGroup}
                     setValue={setPickerGroup}
@@ -350,30 +436,10 @@ const Withdrawal = () => {
           {authType == 'agent' ?
             [transType == 'Today' ? 
               <View style={styles.view_rectangle}>
-                <TableRowEditWithdra key={1}
-                  header={true} 
-                  rowData={agentTableHeader} 
-                  type={transType} 
-                  sendCallback={sendCallback} 
-                />
-                <TableRowEditWithdra  key={2}
-                  header={false} 
-                  rowData={agentTableRowOne} 
-                  type={transType} 
-                  sendCallback={sendCallback} 
-                />
-                <TableRowEditWithdra  key={3}
-                  header={false} 
-                  rowData={agentTableRowTwo} 
-                  ype={transType} 
-                  sendCallback={sendCallback} 
-                />
-                <TableRowEditWithdra  key={4}
-                  header={false} 
-                  rowData={agentTableRowThree} 
-                  type={transType} 
-                  sendCallback={sendCallback} 
-                />
+                <TableRowEditWithdra key={1} header={true} rowData={agentTableHeader} />
+                <TableRowEditWithdra  key={2} header={false} rowData={agentTableRowOne} />
+                <TableRowEditWithdra  key={3} header={false} rowData={agentTableRowTwo} />
+                <TableRowEditWithdra  key={4} header={false} rowData={agentTableRowThree} />
               </View>
             :
             <>

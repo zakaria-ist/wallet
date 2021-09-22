@@ -35,7 +35,7 @@ const format = new Format();
 const request = new Request();
 const alert = new CustomAlert();
 
-const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
+const TableRowEditWithdra = ({header, rowData}) => {
   const [token, setToken] = useStateIfMounted("");
   const [rowId, setRowId] = useStateIfMounted(rowData.rowId);
   const [cellOne, setCellOne] = useStateIfMounted([]);

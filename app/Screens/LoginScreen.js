@@ -231,8 +231,7 @@ const LoginScreen = ({navigation}) => {
         }
       })
   }
-  const [passwordplaceholder,setpasswordPlaceholder] = useStateIfMounted("password");
-  const [usernameplaceholder,setusernamePlaceholder] = useStateIfMounted("username");
+  
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -249,7 +248,7 @@ const LoginScreen = ({navigation}) => {
                 onChangeText={setUserName}
                 value={userName}
                 textAlign={'center'}
-                placeholder={usernameplaceholder}
+                placeholder={'Username'}
                 setPlaceholder={setusernamePlaceholder}
                 placeholderTextColor={WalletColors.grey}
               />
@@ -258,7 +257,7 @@ const LoginScreen = ({navigation}) => {
                 onChangeText={setPassword}
                 value={password}
                 textAlign={'center'}
-                placeholder={passwordplaceholder}
+                placeholder={'Password'}
                 setPlaceholder={setpasswordPlaceholder}
                 placeholderTextColor={WalletColors.grey}
                 secureTextEntry={true}

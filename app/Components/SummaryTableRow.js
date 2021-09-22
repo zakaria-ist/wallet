@@ -112,7 +112,7 @@ const SummaryTableRow = ({header, rowData}) => {
   return useMemo(() => {
     return (
         <View style={styles.view_rectangle}>
-            <View style={styles.view_left}>
+            <View style={header ? styles.view_left_header : styles.view_left}>
                 <View style={styles.view_lineNumber}>
                     {cellOne}
                 </View>
@@ -139,6 +139,13 @@ const styles = StyleSheet.create({
     alignContent: "space-between",
     width: widthPercentageToDP("92%"),
     marginBottom: heightPercentageToDP("2%"),
+  },
+  view_left_header: {
+    flex: 3,
+    justifyContent: "space-between",
+    // borderRightWidth: StyleSheet.hairlineWidth,
+    borderColor: WalletColors.black,
+    borderStyle: 'solid',
   },
   view_left: {
     flex: 3,

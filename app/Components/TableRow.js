@@ -51,12 +51,12 @@ const TableRow = ({header, rowData}) => {
           <Text style={styles.cell_text_header}>{cellData[0]}</Text>
         )
       } else {
-        if (cellData[0] == "Accepted") {
+        if (cellData[0] == "accepted") {
           testCell.push(
             <Text style={{fontSize: RFValue(14), color: WalletColors.Wgreen}}>{cellData[0]}</Text>
           )
         }
-        else if (cellData[0] == "Rejected") {
+        else if (cellData[0] == "rejected") {
           testCell.push(
             <Text style={{fontSize: RFValue(14), color: WalletColors.Wred}}>{cellData[0]}</Text>
           )
