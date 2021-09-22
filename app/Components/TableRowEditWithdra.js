@@ -29,9 +29,11 @@ import { WalletColors } from "../assets/Colors.js";
 import { RFValue } from 'react-native-responsive-fontsize';
 import Request from "../lib/request";
 import Format from "../lib/format";
+import CustomAlert from "../lib/alert";
 
 const format = new Format();
 const request = new Request();
+const alert = new CustomAlert();
 
 const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
   const [token, setToken] = useStateIfMounted("");
@@ -104,7 +106,7 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
     } else {
       rightCell.push(
         <TouchableOpacity
-          onPress={onSend}
+          onPress={ () => alert.ask('Are you sure?', ()=>{ onSend(); }) }
         >
           <View style={styles.send_button}>
             <Text style={styles.send_button_text}>

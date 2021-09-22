@@ -24,11 +24,13 @@ import {
 import { WalletColors } from "../assets/Colors.js";
 import Format from "../lib/format";
 import Request from "../lib/request";
+import CustomAlert from "../lib/alert";
 import AsyncStorage from "@react-native-community/async-storage";
 import { RFValue } from 'react-native-responsive-fontsize';
 
 const format = new Format();
 const request = new Request();
+const alert = new CustomAlert();
 
 const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallback}) => {
   const [token, setToken] = useStateIfMounted("");
@@ -131,11 +133,15 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
   }
 
   const onReject = () => {
-    onSend('accept');
+    alert.ask('Are you sure, you want to reject?', ()=>{
+      onSend('reject');
+    })
   }
 
   const onAccept = () => {
-    onSend('reject');
+    alert.ask('Are you sure, you want to accept?', ()=>{
+      onSend('accept');
+    })
   }
 
   const onSend = async (action) => {
@@ -256,19 +262,19 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("20%"),
     height: heightPercentageToDP("4%"),
     marginTop: heightPercentageToDP("-1%"),
-    borderRadius: 10,
+    borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.red,
     borderStyle: 'solid',
     justifyContent: 'center',
-    backgroundColor: WalletColors.Wgreen,
+    backgroundColor: WalletColors.red,
     alignItems: 'center'
   },
   accept_button: {
     width: widthPercentageToDP("20%"),
     height: heightPercentageToDP("4%"),
     marginTop: heightPercentageToDP("-1%"),
-    borderRadius: 10,
+    borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wgreen,
     borderStyle: 'solid',
