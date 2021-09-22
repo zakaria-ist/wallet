@@ -53,10 +53,10 @@ const screenOptionStyle = {
     fontWeight: 'bold',
     color: WalletColors.Wblue,
   },
-  tabBarStyle: {
-    height: (screensize.getLargeScreen() ? (StatusBar.currentHeight - heightPercentageToDP("2%")) : (StatusBar.currentHeight + heightPercentageToDP("2%")))
-  },
-  tabBarLabelStyle: {height:0},
+  // tabBarStyle: {
+  //   height: (screensize.getLargeScreen() ? (StatusBar.currentHeight - heightPercentageToDP("2%")) : (StatusBar.currentHeight + heightPercentageToDP("2%")))
+  // },
+  tabBarShowLabel: false,
   headerTitleAlign: 'center',
   tabBarActiveTintColor: WalletColors.Wblue,
   tabBarInactiveTintColor: 'gray',
@@ -83,7 +83,7 @@ const TabNavigationAdmin = (props) => {
         name="SummaryReport"
         component={SummaryReport}
         options={{
-          //tabBarLabel: "Summary Report",
+          tabBarLabel: "Summary Report",
           tabBarIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size}/>,
         }}
       />
@@ -91,7 +91,7 @@ const TabNavigationAdmin = (props) => {
         name="Deposit"
         component={Deposit}
         options={{
-         // tabBarLabel: "Deposit",
+         tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
       />
@@ -99,7 +99,7 @@ const TabNavigationAdmin = (props) => {
         name="Withdrawal"
         component={Withdrawal}
         options={{
-          //tabBarLabel: "Withdrawal",
+          tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
       />
@@ -119,7 +119,7 @@ const TabNavigationAdminDeposit = (props) => {
         name="SummaryReport"
         component={SummaryReport}
         options={{
-         // tabBarLabel: "Summary Report",
+          tabBarLabel: "Summary Report",
           tabBarIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
         }}
       />
@@ -127,7 +127,7 @@ const TabNavigationAdminDeposit = (props) => {
         name="Deposit"
         component={Deposit}
         options={{
-        //  tabBarLabel: "Deposit",
+          tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
       />
@@ -135,7 +135,7 @@ const TabNavigationAdminDeposit = (props) => {
         name="Withdrawal"
         component={Withdrawal}
         options={{
-        //  tabBarLabel: "Withdrawal",
+          tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
       />
@@ -155,7 +155,7 @@ const TabNavigationAdminWithdrawal = (props) => {
         name="SummaryReport"
         component={SummaryReport}
         options={{
-        //  tabBarLabel: "Summary Report",
+          tabBarLabel: "Summary Report",
           tabBarIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
         }}
       />
@@ -163,7 +163,7 @@ const TabNavigationAdminWithdrawal = (props) => {
         name="Deposit"
         component={Deposit}
         options={{
-         // tabBarLabel: "Deposit",
+          tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
       />
@@ -171,7 +171,7 @@ const TabNavigationAdminWithdrawal = (props) => {
         name="Withdrawal"
         component={Withdrawal}
         options={{
-         // tabBarLabel: "Withdrawal",
+          tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
       />
@@ -192,27 +192,24 @@ const TabNavigationUser = (props) => {
         name="CreateMessage"
         component={CreateMessage}
         options={{
-        //  tabBarLabel: "Create Message",
+          tabBarLabel: "Create Message",
           tabBarIcon: ({ color, size }) => <Feather name="file-plus" color={color} size={size} />,
-        //  title: 'Create Message'
         }}
       />
       <Tab.Screen
         name="Deposit"
         component={Deposit}
         options={{
-         // tabBarLabel: "Deposit",
+          tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
-         // title: 'Deposit'
         }}
       />
       <Tab.Screen
         name="Withdrawal"
         component={Withdrawal}
         options={{
-          //tabBarLabel: "Withdrawal",
+          tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
-         // title: 'Withdrawal'
         }}
       />
     </Tab.Navigator>
@@ -231,8 +228,7 @@ const TabNavigationUserDeposit = (props) => {
         name="CreateMessage"
         component={CreateMessage}
         options={{
-          tabBarLabel: "",
-         // tabBarLabel: "Create Message",
+          tabBarLabel: "Create Message",
           tabBarIcon: ({ color, size }) => <Feather name="file-plus" color={color} size={size} />,
         }}
       />
@@ -240,7 +236,7 @@ const TabNavigationUserDeposit = (props) => {
         name="Deposit"
         component={Deposit}
         options={{
-        //  tabBarLabel: "Deposit",
+          tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
       />
@@ -248,7 +244,7 @@ const TabNavigationUserDeposit = (props) => {
         name="Withdrawal"
         component={Withdrawal}
         options={{
-       //   tabBarLabel: "Withdrawal",
+          tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
       />
@@ -268,7 +264,7 @@ const TabNavigationUserWithdrawal = (props) => {
         name="CreateMessage"
         component={CreateMessage}
         options={{
-        //  tabBarLabel: "Create Message",
+          tabBarLabel: "Create Message",
           tabBarIcon: ({ color, size }) => <Feather name="file-plus" color={color} size={size} />,
         }}
       />
@@ -276,7 +272,7 @@ const TabNavigationUserWithdrawal = (props) => {
         name="Deposit"
         component={Deposit}
         options={{
-        //  tabBarLabel: "Deposit",
+          tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
       />
@@ -284,7 +280,7 @@ const TabNavigationUserWithdrawal = (props) => {
         name="Withdrawal"
         component={Withdrawal}
         options={{
-        //  tabBarLabel: "Withdrawal",
+          tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
       />
@@ -305,7 +301,7 @@ const TabNavigationAgent = (props) => {
         name="TodaysReport"
         component={TodaysReport}
         options={{
-         // tabBarLabel: "Today's Report",
+          tabBarLabel: "Today's Report",
           tabBarIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
         }}
       />
@@ -313,7 +309,7 @@ const TabNavigationAgent = (props) => {
         name="Deposit"
         component={Deposit}
         options={{
-         // tabBarLabel: "Deposit",
+          tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
       />
@@ -321,7 +317,7 @@ const TabNavigationAgent = (props) => {
         name="Withdrawal"
         component={Withdrawal}
         options={{
-        //  tabBarLabel: "Withdrawal",
+          tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
       />
@@ -341,7 +337,7 @@ const TabNavigationAgentDeposit = (props) => {
         name="TodaysReport"
         component={TodaysReport}
         options={{
-        //  tabBarLabel: "Today's Report",
+          tabBarLabel: "Today's Report",
           tabBarIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
         }}
       />
@@ -349,7 +345,7 @@ const TabNavigationAgentDeposit = (props) => {
         name="Deposit"
         component={Deposit}
         options={{
-        //  tabBarLabel: "Deposit",
+          tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
       />
@@ -357,7 +353,7 @@ const TabNavigationAgentDeposit = (props) => {
         name="Withdrawal"
         component={Withdrawal}
         options={{
-        //  tabBarLabel: "Withdrawal",
+          tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
       />
@@ -377,7 +373,7 @@ const TabNavigationAgentWithdrawal = (props) => {
         name="TodaysReport"
         component={TodaysReport}
         options={{
-        //  tabBarLabel: "Today's Report",
+          tabBarLabel: "Today's Report",
           tabBarIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
         }}
       />
@@ -385,7 +381,7 @@ const TabNavigationAgentWithdrawal = (props) => {
         name="Deposit"
         component={Deposit}
         options={{
-        //  tabBarLabel: "Deposit",
+          tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
       />
@@ -393,7 +389,7 @@ const TabNavigationAgentWithdrawal = (props) => {
         name="Withdrawal"
         component={Withdrawal}
         options={{
-         // tabBarLabel: "Withdrawal",
+          tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
       />
@@ -414,7 +410,7 @@ const TabNavigationGroup = (props) => {
         name="Deposit"
         component={Deposit}
         options={{
-        //  tabBarLabel: "Deposit",
+          tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
       />
@@ -422,7 +418,7 @@ const TabNavigationGroup = (props) => {
         name="Withdrawal"
         component={Withdrawal}
         options={{
-        //  tabBarLabel: "Withdrawal",
+          tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
       />
@@ -442,7 +438,7 @@ const TabNavigationGroupWithdrawal = (props) => {
         name="Deposit"
         component={Deposit}
         options={{
-         // tabBarLabel: "Deposit",
+          tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
       />
@@ -450,7 +446,7 @@ const TabNavigationGroupWithdrawal = (props) => {
         name="Withdrawal"
         component={Withdrawal}
         options={{
-         // tabBarLabel: "Withdrawal",
+          tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
       />
