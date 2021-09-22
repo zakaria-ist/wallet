@@ -51,7 +51,7 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
       setCellThree(handleHeaderCell(rowData[2]));
     } else {
       setRowId(rowData.rowId);
-      // setAmount(format.separator(rowData.amount));
+      rowData.amount = format.separator(String(rowData.amount).split(',').join(''));
       handleCell(rowData);
     }
   }, [rowData]);
@@ -84,7 +84,10 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
         <Text style={{fontSize: RFValue(13)}}>Amount   : </Text>
         <TextInput 
           style={styles.text_input}
-          onChangeText={amount => { rowData.amount = amount; handleCell(rowData); }}
+          onChangeText={amount => { 
+            rowData.amount = format.separator(String(amount).split(',').join('')); 
+            handleCell(rowData); 
+          }}
           value={rowData.amount}
           textAlign={'right'}
           placeholderTextColor={WalletColors.grey}
