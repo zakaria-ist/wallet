@@ -13,6 +13,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
+  Dimensions,
   TextInput,
   useColorScheme,
   View,
@@ -42,7 +43,7 @@ import { alignContent, fontWeight } from 'styled-system';
 
 const request = new Request();
 const alert = new CustomAlert();
-
+const windowHeight = Dimensions.get('window').height;
 const CreateMessage = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [transType, setTransType] = useStateIfMounted("Withdrawal");
@@ -205,15 +206,13 @@ const CreateMessage = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1, backgroundColor: Colors.white}}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+      <View style={styles.header}>
           <CustomHeader 
             title={"Create Message"}
           />
+          <View style={styles.menu}>
           <CommonTop
             admin={false}
             LeftButton={LeftButton}
@@ -224,7 +223,8 @@ const CreateMessage = () => {
             handleWalMidButton={handleWalMidButton}
             handleWalRightButton={handleWalRightButton}
           />
-
+          </View>
+      </View>
         <View
           style={styles.body}>
           <TouchableOpacity
@@ -236,12 +236,15 @@ const CreateMessage = () => {
               </Text>
             </View>
           </TouchableOpacity>
+          <View style={{flex:1}}>
+          <ScrollView>
           <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
           <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
           <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
           <MessageBlock transType={transType} mData={messageFour} lineNumber={4} key={"lineNumber4"} parentReference={handleMessageFour} />
           <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
-
+          </ScrollView>
+          </View>
           <TouchableOpacity
             onPress={handleSubmit}
           >
@@ -252,8 +255,7 @@ const CreateMessage = () => {
             </View>
           </TouchableOpacity>
         </View>
-      </ScrollView>
-
+    
       <Modal 
           isVisible={isModalVisible}
           // onBackdropPress={handleQuickInsert}
@@ -332,17 +334,25 @@ const CreateMessage = () => {
 };
 
 const styles = StyleSheet.create({
+  header:{
+    flex:1.3,
+  },
+  menu:{
+    flex:2, 
+    marginBottom:20,
+    flexDirection:"row", 
+    alignSelf:"center",
+  },
   body: {
+    flex:4,
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",
-    paddingBottom: heightPercentageToDP("5%"),
-    marginTop: heightPercentageToDP("4%"),
   },
   sumbit_button: {
     width: widthPercentageToDP("30%"),
     height: heightPercentageToDP("5%"),
-    marginTop: heightPercentageToDP("1%"),
+    margin: heightPercentageToDP("1%"),
     borderRadius: 10,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wgreen,

@@ -53,16 +53,16 @@ const TableRow = ({header, rowData}) => {
       } else {
         if (cellData[0] == "Accepted") {
           testCell.push(
-            <Text style={{fontSize: RFValue(14), color: WalletColors.Wgreen}}>{cellData[0]}</Text>
+            <Text style={styles.text_cell_wgreen}>{cellData[0]}</Text>
           )
         }
         else if (cellData[0] == "Rejected") {
           testCell.push(
-            <Text style={{fontSize: RFValue(14), color: WalletColors.Wred}}>{cellData[0]}</Text>
+            <Text style={styles.text_cell_wred}>{cellData[0]}</Text>
           )
         } else {
           testCell.push(
-            <Text style={{fontSize: RFValue(14), color: WalletColors.black}}>{cellData[0]}</Text>
+            <Text style={styles.text_cell_wblack}>{cellData[0]}</Text>
           )
         }
       }
@@ -88,7 +88,7 @@ const TableRow = ({header, rowData}) => {
             {cellThree}
           </View>
         </View>
-      </View>
+        </View>
     );
   })
 
@@ -97,6 +97,7 @@ const TableRow = ({header, rowData}) => {
 const styles = StyleSheet.create({
   view_rectangle: {
     flexDirection: "row", 
+    flex:1,
     // alignItems: "center",
     // borderRadius: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -143,7 +144,6 @@ const styles = StyleSheet.create({
   },
   view_lineNumber: {
     flexDirection: "column", 
-    // flex: 1, 
     alignItems: "center",
     justifyContent: "center"
     // padding:widthPercentageToDP("5%")
@@ -157,6 +157,18 @@ const styles = StyleSheet.create({
     alignSelf: "flex-start",
     fontSize: RFValue(14),
     fontWeight: "bold",
+  },
+  text_cell_wred: {
+    fontSize: RFValue(14), 
+    color: WalletColors.Wred
+  },
+  text_cell_wgreen: {
+    fontSize: RFValue(14), 
+    color: WalletColors.Wgreen
+  },
+  text_cell_wblack: {
+    fontSize: RFValue(14), 
+    color: WalletColors.black
   }
 });
 

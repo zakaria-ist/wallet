@@ -17,14 +17,19 @@ import {
   StyleSheet,
   View,
   Text,
+  StatusBar,
   TextInput,
+  Dimensions,
   useColorScheme,
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
 import { RFValue } from 'react-native-responsive-fontsize';
 import Format from "../lib/format";
-const format = new Format();
+import { ScreenHeight } from 'react-native-elements/dist/helpers';
 
+const format = new Format();
+const screenHeight = Dimensions.get('screen').height;
+const windowHeight = Dimensions.get('window').height;
 const SummaryTableRow = ({header, rowData}) => {
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
@@ -43,7 +48,7 @@ const SummaryTableRow = ({header, rowData}) => {
   const handleHeaderCell = (cellData) => {
     let testCell = [];
     testCell.push(
-      <Text style={styles.cell_text_header}>{cellData[0]}</Text>
+      <Text style={styles.cell_text_header}>{cellData[0]}</Text> 
     )
     return testCell;
   }
@@ -60,6 +65,7 @@ const SummaryTableRow = ({header, rowData}) => {
           <Text style={styles.cell_text_bold}>Amount</Text>
         </View>
       )
+      
       group.walletData.map((wallet) => {
         cellLeft.push(
           <View style={styles.view_sub_row}>
@@ -68,7 +74,7 @@ const SummaryTableRow = ({header, rowData}) => {
             </View>
             <View style={styles.view_sub_column}>
               <Text style={styles.cell_text}>:(D)</Text>
-              <Text style={styles.cell_text}>:(W)</Text>
+              <Text style={styles.cell_text}> :(W)</Text>
             </View>
             <View style={styles.view_sub_column}>
               <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.count)}</Text>
@@ -100,29 +106,30 @@ const SummaryTableRow = ({header, rowData}) => {
           </View>
         </View>
       )
+      
       setCellOne(cellLeft);
       cellRight.push(
         <Text style={styles.cell_text_bold}>{format.separator(group.total)}</Text>
       );
-      setCellTwo(cellRight);
+      setCellTwo(cellRight)
     });
     
   }
 
   return useMemo(() => {
     return (
-        <View style={styles.view_rectangle}>
-            <View style={styles.view_left}>
-                <View style={styles.view_lineNumber}>
-                    {cellOne}
-                </View>
-            </View>
-            <View style={styles.view_right}>
-                <View style={styles.view_lineNumber}>
-                    {cellTwo}
-                </View>
-            </View>
+      <View style={styles.view_rectangle}>
+        <View style={styles.view_left}>
+          <View style={styles.view_lineNumber}>
+            {cellOne}
+          </View>
         </View>
+        <View style={styles.view_right}>
+          <View style={styles.view_lineNumber}>
+            {cellTwo}
+          </View>
+        </View>
+      </View> 
     );
   })
 
@@ -138,7 +145,12 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: "space-between",
     width: widthPercentageToDP("92%"),
-    marginBottom: heightPercentageToDP("2%"),
+    padding:heightPercentageToDP("1%"),
+  },
+  view_border_line:{
+    borderLeftWidth: StyleSheet.hairlineWidth,
+    borderColor: WalletColors.black,
+    borderStyle: 'solid',
   },
   view_left: {
     flex: 3,
@@ -155,7 +167,7 @@ const styles = StyleSheet.create({
   view_lineNumber: {
     flexDirection: "column",
     justifyContent: "center",
-    margin: widthPercentageToDP("1%")
+    margin: widthPercentageToDP("1%"),
   },
   view_sub_row: {
     flexDirection: "row",
@@ -168,25 +180,25 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   cell_text_end: {
-    fontSize: RFValue(15),
+    fontSize: RFValue(14),
     alignSelf: "flex-end"
   },
   cell_text: {
-    fontSize: RFValue(15),
+    fontSize: RFValue(14),
     alignSelf: "center"
   },
   cell_text_header: {
-    fontSize: RFValue(16),
+    fontSize: RFValue(14),
     fontWeight: "bold",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   cell_text_bold: {
-    fontSize: RFValue(16),
+    fontSize: RFValue(14),
     fontWeight: "bold",
     alignSelf: "flex-end"
   },
   cell_text_bold_center: {
-    fontSize: RFValue(16),
+    fontSize: RFValue(14),
     fontWeight: "bold",
     alignSelf: "center"
   }

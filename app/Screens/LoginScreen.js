@@ -175,10 +175,10 @@ const styles = StyleSheet.create({
     borderStyle: 'solid',
     textAlign:'center',
     justifyContent: 'center',
+    alignItems: 'center',
     color: WalletColors.black,
     flex: 1, 
     fontSize: RFValue(14),
-    // textAlignVertical: 'top'
   },
   sign_button: {
     width: widthPercentageToDP("35%"),
@@ -226,7 +226,8 @@ const styles = StyleSheet.create({
     flexDirection: "column", 
     flex: 1, 
     textAlign:'center',
-    alignItems: "center", 
+    justifyContent: 'center',
+    alignItems: 'center',
     marginTop: heightPercentageToDP("8%"),
   }
 });

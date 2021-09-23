@@ -219,26 +219,47 @@ const Deposit = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1, backgroundColor: Colors.white}}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+      <View style={{flex:1, backgroundColor: Colors.white}}>
+      {authType == ("admin" || "subadmin") ?
+      <View style={styles.admin_header}>
           <CustomHeader 
             title={"Deposit"}
-          />
-          <CommonTop
-            admin={authType == ("admin" || "subadmin") ? true : false}
-            LeftButton={LeftButton}
-            RightButton={RightButton}
-            handleLeftButton={handleLeftButton}
-            handleRightButton={handleRightButton}
-            handleWalLeftButton={handleWalLeftButton}
-            handleWalMidButton={handleWalMidButton}
-            handleWalRightButton={handleWalRightButton}
-          />
-
+          /> 
+           <View style={styles.admin_menu}>
+           <CommonTop
+             admin={authType == ("admin" || "subadmin") ? true : false}
+             LeftButton={LeftButton}
+             RightButton={RightButton}
+             handleLeftButton={handleLeftButton}
+             handleRightButton={handleRightButton}
+             handleWalLeftButton={handleWalLeftButton}
+             handleWalMidButton={handleWalMidButton}
+             handleWalRightButton={handleWalRightButton}
+           />
+         </View> 
+      </View>
+        :
+        <View style={styles.header}>
+        <CustomHeader 
+          title={"Deposit"}
+        /> 
+         <View style={styles.menu}>
+         <CommonTop
+           admin={authType == ("admin" || "subadmin") ? true : false}
+           LeftButton={LeftButton}
+           RightButton={RightButton}
+           handleLeftButton={handleLeftButton}
+           handleRightButton={handleRightButton}
+           handleWalLeftButton={handleWalLeftButton}
+           handleWalMidButton={handleWalMidButton}
+           handleWalRightButton={handleWalRightButton}
+         />
+       </View> 
+      </View>
+          }
+      
         <View style={styles.body}>
           {authType == "client" ? 
             <View style={styles.picker}>
@@ -254,7 +275,7 @@ const Deposit = () => {
                 setOpen={setOpenClientPicker}
                 setValue={setPickerUser}
                 setItems={setPickerUserList}
-                textStyle={{fontSize: RFValue(16)}}
+                textStyle={{fontSize: RFValue(13)}}
                 labelStyle={{fontWeight: "bold"}}
               />
             </View>
@@ -274,7 +295,7 @@ const Deposit = () => {
                     setOpen={setOpenAdminPickerGroup}
                     setValue={setPickerGroup}
                     setItems={setPickerGroupList}
-                    textStyle={{fontSize: RFValue(16)}}
+                    textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
                   />
                 </View>
@@ -291,7 +312,7 @@ const Deposit = () => {
                     setOpen={setOpenAdminPickerWallet}
                     setValue={setWalletPickerType}
                     setItems={setWalletPickerList}
-                    textStyle={{fontSize: RFValue(16)}}
+                    textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
                   />
                 </View>
@@ -302,6 +323,7 @@ const Deposit = () => {
           }
           {authType == 'agent' ?
             [transType == 'Yesterday' ?
+            <View style={{flex:0.1, flexDirection:"row"}}>
               <View style={styles.status_row}>
                 <View style={styles.checkboxContainer}>
                   <Text style={styles.label}>Status:  </Text>
@@ -334,11 +356,12 @@ const Deposit = () => {
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
                 </View>
-              </View>
+              </View></View>
               :
               <View></View>
             ]
           :
+          <View style={{flex:0.1, marginTop:8, flexDirection:"row"}}>
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Status:   </Text>
@@ -350,6 +373,7 @@ const Deposit = () => {
                   onChange={handleCheckBox}
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
+               </View>
               </View>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Accepted</Text>
@@ -388,7 +412,9 @@ const Deposit = () => {
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
+            <View style={{marginBottom:5}}>
               <View style={styles.view_rectangle}>
+                <ScrollView>
                 <TableRowEditDeposit 
                   header={true} 
                   rowData={agentTableHeader} 
@@ -417,27 +443,78 @@ const Deposit = () => {
                   rejectCallback={rejectCallback}
                   acceptCallback={acceptCallback}
                 />
+                <TableRowEditDeposit 
+                  header={false} 
+                  rowData={agentTableRowThree} 
+                  type={transType} 
+                  rejectCallback={rejectCallback}
+                  acceptCallback={acceptCallback}
+                />
+                <TableRowEditDeposit 
+                  header={false} 
+                  rowData={agentTableRowThree} 
+                  type={transType} 
+                  rejectCallback={rejectCallback}
+                  acceptCallback={acceptCallback}
+                />
+                <TableRowEditDeposit 
+                  header={false} 
+                  rowData={agentTableRowThree} 
+                  type={transType} 
+                  rejectCallback={rejectCallback}
+                  acceptCallback={acceptCallback}
+                />
+                <TableRowEditDeposit 
+                  header={false} 
+                  rowData={agentTableRowThree} 
+                  type={transType} 
+                  rejectCallback={rejectCallback}
+                  acceptCallback={acceptCallback}
+                />
+                <TableRowEditDeposit 
+                  header={false} 
+                  rowData={agentTableRowThree} 
+                  type={transType} 
+                  rejectCallback={rejectCallback}
+                  acceptCallback={acceptCallback}
+                />
+                </ScrollView>
+                </View>
               </View>
             :
             <>
               <View style={styles.view_rectangle}>
+                <ScrollView>
                 <TableRow header={true} rowData={tableHeader} />
                 <TableRow header={false} rowData={tableRowOne} />
                 <TableRow header={false} rowData={tableRowTwo} />
                 <TableRow header={false} rowData={tableRowThree} />
-              </View>
+                <TableRow header={false} rowData={tableRowOne} />
+                <TableRow header={false} rowData={tableRowTwo} />
+                <TableRow header={false} rowData={tableRowThree} />
+                </ScrollView>
+            </View>
               <View styles={styles.total}>
                 <Text style={styles.total_text}>Total Amount  : TK {acceptedTotal}</Text>
               </View>
+              
             </>
             ]
           :
             <>
               <View style={styles.view_rectangle}>
+                <ScrollView>
                 <TableRow header={true} rowData={tableHeader} />
                 <TableRow header={false} rowData={tableRowOne} />
                 <TableRow header={false} rowData={tableRowTwo} />
                 <TableRow header={false} rowData={tableRowThree} />
+                <TableRow header={false} rowData={tableRowOne} />
+                <TableRow header={false} rowData={tableRowTwo} />
+                <TableRow header={false} rowData={tableRowThree} />
+                <TableRow header={false} rowData={tableRowOne} />
+                <TableRow header={false} rowData={tableRowTwo} />
+                <TableRow header={false} rowData={tableRowThree} />
+                </ScrollView>
               </View>
               <View style={styles.total}>
                 <View style={{flexDirection:"row"}}>
@@ -460,9 +537,9 @@ const Deposit = () => {
                 </View>
               </View>
             </>
-          }
+          }  
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
@@ -471,15 +548,31 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  header:{
+    flex:1,
+  },
+  admin_header:{
+    flex:0.7,
+  },
+  menu:{
+    flex:2, 
+    flexDirection:"row", 
+    alignSelf:"center",
+    //margin:heightPercentageToDP("1%"),
+  },
   body: {
+    flex:4,
     backgroundColor: Colors.white,
     flexDirection: 'column',
-    flex: 1,
     alignItems: "center",
-    paddingBottom: heightPercentageToDP("2%"),
+  },
+  admin_menu:{
+    flex:1, 
+    flexDirection:"row", 
+    alignSelf:"center",
   },
   picker: {
-    marginTop: heightPercentageToDP("2%"),
+    marginTop: heightPercentageToDP("3%"),
     width:  windowWidth/2 - widthPercentageToDP("10%"),
     flexDirection: "row",
     flex: 1,
@@ -488,7 +581,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   picker_admin: {
-    marginTop: heightPercentageToDP("2%"),
+    marginTop: heightPercentageToDP("3%"),
     height: 5,
     width:  windowWidth/2 - widthPercentageToDP("10%"),
     flexDirection: "row",
@@ -497,9 +590,7 @@ const styles = StyleSheet.create({
     marginLeft: 10,
   },
   status_row: {
-    marginTop: heightPercentageToDP("1%"),
     flexDirection: "row",
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
@@ -511,11 +602,7 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP("1%"),
   },
   checkbox: {
-   // height: heightPercentageToDP("1%"),
     transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
-    //alignSelf: "center",
-   // marginBottom: heightPercentageToDP("4%")
-    //marginTop: heightPercentageToDP("-1%"),
     marginLeft: widthPercentageToDP("-2%"),
     marginRight: widthPercentageToDP("2%"),
   },
@@ -525,24 +612,21 @@ const styles = StyleSheet.create({
     fontSize: RFValue(14)
   },
   view_rectangle: {
-    flexDirection: "column", 
+    flex:1,
+    flexDirection: "column",
     alignItems: "center",
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: "flex-start",
-    marginTop: heightPercentageToDP("1%"),
+   // marginTop: heightPercentageToDP("1%"),
     width: widthPercentageToDP("90%"),
-   // height: windowHeight - heightPercentageToDP("47%"),
     padding: heightPercentageToDP("1%"),
-    //paddingBottom: windowHeight/2 - heightPercentageToDP("30%"),
   },
   total: {
     flexDirection: "column",
     textAlign: "left",
-    // alignItems: "center",
-    // justifyContent: "center",
     marginTop: heightPercentageToDP("1%"),
   },
   total_text: {

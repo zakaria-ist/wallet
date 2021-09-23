@@ -51,7 +51,7 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
         </View>
         <View style={styles.view_right}>
           <View style={styles.view_input}>
-            {transType == "Deposit" ? (<Text>Ref. Code : </Text>) : (<Text>Mobile No. :  </Text>)}
+            {transType == "Deposit" ? (<Text>Ref. Code   :  </Text>) : (<Text>Mobile No. :  </Text>)}
             <TextInput 
               style={styles.text_input}
               onChangeText={setRefCode}
@@ -63,7 +63,7 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
             />
           </View>
           <View style={styles.view_input}>
-            <Text>Amount     :  </Text>
+            <Text>Amount      :  </Text>
             <TextInput 
               style={styles.text_input}
               onChangeText={setAmount}

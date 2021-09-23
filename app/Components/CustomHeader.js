@@ -41,14 +41,14 @@ const CustomHeader = ({title}) => {
         <View 
           style={styles.view_root}
         >
-          <View style={{flex: 2, marginTop: heightPercentageToDP("-1%")}}>
+          <View style={{flex: 2, alignItems:"flex-start", justifyContent: 'center',}}>
             <Button 
               onPress={() => navigation.openDrawer()}
               icon={<Feather name="menu" color={WalletColors.Wblue} size={isSmallRF || isMediumRF || isLargeRF} />}
               buttonStyle={{backgroundColor: "white"}}
             />
           </View>
-          <View style={{flex: 10, alignItems: 'center'}}>
+          <View style={{flex: 8, alignItems:"center", justifyContent: 'center',}}>
             <Text style={styles.header_text}>{headerTitle}</Text>
           </View>
         </View>
@@ -56,15 +56,6 @@ const CustomHeader = ({title}) => {
   })
 
 };
-
-// size={screensize.getSmallScreen() || screensize.getMediumScreen() || screensize.getLargeScreen} />}
-
-// screensize.getSmallScreen()
-// ? RFValue(12) : screensize.getMediumScreen();
-// screensize.getMediumScreen()
-// ? RFValue(19) : screensize.getLargeScreen();
-// screensize.getLargeScreen()
-// ? RFValue(32) : screensize.getSmallScreen();
 
 const isSmallRF = screensize.getSmallScreen() ? RFValue(14) : isMediumRF;
 const isMediumRF = screensize.getMediumScreen() ? RFValue(19) : isLargeRF;

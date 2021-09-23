@@ -36,6 +36,8 @@ import CustomHeader from "../Components/CustomHeader";
 import CommonTop from "../Components/CommonTop";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
+import { flexDirection, height } from 'styled-system';
+import { block } from 'react-native-reanimated';
 
 const SummaryReport = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -128,51 +130,61 @@ const SummaryReport = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{backgroundColor: Colors.white,flex:1}}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-          <CustomHeader 
-            title={"Summary Report"}
-          />
-          <CommonTop
-            admin={true}
-            LeftButton={LeftButton}
-            RightButton={RightButton}
-            handleLeftButton={handleLeftButton}
-            handleRightButton={handleRightButton}
-            handleWalLeftButton={handleWalLeftButton}
-            handleWalMidButton={handleWalMidButton}
-            handleWalRightButton={handleWalRightButton}
-          />
-
-        <View style={styles.body}>
-          <View style={styles.view_rectangle}>
-            <SummaryTableRow header={true} rowData={tableHeader} />
-            <SummaryTableRow header={false} rowData={groupData} />
-            <SummaryTableRow header={false} rowData={groupData} />
-          </View>
+      <View style={styles.header}>
+        <CustomHeader 
+          title={"Summary Report"}
+        />   
+        <View style={styles.menu}>
+        <CommonTop
+          admin={true}
+          LeftButton={LeftButton}
+          RightButton={RightButton}
+          handleLeftButton={handleLeftButton}
+          handleRightButton={handleRightButton}
+          handleWalLeftButton={handleWalLeftButton}
+          handleWalMidButton={handleWalMidButton}
+          handleWalRightButton={handleWalRightButton}
+        />
+      </View>
+      </View>
+      <View style={styles.body}> 
+        <View style={styles.view_rectangle}>
+        <ScrollView>
+          <SummaryTableRow header={true} rowData={tableHeader} />
+          <SummaryTableRow header={false} rowData={groupData} />
+          <SummaryTableRow header={false} rowData={groupData} />
+          <SummaryTableRow header={false} rowData={groupData} /> 
+          <SummaryTableRow header={false} rowData={groupData} />
+        </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
 
-
-const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  header:{
+    flex:1,
+  },
+  menu:{
+    flex:1, 
+    flexDirection:"row", 
+    alignSelf:"center"
+  },
   body: {
-    // height: heightPercentageToDP("82%"),
+    marginTop:heightPercentageToDP("1%"),
     backgroundColor: Colors.white,
+    flex:5.6,
     flexDirection: 'column',
     alignItems: "center",
-    paddingBottom: heightPercentageToDP("2%"),
+    paddingBottom: heightPercentageToDP("1%"),
   },
   view_rectangle: {
+    flex:1,
     flexDirection: "column", 
     alignItems: "center",
     borderRadius: 20,
@@ -180,11 +192,8 @@ const styles = StyleSheet.create({
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: "flex-start",
-    marginTop: heightPercentageToDP("1%"),
-    width: widthPercentageToDP("95%"),
+    width: widthPercentageToDP("90%"),
     padding: heightPercentageToDP("1%"),
-   // height: windowHeight - heightPercentageToDP("47%"),
-    //paddingBottom: heightPercentageToDP("15%"),
   },
 });
 

@@ -110,15 +110,13 @@ const TodaysReport = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex:1,backgroundColor: Colors.white}}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+      <View style={styles.header}>
           <CustomHeader 
             title={"Today's Report"}
           />
+          <View style={styles.menu}>
           <CommonTop
             admin={false}
             LeftButton={LeftButton}
@@ -129,9 +127,11 @@ const TodaysReport = () => {
             handleWalMidButton={handleWalMidButton}
             handleWalRightButton={handleWalRightButton}
           />
-
+           </View>
+        </View>
         <View style={styles.body}>
           {transType == "Deposit" ?
+          <View style={{flex:0.1, flexDirection:"row"}}>
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Status:   </Text>
@@ -143,7 +143,6 @@ const TodaysReport = () => {
                   onChange={handleCheckBox}
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
-                
               </View>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Rejected</Text>
@@ -156,21 +155,42 @@ const TodaysReport = () => {
                 />
               </View>
             </View>
+            </View>
           :
             <View style={styles.checkboxContainer}></View>
           }
-          
+        {transType == "Deposit" ?
           <View style={styles.view_rectangle}>
+          <ScrollView>
+          <TableRow header={true} rowData={tableHeader} />
+          <TableRow header={false} rowData={tableRowOne} />
+          <TableRow header={false} rowData={tableRowTwo} />
+          <TableRow header={false} rowData={tableRowThree} />
+          <TableRow header={false} rowData={tableRowTwo} />
+          <TableRow header={false} rowData={tableRowThree} />
+          <TableRow header={false} rowData={tableRowTwo} />
+          <TableRow header={false} rowData={tableRowThree} />
+          <TableRow header={false} rowData={tableRowTwo} />
+          <TableRow header={false} rowData={tableRowThree} />
+          <TableRow header={false} rowData={tableRowTwo} />
+          <TableRow header={false} rowData={tableRowThree} />
+          </ScrollView>
+        </View>
+          :
+          <View style={styles.view_rectangle}>
+            <ScrollView>
             <TableRow header={true} rowData={tableHeader} />
             <TableRow header={false} rowData={tableRowOne} />
             <TableRow header={false} rowData={tableRowTwo} />
             <TableRow header={false} rowData={tableRowThree} />
-          </View>
+            </ScrollView>
+        </View>
+          }
           <View styles={styles.total}>
             <Text style={styles.total_text}>Total Amount : TK {acceptedTotal}</Text>
           </View>
         </View>
-      </ScrollView>
+      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };
@@ -179,35 +199,44 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
+  header:{
+    flex:1, 
+  },
+  menu:{
+    flex:2, 
+    flexDirection:"row", 
+    alignSelf:"center",
+  },
   body: {
+    flex: 4,
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",
-    paddingBottom: heightPercentageToDP("2%"),
   },
   status_row: {
-    marginTop: heightPercentageToDP("2%"),
     flexDirection: "row",
-    flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   checkboxContainer: {
     flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: heightPercentageToDP("1%"),
   },
   checkbox: {
-    alignSelf: "center",
-    marginRight: widthPercentageToDP("3%"),
+    transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
+    marginLeft: widthPercentageToDP("-2%"),
+    marginRight: widthPercentageToDP("2%"),
   },
-   label: {
-    marginTop: widthPercentageToDP("1%"),
+  label: {
+    marginTop: widthPercentageToDP("-1%"),
     marginLeft: widthPercentageToDP("2%"),
-    paddingRight: widthPercentageToDP("0%"),
     fontSize: RFValue(14)
   },
   view_rectangle: {
+    flex:1,
     flexDirection: "column", 
     alignItems: "center",
     borderRadius: 20,
@@ -215,17 +244,16 @@ const styles = StyleSheet.create({
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: "flex-start",
-    marginTop: heightPercentageToDP("1%"),
     width: widthPercentageToDP("90%"),
-    //height: windowHeight - heightPercentageToDP("40%"),
-    marginBottom: heightPercentageToDP("2%"),
     padding: heightPercentageToDP("1%"),
+    //height:windowHeight-StatusBar.currentHeight-heightPercentageToDP("25%")
   },
   total: {
+    flex:1,
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    marginTop: heightPercentageToDP("1%"),
+    //marginTop: heightPercentageToDP("1%"),
   },
   total_text: {
     fontSize: RFValue(13),

@@ -26,6 +26,7 @@ import {
 import { WalletColors } from "../assets/Colors.js";
 import Format from "../lib/format";
 import { RFValue } from 'react-native-responsive-fontsize';
+import { flex } from 'styled-system';
 
 const format = new Format();
 
@@ -80,7 +81,7 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
           onChangeText={setPinNo}
           // onChangeText={text => {console.log('text', text); setPinNo(String(text))}}
           value={pinNo}
-          textAlign={'left'}
+         // textAlign={'left'}
           placeholderTextColor={WalletColors.grey}
           keyboardType={'numeric'}
           onBlur={handleChange}
@@ -148,7 +149,7 @@ const styles = StyleSheet.create({
   view_rectangle: {
     flexDirection: "row", 
     alignItems: "center",
-     borderRadius: 5,
+    borderRadius: 5,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.black,
     borderStyle: 'solid',
@@ -156,7 +157,7 @@ const styles = StyleSheet.create({
     alignContent: "space-between",
     // height: heightPercentageToDP("15%"),
     width: widthPercentageToDP("85%"),
-    marginBottom: heightPercentageToDP("1%"),
+   // marginBottom: heightPercentageToDP("1%"),
     //height: heightPercentageToDP("63%"),
   },
   view_left: {
@@ -179,11 +180,12 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("4%"),
     borderRadius: 6,
     padding: 3,
-    textAlign: "left",
+    marginTop:3,
+    //textAlign: "left",
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    //justifyContent: "flex-start",
+    justifyContent: "flex-start",
     color: WalletColors.Wblue,
     fontSize: RFValue(10),
   },

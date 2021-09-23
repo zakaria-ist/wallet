@@ -156,15 +156,15 @@ const styles = StyleSheet.create({
   view_rectangle: {
     flexDirection: "row", 
     alignItems: "center",
-    // borderRadius: 10,
+    borderRadius: 5,
     borderBottomWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.black,
     borderStyle: 'solid',
-    justifyContent: 'center',
+    justifyContent: "flex-start",
     alignContent: "space-between",
     // height: heightPercentageToDP("15%"),
     width: widthPercentageToDP("85%"),
-    marginBottom: heightPercentageToDP("1%"),
+    //marginBottom: heightPercentageToDP("1%"),
   },
   view_left: {
     flex: 0.9,
