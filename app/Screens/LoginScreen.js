@@ -27,7 +27,7 @@ import {
   useColorScheme,
   TouchableOpacity,
   InteractionManager,
-  Platform
+  Keyboard
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
 import CustomAlert from "../lib/alert";
@@ -231,6 +231,12 @@ const LoginScreen = ({navigation}) => {
         }
       })
   }
+
+  const handleKeyDown = (e) => {
+    if(e.nativeEvent.key == "Enter"){
+        Keyboard.dismiss();
+    }
+  }
   
   return (
     <SafeAreaView style={backgroundStyle}>
@@ -249,8 +255,11 @@ const LoginScreen = ({navigation}) => {
                 value={userName}
                 textAlign={'center'}
                 placeholder={'Username'}
-                setPlaceholder={setusernamePlaceholder}
                 placeholderTextColor={WalletColors.grey}
+                multiline={true}
+                onSubmitEditing={handleKeyDown}
+                blurOnSubmit={true}
+                returnKeyLabel='go'
               />
               <TextInput 
                 style={styles.text_input}
@@ -258,9 +267,12 @@ const LoginScreen = ({navigation}) => {
                 value={password}
                 textAlign={'center'}
                 placeholder={'Password'}
-                setPlaceholder={setpasswordPlaceholder}
                 placeholderTextColor={WalletColors.grey}
                 secureTextEntry={true}
+                multiline={true}
+                onSubmitEditing={handleKeyDown}
+                blurOnSubmit={true}
+                returnKeyLabel='go'
               />
               <TouchableOpacity
                 onPress={handleLogin}>
@@ -295,12 +307,9 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    textAlign:'center',
-    justifyContent: 'center',
+    textAlign: 'center',
     color: WalletColors.black,
-    flex: 1, 
     fontSize: RFValue(14),
-    // textAlignVertical: 'top'
   },
   sign_button: {
     width: widthPercentageToDP("35%"),
@@ -345,10 +354,10 @@ const styles = StyleSheet.create({
     textAlign: 'center'
   },
   view_input: {
-    flexDirection: "column", 
-    flex: 1, 
-    textAlign:'center',
+    flexDirection: "column",
+    justifyContent: 'center',
     alignItems: "center", 
+    alignContent: "center",
     marginTop: heightPercentageToDP("8%"),
   }
 });
