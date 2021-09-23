@@ -29,6 +29,7 @@
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "^1.10.3",
     "react-native-keyboard-aware-scroll-view": "^0.9.4",
+    "react-native-loading-spinner-overlay": "^2.0.0",
     "react-native-modal": "^12.1.0",
     "react-native-notifications": "^4.1.2",
     "react-native-push-notification": "^8.1.0",

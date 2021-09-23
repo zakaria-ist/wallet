@@ -30,7 +30,7 @@ import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
-
+import Spinner from "react-native-loading-spinner-overlay";
 import SummaryTableRow from "../Components/SummaryTableRow";
 import CustomHeader from "../Components/CustomHeader";
 import CommonTop from "../Components/CommonTop";
@@ -39,6 +39,7 @@ import { WalletColors } from "../assets/Colors.js";
 
 const SummaryReport = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [transType, setTransType] = useStateIfMounted("Today");
   const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletData, setWalletData] = useStateIfMounted([]);
@@ -109,27 +110,43 @@ const SummaryReport = () => {
 
   const handleLeftButton = () => {
     setTransType("Yesterday");
+    renderTablesData();
   }
 
   const handleRightButton = () => {
     setTransType("Today");
+    renderTablesData();
   }
 
   const handleWalLeftButton = () => {
     setWalletType(1);
+    renderTablesData();
   }
 
   const handleWalMidButton = () => {
     setWalletType(2);
+    renderTablesData();
   }
 
   const handleWalRightButton = () => {
     setWalletType(3);
+    renderTablesData();
+  }
+
+  const renderTablesData = async () => {
+    onSpinnerChanged(true);
+
+    onSpinnerChanged(false);
   }
 
   return (
     <SafeAreaView>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Spinner
+        visible={spinner}
+        // textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
       <ScrollView
         stickyHeaderIndices={[0]}
         contentInsetAdjustmentBehavior="automatic"
@@ -186,6 +203,9 @@ const styles = StyleSheet.create({
    // height: windowHeight - heightPercentageToDP("47%"),
     //paddingBottom: heightPercentageToDP("15%"),
   },
+  spinnerTextStyle: {
+    color: WalletColors.Wblue,
+  }
 });
 
 export default SummaryReport;

@@ -29,6 +29,7 @@ import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
+import Spinner from "react-native-loading-spinner-overlay";
 import firebase from "@react-native-firebase/app";
 import firestore from '@react-native-firebase/firestore';
 
@@ -52,6 +53,7 @@ const db = firestore();
 
 const CreateMessage = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [transType, setTransType] = useStateIfMounted("Withdrawal");
   const [token, setToken] = useStateIfMounted("");
   const [superiorAgent, setSuperiorAgent] = useStateIfMounted("");
@@ -155,7 +157,6 @@ const CreateMessage = () => {
             const results = await request.post(pushUrl, params);
             console.log('results', results);
           }
-
         }
       }
     } else {
@@ -171,7 +172,7 @@ const CreateMessage = () => {
   }
 
   const handleSubmit = () => {
-    console.log('handleSubmit');
+    onSpinnerChanged(true);
     const userSendMessageUrl = request.getUserSendMessageUrl();
     if (messageOne.refCode != "" && messageOne.amount != "") {
       sendMessageToAgent(messageOne, userSendMessageUrl);
@@ -188,6 +189,7 @@ const CreateMessage = () => {
     if (messageFive.refCode != "" && messageFive.amount != "") {
       sendMessageToAgent(messageFive, userSendMessageUrl);
     }
+    onSpinnerChanged(false);
   }
 
   const handleQuickInsert = () => {
@@ -248,6 +250,11 @@ const CreateMessage = () => {
   return (
     <SafeAreaView>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Spinner
+        visible={spinner}
+        // textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
       <ScrollView
         stickyHeaderIndices={[0]}
         contentInsetAdjustmentBehavior="automatic"
@@ -478,6 +485,9 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: heightPercentageToDP("-4%"),
     marginRight: heightPercentageToDP("2%"),
+  },
+  spinnerTextStyle: {
+    color: WalletColors.Wblue,
   }
 });
 

@@ -31,7 +31,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import AsyncStorage from "@react-native-community/async-storage";
 import CheckBox from "@react-native-community/checkbox";
 import DropDownPicker from 'react-native-dropdown-picker';
-
+import Spinner from "react-native-loading-spinner-overlay";
 import CustomHeader from "../Components/CustomHeader";
 import TableRowEditDeposit from "../Components/TableRowEditDeposit";
 import TableRow from "../Components/TableRow";
@@ -47,6 +47,7 @@ const request = new Request();
 
 const Deposit = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [authType, setAuthType] = useStateIfMounted("");
   const [token, setToken] = useStateIfMounted("");
   const [transType, setTransType] = useStateIfMounted("Today");
@@ -223,6 +224,7 @@ const Deposit = () => {
     renderTablesData();
   }
   const renderTablesData = async () => {
+    onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
     const params = JSON.stringify(
       {
@@ -297,11 +299,17 @@ const Deposit = () => {
         setTableRowHtml(msg_html);
       }
     }
+    onSpinnerChanged(false);
   }
 
   return (
     <SafeAreaView>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Spinner
+        visible={spinner}
+        // textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
       <ScrollView
         stickyHeaderIndices={[0]}
         contentInsetAdjustmentBehavior="automatic"
@@ -606,6 +614,9 @@ const styles = StyleSheet.create({
     fontSize: RFValue(13),
     fontWeight: "bold",
     marginLeft: heightPercentageToDP("1%"),
+  },
+  spinnerTextStyle: {
+    color: WalletColors.Wblue,
   }
 });
 

@@ -31,7 +31,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
 import CheckBox from "@react-native-community/checkbox";
-
+import Spinner from "react-native-loading-spinner-overlay";
 import CustomHeader from "../Components/CustomHeader";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
@@ -47,6 +47,7 @@ const time = new KTime();
 
 const TodaysReport = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [transType, setTransType] = useStateIfMounted("withdrawal");
   const [token, setToken] = useStateIfMounted("");
   const [authType, setAuthType] = useStateIfMounted("");
@@ -131,6 +132,7 @@ const TodaysReport = () => {
     renderTablesData();
   }
   const renderTablesData = async () => {
+    onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
     let purpose = 'deposit';
     if (transType == 'deposit') {
@@ -182,11 +184,17 @@ const TodaysReport = () => {
       setTableRowHtml(msg_html);
       setAcceptedTotal(total);
     }
+    onSpinnerChanged(false);
   }
 
   return (
     <SafeAreaView>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Spinner
+        visible={spinner}
+        // textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
       <ScrollView
         stickyHeaderIndices={[0]}
         contentInsetAdjustmentBehavior="automatic"
@@ -306,6 +314,9 @@ const styles = StyleSheet.create({
   total_text: {
     fontSize: RFValue(13),
     fontWeight: "bold"
+  },
+  spinnerTextStyle: {
+    color: WalletColors.Wblue,
   }
 });
 

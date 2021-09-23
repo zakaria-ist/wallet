@@ -42,6 +42,7 @@ import firebase from "@react-native-firebase/app";
 import firestore from '@react-native-firebase/firestore';
 import { useStateIfMounted } from 'use-state-if-mounted';
 import Screensize from '../lib/screensize.js';
+import Spinner from "react-native-loading-spinner-overlay";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -54,6 +55,7 @@ const alert = new CustomAlert();
 const db = firestore();
 
 const LoginScreen = ({navigation}) => {
+  const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const isDarkMode = useColorScheme() === 'dark';
@@ -158,6 +160,7 @@ const LoginScreen = ({navigation}) => {
       alert.warning("Field cannot be empty. Check the username or password. ");
       return;
     }
+    onSpinnerChanged(true);
     const auth_url = request.getAuthUrl();
     let params = JSON.stringify({username: userName, password: password}); //admin username=kenny & password=KN@July21
     const content = await request.post(auth_url, params);
@@ -200,6 +203,7 @@ const LoginScreen = ({navigation}) => {
         //get user permission and save user device token
         requestUserPermission(userName);
       }
+      onSpinnerChanged(false);
       // navigate to user pages
       navigation.replace('DrawerStack');
     } else {
@@ -241,6 +245,11 @@ const LoginScreen = ({navigation}) => {
   return (
     <SafeAreaView style={backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Spinner
+        visible={spinner}
+        // textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
       <ScrollView
         style={backgroundStyle}>
           <View style={styles.view_logo}>
@@ -359,6 +368,9 @@ const styles = StyleSheet.create({
     alignItems: "center", 
     alignContent: "center",
     marginTop: heightPercentageToDP("8%"),
+  },
+  spinnerTextStyle: {
+    color: WalletColors.Wblue,
   }
 });
 
