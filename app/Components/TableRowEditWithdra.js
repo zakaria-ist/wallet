@@ -72,31 +72,42 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
       <Text style={styles.cell_text}>{cellData.time}</Text>
     )
     setCellOne(leftCell);
-
     midCell.push(
-      <View style={styles.view_input}>
-        <Text style={{fontSize: RFValue(13)}}>Pin No.       :  </Text>
-        <TextInput 
+        <View style={{flexDirection:"row"}}>
+        <View style={{flexDirection: "column", margin:heightPercentageToDP("0.5%")}}>
+        <Text style={{fontSize: RFValue(13),marginBottom:heightPercentageToDP("1%")}}>Pin No.</Text>
+        <Text style={styles.cell_text}>Amount</Text>
+        <Text style={styles.cell_text}>Wallet</Text>
+        <Text style={styles.cell_text}>Mobile No.</Text>
+        </View>
+        <View style={{flexDirection: "column"}}>
+          <View style={{flexDirection: "row"}}>
+           <Text style={{fontSize: RFValue(13),marginTop:heightPercentageToDP("0.5%")}}> : </Text>
+           <TextInput 
           style={styles.text_input}
           onChangeText={setPinNo}
           // onChangeText={text => {console.log('text', text); setPinNo(String(text))}}
           value={pinNo}
-         // textAlign={'left'}
           placeholderTextColor={WalletColors.grey}
           keyboardType={'numeric'}
           onBlur={handleChange}
         />
-      </View>
-    )
-    midCell.push(
-      <Text style={styles.cell_text}>Amount      :  {format.separator(cellData.amount)}</Text>
-    )
-    midCell.push(
-      <Text style={styles.cell_text}>Wallet         :  {cellData.wallet}</Text>
-    )
-    midCell.push(
-      <Text style={styles.cell_text}>Mobile No. :  {cellData.mobile}</Text>
-    )
+        </View>        
+          <View style={{flexDirection: "row"}}>
+           <Text style={styles.cell_text}> : </Text>
+           <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
+        </View>         
+          <View style={{flexDirection: "row"}}>
+           <Text style={styles.cell_text}> : </Text>
+           <Text style={styles.cell_text}>{cellData.wallet}</Text>
+        </View>         
+          <View style={{flexDirection: "row"}}>
+           <Text style={styles.cell_text}> : </Text>
+           <Text style={styles.cell_text}>{cellData.mobile}</Text>
+        </View>         
+        </View>
+        </View>
+      )
     setCellTwo(midCell);
 
     rightCell.push(
@@ -149,16 +160,13 @@ const styles = StyleSheet.create({
   view_rectangle: {
     flexDirection: "row", 
     alignItems: "center",
-    borderRadius: 5,
+    borderRadius: 1,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.black,
+    borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: "flex-start",
     alignContent: "space-between",
-    // height: heightPercentageToDP("15%"),
     width: widthPercentageToDP("85%"),
-   // marginBottom: heightPercentageToDP("1%"),
-    //height: heightPercentageToDP("63%"),
   },
   view_left: {
     flex: 0.9,
@@ -180,29 +188,25 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("4%"),
     borderRadius: 6,
     padding: 3,
-    marginTop:3,
-    //textAlign: "left",
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    justifyContent: "flex-start",
     color: WalletColors.Wblue,
     fontSize: RFValue(10),
   },
-  view_input: {
-   // alignItems: "flex-start",
-    flexDirection: "row", 
+  view_input: { 
     alignItems: "center",
-    // padding:widthPercentageToDP("2%")
   },
   view_lineNumber: {
     flexDirection: "column", 
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingTop: heightPercentageToDP("1%"),
   },
   view_lineNumber_center: {
     flexDirection: "column",
     justifyContent: "flex-start",
+    paddingTop: heightPercentageToDP("1%"),
     paddingBottom: heightPercentageToDP("1%"),
   },
   cell_text: {
@@ -212,7 +216,7 @@ const styles = StyleSheet.create({
   },
   cell_text_header: {
     alignSelf: "flex-start",
-    fontSize: RFValue(14),
+    fontSize: RFValue(13),
     fontWeight: "bold"
   },
   send_button: {

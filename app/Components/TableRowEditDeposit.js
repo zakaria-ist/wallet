@@ -65,29 +65,38 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
       <Text style={styles.cell_text}>{cellData.time}</Text>
     )
     setCellOne(leftCell);
-
     midCell.push(
-      <Text style={styles.cell_text}>Ref. No.   : {cellData.refNo}</Text>
+      <View style={{flexDirection:"row"}}>
+        <View style={{flexDirection: "column", margin:heightPercentageToDP("0.5%")}}>
+          <Text style={styles.cell_text}>Ref. No.</Text>
+          <Text style={{fontSize: RFValue(13),marginBottom:heightPercentageToDP("1%")}}>Amount</Text>
+          <Text style={styles.cell_text}>Wallet</Text>
+        </View>
+        <View style={{flexDirection: "column"}}>
+          <View style={{flexDirection: "row"}}>
+          <Text style={styles.cell_text}> : </Text>
+          <Text style={styles.cell_text}>{cellData.refNo}</Text>
+        </View>        
+        <View style={{flexDirection: "row"}}>
+          <Text style={{fontSize: RFValue(13),marginTop:heightPercentageToDP("0.5%")}}> : </Text>
+          <TextInput 
+            style={styles.text_input}
+            // onChangeText={setPinNo}
+            onChangeText={text => {console.log('text', text); setAmount(format.separator(text))}}
+            value={amount}
+            textAlign={'left'}
+            placeholderTextColor={WalletColors.grey}
+            keyboardType={'numeric'}
+          />
+        </View>         
+        <View style={{flexDirection: "row"}}>
+          <Text style={styles.cell_text}> : </Text>
+          <Text style={styles.cell_text}>{cellData.wallet}</Text>
+         </View>    
+        </View>  
+      </View>       
     )
-    midCell.push(
-      <View style={styles.view_input}>
-        <Text style={{fontSize: RFValue(13)}}>Amount   : </Text>
-        <TextInput 
-          style={styles.text_input}
-          // onChangeText={setPinNo}
-          onChangeText={text => {console.log('text', text); setAmount(format.separator(text))}}
-          value={amount}
-          textAlign={'left'}
-          placeholderTextColor={WalletColors.grey}
-          keyboardType={'numeric'}
-        />
-      </View>
-    )
-    midCell.push(
-        <Text style={styles.cell_text}>Wallet      : {cellData.wallet}</Text>
-
-    )
-    
+  
     setCellTwo(midCell);
 
     rightCell.push(
@@ -95,20 +104,16 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
       <TouchableOpacity
         onPress={onReject}
       >
-        <View style={styles.send_button}>
+        <View style={styles.send_button_reject}>
           <Text style={styles.send_button_text}>
             Reject
           </Text>
         </View>
       </TouchableOpacity>
-      </View>
-    )
-    rightCell.push(
-      <View style={styles.button_view}>
       <TouchableOpacity
         onPress={onAccept}
       >
-        <View style={styles.send_button}>
+        <View style={styles.send_button_accept}>
           <Text style={styles.send_button_text}>
             Accept
           </Text>
@@ -156,15 +161,13 @@ const styles = StyleSheet.create({
   view_rectangle: {
     flexDirection: "row", 
     alignItems: "center",
-    borderRadius: 5,
+    borderRadius: 1,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.black,
+    borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: "flex-start",
     alignContent: "space-between",
-    // height: heightPercentageToDP("15%"),
     width: widthPercentageToDP("85%"),
-    //marginBottom: heightPercentageToDP("1%"),
   },
   view_left: {
     flex: 0.9,
@@ -190,7 +193,6 @@ const styles = StyleSheet.create({
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    //justifyContent: "flex-start",
     color: WalletColors.Wblue,
     fontSize: RFValue(10),
   },
@@ -201,11 +203,13 @@ const styles = StyleSheet.create({
   view_lineNumber: {
     flexDirection: "column", 
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
+    paddingTop: heightPercentageToDP("1%"),
   },
   view_lineNumber_center: {
     flexDirection: "column",
     justifyContent: "center",
+    paddingTop: heightPercentageToDP("1%"),
     paddingBottom: heightPercentageToDP("1%"),
   },
   cell_text: {
@@ -219,19 +223,30 @@ const styles = StyleSheet.create({
     fontWeight: "bold"
   },
   button_view: {
-    paddingTop: heightPercentageToDP("1%"),
-    paddingBottom: heightPercentageToDP("1%"),
+    flexDirection: "row",
   },
-  send_button: {
-    width: widthPercentageToDP("20%"),
+  send_button_accept: {
+    width: widthPercentageToDP("10%"),
     height: heightPercentageToDP("4%"),
-    marginTop: heightPercentageToDP("-1%"),
+    marginLeft: heightPercentageToDP("1%"),
     borderRadius: 10,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wgreen,
     borderStyle: 'solid',
     justifyContent: 'center',
     backgroundColor: WalletColors.Wgreen,
+    alignItems: 'center'
+  },
+  send_button_reject: {
+    width: widthPercentageToDP("10%"),
+    height: heightPercentageToDP("4%"),
+    marginLeft: heightPercentageToDP("1%"),
+    borderRadius: 10,
+    borderWidth: StyleSheet.hairlineWidth,
+    borderColor: WalletColors.Wred,
+    borderStyle: 'solid',
+    justifyContent: 'center',
+    backgroundColor: WalletColors.Wred,
     alignItems: 'center'
   },
   send_button_text: {

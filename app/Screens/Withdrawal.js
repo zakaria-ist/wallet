@@ -79,21 +79,27 @@ const Withdrawal = () => {
     ["Message"],
     ["Action"],
   ];
-  const tableRowOne = [
-    ["10:10 AM",],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    : Alipay"],
-    ["Pending"],
-  ];
-  const tableRowTwo = [
-    ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    : Alipay"],
-    ["Accepted"],
-  ];
-  const tableRowThree = [
-    ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    : Alipay"],
-    ["Accepted"],
-  ];
+  const tableRowOne = {
+    time: "10:10 AM",
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Pending",
+  };
+  const tableRowTwo = {
+    time: ["10:10 AM",' ', "(12:10 AM)"],
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Accepted",
+  };
+  const tableRowThree = {
+    time: ["10:10 AM",' ', "(12:10 AM)"],
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Accepted",
+  };
   const agentTableRowOne = {
     rowId: 1,
     time: "10:10 AM",
@@ -243,9 +249,10 @@ const Withdrawal = () => {
           }
         <View style={styles.body}>
           {authType == "client" ? 
+          <View style={{marginBottom:heightPercentageToDP("1%"), flexDirection: "row"}}>
             <View style={styles.picker}>
               <DropDownPicker
-                style={{height: heightPercentageToDP("5%")}}
+                style={{marginTop:-heightPercentageToDP("1%"),height: heightPercentageToDP("5%")}}
                 onChangeValue={(value) => {
                   setPickerUser(value); 
                   renderTablesData();
@@ -259,6 +266,7 @@ const Withdrawal = () => {
                 textStyle={{fontSize: RFValue(13)}}
                 labelStyle={{fontWeight: "bold"}}
               />
+            </View>
             </View>
           :
             [authType == ("admin" || "subadmin") ? 
@@ -304,7 +312,7 @@ const Withdrawal = () => {
           }
           {authType == 'agent' ?
             [transType == 'Yesterday' ?
-            <View style={{flex:0.1, flexDirection:"row"}}>
+            <View style={{marginTop:-heightPercentageToDP("3%"), flexDirection:"row"}}>
               <View style={styles.status_row}>
                 <View style={styles.checkboxContainer}>
                   <Text style={styles.label}>Status:   </Text>
@@ -333,7 +341,8 @@ const Withdrawal = () => {
               <View></View>
             ]
           :
-          <View style={{flex:0.1, marginTop:8, flexDirection:"row"}}>
+          ([authType == ("admin" || "subadmin") ?
+            <View style={{marginTop:heightPercentageToDP("2%"), flexDirection:"row"}}>
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Status:   </Text>
@@ -362,10 +371,42 @@ const Withdrawal = () => {
                 <View style={styles.checkboxContainer}></View>
               }
             </View>
+            :
+            <View style={{marginTop:-heightPercentageToDP("2%"), flexDirection:"row"}}>
+            <View style={styles.status_row}>
+              <View style={styles.checkboxContainer}>
+                <Text style={styles.label}>Status:   </Text>
+                <Text style={styles.label}>Accepted</Text>
+                <CheckBox
+                  value={accepted}
+                  onValueChange={setAccepted}
+                  style={styles.checkbox}
+                  onChange={handleCheckBox}
+                  tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                />
+                 </View>
+              </View>
+              {transType == "Today" ?
+                <View style={styles.checkboxContainer}>
+                  <Text style={styles.label}>Pending</Text>
+                  <CheckBox
+                    value={pending}
+                    onValueChange={setPending}
+                    style={styles.checkbox}
+                    onChange={handleCheckBox}
+                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                  />
+                </View>
+              :
+                <View style={styles.checkboxContainer}></View>
+              }
+            </View>
+           ]
+           )
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
-            <View style={{marginBottom:5}}>
+            <View style={{marginBottom:heightPercentageToDP("1%"),marginTop:-heightPercentageToDP("1%")}}>
               <View style={styles.view_rectangle}>
                 <ScrollView>
                 <TableRowEditWithdra key={1}
@@ -392,20 +433,36 @@ const Withdrawal = () => {
                   type={transType} 
                   sendCallback={sendCallback} 
                 />
+                                <TableRowEditWithdra  key={2}
+                  header={false} 
+                  rowData={agentTableRowOne} 
+                  type={transType} 
+                  sendCallback={sendCallback} 
+                />
+                <TableRowEditWithdra  key={3}
+                  header={false} 
+                  rowData={agentTableRowTwo} 
+                  ype={transType} 
+                  sendCallback={sendCallback} 
+                />
+                <TableRowEditWithdra  key={4}
+                  header={false} 
+                  rowData={agentTableRowThree} 
+                  type={transType} 
+                  sendCallback={sendCallback} 
+                />
                 </ScrollView>
                 </View>
               </View>
             :
             <>
               <View style={styles.view_rectangle}>
-              <View style={{height:windowHeight-StatusBar.currentHeight-heightPercentageToDP("27%")}}>
               <ScrollView>
                 <TableRow header={true} rowData={tableHeader} />
                 <TableRow header={false} rowData={tableRowOne} />
                 <TableRow header={false} rowData={tableRowTwo} />
                 <TableRow header={false} rowData={tableRowThree} />
                </ScrollView>
-               </View>
               </View>
               <View styles={styles.total}>
                 <Text style={styles.total_text}>Total Amount  : TK {acceptedTotal}</Text>
@@ -458,30 +515,31 @@ const styles = StyleSheet.create({
     flex:1,
   },
   admin_header:{
-    flex:0.7,
+    flex:0.6,
   },
   menu:{
-    flex:2, 
+    flex:2.3, 
+    margin:heightPercentageToDP("1%"),
     flexDirection:"row", 
     alignSelf:"center",
-    //margin:heightPercentageToDP("1%"),
   },
   body: {
-    flex:4,
+    flex:3.5,
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",
   },
   admin_menu:{
     flex:1, 
+    margin:heightPercentageToDP("1.1%"),
     flexDirection:"row", 
     alignSelf:"center",
   },
   picker: {
-    marginTop: heightPercentageToDP("3%"),
+   // marginTop: heightPercentageToDP("3%"),
     width:  windowWidth/2 - widthPercentageToDP("10%"),
     flexDirection: "row",
-    flex: 1,
+   // flex: 1,
     justifyContent: "center",
     alignItems: "center",
     alignSelf: "center",
@@ -526,14 +584,12 @@ const styles = StyleSheet.create({
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: "flex-start",
-   // marginTop: heightPercentageToDP("1%"),
     width: widthPercentageToDP("90%"),
     padding: heightPercentageToDP("1%"),
   },
   total: {
     flexDirection: "column",
-    textAlign: "left",
-    marginTop: heightPercentageToDP("1%"),
+    //margin: heightPercentageToDP("1%"),
   },
   total_text: {
     fontSize: RFValue(13),

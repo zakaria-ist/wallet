@@ -272,6 +272,7 @@ const CreateMessage = () => {
                   >
                     <Text
                       style={{
+                        marginTop:-10,
                         color: WalletColors.black,
                         fontSize: RFValue(18),
                         fontWeight: "bold"
@@ -286,8 +287,8 @@ const CreateMessage = () => {
                     }}
                   >
                     <View
-                      style={styles.modal_close}>
-                      <Fontisto name="close" color={WalletColors.red} size={30} />
+                      style={styles.modal_close,{alignSelf:"flex-end",marginTop:-heightPercentageToDP("3%")}}>
+                      <Fontisto name="close" color={WalletColors.red} size={20} />
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -335,16 +336,17 @@ const CreateMessage = () => {
 
 const styles = StyleSheet.create({
   header:{
-    flex:1.3,
+    flex:1,
   },
   menu:{
-    flex:2, 
-    marginBottom:20,
+    flex:2.4, 
+    marginTop: heightPercentageToDP("0.4%"),
+    marginBottom: heightPercentageToDP("2.5%"),
     flexDirection:"row", 
     alignSelf:"center",
   },
   body: {
-    flex:4,
+    flex:3.2,
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",
@@ -436,16 +438,18 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   modal_title: {
+    width:widthPercentageToDP("23%"),
     alignSelf: "center",
     color: WalletColors.black,
-    textAlign: "center",
   },
   modal_close: {
     alignSelf: "flex-end",
     color: WalletColors.black,
     textAlign: "center",
-    marginTop: heightPercentageToDP("-4%"),
-    marginRight: heightPercentageToDP("2%"),
+   // marginTop:heightPercentageToDP("6%"),
+   // paddingBottom: heightPercentageToDP("-12%"),
+    //marginLeft: heightPercentageToDP("3%"),
+    // marginRight: heightPercentageToDP("10%"),
   }
 });
 

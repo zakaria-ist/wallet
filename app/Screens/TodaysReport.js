@@ -58,22 +58,30 @@ const TodaysReport = () => {
     ["Message"],
     ["Status"],
   ];
-  const tableRowOne = [
-    ["10:10 AM",],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    :  Alipay"],
-    ["Rejected"],
-  ];
-  const tableRowTwo = [
-    ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    :  Alipay"],
-    ["Accepted"],
-  ];
-  const tableRowThree = [
-    ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    :  Alipay"],
-    ["Accepted"],
-  ];
-
+  const tableRowOne = {
+    // rowId: 1,
+    time: "10:10 AM",
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Pending",
+  };
+  const tableRowTwo = {
+    // rowId: 1,
+    time: ["10:10 AM",' ', "(12:10 AM)"],
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Accepted",
+  };
+  const tableRowThree = {
+    // rowId: 1,
+    time: ["10:10 AM",' ', "(12:10 AM)"],
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Accepted",
+  };
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       AsyncStorage.getItem('walletData').then((walletData) => {
@@ -131,7 +139,7 @@ const TodaysReport = () => {
         </View>
         <View style={styles.body}>
           {transType == "Deposit" ?
-          <View style={{flex:0.1, flexDirection:"row"}}>
+          <View style={{marginTop:-heightPercentageToDP("3%"),flexDirection:"row"}}>
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Status:   </Text>
@@ -157,7 +165,7 @@ const TodaysReport = () => {
             </View>
             </View>
           :
-            <View style={styles.checkboxContainer}></View>
+            <View style={styles.checkboxContainer,{marginTop:-heightPercentageToDP("1%")}}></View>
           }
         {transType == "Deposit" ?
           <View style={styles.view_rectangle}>
@@ -203,12 +211,13 @@ const styles = StyleSheet.create({
     flex:1, 
   },
   menu:{
-    flex:2, 
+    flex:2.3, 
+    margin:heightPercentageToDP("1%"),
     flexDirection:"row", 
     alignSelf:"center",
   },
   body: {
-    flex: 4,
+    flex:3.5,
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",
@@ -246,14 +255,12 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     width: widthPercentageToDP("90%"),
     padding: heightPercentageToDP("1%"),
-    //height:windowHeight-StatusBar.currentHeight-heightPercentageToDP("25%")
   },
   total: {
     flex:1,
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center",
-    //marginTop: heightPercentageToDP("1%"),
   },
   total_text: {
     fontSize: RFValue(13),

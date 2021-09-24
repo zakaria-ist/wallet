@@ -1,26 +1,21 @@
 import React from "react";
 import { Button } from 'react-native-elements';
+import {StyleSheet} from 'react-native';
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from "react-native-responsive-fontsize";
-
 import CreateMessage from "../Screens/CreateMessage";
 import Deposit from "../Screens/Deposit";
 import Withdrawal from "../Screens/Withdrawal";
 import SummaryReport from "../Screens/SummaryReport";
 import TodaysReport from "../Screens/TodaysReport";
 import { WalletColors } from "../assets/Colors.js";
+import { borderRadius, styles } from "styled-system";
 import {
   heightPercentageToDP,
-  widthPercentageToDP,
 } from "react-native-responsive-screen";
 
-import { Dimensions , StatusBar } from 'react-native';
-import Screensize from '../lib/screensize.js';
-
-const screensize = new Screensize();
 const Tab = createBottomTabNavigator();
-
 // class CustomTabButton extends React.Component {
 //   render() {
 //     const {
@@ -53,10 +48,10 @@ const screenOptionStyle = {
     fontWeight: 'bold',
     color: WalletColors.Wblue,
   },
-  tabBarStyle: {
-    height: (screensize.getLargeScreen() ? (StatusBar.currentHeight - heightPercentageToDP("2%")) : (StatusBar.currentHeight + heightPercentageToDP("2%")))
+  tabBarStyle:{
+    height: heightPercentageToDP("6%"),
   },
-  tabBarLabelStyle: {height:0},
+  tabBarShowLabel: false,
   headerTitleAlign: 'center',
   tabBarActiveTintColor: WalletColors.Wblue,
   tabBarInactiveTintColor: 'gray',
@@ -64,7 +59,7 @@ const screenOptionStyle = {
       <Button 
         onPress={() => {}}  
         icon={<Feather name="menu" color="black" size={RFValue(28)} />}
-        buttonStyle={{backgroundColor: "white", marginLeft: 10}}
+        buttonStyle={{borderBottomWidth: StyleSheet.hairlineWidth,backgroundColor: "white", marginLeft: 10}}
       />
     ),
   headerShown: false,

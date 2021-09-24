@@ -20,7 +20,9 @@ import {
   useColorScheme,
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
+import Format from "../lib/format";
 import { RFValue } from 'react-native-responsive-fontsize';
+const format = new Format();
 
 const TableRow = ({header, rowData}) => {
   const [cellOne, setCellOne] = useStateIfMounted([]);
@@ -29,12 +31,15 @@ const TableRow = ({header, rowData}) => {
  
 
   useEffect(() => {
-    setCellOne(handleCell(rowData[0]));
-    setCellTwo(handleCell(rowData[1]));
-    setCellThree(handleCellThree(rowData[2]));
+    if (header) {
+      setCellOne(handleHeaderCell(rowData[0]));
+      setCellTwo(handleHeaderCell(rowData[1]));
+      setCellThree(handleHeaderCell(rowData[2]));
+    } else {
+      handleCell(rowData);
+    }
   }, [rowData]);
-
-  const handleCell = (cellData) => {
+  const handleHeaderCell = (cellData) => {
     let testCell = [];
     cellData.map((cell) => {
       testCell.push(
@@ -43,31 +48,50 @@ const TableRow = ({header, rowData}) => {
     })
     return testCell;
   }
-  const handleCellThree = (cellData) => {
-    let testCell = [];
-    if (cellData.length) {
-      if (header) {
-        testCell.push(
-          <Text style={styles.cell_text_header}>{cellData[0]}</Text>
-        )
-      } else {
-        if (cellData[0] == "Accepted") {
-          testCell.push(
-            <Text style={styles.text_cell_wgreen}>{cellData[0]}</Text>
-          )
-        }
-        else if (cellData[0] == "Rejected") {
-          testCell.push(
-            <Text style={styles.text_cell_wred}>{cellData[0]}</Text>
-          )
-        } else {
-          testCell.push(
-            <Text style={styles.text_cell_wblack}>{cellData[0]}</Text>
-          )
-        }
-      }
-    }
-    return testCell;
+
+  const handleCell = (cellData) => {
+    let leftCell = [];
+    let midCell = [];
+    let rightCell = [];
+
+    leftCell.push(
+      <Text style={styles.cell_text}>{cellData.time}</Text>
+    )
+    setCellOne(leftCell);
+    midCell.push(
+      <View style={{flexDirection:"row"}}>
+        <View style={{flexDirection: "column"}}>
+          <Text style={styles.cell_text}>Ref. No.</Text>
+          <Text style={styles.cell_text}>Amount</Text>
+          <Text style={styles.cell_text}>Wallet</Text>
+        </View>
+        <View style={{flexDirection: "column"}}>
+          <View style={{flexDirection: "row"}}>
+          <Text style={styles.cell_text}> : </Text>
+          <Text style={styles.cell_text}>{cellData.refNo}</Text>
+        </View>        
+        <View style={{flexDirection: "row"}}>
+          <Text style={styles.cell_text}> : </Text>
+          <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
+        </View>         
+        <View style={{flexDirection: "row"}}>
+          <Text style={styles.cell_text}> : </Text>
+          <Text style={styles.cell_text}>{cellData.wallet}</Text>
+         </View>    
+        </View>  
+      </View>       
+    )
+    
+    setCellTwo(midCell);
+
+    rightCell.push(
+      <View style={{flexDirection:"row"}}>
+        <Text style={(cellData.status == "Accepted")? styles.text_cell_wgreen: 
+        ((cellData.status == "Rejected") ? styles.text_cell_wred : 
+        styles.text_cell_wblack) }>{cellData.status}</Text>
+      </View>  
+    )
+    setCellThree(rightCell);
   }
 
   return useMemo(() => {
@@ -98,14 +122,9 @@ const styles = StyleSheet.create({
   view_rectangle: {
     flexDirection: "row", 
     flex:1,
-    // alignItems: "center",
-    // borderRadius: 10,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.black,
+    borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
-    // justifyContent: 'center',
-    // alignContent: "space-between",
-    // height: heightPercentageToDP("15%"),
     width: widthPercentageToDP("85%"),
     marginBottom: heightPercentageToDP("1%"),
   },
@@ -145,8 +164,7 @@ const styles = StyleSheet.create({
   view_lineNumber: {
     flexDirection: "column", 
     alignItems: "center",
-    justifyContent: "center"
-    // padding:widthPercentageToDP("5%")
+    justifyContent: "center",
   },
   cell_text: {
     padding: 1,
@@ -155,19 +173,19 @@ const styles = StyleSheet.create({
   },
   cell_text_header: {
     alignSelf: "flex-start",
-    fontSize: RFValue(14),
+    fontSize: RFValue(13),
     fontWeight: "bold",
   },
   text_cell_wred: {
-    fontSize: RFValue(14), 
+    fontSize: RFValue(13), 
     color: WalletColors.Wred
   },
   text_cell_wgreen: {
-    fontSize: RFValue(14), 
+    fontSize: RFValue(13), 
     color: WalletColors.Wgreen
   },
   text_cell_wblack: {
-    fontSize: RFValue(14), 
+    fontSize: RFValue(13), 
     color: WalletColors.black
   }
 });

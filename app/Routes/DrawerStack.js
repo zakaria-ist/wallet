@@ -59,7 +59,7 @@ const CustomDrawerContent = (props) => (
           <Image
               style={styles.drawerImage}
               source={require('../assets/icons/user.png')} />
-            <Text style={styles.userName}>User name</Text>
+            <Text style={styles.userName}>Username</Text>
           </View>   
         </View>   
       </View>

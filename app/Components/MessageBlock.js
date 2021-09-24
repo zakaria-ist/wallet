@@ -50,30 +50,70 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
           </View>
         </View>
         <View style={styles.view_right}>
-          <View style={styles.view_input}>
-            {transType == "Deposit" ? (<Text>Ref. Code   :  </Text>) : (<Text>Mobile No. :  </Text>)}
-            <TextInput 
-              style={styles.text_input}
-              onChangeText={setRefCode}
-              value={refCode}
-              //textAlign={'center'}
-              onBlur={handleChange}
-              placeholderTextColor={WalletColors.grey}
-              keyboardType={'numeric'}
-            />
-          </View>
-          <View style={styles.view_input}>
-            <Text>Amount      :  </Text>
-            <TextInput 
-              style={styles.text_input}
-              onChangeText={setAmount}
-              value={amount}
-              //textAlignVertical={'center'}
-              onBlur={handleChange}
-              placeholderTextColor={WalletColors.grey}
-              keyboardType={'numeric'}
-            />
-          </View>
+          {transType == "Deposit" ? (
+            <View style={styles.view_input}>
+              <View style={styles.view_input_label}>
+                <Text style={styles.view_text}>Ref. Code</Text>
+                <Text style={styles.view_text}>Amount</Text>
+              </View>
+              <View style={styles.view_input_box}>
+                <View style={styles.view_input}>
+                  <Text style={styles.view_text}> : </Text>
+                  <TextInput 
+                  style={styles.text_input}
+                  onChangeText={setRefCode}
+                  value={refCode}
+                  onBlur={handleChange}
+                  placeholderTextColor={WalletColors.grey}
+                  keyboardType={'numeric'}
+                />
+                </View>
+                <View style={styles.view_input}>
+                  <Text style={styles.view_text}> : </Text>
+                  <TextInput 
+                    style={styles.text_input}
+                    onChangeText={setAmount}
+                    value={amount}
+                    onBlur={handleChange}
+                    placeholderTextColor={WalletColors.grey}
+                    keyboardType={'numeric'}
+                  />
+                </View>
+              </View>
+            </View>
+            ) : (
+              <View style={styles.view_input}>
+                <View style={styles.view_input_label}>
+                  <Text style={styles.view_text}>Mobile No.</Text>
+                  <Text style={styles.view_text}>Amount</Text>
+                </View> 
+                <View style={styles.view_input_box}>
+                <View style={styles.view_input}>
+                    <Text style={styles.view_text}> : </Text>
+                    <TextInput 
+                    style={styles.text_input}
+                    onChangeText={setRefCode}
+                    value={refCode}
+                    onBlur={handleChange}
+                    placeholderTextColor={WalletColors.grey}
+                    keyboardType={'numeric'}
+                  />
+                </View>
+                <View style={styles.view_input}>
+                  <Text style={styles.view_text}> : </Text>
+                  <TextInput 
+                    style={styles.text_input}
+                    onChangeText={setAmount}
+                    value={amount}
+                    //textAlignVertical={'center'}
+                    onBlur={handleChange}
+                    placeholderTextColor={WalletColors.grey}
+                    keyboardType={'numeric'}
+                  />
+                </View>
+              </View>
+           </View>
+            )}
         </View>
       </View>
     );
@@ -107,34 +147,40 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  view_text:{
+    margin: heightPercentageToDP("1%"),
+  },
   text_input: {
-    width: widthPercentageToDP("40%"),
+    width: widthPercentageToDP("45%"),
     height: heightPercentageToDP("4%"),
-    // marginTop: heightPercentageToDP("4%"),
-    padding: 4,
+    padding: heightPercentageToDP("1%"),
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center', 
     alignItems: 'center',
-    marginLeft: 3,
-    // textAlignVertical: 'center',
     color: WalletColors.Wblue,
     fontSize: RFValue(11),
+  },
+  view_input_label:{
+    flexDirection:"column",
+  },
+  view_input_box:{
+    flexDirection:"column",
+    paddingTop: heightPercentageToDP("1%"),
+    marginRight:heightPercentageToDP("4%")
   },
   view_input: {
     flexDirection: "row", 
     justifyContent: "center",
     alignItems: "center",
-    padding:widthPercentageToDP("1%")
   },
   view_lineNumber: {
     flexDirection: "column", 
-    // flex: 1, 
+    flex: 1, 
     alignItems: "center",
     justifyContent: "center",
-    // padding:widthPercentageToDP("5%")
   }
 });
 

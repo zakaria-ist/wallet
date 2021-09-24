@@ -34,7 +34,6 @@ const SummaryTableRow = ({header, rowData}) => {
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
   // const isFocused = useIsFocused();
- 
 
   useEffect(() => {
     if (header) {
@@ -58,51 +57,69 @@ const SummaryTableRow = ({header, rowData}) => {
     
     cellData.map((group) => {
       cellLeft.push(
-        <View style={styles.view_sub_row}>
-          <Text style={styles.cell_text_bold}>{group.group}</Text>
-          <Text style={styles.cell_text_bold}>     </Text>
-          <Text style={styles.cell_text_bold}>Count</Text>
-          <Text style={styles.cell_text_bold}>Amount</Text>
+        <View style={styles.view_border_line}>
+          <View style={styles.view_sub_row}>
+            <Text style={styles.cell_text_bold}>{group.group}</Text>
+            <Text style={styles.cell_text_bold}>     </Text>
+            <Text style={styles.cell_text_bold}>Count</Text>
+            <Text style={styles.cell_text_bold}>Amount</Text>
+          </View>
         </View>
       )
       
       group.walletData.map((wallet) => {
         cellLeft.push(
-          <View style={styles.view_sub_row}>
-            <View style={styles.view_sub_column}>
-              <Text style={styles.cell_text_end}>{wallet.wallet}</Text>
-            </View>
-            <View style={styles.view_sub_column}>
-              <Text style={styles.cell_text}>:(D)</Text>
-              <Text style={styles.cell_text}> :(W)</Text>
-            </View>
-            <View style={styles.view_sub_column}>
-              <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.count)}</Text>
-              <Text style={styles.cell_text_end}>{format.separator(wallet.withdrawal.count)}</Text>
-            </View>
-            <View style={styles.view_sub_column}>
-              <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.amount)}</Text>
-              <Text style={styles.cell_text_end}>{format.separator(wallet.withdrawal.amount)}</Text>
+          <View style={styles.view_border_line}>
+            <View style={styles.view_sub_row}>
+              <View style={styles.view_sub_column}>
+                <Text style={styles.cell_text_end}>{wallet.wallet}</Text>
+              </View>
+              <View style={styles.view_sub_column}>
+                <View style={styles.view_sub_row}>
+                  <Text style={styles.cell_text}>:</Text>
+                  <Text style={styles.cell_text}>(D)</Text>
+                </View>
+                <View style={styles.view_sub_row}>
+                  <Text style={styles.cell_text}>:</Text>
+                  <Text style={styles.cell_text}>(W)</Text> 
+                </View>
+              </View>
+              <View style={styles.view_sub_column}>
+                <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.count)}</Text>
+                <Text style={styles.cell_text_end}>{format.separator(wallet.withdrawal.count)}</Text>
+              </View>
+              <View style={styles.view_sub_column}>
+                <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.amount)}</Text>
+                <Text style={styles.cell_text_end}>{format.separator(wallet.withdrawal.amount)}</Text>
+              </View>
             </View>
           </View>
         )
       });
       cellLeft.push(
-        <View style={styles.view_sub_row}>
-          <View style={styles.view_sub_column}>
-            <Text style={styles.cell_text_bold}>Sub-Total</Text>
-          </View>
-          <View style={styles.view_sub_column}>
-            <Text style={styles.cell_text_bold_center}>:(D)</Text>
-            <Text style={styles.cell_text_bold_center}> :(W)</Text>
-          </View>
-          <View style={styles.view_sub_column}>
-            <Text style={styles.cell_text_bold}>                  </Text>
-            <Text style={styles.cell_text_bold}>                  </Text>
-          </View>
-          <View style={styles.view_sub_column}>
-            <Text style={styles.cell_text_bold}>{format.separator(group.subtotal.deposit)}</Text>
-            <Text style={styles.cell_text_bold}>{format.separator(group.subtotal.withdrawal)}</Text>
+        <View style={styles.view_border_line}>
+          <View style={styles.view_sub_row}>
+            <View style={styles.view_sub_column}>
+              <Text style={styles.cell_text_bold}>Sub-Total</Text>
+            </View>
+            <View style={styles.view_sub_column}>
+              <View style={styles.view_sub_row}>
+              <Text style={styles.cell_text_bold_center}>:</Text>
+              <Text style={styles.cell_text_bold_center}>(D)</Text>
+              </View>
+              <View style={styles.view_sub_row}>
+              <Text style={styles.cell_text_bold_center}> :</Text>
+              <Text style={styles.cell_text_bold_center}>(W)</Text>
+              </View>
+            </View>
+            <View style={styles.view_sub_column}>
+              <Text style={styles.cell_text_bold}>                  </Text>
+              <Text style={styles.cell_text_bold}>                  </Text>
+            </View>
+            <View style={styles.view_sub_column}>
+              <Text style={styles.cell_text_bold}>{format.separator(group.subtotal.deposit)}</Text>
+              <Text style={styles.cell_text_bold}>{format.separator(group.subtotal.withdrawal)}</Text>
+            </View>
           </View>
         </View>
       )
@@ -145,22 +162,21 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignContent: "space-between",
     width: widthPercentageToDP("92%"),
-    padding:heightPercentageToDP("1%"),
+    padding:heightPercentageToDP("0.5%"),
   },
   view_border_line:{
-    borderLeftWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.black,
+    paddingRight: heightPercentageToDP("2%"),
+    borderRightWidth: StyleSheet.hairlineWidth,
+    borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
   },
   view_left: {
     flex: 3,
     justifyContent: "space-between",
-    borderRightWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.black,
-    borderStyle: 'solid',
   },
   view_right: {
     flex: 1,
+    paddingRight:heightPercentageToDP("2%"),
     alignItems: "center",
     justifyContent: "center",
   },
@@ -190,7 +206,7 @@ const styles = StyleSheet.create({
   cell_text_header: {
     fontSize: RFValue(14),
     fontWeight: "bold",
-    alignSelf: "center",
+    textAlign: "center",
   },
   cell_text_bold: {
     fontSize: RFValue(14),

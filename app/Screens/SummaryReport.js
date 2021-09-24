@@ -14,10 +14,8 @@ import {
   StyleSheet,
   Text,
   TextInput,
-  PixelRatio,
   useColorScheme,
   View,
-  Dimensions,
   InteractionManager,
   TouchableOpacity,
   KeyboardAvoidingView
@@ -44,10 +42,6 @@ const SummaryReport = () => {
   const [transType, setTransType] = useStateIfMounted("Today");
   const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletData, setWalletData] = useStateIfMounted([]);
-
-  const backgroundStyle = {
-    backgroundColor: Colors.white
-  };
 
   const LeftButton = "Yesterday";
   const RightButton = "Today";
@@ -130,7 +124,7 @@ const SummaryReport = () => {
   }
 
   return (
-    <SafeAreaView style={{backgroundColor: Colors.white,flex:1}}>
+    <SafeAreaView style={styles.backgroundStyle}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <View style={styles.header}>
         <CustomHeader 
@@ -164,21 +158,23 @@ const SummaryReport = () => {
   );
 };
 
-const windowHeight = Dimensions.get('window').height;
-
 const styles = StyleSheet.create({
+  backgroundStyle: {
+    backgroundColor: Colors.white,
+    flex:1
+  },
   header:{
     flex:1,
   },
   menu:{
     flex:1, 
+    margin:heightPercentageToDP("1.1%"),
     flexDirection:"row", 
     alignSelf:"center"
   },
   body: {
-    marginTop:heightPercentageToDP("1%"),
     backgroundColor: Colors.white,
-    flex:5.6,
+    flex:5.8,
     flexDirection: 'column',
     alignItems: "center",
     paddingBottom: heightPercentageToDP("1%"),
