@@ -7,23 +7,18 @@
  */
 
 import React, {useState, useEffect, useMemo} from 'react';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 // import { useIsFocused } from "@react-navigation/native";
 import {
-  StyleSheet,
   View,
   Text,
   TextInput,
-  useColorScheme,
   TouchableOpacity
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
 import Format from "../lib/format";
-import { RFValue } from 'react-native-responsive-fontsize';
+import styles from '../lib/global_css.js';
+
 const format = new Format();
 
 const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallback}) => {
@@ -62,14 +57,19 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
     let rightCell = [];
 
     leftCell.push(
-      <Text style={styles.cell_text}>{cellData.time}</Text>
+      <View style={{flexDirection:"row"}}>
+      <View style={{flexDirection: "column"}}>
+        <Text style={styles.cell_text}>{cellData.time}</Text>
+        <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+      </View>
+    </View>
     )
     setCellOne(leftCell);
     midCell.push(
       <View style={{flexDirection:"row"}}>
-        <View style={{flexDirection: "column", margin:heightPercentageToDP("0.5%")}}>
-          <Text style={styles.cell_text}>Ref. No.</Text>
-          <Text style={{fontSize: RFValue(13),marginBottom:heightPercentageToDP("1%")}}>Amount</Text>
+        <View style={styles.table_view_column}>
+          <Text style={styles.cell_text_ref}>Ref. No.</Text>
+          <Text style={styles.cell_text_input}>Amount</Text>
           <Text style={styles.cell_text}>Wallet</Text>
         </View>
         <View style={{flexDirection: "column"}}>
@@ -78,7 +78,7 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
           <Text style={styles.cell_text}>{cellData.refNo}</Text>
         </View>        
         <View style={{flexDirection: "row"}}>
-          <Text style={{fontSize: RFValue(13),marginTop:heightPercentageToDP("0.5%")}}> : </Text>
+          <Text style={styles.cell_text_input}> : </Text>
           <TextInput 
             style={styles.text_input}
             // onChangeText={setPinNo}
@@ -135,18 +135,18 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
 
   return useMemo(() => {
     return (
-      <View style={styles.view_rectangle}>
-        <View style={styles.view_left}>
+      <View style={styles.table_view_rectangle}>
+        <View style={styles.table_view_left}>
           <View style={styles.view_lineNumber}>
             {cellOne}
           </View>
         </View>
-        <View style={styles.view_center}>
+        <View style={styles.table_view_center}>
           <View style={styles.view_lineNumber_center}>
             {cellTwo}
           </View>
         </View>
-        <View style={styles.view_right}>
+        <View style={styles.table_view_right}>
           <View style={styles.view_lineNumber}>
             {cellThree}
           </View>
@@ -156,104 +156,6 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
   })
 
 };
-
-const styles = StyleSheet.create({
-  view_rectangle: {
-    flexDirection: "row", 
-    alignItems: "center",
-    borderRadius: 1,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    justifyContent: "flex-start",
-    alignContent: "space-between",
-    width: widthPercentageToDP("85%"),
-  },
-  view_left: {
-    flex: 0.9,
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  view_center: {
-    flex: 2,
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  view_right: {
-    flex: 1,
-    alignItems: "flex-end",
-    justifyContent: "center",
-  },
-  text_input: {
-    width: heightPercentageToDP("10%"),
-    height: heightPercentageToDP("4%"),
-    borderRadius: 6,
-    padding: 3,
-    textAlign: "left",
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    color: WalletColors.Wblue,
-    fontSize: RFValue(10),
-  },
-  view_input: {
-    flexDirection: "row", 
-    alignItems: "center",
-  },
-  view_lineNumber: {
-    flexDirection: "column", 
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: heightPercentageToDP("1%"),
-  },
-  view_lineNumber_center: {
-    flexDirection: "column",
-    justifyContent: "center",
-    paddingTop: heightPercentageToDP("1%"),
-    paddingBottom: heightPercentageToDP("1%"),
-  },
-  cell_text: {
-    alignSelf: "flex-start",
-    textAlign: "left",
-    fontSize: RFValue(13),
-  },
-  cell_text_header: {
-    alignSelf: "flex-start",
-    fontSize: RFValue(14),
-    fontWeight: "bold"
-  },
-  button_view: {
-    flexDirection: "row",
-  },
-  send_button_accept: {
-    width: widthPercentageToDP("10%"),
-    height: heightPercentageToDP("4%"),
-    marginLeft: heightPercentageToDP("1%"),
-    borderRadius: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wgreen,
-    borderStyle: 'solid',
-    justifyContent: 'center',
-    backgroundColor: WalletColors.Wgreen,
-    alignItems: 'center'
-  },
-  send_button_reject: {
-    width: widthPercentageToDP("10%"),
-    height: heightPercentageToDP("4%"),
-    marginLeft: heightPercentageToDP("1%"),
-    borderRadius: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wred,
-    borderStyle: 'solid',
-    justifyContent: 'center',
-    backgroundColor: WalletColors.Wred,
-    alignItems: 'center'
-  },
-  send_button_text: {
-    color: WalletColors.white,
-    fontSize: RFValue(10)
-  },
-});
 
 
 export default TableRowEditDeposit;

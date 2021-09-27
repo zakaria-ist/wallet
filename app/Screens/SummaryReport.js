@@ -11,31 +11,20 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
   useColorScheme,
   View,
   InteractionManager,
   TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
-import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
 
 import SummaryTableRow from "../Components/SummaryTableRow";
 import CustomHeader from "../Components/CustomHeader";
 import CommonTop from "../Components/CommonTop";
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { WalletColors } from "../assets/Colors.js";
-import { flexDirection, height } from 'styled-system';
-import { block } from 'react-native-reanimated';
+import styles from '../lib/global_css';
 
 const SummaryReport = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -124,13 +113,13 @@ const SummaryReport = () => {
   }
 
   return (
-    <SafeAreaView style={styles.backgroundStyle}>
+    <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <View style={styles.header}>
         <CustomHeader 
           title={"Summary Report"}
         />   
-        <View style={styles.menu}>
+        <View style={styles.summary_report_nav_top}>
         <CommonTop
           admin={true}
           LeftButton={LeftButton}
@@ -143,8 +132,8 @@ const SummaryReport = () => {
         />
       </View>
       </View>
-      <View style={styles.body}> 
-        <View style={styles.view_rectangle}>
+      <View style={styles.summary_report_body}> 
+        <View style={styles.view_deposit_withdrawel_treport_rectangle}>
         <ScrollView>
           <SummaryTableRow header={true} rowData={tableHeader} />
           <SummaryTableRow header={false} rowData={groupData} />
@@ -158,39 +147,5 @@ const SummaryReport = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  backgroundStyle: {
-    backgroundColor: Colors.white,
-    flex:1
-  },
-  header:{
-    flex:1,
-  },
-  menu:{
-    flex:1, 
-    margin:heightPercentageToDP("1.1%"),
-    flexDirection:"row", 
-    alignSelf:"center"
-  },
-  body: {
-    backgroundColor: Colors.white,
-    flex:5.8,
-    flexDirection: 'column',
-    alignItems: "center",
-    paddingBottom: heightPercentageToDP("1%"),
-  },
-  view_rectangle: {
-    flex:1,
-    flexDirection: "column", 
-    alignItems: "center",
-    borderRadius: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    justifyContent: "flex-start",
-    width: widthPercentageToDP("90%"),
-    padding: heightPercentageToDP("1%"),
-  },
-});
 
 export default SummaryReport;

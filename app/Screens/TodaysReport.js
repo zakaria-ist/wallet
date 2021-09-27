@@ -31,7 +31,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
 import CheckBox from "@react-native-community/checkbox";
-
+import styles from '../lib/global_css';
 import CustomHeader from "../Components/CustomHeader";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
@@ -68,7 +68,8 @@ const TodaysReport = () => {
   };
   const tableRowTwo = {
     // rowId: 1,
-    time: ["10:10 AM",' ', "(12:10 AM)"],
+    time: ["10:10 AM"],
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -76,7 +77,8 @@ const TodaysReport = () => {
   };
   const tableRowThree = {
     // rowId: 1,
-    time: ["10:10 AM",' ', "(12:10 AM)"],
+    time: ["10:10 AM"],
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -118,13 +120,13 @@ const TodaysReport = () => {
   }
 
   return (
-    <SafeAreaView style={{flex:1,backgroundColor: Colors.white}}>
+    <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <View style={styles.header}>
           <CustomHeader 
             title={"Today's Report"}
           />
-          <View style={styles.menu}>
+          <View style={styles.today_report_nav_top}>
           <CommonTop
             admin={false}
             LeftButton={LeftButton}
@@ -137,9 +139,9 @@ const TodaysReport = () => {
           />
            </View>
         </View>
-        <View style={styles.body}>
+        <View style={styles.deposit_withdrawel_treport_body}>
           {transType == "Deposit" ?
-          <View style={{marginTop:-heightPercentageToDP("3%"),flexDirection:"row"}}>
+          <View style={styles.agent_status_row_container}>
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Status:   </Text>
@@ -165,10 +167,10 @@ const TodaysReport = () => {
             </View>
             </View>
           :
-            <View style={styles.checkboxContainer,{marginTop:-heightPercentageToDP("1%")}}></View>
+            <View style={{marginTop:-heightPercentageToDP("1%")}}></View>
           }
         {transType == "Deposit" ?
-          <View style={styles.view_rectangle}>
+          <View style={styles.view_deposit_withdrawel_treport_rectangle}>
           <ScrollView>
           <TableRow header={true} rowData={tableHeader} />
           <TableRow header={false} rowData={tableRowOne} />
@@ -185,7 +187,7 @@ const TodaysReport = () => {
           </ScrollView>
         </View>
           :
-          <View style={styles.view_rectangle}>
+          <View style={styles.view_deposit_withdrawel_treport_rectangle}>
             <ScrollView>
             <TableRow header={true} rowData={tableHeader} />
             <TableRow header={false} rowData={tableRowOne} />
@@ -195,7 +197,7 @@ const TodaysReport = () => {
         </View>
           }
           <View styles={styles.total}>
-            <Text style={styles.total_text}>Total Amount : TK {acceptedTotal}</Text>
+            <Text style={styles.total_text}>Total Amount : TK   {acceptedTotal}</Text>
           </View>
         </View>
       {/* </ScrollView> */}
@@ -205,67 +207,5 @@ const TodaysReport = () => {
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-  header:{
-    flex:1, 
-  },
-  menu:{
-    flex:2.3, 
-    margin:heightPercentageToDP("1%"),
-    flexDirection:"row", 
-    alignSelf:"center",
-  },
-  body: {
-    flex:3.5,
-    backgroundColor: Colors.white,
-    flexDirection: 'column',
-    alignItems: "center",
-  },
-  status_row: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: heightPercentageToDP("1%"),
-  },
-  checkbox: {
-    transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
-    marginLeft: widthPercentageToDP("-2%"),
-    marginRight: widthPercentageToDP("2%"),
-  },
-  label: {
-    marginTop: widthPercentageToDP("-1%"),
-    marginLeft: widthPercentageToDP("2%"),
-    fontSize: RFValue(14)
-  },
-  view_rectangle: {
-    flex:1,
-    flexDirection: "column", 
-    alignItems: "center",
-    borderRadius: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    justifyContent: "flex-start",
-    width: widthPercentageToDP("90%"),
-    padding: heightPercentageToDP("1%"),
-  },
-  total: {
-    flex:1,
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  total_text: {
-    fontSize: RFValue(13),
-    fontWeight: "bold"
-  }
-});
 
 export default TodaysReport;

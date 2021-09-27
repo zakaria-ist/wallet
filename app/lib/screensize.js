@@ -2,10 +2,6 @@ import {
     Dimensions,
     PixelRatio,
   } from 'react-native';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;

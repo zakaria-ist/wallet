@@ -7,26 +7,17 @@
  */
 
 import React, {useState, useEffect, useMemo} from 'react';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 // import { useIsFocused } from "@react-navigation/native";
 import {
-  StyleSheet,
   View,
   Text,
   TextInput,
-  Dimensions,
-  PixelRatio,
-  useColorScheme,
   TouchableOpacity
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
 import Format from "../lib/format";
-import { RFValue } from 'react-native-responsive-fontsize';
-import { flex } from 'styled-system';
+import styles from '../lib/global_css.js';
 
 const format = new Format();
 
@@ -69,20 +60,25 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
     let rightCell = [];
 
     leftCell.push(
-      <Text style={styles.cell_text}>{cellData.time}</Text>
+      <View style={{flexDirection:"row"}}>
+      <View style={{flexDirection: "column"}}>
+        <Text style={styles.cell_text}>{cellData.time}</Text>
+        <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+      </View>
+    </View>
     )
     setCellOne(leftCell);
     midCell.push(
         <View style={{flexDirection:"row"}}>
-        <View style={{flexDirection: "column", margin:heightPercentageToDP("0.5%")}}>
-        <Text style={{fontSize: RFValue(13),marginBottom:heightPercentageToDP("1%")}}>Pin No.</Text>
+        <View style={styles.table_view_column}>
+        <Text style={styles.cell_text_pin}>Pin No.</Text>
         <Text style={styles.cell_text}>Amount</Text>
         <Text style={styles.cell_text}>Wallet</Text>
         <Text style={styles.cell_text}>Mobile No.</Text>
         </View>
         <View style={{flexDirection: "column"}}>
           <View style={{flexDirection: "row"}}>
-           <Text style={{fontSize: RFValue(13),marginTop:heightPercentageToDP("0.5%")}}> : </Text>
+           <Text style={styles.cell_text_input_colon}> : </Text>
            <TextInput 
           style={styles.text_input}
           onChangeText={setPinNo}
@@ -131,18 +127,18 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
 
   return useMemo(() => {
     return (
-      <View style={styles.view_rectangle}>
-        <View style={styles.view_left}>
+      <View style={styles.table_view_rectangle}>
+        <View style={styles.table_view_left}>
           <View style={styles.view_lineNumber}>
             {cellOne}
           </View>
         </View>
-        <View style={styles.view_center}>
+        <View style={styles.table_view_center}>
           <View style={styles.view_lineNumber_center}>
             {cellTwo}
           </View>
         </View>
-        <View style={styles.view_right}>
+        <View style={styles.table_view_right}>
           <View style={styles.view_lineNumber}>
             {cellThree}
           </View>
@@ -152,90 +148,6 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
   })
 
 };
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-  view_rectangle: {
-    flexDirection: "row", 
-    alignItems: "center",
-    borderRadius: 1,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    justifyContent: "flex-start",
-    alignContent: "space-between",
-    width: widthPercentageToDP("85%"),
-  },
-  view_left: {
-    flex: 0.9,
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  view_center: {
-    flex: 2,
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  view_right: {
-    flex: 1,
-    alignItems: "flex-end",
-    justifyContent: "center",
-  },
-  text_input: {
-    width: heightPercentageToDP("10%"),
-    height: heightPercentageToDP("4%"),
-    borderRadius: 6,
-    padding: 3,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    color: WalletColors.Wblue,
-    fontSize: RFValue(10),
-  },
-  view_input: { 
-    alignItems: "center",
-  },
-  view_lineNumber: {
-    flexDirection: "column", 
-    alignItems: "center",
-    justifyContent: "center",
-    paddingTop: heightPercentageToDP("1%"),
-  },
-  view_lineNumber_center: {
-    flexDirection: "column",
-    justifyContent: "flex-start",
-    paddingTop: heightPercentageToDP("1%"),
-    paddingBottom: heightPercentageToDP("1%"),
-  },
-  cell_text: {
-    textAlign: "left",
-    alignSelf: "flex-start",
-    fontSize: RFValue(13),
-  },
-  cell_text_header: {
-    alignSelf: "flex-start",
-    fontSize: RFValue(13),
-    fontWeight: "bold"
-  },
-  send_button: {
-    width: widthPercentageToDP("20%"),
-    height: heightPercentageToDP("4%"),
-    marginTop: heightPercentageToDP("-2%"),
-    borderRadius: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wgreen,
-    borderStyle: 'solid',
-    justifyContent: 'center',
-    backgroundColor: WalletColors.Wgreen,
-    alignItems: 'center'
-  },
-  send_button_text: {
-    color: WalletColors.white,
-    fontSize: RFValue(10)
-  },
-});
 
 
 export default TableRowEditWithdra;

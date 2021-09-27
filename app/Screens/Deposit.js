@@ -23,7 +23,6 @@ import {
 } from 'react-native';
 import {
   heightPercentageToDP,
-  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -40,6 +39,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
 import { height, marginBottom } from 'styled-system';
 import { parseSync } from '@babel/core';
+import styles from '../lib/global_css';
 
 const Deposit = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -96,14 +96,16 @@ const Deposit = () => {
     status: "Pending",
   };
   const tableRowTwo = {
-    time: ["10:10 AM",' ', "(12:10 AM)"],
+    time: ["10:10 AM"],
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
     status: "Accepted",
   };
   const tableRowThree = {
-    time: ["10:10 AM",' ', "(12:10 AM)"],
+    time: ["10:10 AM"],
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -225,15 +227,15 @@ const Deposit = () => {
   }
 
   return (
-    <SafeAreaView style={{flex:1, backgroundColor: Colors.white}}>
+    <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <View style={{flex:1, backgroundColor: Colors.white}}>
+      <View style={styles.header}>
       {authType == ("admin" || "subadmin") ?
-      <View style={styles.admin_header}>
+      <View style={styles.admin_deposit_withdrawel_header}>
           <CustomHeader 
             title={"Deposit"}
           /> 
-           <View style={styles.admin_menu}>
+           <View style={styles.admin_deposit_withdrawel_nav_top}>
            <CommonTop
              admin={authType == ("admin" || "subadmin") ? true : false}
              LeftButton={LeftButton}
@@ -251,7 +253,7 @@ const Deposit = () => {
         <CustomHeader 
           title={"Deposit"}
         /> 
-         <View style={styles.menu}>
+         <View style={styles.deposit_withdrawel_nav_top}>
          <CommonTop
            admin={authType == ("admin" || "subadmin") ? true : false}
            LeftButton={LeftButton}
@@ -266,12 +268,12 @@ const Deposit = () => {
       </View>
           }
       
-        <View style={styles.body}>
+        <View style={styles.deposit_withdrawel_treport_body}>
           {authType == "client" ? 
-          <View style={{marginBottom:heightPercentageToDP("1%"), flexDirection: "row"}}>
+          <View style={styles.client_picker}>
             <View style={styles.picker}>
               <DropDownPicker
-                style={{marginTop:-heightPercentageToDP("1%"),height: heightPercentageToDP("5%")}}
+                style={styles.client_dropdownpicker}
                 onChangeValue={(value) => {
                   setPickerUser(value); 
                   renderTablesData();
@@ -331,7 +333,7 @@ const Deposit = () => {
           }
           {authType == 'agent' ?
             [transType == 'Yesterday' ?
-            <View style={{marginTop:-heightPercentageToDP("3%"),flexDirection:"row"}}>
+            <View style={styles.agent_status_row_container}>
               <View style={styles.status_row}>
                 <View style={styles.checkboxContainer}>
                   <Text style={styles.label}>Status:  </Text>
@@ -371,7 +373,7 @@ const Deposit = () => {
             ]
           :
           ([authType == ("admin" || "subadmin") ?
-            <View style={{marginTop:heightPercentageToDP("2%"), flexDirection:"row"}}>
+            <View style={styles.admin_subadmin_status_row_container}>
              <View style={styles.status_row}>
                <View style={styles.checkboxContainer}>
                    <Text style={styles.label}>Status:   </Text>
@@ -420,7 +422,7 @@ const Deposit = () => {
               }
             </View>
             :
-            <View style={{marginTop:-heightPercentageToDP("2%"), flexDirection:"row"}}>
+            <View style={styles.others_status_row_container}>
              <View style={styles.status_row}>
                <View style={styles.checkboxContainer}>
                    <Text style={styles.label}>Status:   </Text>
@@ -473,8 +475,8 @@ const Deposit = () => {
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
-            <View style={{marginBottom:heightPercentageToDP("1%"),marginTop:-heightPercentageToDP("1%")}}>
-              <View style={styles.view_rectangle}>
+            <View style={styles.agent_container}>
+              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                 <ScrollView>
                 <TableRowEditDeposit 
                   header={true} 
@@ -544,7 +546,7 @@ const Deposit = () => {
               </View>
             :
             <>
-              <View style={styles.view_rectangle}>
+              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                 <ScrollView>
                 <TableRow header={true} rowData={tableHeader} />
                 <TableRow header={false} rowData={tableRowOne} />
@@ -553,14 +555,14 @@ const Deposit = () => {
                 </ScrollView>
             </View>
               <View styles={styles.total}>
-                <Text style={styles.total_text}>Total Amount  : TK {acceptedTotal}</Text>
+                <Text style={styles.total_text}>Total Amount  : TK   {acceptedTotal}</Text>
               </View>
               
             </>
             ]
           :
             <>
-              <View style={styles.view_rectangle}>
+              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                 <ScrollView>
                 <TableRow header={true} rowData={tableHeader} />
                 <TableRow header={false} rowData={tableRowOne} />
@@ -582,13 +584,13 @@ const Deposit = () => {
                   </View>  
                   <View style={{flexDirection: "column"}}>
                   <View style={{flexDirection: "row"}}>
-                    <Text style={styles.total_text}>:</Text>
-                    <Text style={styles.total_text}>TK</Text>
+                    <Text style={styles.total_text}> : </Text>
+                    <Text style={styles.total_text}>TK   </Text>
                     <Text style={styles.total_text}>{pendingTotal}</Text>
                   </View> 
                   <View style={{flexDirection: "row"}}>
-                    <Text style={styles.total_text}>:</Text>
-                    <Text style={styles.total_text}>TK</Text>
+                    <Text style={styles.total_text}> : </Text>
+                    <Text style={styles.total_text}>TK   </Text>
                     <Text style={styles.total_text}>{acceptedTotal}</Text>
                   </View>
                   </View>    
@@ -602,96 +604,5 @@ const Deposit = () => {
   );
 };
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-  header:{
-    flex:1,
-  },
-  admin_header:{
-    flex:0.6,
-  },
-  menu:{
-    flex:2.3, 
-    margin:heightPercentageToDP("1%"),
-    flexDirection:"row", 
-    alignSelf:"center",
-  },
-  body: {
-    flex:3.5,
-    backgroundColor: Colors.white,
-    flexDirection: 'column',
-    alignItems: "center",
-  },
-  admin_menu:{
-    flex:1, 
-    margin:heightPercentageToDP("1.1%"),
-    flexDirection:"row", 
-    alignSelf:"center",
-  },
-  picker: {
-   // marginTop: heightPercentageToDP("3%"),
-    width:  windowWidth/2 - widthPercentageToDP("10%"),
-    flexDirection: "row",
-    //flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-  },
-  picker_admin: {
-    marginTop: heightPercentageToDP("3%"),
-    height: 5,
-    width:  windowWidth/2 - widthPercentageToDP("10%"),
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 10, 
-    marginLeft: 10,
-  },
-  status_row: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: heightPercentageToDP("1%"),
-  },
-  checkbox: {
-    transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
-    marginLeft: widthPercentageToDP("-2%"),
-    marginRight: widthPercentageToDP("2%"),
-  },
-  label: {
-    marginTop: widthPercentageToDP("-1%"),
-    marginLeft: widthPercentageToDP("2%"),
-    fontSize: RFValue(14)
-  },
-  view_rectangle: {
-    flex:1,
-    flexDirection: "column",
-    alignItems: "center",
-    borderRadius: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    justifyContent: "flex-start",
-   // marginTop: heightPercentageToDP("1%"),
-    width: widthPercentageToDP("90%"),
-    padding: heightPercentageToDP("1%"),
-  },
-  total: {
-    flexDirection: "column",
-    //margin: heightPercentageToDP("1%"),
-  },
-  total_text: {
-    fontSize: RFValue(13),
-    fontWeight: "bold",
-    marginLeft: heightPercentageToDP("1%"),
-  }
-});
 
 export default Deposit;

@@ -1,6 +1,6 @@
 import React, {useState, useEffect} from "react";
 // import { NavigationContainer } from "@react-navigation/native";
-import { Text, StyleSheet, Image, View} from 'react-native';
+import { Text, Image, View} from 'react-native';
 import {
   createDrawerNavigator,
   DrawerContentScrollView,
@@ -9,7 +9,7 @@ import {
 } from '@react-navigation/drawer';
 import { RFValue } from "react-native-responsive-fontsize";
 import {
-  heightPercentageToDP, widthPercentageToDP,
+  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
@@ -35,6 +35,7 @@ import {
   TabNavigationGroupWithdrawal} from "./TabStack";
 import { color } from "react-native-reanimated";
 import { marginRight, padding } from "styled-system";
+import styles from "../lib/global_css";
 
 const alert = new CustomAlert();
 
@@ -53,7 +54,7 @@ const alert = new CustomAlert();
 
 const CustomDrawerContent = (props) => (
     <DrawerContentScrollView {...props}>
-      <View style={styles.container}> 
+      <View style={styles.drawercontainer}> 
         <View style={styles.drawerHeader}> 
           <View style={{ flexDirection: 'column'} }> 
           <Image
@@ -110,10 +111,6 @@ export default function DrawerStack() {
             drawerStyle: {width: widthPercentageToDP("65%")},
             drawerItemStyle: styles.drawerItem,
             drawerLabelStyle:{fontSize: RFValue(15)},
-            // style:{ padding: 0, margin: 0, border: 0 }
-            // style: { padding: 5 },
-           // drawerContent: { padding: 10 },
-            
         }}
       >
         {authType == ('admin' || 'subadmin') ? (
@@ -206,40 +203,3 @@ export default function DrawerStack() {
       </Drawer.Navigator>
   );
 }
-
-
-const styles = StyleSheet.create({
-
-  container: {
-    //flex: 1,
-    marginTop: 20,
-    marginBottom: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
-    flexDirection: 'column'
-  },
-  drawerHeader: {
-    height: heightPercentageToDP("10%"),
-    backgroundColor: 'white',
-    flexDirection: 'column',
-    marginBottom: heightPercentageToDP("5%")
-  },
-  drawerImage: {
-    height: heightPercentageToDP("15%"),
-    width: heightPercentageToDP("15%"),
-    borderRadius: 75
-  },
-  userName: {
-    paddingTop: 10,
-    alignContent:'center',
-    alignSelf:'center',
-  },
-  drawerItem: {
-    // borderRadius: 0,
-    marginHorizontal:0,
-    marginVertical: 0,
-    borderBottomWidth: StyleSheet.hairlineWidth, 
-    borderBottomColor:'#265684',
-  }
-
-})

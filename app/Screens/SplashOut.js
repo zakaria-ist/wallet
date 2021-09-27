@@ -1,15 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {
-  heightPercentageToDP,
-} from "react-native-responsive-screen";
-import {
   ActivityIndicator,
   View,
-  StyleSheet,
-  Dimensions,
   Image
 } from 'react-native';
-
+import styles from '../lib/global_css';
 import AsyncStorage from '@react-native-community/async-storage';
 
 const SplashOut = ({navigation}) => {
@@ -47,19 +42,3 @@ const SplashOut = ({navigation}) => {
 };
 
 export default SplashOut;
-
-const windowHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    alignItems: 'center',
-    justifyContent: 'center',
-    backgroundColor: '#307ecc',
-  },
-  activityIndicator: {
-    alignItems: 'center',
-    //height: 80,
-    height: windowHeight / 2 - heightPercentageToDP("60%"),
-  },
-});
