@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
         height: heightPercentageToDP("5%")
     },
     picker: {
-        marginTop: heightPercentageToDP("1%"),
+        marginTop: heightPercentageToDP("0.5%"),
         width:  windowWidth/2 - widthPercentageToDP("13%"),
         flexDirection: "row",
         justifyContent: "center",
@@ -297,7 +297,7 @@ const styles = StyleSheet.create({
         alignSelf: "center",
     },
     picker_admin: {
-        marginTop: heightPercentageToDP("1%"),
+        marginTop: heightPercentageToDP("0.5%"),
         width: windowWidth/2 - widthPercentageToDP("13%"),
         flexDirection: "row",
         alignItems: "center",

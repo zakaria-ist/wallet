@@ -19,7 +19,6 @@ import {
   View,
   InteractionManager,
   TouchableOpacity,
-  TouchableHighlight,
   KeyboardAvoidingView
 } from 'react-native';
 import {
@@ -296,7 +295,7 @@ const CreateMessage = () => {
           </TouchableOpacity>
           <FlatList data={[{key: 'item1' }]}
            renderItem={({ item, index, separators }) => (
-            <TouchableOpacity key={item.key}>
+            <TouchableOpacity>
               <View style={styles.header}>
                 <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
                 <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />

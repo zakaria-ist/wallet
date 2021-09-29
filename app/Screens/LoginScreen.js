@@ -61,12 +61,6 @@ const LoginScreen = ({navigation}) => {
   const [password, setPassword] = useState('');
   const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    // backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    backgroundColor: Colors.lighter,
-    flex: 1
-  };
-
   // Must be outside of any component LifeCycle (such as `componentDidMount`).
   PushNotification.configure({
 
@@ -244,7 +238,7 @@ const LoginScreen = ({navigation}) => {
   }
   
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
