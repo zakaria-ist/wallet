@@ -42,6 +42,7 @@ import firebase from "@react-native-firebase/app";
 import firestore from '@react-native-firebase/firestore';
 import { useStateIfMounted } from 'use-state-if-mounted';
 import Screensize from '../lib/screensize.js';
+import styles from '../lib/global_css.js';
 import Spinner from "react-native-loading-spinner-overlay";
 
 if (!firebase.apps.length) {
@@ -257,9 +258,9 @@ const LoginScreen = ({navigation}) => {
               <Image style={styles.logo} source={screensize.getSmallScreen() || screensize.getMediumScreen() || screensize.getLargeScreen()}/>
             </View>
           </View>
-          <View style={styles.view_input}>
+          <View style={styles.login_view_input}>
               <TextInput 
-                style={styles.text_input}
+                style={styles.login_text_input}
                 onChangeText={setUserName}
                 value={userName}
                 textAlign={'center'}
@@ -271,14 +272,13 @@ const LoginScreen = ({navigation}) => {
                 returnKeyLabel='go'
               />
               <TextInput 
-                style={styles.text_input}
+                style={styles.login_text_input}
                 onChangeText={setPassword}
                 value={password}
                 textAlign={'center'}
                 placeholder={'Password'}
                 placeholderTextColor={WalletColors.grey}
                 secureTextEntry={true}
-                multiline={true}
                 onSubmitEditing={handleKeyDown}
                 blurOnSubmit={true}
                 returnKeyLabel='go'
@@ -297,82 +297,12 @@ const LoginScreen = ({navigation}) => {
   );
 };
 
-
-const windowHeight = Dimensions.get('window').height;
-
 screensize.getSmallScreen()
 ? require('../assets/images/wallet_logo_64.png') : screensize.getMediumScreen();
 screensize.getMediumScreen()
 ? require('../assets/images/wallet_logo_128.png') : screensize.getLargeScreen();
 screensize.getLargeScreen()
 ? require('../assets/images/wallet_logo.png') : screensize.getMediumScreen();
-
-const styles = StyleSheet.create({
-  text_input: {
-    width: widthPercentageToDP("70%"),
-    height: heightPercentageToDP("6.5%"),
-    marginTop: heightPercentageToDP("2.5%"),
-    borderRadius: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    textAlign: 'center',
-    color: WalletColors.black,
-    fontSize: RFValue(14),
-  },
-  sign_button: {
-    width: widthPercentageToDP("35%"),
-    height: heightPercentageToDP("8%"),
-    marginTop: heightPercentageToDP("8%"),
-    borderRadius: 30,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    justifyContent: 'center',
-    backgroundColor: WalletColors.Wblue,
-    alignItems: 'center'
-  },
-  sign_button_text: {
-    color: WalletColors.white,
-    fontSize: RFValue(18)
-  },
-  logo:{
-    width: windowHeight / 2 - heightPercentageToDP("37%"),
-    height: windowHeight / 2 - heightPercentageToDP("37%"),
-  },
-  view_logo: {
-     flexDirection: "column", 
-     alignItems: "center", 
-     marginTop: heightPercentageToDP("4%"),
-  },
-  view_logo_logo: {
-    width: windowHeight / 2 - heightPercentageToDP("30%"),
-    height: windowHeight / 2 - heightPercentageToDP("30%"),
-    flex: 1,
-    borderRadius: 100,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    marginTop: heightPercentageToDP("8%"),
-    justifyContent: 'center',
-    alignItems: 'center'
-  },
-  view_logo_logo_text: {
-    fontSize: 30, 
-    fontWeight: "bold", 
-    textAlign: 'center'
-  },
-  view_input: {
-    flexDirection: "column",
-    justifyContent: 'center',
-    alignItems: "center", 
-    alignContent: "center",
-    marginTop: heightPercentageToDP("8%"),
-  },
-  spinnerTextStyle: {
-    color: WalletColors.Wblue,
-  }
-});
 
 
 export default LoginScreen;

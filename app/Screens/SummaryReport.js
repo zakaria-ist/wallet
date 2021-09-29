@@ -11,31 +11,20 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
-  Text,
-  TextInput,
-  PixelRatio,
   useColorScheme,
   View,
-  Dimensions,
   InteractionManager,
   TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
-import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
 import Spinner from "react-native-loading-spinner-overlay";
 import SummaryTableRow from "../Components/SummaryTableRow";
 import CustomHeader from "../Components/CustomHeader";
 import CommonTop from "../Components/CommonTop";
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { WalletColors } from "../assets/Colors.js";
+import styles from '../lib/global_css';
 
 const SummaryReport = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -43,10 +32,6 @@ const SummaryReport = () => {
   const [transType, setTransType] = useStateIfMounted("Today");
   const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletData, setWalletData] = useStateIfMounted([]);
-
-  const backgroundStyle = {
-    backgroundColor: Colors.white
-  };
 
   const LeftButton = "Yesterday";
   const RightButton = "Today";
@@ -140,72 +125,44 @@ const SummaryReport = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-          <CustomHeader 
-            title={"Summary Report"}
-          />
-          <CommonTop
-            admin={true}
-            LeftButton={LeftButton}
-            RightButton={RightButton}
-            handleLeftButton={handleLeftButton}
-            handleRightButton={handleRightButton}
-            handleWalLeftButton={handleWalLeftButton}
-            handleWalMidButton={handleWalMidButton}
-            handleWalRightButton={handleWalRightButton}
-          />
-
-        <View style={styles.body}>
-          <View style={styles.view_rectangle}>
-            <SummaryTableRow header={true} rowData={tableHeader} />
-            <SummaryTableRow header={false} rowData={groupData} />
-            <SummaryTableRow header={false} rowData={groupData} />
-          </View>
+      <View style={styles.header}>
+        <CustomHeader 
+          title={"Summary Report"}
+        />   
+        <View style={styles.summary_report_nav_top}>
+        <CommonTop
+          admin={true}
+          LeftButton={LeftButton}
+          RightButton={RightButton}
+          handleLeftButton={handleLeftButton}
+          handleRightButton={handleRightButton}
+          handleWalLeftButton={handleWalLeftButton}
+          handleWalMidButton={handleWalMidButton}
+          handleWalRightButton={handleWalRightButton}
+        />
+      </View>
+      </View>
+      <View style={styles.summary_report_body}> 
+        <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+        <ScrollView>
+          <SummaryTableRow header={true} rowData={tableHeader} />
+          <SummaryTableRow header={false} rowData={groupData} />
+          <SummaryTableRow header={false} rowData={groupData} />
+          <SummaryTableRow header={false} rowData={groupData} /> 
+          <SummaryTableRow header={false} rowData={groupData} />
+        </ScrollView>
         </View>
-      </ScrollView>
+      </View>
     </SafeAreaView>
   );
 };
 
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-  body: {
-    // height: heightPercentageToDP("82%"),
-    backgroundColor: Colors.white,
-    flexDirection: 'column',
-    alignItems: "center",
-    paddingBottom: heightPercentageToDP("2%"),
-  },
-  view_rectangle: {
-    flexDirection: "column", 
-    alignItems: "center",
-    borderRadius: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    justifyContent: "flex-start",
-    marginTop: heightPercentageToDP("1%"),
-    width: widthPercentageToDP("95%"),
-    padding: heightPercentageToDP("1%"),
-   // height: windowHeight - heightPercentageToDP("47%"),
-    //paddingBottom: heightPercentageToDP("15%"),
-  },
-  spinnerTextStyle: {
-    color: WalletColors.Wblue,
-  }
-});
 
 export default SummaryReport;

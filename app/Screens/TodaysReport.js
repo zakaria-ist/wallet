@@ -31,6 +31,7 @@ import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
 import CheckBox from "@react-native-community/checkbox";
+import styles from '../lib/global_css';
 import Spinner from "react-native-loading-spinner-overlay";
 import CustomHeader from "../Components/CustomHeader";
 import TableRow from "../Components/TableRow";
@@ -69,22 +70,33 @@ const TodaysReport = () => {
     ["Message"],
     ["Status"],
   ];
-  const tableRowOne = [
-    ["10:10 AM",],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    :  Alipay"],
-    ["Rejected"],
-  ];
-  const tableRowTwo = [
-    ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    :  Alipay"],
-    ["Accepted"],
-  ];
-  const tableRowThree = [
-    ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    :  Alipay"],
-    ["Accepted"],
-  ];
-
+  const tableRowOne = {
+    // rowId: 1,
+    time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Pending",
+  };
+  const tableRowTwo = {
+    // rowId: 1,
+    time: ["10:10 AM"],
+    HDLtime: ["(12:10 AM)"],
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Accepted",
+  };
+  const tableRowThree = {
+    // rowId: 1,
+    time: ["10:10 AM"],
+    HDLtime: ["(12:10 AM)"],
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Accepted",
+  };
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       AsyncStorage.getItem('walletData').then((walletData) => {
@@ -188,20 +200,18 @@ const TodaysReport = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+      <View style={styles.header}>
           <CustomHeader 
             title={"Today's Report"}
           />
+          <View style={styles.today_report_nav_top}>
           <CommonTop
             admin={false}
             LeftButton={LeftButton}
@@ -212,9 +222,11 @@ const TodaysReport = () => {
             handleWalMidButton={handleWalMidButton}
             handleWalRightButton={handleWalRightButton}
           />
-
-        <View style={styles.body}>
+           </View>
+        </View>
+        <View style={styles.deposit_withdrawel_treport_body}>
           {transType == "Deposit" ?
+          <View style={styles.agent_status_row_container}>
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Status:   </Text>
@@ -226,7 +238,6 @@ const TodaysReport = () => {
                   onChange={handleCheckBox}
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
-                
               </View>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Rejected</Text>
@@ -239,85 +250,27 @@ const TodaysReport = () => {
                 />
               </View>
             </View>
+            </View>
           :
-            <View style={styles.checkboxContainer}></View>
+            <View style={{marginTop:-heightPercentageToDP("1%")}}></View>
           }
-          
-          <View style={styles.view_rectangle}>
-            {/* <TableRow header={true} rowData={tableHeader} />
+
+          <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+            <ScrollView>
+              {/* {tableRowHtml} */}
+            <TableRow header={true} rowData={tableHeader} />
             <TableRow header={false} rowData={tableRowOne} />
             <TableRow header={false} rowData={tableRowTwo} />
-            <TableRow header={false} rowData={tableRowThree} /> */}
-            {tableRowHtml}
+            <TableRow header={false} rowData={tableRowThree} />
+            </ScrollView>
           </View>
           <View styles={styles.total}>
-            <Text style={styles.total_text}>Total Amount : TK {acceptedTotal}</Text>
+            <Text style={styles.total_text}>Total Amount : TK   {acceptedTotal}</Text>
           </View>
         </View>
-      </ScrollView>
+      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-  body: {
-    backgroundColor: Colors.white,
-    flexDirection: 'column',
-    alignItems: "center",
-    paddingBottom: heightPercentageToDP("2%"),
-  },
-  status_row: {
-    marginTop: heightPercentageToDP("2%"),
-    flexDirection: "row",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center"
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    marginTop: heightPercentageToDP("1%"),
-  },
-  checkbox: {
-    alignSelf: "center",
-    marginRight: widthPercentageToDP("3%"),
-  },
-   label: {
-    marginTop: widthPercentageToDP("1%"),
-    marginLeft: widthPercentageToDP("2%"),
-    paddingRight: widthPercentageToDP("0%"),
-    fontSize: RFValue(14)
-  },
-  view_rectangle: {
-    flexDirection: "column", 
-    alignItems: "center",
-    borderRadius: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    justifyContent: "flex-start",
-    marginTop: heightPercentageToDP("1%"),
-    width: widthPercentageToDP("90%"),
-    //height: windowHeight - heightPercentageToDP("40%"),
-    marginBottom: heightPercentageToDP("2%"),
-    padding: heightPercentageToDP("1%"),
-  },
-  total: {
-    flexDirection: "column",
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: heightPercentageToDP("1%"),
-  },
-  total_text: {
-    fontSize: RFValue(13),
-    fontWeight: "bold"
-  },
-  spinnerTextStyle: {
-    color: WalletColors.Wblue,
-  }
-});
 
 export default TodaysReport;

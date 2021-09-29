@@ -7,22 +7,15 @@
  */
 
 import React, {useState, useEffect, useMemo} from 'react';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import {
-  StyleSheet,
+
   View,
   Text,
   TextInput,
-  PixelRatio,
-  Dimensions,
-  useColorScheme,
 } from 'react-native';
-import { RFValue } from "react-native-responsive-fontsize";
 import { WalletColors } from "../assets/Colors.js";
+import styles from '../lib/global_css.js';
 
 const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
   const [refCode, setRefCode] = useStateIfMounted(mData.refCode);
@@ -43,100 +36,83 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
 
   return useMemo(() => {
     return (
-      <View style={styles.view_rectangle}>
-        <View style={styles.view_left}>
+      <View style={styles.view_message_rectangle}>
+        <View style={styles.view_message_left}>
           <View style={styles.view_lineNumber}>
-            <Text>{lineNumber}. </Text>
+            <Text style={styles.view_message_text}>{lineNumber}. </Text>
           </View>
         </View>
-        <View style={styles.view_right}>
-          <View style={styles.view_input}>
-            {transType == "Deposit" ? (<Text>Ref. Code : </Text>) : (<Text>Mobile No. :  </Text>)}
-            <TextInput 
-              style={styles.text_input}
-              onChangeText={setRefCode}
-              value={refCode}
-              //textAlign={'center'}
-              onBlur={handleChange}
-              placeholderTextColor={WalletColors.grey}
-              keyboardType={'numeric'}
-            />
-          </View>
-          <View style={styles.view_input}>
-            <Text>Amount     :  </Text>
-            <TextInput 
-              style={styles.text_input}
-              onChangeText={setAmount}
-              value={amount}
-              //textAlignVertical={'center'}
-              onBlur={handleChange}
-              placeholderTextColor={WalletColors.grey}
-              keyboardType={'numeric'}
-            />
-          </View>
+        <View style={styles.view_message_right}>
+          {transType == "Deposit" ? (
+            <View style={styles.view_input}>
+              <View style={styles.view_message_input_label}>
+                <Text style={styles.view_message_text}>Ref. Code</Text>
+                <Text style={styles.view_message_text}>Amount</Text>
+              </View>
+              <View style={styles.view_message_input_box}>
+                <View style={styles.view_input}>
+                  <Text style={styles.view_message_text}> : </Text>
+                  <TextInput 
+                  style={styles.text_message_input}
+                  onChangeText={setRefCode}
+                  value={refCode}
+                  onBlur={handleChange}
+                  placeholderTextColor={WalletColors.grey}
+                  keyboardType={'numeric'}
+                />
+                </View>
+                <View style={styles.view_input}>
+                  <Text style={styles.view_message_text}> : </Text>
+                  <TextInput 
+                    style={styles.text_message_input}
+                    onChangeText={setAmount}
+                    value={amount}
+                    onBlur={handleChange}
+                    placeholderTextColor={WalletColors.grey}
+                    keyboardType={'numeric'}
+                  />
+                </View>
+              </View>
+            </View>
+            ) : (
+              <View style={styles.view_input}>
+                <View style={styles.view_message_input_label}>
+                  <Text style={styles.view_message_text}>Mobile No.</Text>
+                  <Text style={styles.view_message_text}>Amount</Text>
+                </View> 
+                <View style={styles.view_message_input_box}>
+                <View style={styles.view_input}>
+                    <Text style={styles.view_message_text}> : </Text>
+                    <TextInput 
+                    style={styles.text_message_input}
+                    onChangeText={setRefCode}
+                    value={refCode}
+                    onBlur={handleChange}
+                    placeholderTextColor={WalletColors.grey}
+                    keyboardType={'numeric'}
+                  />
+                </View>
+                <View style={styles.view_input}>
+                  <Text style={styles.view_message_text}> : </Text>
+                  <TextInput 
+                    style={styles.text_message_input}
+                    onChangeText={setAmount}
+                    value={amount}
+                    //textAlignVertical={'center'}
+                    onBlur={handleChange}
+                    placeholderTextColor={WalletColors.grey}
+                    keyboardType={'numeric'}
+                  />
+                </View>
+              </View>
+           </View>
+            )}
         </View>
       </View>
     );
   })
 
 };
-
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-  view_rectangle: {
-    flexDirection: "row", 
-    alignItems: "center",
-    borderRadius: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    justifyContent: 'center',
-    height: heightPercentageToDP("12%"),
-    width: widthPercentageToDP("90%"),
-    marginBottom: heightPercentageToDP("1%"),
-  },
-  view_left: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  view_right: {
-    flex: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text_input: {
-    width: widthPercentageToDP("40%"),
-    height: heightPercentageToDP("4%"),
-    // marginTop: heightPercentageToDP("4%"),
-    padding: 4,
-    borderRadius: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    justifyContent: 'center', 
-    alignItems: 'center',
-    marginLeft: 3,
-    // textAlignVertical: 'center',
-    color: WalletColors.Wblue,
-    fontSize: RFValue(11),
-  },
-  view_input: {
-    flexDirection: "row", 
-    justifyContent: "center",
-    alignItems: "center",
-    padding:widthPercentageToDP("1%")
-  },
-  view_lineNumber: {
-    flexDirection: "column", 
-    // flex: 1, 
-    alignItems: "center",
-    justifyContent: "center",
-    // padding:widthPercentageToDP("5%")
-  }
-});
 
 
 export default MessageBlock;

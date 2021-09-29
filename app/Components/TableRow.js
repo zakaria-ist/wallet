@@ -7,20 +7,15 @@
  */
 
 import React, {useState, useEffect, useMemo} from 'react';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import {
-  StyleSheet,
   View,
   Text,
-  TextInput,
-  useColorScheme,
 } from 'react-native';
-import { WalletColors } from "../assets/Colors.js";
-import { RFValue } from 'react-native-responsive-fontsize';
+import Format from "../lib/format";
+import styles from '../lib/global_css.js';
+
+const format = new Format();
 
 const TableRow = ({header, rowData}) => {
   const [cellOne, setCellOne] = useStateIfMounted([]);
@@ -29,12 +24,15 @@ const TableRow = ({header, rowData}) => {
  
 
   useEffect(() => {
-    setCellOne(handleCell(rowData[0]));
-    setCellTwo(handleCell(rowData[1]));
-    setCellThree(handleCellThree(rowData[2]));
+    if (header) {
+      setCellOne(handleHeaderCell(rowData[0]));
+      setCellTwo(handleHeaderCell(rowData[1]));
+      setCellThree(handleHeaderCell(rowData[2]));
+    } else {
+      handleCell(rowData);
+    }
   }, [rowData]);
-
-  const handleCell = (cellData) => {
+  const handleHeaderCell = (cellData) => {
     let testCell = [];
     cellData.map((cell) => {
       testCell.push(
@@ -43,122 +41,80 @@ const TableRow = ({header, rowData}) => {
     })
     return testCell;
   }
-  const handleCellThree = (cellData) => {
-    let testCell = [];
-    if (cellData.length) {
-      if (header) {
-        testCell.push(
-          <Text style={styles.cell_text_header}>{cellData[0]}</Text>
-        )
-      } else {
-        if (cellData[0] == "accepted") {
-          testCell.push(
-            <Text style={{fontSize: RFValue(14), color: WalletColors.Wgreen}}>{cellData[0]}</Text>
-          )
-        }
-        else if (cellData[0] == "rejected") {
-          testCell.push(
-            <Text style={{fontSize: RFValue(14), color: WalletColors.Wred}}>{cellData[0]}</Text>
-          )
-        } else {
-          testCell.push(
-            <Text style={{fontSize: RFValue(14), color: WalletColors.black}}>{cellData[0]}</Text>
-          )
-        }
-      }
-    }
-    return testCell;
+
+  const handleCell = (cellData) => {
+    let leftCell = [];
+    let midCell = [];
+    let rightCell = [];
+
+    leftCell.push(
+      <View style={{flexDirection:"row"}}>
+        <View style={{flexDirection: "column"}}>
+          <Text style={styles.cell_text}>{cellData.time}</Text>
+          <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+        </View>
+      </View>
+    )
+    setCellOne(leftCell);
+    midCell.push(
+      <View style={{flexDirection:"row"}}>
+        <View style={{flexDirection: "column"}}>
+          <Text style={styles.cell_text}>Ref. No.</Text>
+          <Text style={styles.cell_text}>Amount</Text>
+          <Text style={styles.cell_text}>Wallet</Text>
+        </View>
+        <View style={{flexDirection: "column"}}>
+          <View style={{flexDirection: "row"}}>
+          <Text style={styles.cell_text}> : </Text>
+          <Text style={styles.cell_text}>{cellData.refNo}</Text>
+        </View>        
+        <View style={{flexDirection: "row"}}>
+          <Text style={styles.cell_text}> : </Text>
+          <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
+        </View>         
+        <View style={{flexDirection: "row"}}>
+          <Text style={styles.cell_text}> : </Text>
+          <Text style={styles.cell_text}>{cellData.wallet}</Text>
+         </View>    
+        </View>  
+      </View>       
+    )
+    
+    setCellTwo(midCell);
+
+    rightCell.push(
+      <View style={{flexDirection:"row"}}>
+        <Text style={(cellData.status == "Accepted")? styles.text_cell_wgreen: 
+        ((cellData.status == "Rejected") ? styles.text_cell_wred : 
+        styles.text_cell_wblack) }>{cellData.status}</Text>
+      </View>  
+    )
+    setCellThree(rightCell);
   }
 
   return useMemo(() => {
     return (
-      <View style={styles.view_rectangle}>
-        <View style={styles.view_left}>
+      <View style={styles.table_view_rectangle}>
+        <View style={styles.table_view_left}>
           <View style={styles.view_lineNumber}>
             {cellOne}
           </View>
         </View>
-        <View style={styles.view_center}>
+        <View style={styles.table_view_center}>
           <View style={styles.view_lineNumber}>
             {cellTwo}
           </View>
         </View>
-        <View style={styles.view_right}>
+        <View style={styles.table_view_right}>
           <View style={styles.view_lineNumber}>
             {cellThree}
           </View>
         </View>
-      </View>
+        </View>
     );
   })
 
 };
-
-const styles = StyleSheet.create({
-  view_rectangle: {
-    flexDirection: "row", 
-    // alignItems: "center",
-    // borderRadius: 10,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.black,
-    borderStyle: 'solid',
-    // justifyContent: 'center',
-    // alignContent: "space-between",
-    // height: heightPercentageToDP("15%"),
-    width: widthPercentageToDP("85%"),
-    marginBottom: heightPercentageToDP("1%"),
-  },
-  view_left: {
-    flex: 0.7,
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  view_center: {
-    flex: 1,
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  view_right: {
-    flex: 1,
-    alignItems: "flex-end",
-    justifyContent: "center",
-  },
-  text_input: {
-    width: widthPercentageToDP("60%"),
-    height: heightPercentageToDP("5%"),
-    // marginTop: heightPercentageToDP("4%"),
-    borderRadius: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    // justifyContent: 'center',
-    color: WalletColors.Wblue,
-    padding: 10,
-    fontSize: RFValue(10),
-  },
-  view_input: {
-    flexDirection: "row", 
-    alignItems: "center",
-    padding:widthPercentageToDP("2%")
-  },
-  view_lineNumber: {
-    flexDirection: "column", 
-    // flex: 1, 
-    alignItems: "center",
-    justifyContent: "center"
-    // padding:widthPercentageToDP("5%")
-  },
-  cell_text: {
-    padding: 1,
-    alignSelf: "flex-start",
-    fontSize: RFValue(13),
-  },
-  cell_text_header: {
-    alignSelf: "flex-start",
-    fontSize: RFValue(14),
-    fontWeight: "bold",
-  }
-});
 
 
 export default TableRow;

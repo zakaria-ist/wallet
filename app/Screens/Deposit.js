@@ -23,7 +23,6 @@ import {
 } from 'react-native';
 import {
   heightPercentageToDP,
-  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -40,6 +39,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
 import { height, marginBottom } from 'styled-system';
 import { parseSync } from '@babel/core';
+import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
 
@@ -85,9 +85,6 @@ const Deposit = () => {
   //   {label: 'Group 3', value: 'Group 3'},
   // ]);
 
-  const backgroundStyle = {
-    backgroundColor: Colors.white
-  };
 
   const LeftButton = "Yesterday";
   const RightButton = "Today";
@@ -96,21 +93,30 @@ const Deposit = () => {
     ["Message"],
     ["Status"],
   ];
-  const tableRowOne = [
-    ["10:10 AM",],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    : Alipay"],
-    ["Pending"],
-  ];
-  const tableRowTwo = [
-    ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    : Alipay"],
-    ["Accepted"],
-  ];
-  const tableRowThree = [
-    ["10:10 AM", "(12:10 AM)"],
-    ["Ref. No. : 12345", "Amount : 11,320", "Wallet    : Alipay"],
-    ["Rejected"],
-  ];
+  const tableRowOne = {
+    time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Pending",
+  };
+  const tableRowTwo = {
+    time: ["10:10 AM"],
+    HDLtime: ["(12:10 AM)"],
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Accepted",
+  };
+  const tableRowThree = {
+    time: ["10:10 AM"],
+    HDLtime: ["(12:10 AM)"],
+    wallet: "Alipay",
+    amount: 11320,
+    refNo: 12345,
+    status: "Rejected",
+  };
   const agentTableHeader = [
     ["Time", "(HDL Time)"],
     ["Message"],
@@ -119,6 +125,7 @@ const Deposit = () => {
   const agentTableRowOne = {
     rowId: 1,
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: "11320",
     refNo: 1212121212,
@@ -127,6 +134,7 @@ const Deposit = () => {
   const agentTableRowTwo = {
     rowId: 2,
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: "12320",
     refNo: 1313131313,
@@ -135,6 +143,7 @@ const Deposit = () => {
   const agentTableRowThree = {
     rowId: 3,
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: "13320",
     refNo: 1414141414,
@@ -225,13 +234,18 @@ const Deposit = () => {
   }
   const renderTablesData = async () => {
     onSpinnerChanged(true);
+    //onSpinnerChanged(false);
     const msgsUrl = request.getAllMessageUrl();
+    let purpose = 'Yesterday';
+    if (transType == 'Yesterday') {
+      purpose = 'Today';
+    }
     const params = JSON.stringify(
       {
         token: token, 
         role: authType,
-        purpose: 'deposite',
-
+        purpose: purpose,
+       // purpose: 'deposite',
       }
     );
     const content = await request.post(msgsUrl, params);
@@ -303,36 +317,58 @@ const Deposit = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
-        visible={spinner}
+        //visible={spinner}
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
+      <View style={styles.header}>
+      {authType == ("admin" || "subadmin") ?
+          <View style={styles.admin_deposit_withdrawel_header}>
+              <CustomHeader 
+                title={"Deposit"}
+              /> 
+              <View style={styles.admin_deposit_withdrawel_nav_top}>
+              <CommonTop
+                admin={authType == ("admin" || "subadmin") ? true : false}
+                LeftButton={LeftButton}
+                RightButton={RightButton}
+                handleLeftButton={handleLeftButton}
+                handleRightButton={handleRightButton}
+                handleWalLeftButton={handleWalLeftButton}
+                handleWalMidButton={handleWalMidButton}
+                handleWalRightButton={handleWalRightButton}
+              />
+            </View> 
+          </View>
+        :
+        <View style={styles.header}>
           <CustomHeader 
             title={"Deposit"}
-          />
-          <CommonTop
-            admin={authType == ("admin" || "subadmin") ? true : false}
-            LeftButton={LeftButton}
-            RightButton={RightButton}
-            handleLeftButton={handleLeftButton}
-            handleRightButton={handleRightButton}
-            handleWalLeftButton={handleWalLeftButton}
-            handleWalMidButton={handleWalMidButton}
-            handleWalRightButton={handleWalRightButton}
-          />
-
-        <View style={styles.body}>
+          /> 
+          <View style={styles.deposit_withdrawel_nav_top}>
+            <CommonTop
+              admin={authType == ("admin" || "subadmin") ? true : false}
+              LeftButton={LeftButton}
+              RightButton={RightButton}
+              handleLeftButton={handleLeftButton}
+              handleRightButton={handleRightButton}
+              handleWalLeftButton={handleWalLeftButton}
+              handleWalMidButton={handleWalMidButton}
+              handleWalRightButton={handleWalRightButton}
+            />
+          </View> 
+        </View>
+      }
+      
+        <View style={styles.deposit_withdrawel_treport_body}>
           {authType == "client" ? 
+          <View style={styles.client_picker}>
             <View style={styles.picker}>
               <DropDownPicker
-                style={{height: heightPercentageToDP("5%")}}
+                style={styles.client_dropdownpicker}
                 onChangeValue={(value) => {
                   setPickerUser(value); 
                   renderTablesData();
@@ -343,9 +379,10 @@ const Deposit = () => {
                 setOpen={setOpenClientPicker}
                 setValue={setPickerUser}
                 setItems={setPickerUserList}
-                textStyle={{fontSize: RFValue(16)}}
+                textStyle={{fontSize: RFValue(13)}}
                 labelStyle={{fontWeight: "bold"}}
               />
+              </View>
             </View>
           :
             [authType == ("admin" || "subadmin") ? 
@@ -363,7 +400,7 @@ const Deposit = () => {
                     setOpen={setOpenAdminPickerGroup}
                     setValue={setPickerGroup}
                     setItems={setPickerGroupList}
-                    textStyle={{fontSize: RFValue(16)}}
+                    textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
                   />
                 </View>
@@ -380,7 +417,7 @@ const Deposit = () => {
                     setOpen={setOpenAdminPickerWallet}
                     setValue={setWalletPickerType}
                     setItems={setWalletPickerList}
-                    textStyle={{fontSize: RFValue(16)}}
+                    textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
                   />
                 </View>
@@ -391,6 +428,7 @@ const Deposit = () => {
           }
           {authType == 'agent' ?
             [transType == 'Yesterday' ?
+            <View style={styles.agent_status_row_container}>
               <View style={styles.status_row}>
                 <View style={styles.checkboxContainer}>
                   <Text style={styles.label}>Status:  </Text>
@@ -424,21 +462,25 @@ const Deposit = () => {
                   />
                 </View>
               </View>
+              </View>
               :
               <View></View>
             ]
           :
-            <View style={styles.status_row}>
-              <View style={styles.checkboxContainer}>
-                <Text style={styles.label}>Status:   </Text>
-                <Text style={styles.label}>Pending</Text>
-                <CheckBox
+          ([authType == ("admin" || "subadmin") ?
+            <View style={styles.admin_subadmin_status_row_container}>
+             <View style={styles.status_row}>
+               <View style={styles.checkboxContainer}>
+                   <Text style={styles.label}>Status:   </Text>
+                   <Text style={styles.label}>Pending</Text>
+                   <CheckBox
                   value={pending}
                   onValueChange={setPending}
                   style={styles.checkbox}
                   onChange={handleCheckBox}
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
+               </View>
               </View>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Accepted</Text>
@@ -474,35 +516,101 @@ const Deposit = () => {
                 </View>
               }
             </View>
+            :
+            <View style={styles.others_status_row_container}>
+             <View style={styles.status_row}>
+               <View style={styles.checkboxContainer}>
+                   <Text style={styles.label}>Status:   </Text>
+                   <Text style={styles.label}>Pending</Text>
+                   <CheckBox
+                  value={pending}
+                  onValueChange={setPending}
+                  style={styles.checkbox}
+                  onChange={handleCheckBox}
+                  tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                />
+               </View>
+              </View>
+              <View style={styles.checkboxContainer}>
+                <Text style={styles.label}>Accepted</Text>
+                <CheckBox
+                  value={accepted}
+                  onValueChange={setAccepted}
+                  style={styles.checkbox}
+                  onChange={handleCheckBox}
+                  tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                />
+              </View>
+              {transType == "Today" ? 
+                <View style={styles.checkboxContainer}>
+                  <Text style={styles.label}>Rejected</Text>
+                  <CheckBox
+                    value={rejected}
+                    onValueChange={setRejected}
+                    style={styles.checkbox}
+                    onChange={handleCheckBox}
+                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                  />
+                </View>
+              :
+                <View style={styles.checkboxContainer}>
+                  <Text style={styles.label}>No Status</Text>
+                  <CheckBox
+                    value={noStatus}
+                    onValueChange={setNoStatus}
+                    style={styles.checkbox}
+                    onChange={handleCheckBox}
+                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                  />
+                </View>
+              }
+            </View>
+          ]
+          )
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
-              <View style={styles.view_rectangle}>
+            <View style={styles.agent_container}>
+              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+                <ScrollView>
                 <TableRowEditDeposit header={true} rowData={agentTableHeader} />
                 <TableRowEditDeposit header={false} rowData={agentTableRowOne} />
                 <TableRowEditDeposit header={false} rowData={agentTableRowTwo} />
                 <TableRowEditDeposit header={false} rowData={agentTableRowThree} />
+                </ScrollView>
+                </View>
               </View>
             :
             <>
-              <View style={styles.view_rectangle}>
+              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+                <ScrollView>
                 <TableRow header={true} rowData={tableHeader} />
                 <TableRow header={false} rowData={tableRowOne} />
                 <TableRow header={false} rowData={tableRowTwo} />
                 <TableRow header={false} rowData={tableRowThree} />
+                </ScrollView>
               </View>
               <View styles={styles.total}>
-                <Text style={styles.total_text}>Total Amount  : TK {acceptedTotal}</Text>
+                <Text style={styles.total_text}>Total Amount  : TK   {acceptedTotal}</Text>
               </View>
+              
             </>
             ]
           :
             <>
-              <View style={styles.view_rectangle}>
+              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+                <ScrollView>
                 <TableRow header={true} rowData={tableHeader} />
                 <TableRow header={false} rowData={tableRowOne} />
                 <TableRow header={false} rowData={tableRowTwo} />
                 <TableRow header={false} rowData={tableRowThree} />
+                <TableRow header={false} rowData={tableRowOne} />
+                <TableRow header={false} rowData={tableRowTwo} />
+                <TableRow header={false} rowData={tableRowThree} />
+                <TableRow header={false} rowData={tableRowOne} />
+                <TableRow header={false} rowData={tableRowTwo} />
+                <TableRow header={false} rowData={tableRowThree} />
+                </ScrollView>
               </View>
               <View style={styles.total}>
                 <View style={{flexDirection:"row"}}>
@@ -512,112 +620,25 @@ const Deposit = () => {
                   </View>  
                   <View style={{flexDirection: "column"}}>
                   <View style={{flexDirection: "row"}}>
-                    <Text style={styles.total_text}>:</Text>
-                    <Text style={styles.total_text}>TK</Text>
+                    <Text style={styles.total_text}> : </Text>
+                    <Text style={styles.total_text}>TK   </Text>
                     <Text style={styles.total_text}>{pendingTotal}</Text>
                   </View> 
                   <View style={{flexDirection: "row"}}>
-                    <Text style={styles.total_text}>:</Text>
-                    <Text style={styles.total_text}>TK</Text>
+                    <Text style={styles.total_text}> : </Text>
+                    <Text style={styles.total_text}>TK   </Text>
                     <Text style={styles.total_text}>{acceptedTotal}</Text>
                   </View>
                   </View>    
                 </View>
               </View>
             </>
-          }
+          }  
+          </View>
         </View>
-      </ScrollView>
     </SafeAreaView>
   );
 };
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
-
-const styles = StyleSheet.create({
-  body: {
-    backgroundColor: Colors.white,
-    flexDirection: 'column',
-    flex: 1,
-    alignItems: "center",
-    paddingBottom: heightPercentageToDP("2%"),
-  },
-  picker: {
-    marginTop: heightPercentageToDP("2%"),
-    width:  windowWidth/2 - widthPercentageToDP("10%"),
-    flexDirection: "row",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-  },
-  picker_admin: {
-    marginTop: heightPercentageToDP("2%"),
-    height: 5,
-    width:  windowWidth/2 - widthPercentageToDP("10%"),
-    flexDirection: "row",
-    alignItems: "center",
-    marginRight: 10, 
-    marginLeft: 10,
-  },
-  status_row: {
-    marginTop: heightPercentageToDP("1%"),
-    flexDirection: "row",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    alignSelf: "center",
-  },
-  checkboxContainer: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: heightPercentageToDP("1%"),
-  },
-  checkbox: {
-   // height: heightPercentageToDP("1%"),
-    transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
-    //alignSelf: "center",
-   // marginBottom: heightPercentageToDP("4%")
-    //marginTop: heightPercentageToDP("-1%"),
-    marginLeft: widthPercentageToDP("-2%"),
-    marginRight: widthPercentageToDP("2%"),
-  },
-  label: {
-    marginTop: widthPercentageToDP("-1%"),
-    marginLeft: widthPercentageToDP("2%"),
-    fontSize: RFValue(14)
-  },
-  view_rectangle: {
-    flexDirection: "column", 
-    alignItems: "center",
-    borderRadius: 20,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    justifyContent: "flex-start",
-    marginTop: heightPercentageToDP("1%"),
-    width: widthPercentageToDP("90%"),
-   // height: windowHeight - heightPercentageToDP("47%"),
-    padding: heightPercentageToDP("1%"),
-    //paddingBottom: windowHeight/2 - heightPercentageToDP("30%"),
-  },
-  total: {
-    flexDirection: "column",
-    textAlign: "left",
-    // alignItems: "center",
-    // justifyContent: "center",
-    marginTop: heightPercentageToDP("1%"),
-  },
-  total_text: {
-    fontSize: RFValue(13),
-    fontWeight: "bold",
-    marginLeft: heightPercentageToDP("1%"),
-  },
-  spinnerTextStyle: {
-    color: WalletColors.Wblue,
-  }
-});
 
 export default Deposit;

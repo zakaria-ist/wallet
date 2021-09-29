@@ -11,8 +11,8 @@ import {
   SafeAreaView,
   ScrollView,
   StatusBar,
-  StyleSheet,
   Text,
+  Dimensions,
   TextInput,
   useColorScheme,
   View,
@@ -22,7 +22,6 @@ import {
 } from 'react-native';
 import {
   heightPercentageToDP,
-  widthPercentageToDP,
 } from "react-native-responsive-screen";
 import Modal from "react-native-modal";
 import { useStateIfMounted } from "use-state-if-mounted";
@@ -46,9 +45,11 @@ import MessageBlock from "../Components/MessageBlock";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
 import { alignContent, fontWeight } from 'styled-system';
+import styles from '../lib/global_css';
 
 const request = new Request();
 const alert = new CustomAlert();
+const windowHeight = Dimensions.get('window').height;
 const db = firestore();
 
 const CreateMessage = () => {
@@ -248,20 +249,16 @@ const CreateMessage = () => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-          <CustomHeader 
-            title={"Create Message"}
-          />
+      <View style={styles.header}>
+        <CustomHeader title={"Create Message"}/>
+        <View style={styles.message_nav_top}>
           <CommonTop
             admin={false}
             LeftButton={LeftButton}
@@ -272,9 +269,10 @@ const CreateMessage = () => {
             handleWalMidButton={handleWalMidButton}
             handleWalRightButton={handleWalRightButton}
           />
-
+        </View>
+      </View>
         <View
-          style={styles.body}>
+          style={styles.create_message_body}>
           <TouchableOpacity
             onPress={handleQuickInsert}
           >
@@ -284,12 +282,13 @@ const CreateMessage = () => {
               </Text>
             </View>
           </TouchableOpacity>
+          <ScrollView>
           <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
           <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
           <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
           <MessageBlock transType={transType} mData={messageFour} lineNumber={4} key={"lineNumber4"} parentReference={handleMessageFour} />
           <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
-
+          </ScrollView>
           <TouchableOpacity
             onPress={handleSubmit}
           >
@@ -300,8 +299,7 @@ const CreateMessage = () => {
             </View>
           </TouchableOpacity>
         </View>
-      </ScrollView>
-
+    
       <Modal 
           isVisible={isModalVisible}
           // onBackdropPress={handleQuickInsert}
@@ -318,6 +316,8 @@ const CreateMessage = () => {
                   >
                     <Text
                       style={{
+                        marginTop: -10,
+                        marginLeft: 5,
                         color: WalletColors.black,
                         fontSize: RFValue(18),
                         fontWeight: "bold"
@@ -332,8 +332,8 @@ const CreateMessage = () => {
                     }}
                   >
                     <View
-                      style={styles.modal_close}>
-                      <Fontisto name="close" color={WalletColors.red} size={30} />
+                      style={styles.modal_close,{alignSelf:"flex-end",marginTop:-heightPercentageToDP("3%")}}>
+                      <Fontisto name="close" color={WalletColors.red} size={20} />
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -363,7 +363,7 @@ const CreateMessage = () => {
                       style={{
                         alignSelf: "center",
                         color: WalletColors.white,
-                        fontSize: RFValue(16)
+                        fontSize: RFValue(14)
                       }}
                     >
                       Confirm
@@ -379,116 +379,5 @@ const CreateMessage = () => {
   );
 };
 
-const styles = StyleSheet.create({
-  body: {
-    backgroundColor: Colors.white,
-    flexDirection: 'column',
-    alignItems: "center",
-    paddingBottom: heightPercentageToDP("5%"),
-    marginTop: heightPercentageToDP("4%"),
-  },
-  sumbit_button: {
-    width: widthPercentageToDP("30%"),
-    height: heightPercentageToDP("5%"),
-    marginTop: heightPercentageToDP("1%"),
-    borderRadius: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wgreen,
-    borderStyle: 'solid',
-    justifyContent: 'center',
-    backgroundColor: WalletColors.Wgreen,
-    alignItems: 'center'
-  },
-  sumbit_button_text: {
-    color: WalletColors.white,
-    fontSize: RFValue(15)
-  },
-  insert_button: {
-    width: widthPercentageToDP("30%"),
-    height: heightPercentageToDP("4%"),
-    marginTop: heightPercentageToDP("-3%"),
-    marginBottom: heightPercentageToDP("1%"),
-    borderRadius: 8,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Worange,
-    borderStyle: 'solid',
-    justifyContent: 'center',
-    backgroundColor: WalletColors.Worange,
-    alignItems: 'center',
-    marginLeft: widthPercentageToDP("60%"),
-  },
-  insert_button_text: {
-    color: WalletColors.white,
-    fontSize: RFValue(15)
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 20,
-  },
-  modalView: {
-    margin: 0,
-    backgroundColor: "white",
-    borderColor: WalletColors.Wblue,
-    borderStyle: 'solid',
-    borderWidth: StyleSheet.hairlineWidth,
-    borderRadius: 20,
-    padding: widthPercentageToDP("4%"),
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
-  },
-  modal_header: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center"
-  },
-  modal_text_input: {
-    fontSize: RFValue(15),
-    color: "black",
-    // alignSelf: "flex-start",
-    width: widthPercentageToDP("85%"),
-    height: heightPercentageToDP("25%"),
-    marginTop: heightPercentageToDP("2%"),
-    borderColor: WalletColors.Wblue,
-    borderRadius: 15,
-    borderStyle: 'solid',
-    borderWidth: StyleSheet.hairlineWidth,
-    textAlignVertical: 'top'
-  },
-  confirm: {
-    width: widthPercentageToDP("30%"),
-    height: heightPercentageToDP("5%"),
-    marginTop: heightPercentageToDP("1%"),
-    borderRadius: 10,
-    borderWidth: StyleSheet.hairlineWidth,
-    borderColor: WalletColors.Wgreen,
-    borderStyle: 'solid',
-    justifyContent: 'center',
-    backgroundColor: WalletColors.Wgreen,
-    alignSelf: "center",
-  },
-  modal_title: {
-    alignSelf: "center",
-    color: WalletColors.black,
-    textAlign: "center",
-  },
-  modal_close: {
-    alignSelf: "flex-end",
-    color: WalletColors.black,
-    textAlign: "center",
-    marginTop: heightPercentageToDP("-4%"),
-    marginRight: heightPercentageToDP("2%"),
-  },
-  spinnerTextStyle: {
-    color: WalletColors.Wblue,
-  }
-});
 
 export default CreateMessage;
