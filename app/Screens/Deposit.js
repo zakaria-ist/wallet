@@ -9,7 +9,7 @@
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
-  ScrollView,
+  FlatList,
   StatusBar,
   StyleSheet,
   Text,
@@ -572,23 +572,33 @@ const Deposit = () => {
             [transType == 'Today' ? 
             <View style={styles.agent_container}>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-                <ScrollView>
-                <TableRowEditDeposit header={true} rowData={agentTableHeader} />
-                <TableRowEditDeposit header={false} rowData={agentTableRowOne} />
-                <TableRowEditDeposit header={false} rowData={agentTableRowTwo} />
-                <TableRowEditDeposit header={false} rowData={agentTableRowThree} />
-                </ScrollView>
+                <FlatList data={[{key: 'item1' }]}
+                  renderItem={({ item, index, separators }) => (
+                    <TouchableOpacity>
+                      <View style={styles.header}>
+                        <TableRowEditDeposit header={true} rowData={agentTableHeader} />
+                        <TableRowEditDeposit header={false} rowData={agentTableRowOne} />
+                        <TableRowEditDeposit header={false} rowData={agentTableRowTwo} />
+                        <TableRowEditDeposit header={false} rowData={agentTableRowThree} />
+                      </View>
+                    </TouchableOpacity>)}
+                  />
                 </View>
               </View>
             :
             <>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-                <ScrollView>
-                <TableRow header={true} rowData={tableHeader} />
-                <TableRow header={false} rowData={tableRowOne} />
-                <TableRow header={false} rowData={tableRowTwo} />
-                <TableRow header={false} rowData={tableRowThree} />
-                </ScrollView>
+                <FlatList data={[{key: 'item1' }]}
+                  renderItem={({ item, index, separators }) => (
+                    <TouchableOpacity>
+                      <View style={styles.header}>
+                        <TableRow header={true} rowData={tableHeader} />
+                        <TableRow header={false} rowData={tableRowOne} />
+                        <TableRow header={false} rowData={tableRowTwo} />
+                        <TableRow header={false} rowData={tableRowThree} />
+                      </View>
+                    </TouchableOpacity>)}
+                  />
               </View>
               <View styles={styles.total}>
                 <Text style={styles.total_text}>Total Amount  : TK   {acceptedTotal}</Text>
@@ -599,18 +609,20 @@ const Deposit = () => {
           :
             <>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-                <ScrollView>
-                <TableRow header={true} rowData={tableHeader} />
-                <TableRow header={false} rowData={tableRowOne} />
-                <TableRow header={false} rowData={tableRowTwo} />
-                <TableRow header={false} rowData={tableRowThree} />
-                <TableRow header={false} rowData={tableRowOne} />
-                <TableRow header={false} rowData={tableRowTwo} />
-                <TableRow header={false} rowData={tableRowThree} />
-                <TableRow header={false} rowData={tableRowOne} />
-                <TableRow header={false} rowData={tableRowTwo} />
-                <TableRow header={false} rowData={tableRowThree} />
-                </ScrollView>
+              <FlatList data={[{key: 'item1' }]}
+                renderItem={({ item, index, separators }) => (
+                  <TouchableOpacity>
+                    <View style={styles.header}>
+                      <TableRow header={true} rowData={tableHeader} />
+                      <TableRow header={false} rowData={tableRowOne} />
+                      <TableRow header={false} rowData={tableRowTwo} />
+                      <TableRow header={false} rowData={tableRowThree} />
+                      <TableRow header={false} rowData={tableRowOne} />
+                      <TableRow header={false} rowData={tableRowTwo} />
+                      <TableRow header={false} rowData={tableRowThree} />
+                    </View>
+                  </TouchableOpacity>)}
+                />
               </View>
               <View style={styles.total}>
                 <View style={{flexDirection:"row"}}>

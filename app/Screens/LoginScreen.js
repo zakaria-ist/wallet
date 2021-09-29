@@ -15,7 +15,7 @@ import {
 import AsyncStorage from "@react-native-community/async-storage";
 import {
   SafeAreaView,
-  ScrollView,
+  FlatList,
   StatusBar,
   StyleSheet,
   View,
@@ -251,8 +251,11 @@ const LoginScreen = ({navigation}) => {
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />
-      <ScrollView
-        style={backgroundStyle}>
+      <FlatList 
+        data={[{key: 'item1' }]}
+        renderItem={({ item, index, separators }) => (
+        <TouchableOpacity>
+          <View style={styles.header}>
           <View style={styles.view_logo}>
             <View style={styles.view_logo_logo}>
               <Image style={styles.logo} source={screensize.getSmallScreen() || screensize.getMediumScreen() || screensize.getLargeScreen()}/>
@@ -292,7 +295,10 @@ const LoginScreen = ({navigation}) => {
                 </View>
               </TouchableOpacity>
           </View>
-      </ScrollView>
+          </View>
+        </TouchableOpacity>)}
+      />
+
     </SafeAreaView>
   );
 };

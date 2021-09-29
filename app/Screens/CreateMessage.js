@@ -9,6 +9,7 @@
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
+  FlatList,
   ScrollView,
   StatusBar,
   Text,
@@ -18,6 +19,7 @@ import {
   View,
   InteractionManager,
   TouchableOpacity,
+  TouchableHighlight,
   KeyboardAvoidingView
 } from 'react-native';
 import {
@@ -248,6 +250,16 @@ const CreateMessage = () => {
     setMessageFive(data);
   }
 
+  // const DATA = [
+  //   <ScrollView>
+  //   <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
+  //   <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
+  //   <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
+  //   <MessageBlock transType={transType} mData={messageFour} lineNumber={4} key={"lineNumber4"} parentReference={handleMessageFour} />
+  //   <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
+  //   </ScrollView>
+  // ];
+
   return (
     <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -282,13 +294,18 @@ const CreateMessage = () => {
               </Text>
             </View>
           </TouchableOpacity>
-          <ScrollView>
-          <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
-          <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
-          <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
-          <MessageBlock transType={transType} mData={messageFour} lineNumber={4} key={"lineNumber4"} parentReference={handleMessageFour} />
-          <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
-          </ScrollView>
+          <FlatList data={[{key: 'item1' }]}
+           renderItem={({ item, index, separators }) => (
+            <TouchableOpacity key={item.key}>
+              <View style={styles.header}>
+                <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
+                <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
+                <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
+                <MessageBlock transType={transType} mData={messageFour} lineNumber={4} key={"lineNumber4"} parentReference={handleMessageFour} />
+                <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
+              </View>
+            </TouchableOpacity>)}
+          />
           <TouchableOpacity
             onPress={handleSubmit}
           >

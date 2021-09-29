@@ -9,7 +9,7 @@
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
-  ScrollView,
+  FlatList,
   StatusBar,
   StyleSheet,
   Text,
@@ -256,19 +256,24 @@ const TodaysReport = () => {
           }
 
           <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-            <ScrollView>
-              {/* {tableRowHtml} */}
-            <TableRow header={true} rowData={tableHeader} />
-            <TableRow header={false} rowData={tableRowOne} />
-            <TableRow header={false} rowData={tableRowTwo} />
-            <TableRow header={false} rowData={tableRowThree} />
-            </ScrollView>
+          <FlatList 
+            data={[{key: 'item1' }]}
+            renderItem={({ item, index, separators }) => (
+            <TouchableOpacity>
+              <View style={styles.header}>
+                  {/* {tableRowHtml} */}
+                <TableRow header={true} rowData={tableHeader} />
+                <TableRow header={false} rowData={tableRowOne} />
+                <TableRow header={false} rowData={tableRowTwo} />
+                <TableRow header={false} rowData={tableRowThree} />
+              </View>
+            </TouchableOpacity>)}
+          />
           </View>
           <View styles={styles.total}>
             <Text style={styles.total_text}>Total Amount : TK   {acceptedTotal}</Text>
           </View>
         </View>
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };
