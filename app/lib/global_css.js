@@ -388,7 +388,7 @@ const styles = StyleSheet.create({
       width: widthPercentageToDP("85%"),
     },
     table_view_left: {
-      flex: 0.8,
+      flex: 0.9,
       alignItems: "flex-start",
       justifyContent: "center",
     },
