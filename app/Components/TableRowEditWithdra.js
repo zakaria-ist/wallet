@@ -15,20 +15,30 @@ import {
   TextInput,
   TouchableOpacity
 } from 'react-native';
+import Fontisto from 'react-native-vector-icons/Fontisto';
+import AsyncStorage from "@react-native-community/async-storage";
 import { WalletColors } from "../assets/Colors.js";
 import Format from "../lib/format";
 import styles from '../lib/global_css.js';
+import { RFValue } from 'react-native-responsive-fontsize';
+import Request from "../lib/request";
+import CustomAlert from "../lib/alert";
 
 const format = new Format();
+const request = new Request();
+const alert = new CustomAlert();
 
-const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
+const TableRowEditWithdra = ({header, rowData}) => {
+  const [token, setToken] = useStateIfMounted("");
   const [rowId, setRowId] = useStateIfMounted(rowData.rowId);
-  const [pinNo, setPinNo] = useStateIfMounted("");
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
   const [cellThree, setCellThree] = useStateIfMounted([]);
   
   useEffect(() => {
+    AsyncStorage.getItem('token').then((token) => {
+      setToken(token);
+    });
     if (header) {
       setCellOne(handleHeaderCell(rowData[0]));
       setCellTwo(handleHeaderCell(rowData[1]));
@@ -39,10 +49,6 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
       handleCell(rowData);
     }
   }, [rowData]);
-
-  const handleChange = () => {
-    console.log('handleChange', 'pinNo', pinNo);
-  }
 
   const handleHeaderCell = (cellData) => {
     let testCell = [];
@@ -81,12 +87,11 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
            <Text style={styles.cell_text_input_colon}> : </Text>
            <TextInput 
           style={styles.text_input}
-          onChangeText={setPinNo}
-          // onChangeText={text => {console.log('text', text); setPinNo(String(text))}}
-          value={pinNo}
+          onChangeText={pinNo => { rowData.pinNo = pinNo; handleCell(rowData); }}
+          value={rowData.pinNo}
+          textAlign={'left'}
           placeholderTextColor={WalletColors.grey}
           keyboardType={'numeric'}
-          onBlur={handleChange}
         />
         </View>        
           <View style={{flexDirection: "row"}}>
@@ -106,23 +111,43 @@ const TableRowEditWithdra = ({header, rowData, type, sendCallback}) => {
       )
     setCellTwo(midCell);
 
-    rightCell.push(
-      <TouchableOpacity
-        onPress={onSend}
-      >
-        <View style={styles.send_button}>
-          <Text style={styles.send_button_text}>
-            Send
-          </Text>
-        </View>
-      </TouchableOpacity>
-    )
+    if (rowData.sent) {
+      rightCell.push([]);
+    } else {
+      rightCell.push(
+        <TouchableOpacity
+          onPress={ () => alert.ask('Are you sure?', ()=>{ onSend(); }) }
+        >
+          <View style={styles.send_button}>
+            <Text style={styles.send_button_text}>
+              Send
+            </Text>
+          </View>
+        </TouchableOpacity>
+      )
+    }
     setCellThree(rightCell);
   }
 
-  const onSend = () => {
-    console.log('send', rowId, pinNo);
-    // sendCallback(rowId, pinNo);
+  const onSend = async () => {
+    const sendUrl = request.getAgentReplyMessageUrl();
+    let params = JSON.stringify(
+      {
+        token: token,
+        action: 'sent',
+        message_id: rowData.rowId, 
+        amount: rowData.amount,
+        pinNo: rowData.pinNo
+      }
+    );
+
+    const result = await request.post(sendUrl, params);
+    console.log('result', result);
+    if (result.ok) {
+      rowData['sent'] = true;
+      handleCell(rowData);
+    }
+    
   }
 
   return useMemo(() => {

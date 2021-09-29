@@ -823,6 +823,9 @@ const styles = StyleSheet.create({
       alignItems: 'center',
       margin: widthPercentageToDP("1%"),
     },
+    spinnerTextStyle: {
+      color: WalletColors.Wblue,
+    }
 
   });
 

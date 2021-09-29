@@ -28,6 +28,13 @@ import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
+import Spinner from "react-native-loading-spinner-overlay";
+import firebase from "@react-native-firebase/app";
+import firestore from '@react-native-firebase/firestore';
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
 
 import Request from "../lib/request";
 import CustomAlert from "../lib/alert";
@@ -43,8 +50,11 @@ import styles from '../lib/global_css';
 const request = new Request();
 const alert = new CustomAlert();
 const windowHeight = Dimensions.get('window').height;
+const db = firestore();
+
 const CreateMessage = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [transType, setTransType] = useStateIfMounted("Withdrawal");
   const [token, setToken] = useStateIfMounted("");
   const [superiorAgent, setSuperiorAgent] = useStateIfMounted("");
@@ -70,7 +80,7 @@ const CreateMessage = () => {
       AsyncStorage.getItem('walletData').then((walletData) => {
         setWalletData(JSON.parse(walletData));
       })
-      AsyncStorage.getItem('authorizeToken').then((token) => {
+      AsyncStorage.getItem('token').then((token) => {
         setToken(token);
       })
       AsyncStorage.getItem('superiorAgent').then((superiorAgent) => {
@@ -100,28 +110,55 @@ const CreateMessage = () => {
   }
 
   const sendMessageToAgent = async (message, url) => {
-    if (token && superiorAgent && superiorAgent.username) {
-      let walletId = walletType;
+    if (token) {
       let purpose = "deposit";
       if (transType == "Withdrawal") {
         purpose = "withdrawal";
       }
 
-      let messageUrl = "";
-      if (purpose == "deposit") {
-        messageUrl = url + "?token=" + token + "&purpose=" + purpose + "&refNo=" + message.refCode + 
-          "&amount=" + message.amount + "&walletId=" + walletId + "&receiveUsername=" + superiorAgent.username
-      } else {
-        messageUrl = url + "?token=" + token + "&purpose=" + purpose + "&mobile=" + message.refCode + 
-          "&amount=" + message.amount + "&walletId=" + walletId + "&receiveUsername=" + superiorAgent.username
-      }
+      let params = JSON.stringify(
+        {
+          token: token, 
+          receiveUsername: superiorAgent.username, 
+          walletId: walletType, 
+          purpose: purpose,
+          refNo: message.refCode,
+          mobile: message.refCode,
+          amount: message.amount,
+        }
+      );
+      if (url) {
+        const result = await request.post(url, params);
+        console.log('result', result);
+        if (result.ok && result.message) {
+          let agentName = result.myAgent;
+          if (agentName && agentName != "") {
+            const tokenDB = await getUserTokenPromise(agentName);
+            console.log('agentToken', tokenDB._data.deviceId);
+            const deviceId = tokenDB._data.deviceId;
+            const key = 'AAAAFusuHOI:APA91bFmsoK3xCuADeTunV7kCDrI5cBTd-wXN7WTZi-_fxT0NuZtVXkxcjzzZnD_uqeuHEqZ7ojrMK0SjCrNEkWtEewfPV8DTGtAxPeQBPQs_SCZNWlntcTm3bsYVYcuVI2dOY3f1WdI';
+            // message build
+            let sender = result.message.fromuser;
+            let body = "fromuser: " + result.message.fromuser + ", toagent: " + result.message.toagent + ", refno: " + result.message.refNo + ", mobile: " + result.message.mobile + ", purpose: " + result.message.purpose + ", payment: " + result.message.payment + ", amount: " + result.message.amount;
+            body += ", belongclient: " + result.message.belongclient + ", cct_status: " + result.message.cct_status + ", cct_author_id: " + result.message.cct_author_id + ", status: " + result.message.status;
+            const message = {
+              sender: sender,
+              body: body
+            };
 
-      if (messageUrl) {
-        console.log('messageUrl', messageUrl);
-        await request.get(messageUrl)
-          .then(result => {
-            console.log('result', result);
-          })
+            let params = JSON.stringify(
+              {
+                deviceId: deviceId, 
+                message: JSON.stringify(message), 
+                key: key
+              }
+            );
+            // call the API to send push notification
+            let pushUrl = request.getPushNotificationUrl();
+            const results = await request.post(pushUrl, params);
+            console.log('results', results);
+          }
+        }
       }
     } else {
       alert.warning("Empty token or Superior Agent is missing");
@@ -129,8 +166,14 @@ const CreateMessage = () => {
     
   }
 
+  const getUserTokenPromise = (userName) => {
+    return db.collection("users")
+        .doc(String(userName))
+        .get()
+  }
+
   const handleSubmit = () => {
-    console.log('handleSubmit');
+    onSpinnerChanged(true);
     const userSendMessageUrl = request.getUserSendMessageUrl();
     if (messageOne.refCode != "" && messageOne.amount != "") {
       sendMessageToAgent(messageOne, userSendMessageUrl);
@@ -147,6 +190,7 @@ const CreateMessage = () => {
     if (messageFive.refCode != "" && messageFive.amount != "") {
       sendMessageToAgent(messageFive, userSendMessageUrl);
     }
+    onSpinnerChanged(false);
   }
 
   const handleQuickInsert = () => {
@@ -207,9 +251,14 @@ const CreateMessage = () => {
   return (
     <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Spinner
+        visible={spinner}
+        // textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
       <View style={styles.header}>
-          <CustomHeader title={"Create Message"}/>
-          <View style={styles.message_nav_top}>
+        <CustomHeader title={"Create Message"}/>
+        <View style={styles.message_nav_top}>
           <CommonTop
             admin={false}
             LeftButton={LeftButton}
@@ -220,7 +269,7 @@ const CreateMessage = () => {
             handleWalMidButton={handleWalMidButton}
             handleWalRightButton={handleWalRightButton}
           />
-          </View>
+        </View>
       </View>
         <View
           style={styles.create_message_body}>

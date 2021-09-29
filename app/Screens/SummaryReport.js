@@ -20,7 +20,7 @@ import {
 import { useStateIfMounted } from "use-state-if-mounted";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
-
+import Spinner from "react-native-loading-spinner-overlay";
 import SummaryTableRow from "../Components/SummaryTableRow";
 import CustomHeader from "../Components/CustomHeader";
 import CommonTop from "../Components/CommonTop";
@@ -28,6 +28,7 @@ import styles from '../lib/global_css';
 
 const SummaryReport = () => {
   const isDarkMode = useColorScheme() === 'dark';
+  const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [transType, setTransType] = useStateIfMounted("Today");
   const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletData, setWalletData] = useStateIfMounted([]);
@@ -94,27 +95,43 @@ const SummaryReport = () => {
 
   const handleLeftButton = () => {
     setTransType("Yesterday");
+    renderTablesData();
   }
 
   const handleRightButton = () => {
     setTransType("Today");
+    renderTablesData();
   }
 
   const handleWalLeftButton = () => {
     setWalletType(1);
+    renderTablesData();
   }
 
   const handleWalMidButton = () => {
     setWalletType(2);
+    renderTablesData();
   }
 
   const handleWalRightButton = () => {
     setWalletType(3);
+    renderTablesData();
+  }
+
+  const renderTablesData = async () => {
+    onSpinnerChanged(true);
+
+    onSpinnerChanged(false);
   }
 
   return (
     <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Spinner
+        visible={spinner}
+        // textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
       <View style={styles.header}>
         <CustomHeader 
           title={"Summary Report"}

@@ -18,25 +18,35 @@ import {
 import { WalletColors } from "../assets/Colors.js";
 import Format from "../lib/format";
 import styles from '../lib/global_css.js';
+import Request from "../lib/request";
+import CustomAlert from "../lib/alert";
+import AsyncStorage from "@react-native-community/async-storage";
+import { RFValue } from 'react-native-responsive-fontsize';
 
 const format = new Format();
+const request = new Request();
+const alert = new CustomAlert();
 
-const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallback}) => {
+const TableRowEditDeposit = ({header, rowData}) => {
+  const [token, setToken] = useStateIfMounted("");
   const [rowId, setRowId] = useStateIfMounted(rowData.rowId);
-  const [amount, setAmount] = useStateIfMounted(format.separator(rowData.amount));
+  const [amount, setAmount] = useState('');
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
   const [cellThree, setCellThree] = useStateIfMounted([]);
  
 
   useEffect(() => {
+    AsyncStorage.getItem('token').then((token) => {
+      setToken(token);
+    });
     if (header) {
       setCellOne(handleHeaderCell(rowData[0]));
       setCellTwo(handleHeaderCell(rowData[1]));
       setCellThree(handleHeaderCell(rowData[2]));
     } else {
       setRowId(rowData.rowId);
-      setAmount(format.separator(rowData.amount));
+      rowData.amount = format.separator(String(rowData.amount).split(',').join(''));
       handleCell(rowData);
     }
   }, [rowData]);
@@ -81,9 +91,11 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
           <Text style={styles.cell_text_input}> : </Text>
           <TextInput 
             style={styles.text_input}
-            // onChangeText={setPinNo}
-            onChangeText={text => {console.log('text', text); setAmount(format.separator(text))}}
-            value={amount}
+            onChangeText={amount => { 
+              rowData.amount = format.separator(String(amount).split(',').join('')); 
+              handleCell(rowData); 
+            }}
+            value={rowData.amount}
             textAlign={'left'}
             placeholderTextColor={WalletColors.grey}
             keyboardType={'numeric'}
@@ -99,38 +111,69 @@ const TableRowEditDeposit = ({header, rowData, type, rejectCallback, acceptCallb
   
     setCellTwo(midCell);
 
-    rightCell.push(
-      <View style={styles.button_view}>
-      <TouchableOpacity
-        onPress={onReject}
-      >
-        <View style={styles.send_button_reject}>
-          <Text style={styles.send_button_text}>
-            Reject
-          </Text>
+    if (rowData.sent) {
+      rightCell.push([]);
+    } else {
+      rightCell.push(
+        <View style={styles.button_view}>
+        <TouchableOpacity
+          onPress={onReject}
+        >
+          <View style={styles.send_button_reject}>
+            <Text style={styles.send_button_text}>
+              Reject
+            </Text>
+          </View>
+        </TouchableOpacity>
         </View>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={onAccept}
-      >
-        <View style={styles.send_button_accept}>
-          <Text style={styles.send_button_text}>
-            Accept
-          </Text>
+      )
+      rightCell.push(
+        <View style={styles.button_view}>
+        <TouchableOpacity
+          onPress={onAccept}
+        >
+          <View style={styles.send_button_accept}>
+            <Text style={styles.send_button_text}>
+              Accept
+            </Text>
+          </View>
+        </TouchableOpacity>
         </View>
-      </TouchableOpacity>
-      </View>
-    )
+      )
+    }
     setCellThree(rightCell);
   }
 
   const onReject = () => {
-    console.log('onReject', rowId, amount);
-    // rejectCallback(rowId, amount);
+    alert.ask('Are you sure, you want to reject?', ()=>{
+      onSend('reject');
+    })
   }
+
   const onAccept = () => {
-    console.log('onAccept', rowId, amount);
-    // acceptCallback(rowId, amount);
+    alert.ask('Are you sure, you want to accept?', ()=>{
+      onSend('accept');
+    })
+  }
+
+  const onSend = async (action) => {
+    const sendUrl = request.getAgentReplyMessageUrl();
+    let params = JSON.stringify(
+      {
+        token: token,
+        action: action,
+        message_id: rowData.rowId, 
+        amount: rowData.amount,
+        pinNo: rowData.pinNo
+      }
+    );
+
+    const result = await request.post(sendUrl, params);
+    console.log('result', result);
+    if (result.ok) {
+      rowData['sent'] = true;
+      handleCell(rowData);
+    }
   }
 
   return useMemo(() => {
