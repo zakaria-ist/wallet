@@ -48,9 +48,9 @@ const screenOptionStyle = {
     fontWeight: 'bold',
     color: WalletColors.Wblue,
   },
-  // tabBarStyle: {
-  //   height: (screensize.getLargeScreen() ? (StatusBar.currentHeight - heightPercentageToDP("2%")) : (StatusBar.currentHeight + heightPercentageToDP("2%")))
-  // },
+  tabBarStyle: {
+    height: heightPercentageToDP("6.5%")
+  },
   tabBarShowLabel: false,
   headerTitleAlign: 'center',
   tabBarActiveTintColor: WalletColors.Wblue,

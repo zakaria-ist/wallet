@@ -125,10 +125,6 @@ const TableRowEditDeposit = ({header, rowData}) => {
             </Text>
           </View>
         </TouchableOpacity>
-        </View>
-      )
-      rightCell.push(
-        <View style={styles.button_view}>
         <TouchableOpacity
           onPress={onAccept}
         >

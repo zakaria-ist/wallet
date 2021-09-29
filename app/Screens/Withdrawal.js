@@ -87,6 +87,7 @@ const Withdrawal = () => {
   ];
   const tableRowOne = {
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -111,6 +112,7 @@ const Withdrawal = () => {
   const agentTableRowOne = {
     rowId: 1,
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     mobile: 1212121212,
@@ -120,6 +122,7 @@ const Withdrawal = () => {
   const agentTableRowTwo = {
     rowId: 2,
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 12320,
     mobile: 1313131313,
@@ -129,6 +132,7 @@ const Withdrawal = () => {
   const agentTableRowThree = {
     rowId: 3,
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 13320,
     mobile: 1414141414,
@@ -222,12 +226,16 @@ const Withdrawal = () => {
   const renderTablesData = async () => {
     onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
+    let purpose = 'Yesterday';
+    if (transType == 'Yesterday') {
+      purpose = 'Today';
+    }
     const params = JSON.stringify(
       {
         token: token, 
         role: authType,
-        purpose: 'deposite',
-
+        purpose: purpose,
+       // purpose: 'deposite',
       }
     );
     const content = await request.post(msgsUrl, params);
@@ -303,13 +311,14 @@ const Withdrawal = () => {
     <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
-        visible={spinner}
+        //visible={spinner}
         // textContent={"Loading..."}
+        onSpinnerChanged={false}
         textStyle={styles.spinnerTextStyle}
       />
+      <View style={styles.header}>
       {authType == ("admin" || "subadmin") ?
-        <View style={styles.header}>
-          <View style={styles.admin_deposit_withdrawel_header}>
+        <View style={styles.admin_deposit_withdrawel_header}>
               <CustomHeader 
                 title={"Withdrawal"}
               /> 
@@ -324,8 +333,7 @@ const Withdrawal = () => {
                 handleWalMidButton={handleWalMidButton}
                 handleWalRightButton={handleWalRightButton}
               />
-            </View> 
-          </View>
+              </View> 
         </View>
         :
         <View style={styles.header}>
@@ -562,6 +570,7 @@ const Withdrawal = () => {
               </View>
             </>
           }
+          </View>
         </View>
     </SafeAreaView>
   );

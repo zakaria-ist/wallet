@@ -85,9 +85,6 @@ const Deposit = () => {
   //   {label: 'Group 3', value: 'Group 3'},
   // ]);
 
-  const backgroundStyle = {
-    backgroundColor: Colors.white
-  };
 
   const LeftButton = "Yesterday";
   const RightButton = "Today";
@@ -98,6 +95,7 @@ const Deposit = () => {
   ];
   const tableRowOne = {
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -127,6 +125,7 @@ const Deposit = () => {
   const agentTableRowOne = {
     rowId: 1,
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: "11320",
     refNo: 1212121212,
@@ -135,6 +134,7 @@ const Deposit = () => {
   const agentTableRowTwo = {
     rowId: 2,
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: "12320",
     refNo: 1313131313,
@@ -143,6 +143,7 @@ const Deposit = () => {
   const agentTableRowThree = {
     rowId: 3,
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: "13320",
     refNo: 1414141414,
@@ -233,13 +234,18 @@ const Deposit = () => {
   }
   const renderTablesData = async () => {
     onSpinnerChanged(true);
+    //onSpinnerChanged(false);
     const msgsUrl = request.getAllMessageUrl();
+    let purpose = 'Yesterday';
+    if (transType == 'Yesterday') {
+      purpose = 'Today';
+    }
     const params = JSON.stringify(
       {
         token: token, 
         role: authType,
-        purpose: 'deposite',
-
+        purpose: purpose,
+       // purpose: 'deposite',
       }
     );
     const content = await request.post(msgsUrl, params);
@@ -313,8 +319,13 @@ const Deposit = () => {
   return (
     <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+      <Spinner
+        //visible={spinner}
+        // textContent={"Loading..."}
+        textStyle={styles.spinnerTextStyle}
+      />
+      <View style={styles.header}>
       {authType == ("admin" || "subadmin") ?
-        <View style={styles.header}>
           <View style={styles.admin_deposit_withdrawel_header}>
               <CustomHeader 
                 title={"Deposit"}
@@ -332,7 +343,6 @@ const Deposit = () => {
               />
             </View> 
           </View>
-        </View>
         :
         <View style={styles.header}>
           <CustomHeader 
@@ -624,6 +634,7 @@ const Deposit = () => {
               </View>
             </>
           }  
+          </View>
         </View>
     </SafeAreaView>
   );

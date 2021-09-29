@@ -279,7 +279,6 @@ const LoginScreen = ({navigation}) => {
                 placeholder={'Password'}
                 placeholderTextColor={WalletColors.grey}
                 secureTextEntry={true}
-                multiline={true}
                 onSubmitEditing={handleKeyDown}
                 blurOnSubmit={true}
                 returnKeyLabel='go'

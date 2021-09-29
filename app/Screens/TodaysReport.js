@@ -73,6 +73,7 @@ const TodaysReport = () => {
   const tableRowOne = {
     // rowId: 1,
     time: "10:10 AM",
+    HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -256,7 +257,11 @@ const TodaysReport = () => {
 
           <View style={styles.view_deposit_withdrawel_treport_rectangle}>
             <ScrollView>
-              {tableRowHtml}
+              {/* {tableRowHtml} */}
+            <TableRow header={true} rowData={tableHeader} />
+            <TableRow header={false} rowData={tableRowOne} />
+            <TableRow header={false} rowData={tableRowTwo} />
+            <TableRow header={false} rowData={tableRowThree} />
             </ScrollView>
           </View>
           <View styles={styles.total}>
