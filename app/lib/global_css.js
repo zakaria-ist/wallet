@@ -52,6 +52,11 @@ const styles = StyleSheet.create({
       alignContent:'center',
       alignSelf:'center',
     },
+    version: {
+      paddingTop: -10,
+      alignContent:'center',
+      alignSelf:'center',
+    },
     drawerItem: {
       // borderRadius: 0,
       marginHorizontal:0,

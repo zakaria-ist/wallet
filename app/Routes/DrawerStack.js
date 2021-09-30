@@ -7,6 +7,7 @@ import {
   DrawerItemList,
   DrawerItem
 } from '@react-navigation/drawer';
+import DeviceInfo from 'react-native-device-info';
 import { RFValue } from "react-native-responsive-fontsize";
 import {
   widthPercentageToDP,
@@ -52,15 +53,26 @@ const alert = new CustomAlert();
 //   );
 // }
 
-const CustomDrawerContent = (props) => (
+
+const Drawer = createDrawerNavigator();
+
+export default function DrawerStack() {
+  const [authType, setAuthType] = useState("");
+  const [userName, setUserName] = useState("Username");
+  const [appVersion, setAppVersion] = useState("");
+  const [isUser, setIsUser] = useState(false);
+
+  const CustomDrawerContent = (props) => (
     <DrawerContentScrollView {...props}>
       <View style={styles.drawercontainer}> 
         <View style={styles.drawerHeader}> 
+          <Text style={styles.version}>Version: {appVersion}</Text>
           <View style={{ flexDirection: 'column'} }> 
-          <Image
+            <Text style={styles.version}></Text>
+            <Image
               style={styles.drawerImage}
               source={require('../assets/icons/user.png')} />
-            <Text style={styles.userName}>Username</Text>
+            <Text style={styles.userName}>{userName}</Text>
           </View>   
         </View>   
       </View>
@@ -77,28 +89,23 @@ const CustomDrawerContent = (props) => (
             })
           }}
         />
-  </DrawerContentScrollView>
-
-);
-
-
-const Drawer = createDrawerNavigator();
-
-export default function DrawerStack() {
-  const [authType, setAuthType] = useState("");
-  const [isUser, setIsUser] = useState(false);
-
+    </DrawerContentScrollView>
+  );
+  
   useEffect(() => {
-    //Check if user is set or not
-    //If not then send for Authentication
-    //else send to Home Screen
     AsyncStorage.getItem('isUser').then((value) => {
+      if (value) {
         setIsUser(true);
-        AsyncStorage.getItem('authType').then((value) => {
-          setAuthType(value);
-        })
       }
-    );
+    });
+    AsyncStorage.getItem('authType').then((value) => {
+      setAuthType(value);
+    })
+    AsyncStorage.getItem('username').then((value) => {
+      setUserName(value);
+    })
+
+    setAppVersion(DeviceInfo.getVersion());
   }, []);
 
   return (

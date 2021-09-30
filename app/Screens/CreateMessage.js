@@ -110,6 +110,7 @@ const CreateMessage = () => {
   }
 
   const sendMessageToAgent = async (message, url) => {
+    onSpinnerChanged(true);
     if (token) {
       let purpose = "deposit";
       if (transType == "Withdrawal") {
@@ -138,9 +139,11 @@ const CreateMessage = () => {
             const deviceId = tokenDB._data.deviceId;
             const key = 'AAAAFusuHOI:APA91bFmsoK3xCuADeTunV7kCDrI5cBTd-wXN7WTZi-_fxT0NuZtVXkxcjzzZnD_uqeuHEqZ7ojrMK0SjCrNEkWtEewfPV8DTGtAxPeQBPQs_SCZNWlntcTm3bsYVYcuVI2dOY3f1WdI';
             // message build
-            let sender = result.message.fromuser;
-            let body = "fromuser: " + result.message.fromuser + ", toagent: " + result.message.toagent + ", refno: " + result.message.refNo + ", mobile: " + result.message.mobile + ", purpose: " + result.message.purpose + ", payment: " + result.message.payment + ", amount: " + result.message.amount;
-            body += ", belongclient: " + result.message.belongclient + ", cct_status: " + result.message.cct_status + ", cct_author_id: " + result.message.cct_author_id + ", status: " + result.message.status;
+            let sender = result.message.fromuser + " (" + purpose + ")";
+            let refNo = result.message.refNo ? result.message.refNo : "";
+            let mobile = result.message.mobile ? result.message.mobile : "";
+            let body = "fromuser: " + result.message.fromuser + ", toagent: " + result.message.toagent + ", refno: " + refNo + ", mobile: " + mobile + ", walletId: " + result.message.payment + ", amount: " + result.message.amount;
+            // body += ", belongclient: " + result.message.belongclient + ", cct_status: " + result.message.cct_status + ", cct_author_id: " + result.message.cct_author_id + ", status: " + result.message.status;
             const message = {
               sender: sender,
               body: body
@@ -157,13 +160,16 @@ const CreateMessage = () => {
             let pushUrl = request.getPushNotificationUrl();
             const results = await request.post(pushUrl, params);
             console.log('results', results);
+            return true;
           }
         }
+        return false;
       }
     } else {
       alert.warning("Empty token or Superior Agent is missing");
     }
-    
+    onSpinnerChanged(false);
+    return false;
   }
 
   const getUserTokenPromise = (userName) => {
@@ -172,25 +178,29 @@ const CreateMessage = () => {
         .get()
   }
 
-  const handleSubmit = () => {
-    onSpinnerChanged(true);
+  const handleSubmit = async () => {
+    let sent = false;
     const userSendMessageUrl = request.getUserSendMessageUrl();
     if (messageOne.refCode != "" && messageOne.amount != "") {
-      sendMessageToAgent(messageOne, userSendMessageUrl);
+      sent = await sendMessageToAgent(messageOne, userSendMessageUrl);
     }
     if (messageTwo.refCode != "" && messageTwo.amount != "") {
-      sendMessageToAgent(messageTwo, userSendMessageUrl);
+      sent = await sendMessageToAgent(messageTwo, userSendMessageUrl);
     }
     if (messageThree.refCode != "" && messageThree.amount != "") {
-      sendMessageToAgent(messageThree, userSendMessageUrl);
+      sent = await sendMessageToAgent(messageThree, userSendMessageUrl);
     }
     if (messageFour.refCode != "" && messageFour.amount != "") {
-      sendMessageToAgent(messageFour, userSendMessageUrl);
+      sent = await sendMessageToAgent(messageFour, userSendMessageUrl);
     }
     if (messageFive.refCode != "" && messageFive.amount != "") {
-      sendMessageToAgent(messageFive, userSendMessageUrl);
+      sent = await sendMessageToAgent(messageFive, userSendMessageUrl);
     }
-    onSpinnerChanged(false);
+
+    if (sent) {
+      onSpinnerChanged(false);
+      alert.warning("Messages are sent.");
+    }
   }
 
   const handleQuickInsert = () => {
@@ -271,34 +281,34 @@ const CreateMessage = () => {
           />
         </View>
       </View>
-        <View
-          style={styles.create_message_body}>
-          <TouchableOpacity
-            onPress={handleQuickInsert}
-          >
-            <View style={styles.insert_button}>
-              <Text style={styles.insert_button_text}>
-                Quick Insert
-              </Text>
-            </View>
-          </TouchableOpacity>
-          <ScrollView>
-          <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
-          <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
-          <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
-          <MessageBlock transType={transType} mData={messageFour} lineNumber={4} key={"lineNumber4"} parentReference={handleMessageFour} />
-          <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
-          </ScrollView>
-          <TouchableOpacity
-            onPress={handleSubmit}
-          >
-            <View style={styles.sumbit_button}>
-              <Text style={styles.sumbit_button_text}>
-                Submit
-              </Text>
-            </View>
-          </TouchableOpacity>
-        </View>
+      <View
+        style={styles.create_message_body}>
+        <TouchableOpacity
+          onPress={handleQuickInsert}
+        >
+          <View style={styles.insert_button}>
+            <Text style={styles.insert_button_text}>
+              Quick Insert
+            </Text>
+          </View>
+        </TouchableOpacity>
+        <ScrollView>
+        <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
+        <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
+        <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
+        <MessageBlock transType={transType} mData={messageFour} lineNumber={4} key={"lineNumber4"} parentReference={handleMessageFour} />
+        <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
+        </ScrollView>
+        <TouchableOpacity
+          onPress={handleSubmit}
+        >
+          <View style={styles.sumbit_button}>
+            <Text style={styles.sumbit_button_text}>
+              Submit
+            </Text>
+          </View>
+        </TouchableOpacity>
+      </View>
     
       <Modal 
           isVisible={isModalVisible}
@@ -333,7 +343,7 @@ const CreateMessage = () => {
                   >
                     <View
                       style={styles.modal_close,{alignSelf:"flex-end",marginTop:-heightPercentageToDP("3%")}}>
-                      <Fontisto name="close" color={WalletColors.red} size={20} />
+                      <Fontisto name="close" color={WalletColors.red} size={30} />
                     </View>
                   </TouchableOpacity>
                 </View>
