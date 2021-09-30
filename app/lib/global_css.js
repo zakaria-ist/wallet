@@ -146,8 +146,8 @@ const styles = StyleSheet.create({
     //Create Message Screen
     message_nav_top:{
       flex:2.4, 
-      marginTop: heightPercentageToDP("0.4%"),
-      marginBottom: heightPercentageToDP("2.5%"),
+      marginTop: heightPercentageToDP("1%"),
+      marginBottom: heightPercentageToDP("4.2%"),
       flexDirection:"row", 
       alignSelf:"center",
     },
@@ -226,6 +226,8 @@ const styles = StyleSheet.create({
       width: widthPercentageToDP("85%"),
       height: heightPercentageToDP("25%"),
       marginTop: heightPercentageToDP("2%"),
+      padding: heightPercentageToDP("1%"),
+      paddingLeft: heightPercentageToDP("1.5%"),
       borderColor: WalletColors.Wblue,
       borderRadius: 15,
       borderStyle: 'solid',
@@ -281,16 +283,19 @@ const styles = StyleSheet.create({
         alignSelf:"center",
     },
     client_picker: {
+        width: widthPercentageToDP("37%"),
         marginBottom:heightPercentageToDP("1%"), 
         flexDirection: "row",
     },
     client_dropdownpicker: {
+        width: widthPercentageToDP("37%"),
         marginTop:-heightPercentageToDP("1%"),
         height: heightPercentageToDP("5%")
     },
     picker: {
         marginTop: heightPercentageToDP("0.5%"),
-        width:  windowWidth/2 - widthPercentageToDP("13%"),
+        marginBottom:heightPercentageToDP("0.5%"), 
+        width: widthPercentageToDP("37%"),
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
@@ -298,14 +303,15 @@ const styles = StyleSheet.create({
     },
     picker_admin: {
         marginTop: heightPercentageToDP("0.5%"),
-        width: windowWidth/2 - widthPercentageToDP("13%"),
+        marginBottom:heightPercentageToDP("0.5%"), 
+        width: widthPercentageToDP("37%"),
         flexDirection: "row",
         alignItems: "center",
         marginRight: widthPercentageToDP("6%"), 
         marginLeft: widthPercentageToDP("6%"),
     },
     agent_status_row_container: {
-        marginTop: -heightPercentageToDP("3%"),
+        marginTop: -heightPercentageToDP("2%"),
         flexDirection: "row"
     },
     admin_subadmin_status_row_container: {
@@ -339,11 +345,12 @@ const styles = StyleSheet.create({
         fontSize: RFValue(14)
     },
     agent_container: {
+       // height: heightPercentageToDP("67%"),
         marginBottom:heightPercentageToDP("1%"),
-        marginTop:-heightPercentageToDP("1%")
+        marginTop:heightPercentageToDP("0.5%")
     },
     view_deposit_withdrawel_treport_rectangle: {
-        flex:10,
+        //flex:10,
         flexDirection: "column",
         alignItems: "center",
         borderRadius: 20,
@@ -406,9 +413,10 @@ const styles = StyleSheet.create({
       width: heightPercentageToDP("10%"),
       height: heightPercentageToDP("3%"),
       borderRadius: 6,
-      padding: 2,
       textAlign: "left",
+      padding: heightPercentageToDP("0.3%"),
       paddingLeft: heightPercentageToDP("1%"),
+      paddingRight: heightPercentageToDP("1%"),
       marginTop:heightPercentageToDP("0.3%"),
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: WalletColors.Wblue,
@@ -504,7 +512,7 @@ const styles = StyleSheet.create({
 
     //TodaysReport
    today_report_nav_top:{
-    flex:2.3, 
+    flex:2.1, 
     margin:heightPercentageToDP("1%"),
     flexDirection:"row", 
     alignSelf:"center",
@@ -513,16 +521,17 @@ const styles = StyleSheet.create({
     //SummaryReport
     summary_report_nav_top:{
       flex:1, 
-      marginTop:heightPercentageToDP("0.5%"),
-      marginBottom:heightPercentageToDP("1.6%"),
+      marginTop:heightPercentageToDP("1%"),
+      marginBottom:heightPercentageToDP("1%"),
       flexDirection:"row", 
       alignSelf:"center"
     },
     summary_report_body: {
       backgroundColor: Colors.white,
-      flex:5.8,
+      flex:5.4,
       flexDirection: 'column',
       alignItems: "center",
+      marginTop:heightPercentageToDP("0.5%"),
       paddingBottom: heightPercentageToDP("1%"),
     },
 
@@ -630,8 +639,9 @@ const styles = StyleSheet.create({
     text_message_input: {
       width: widthPercentageToDP("45%"),
       height: heightPercentageToDP("4%"),
-      padding: heightPercentageToDP("1%"),
-      paddingLeft: heightPercentageToDP("1.5%"),
+      padding: heightPercentageToDP("0.5%"),
+      paddingLeft: heightPercentageToDP("1%"),
+      paddingRight: heightPercentageToDP("1%"),
       borderRadius: 20,
       borderWidth: StyleSheet.hairlineWidth,
       borderColor: WalletColors.Wblue,
@@ -663,7 +673,7 @@ const styles = StyleSheet.create({
       borderBottomWidth: StyleSheet.hairlineWidth,
       borderColor: WalletColors.Wblue,
       alignItems: 'center',
-      height: heightPercentageToDP("5%"),
+      //height: heightPercentageToDP("5%"),
       backgroundColor: '#fff',
     },
     header_text: {

@@ -19,10 +19,13 @@ import {
   Dimensions,
   InteractionManager,
   TouchableOpacity,
-  KeyboardAvoidingView
+  TouchableWithoutFeedback,
+  KeyboardAvoidingView,
+  Keyboard 
 } from 'react-native';
+//import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
-  heightPercentageToDP,
+  heightPercentageToDP, widthPercentageToDP,
 } from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -42,6 +45,8 @@ import { parseSync } from '@babel/core';
 import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
+import { useHeaderHeight } from 'react-navigation-stack';
+import { ScrollView } from 'react-native-gesture-handler';
 
 const request = new Request();
 
@@ -315,16 +320,16 @@ const Deposit = () => {
     }
     onSpinnerChanged(false);
   }
-
+ 
   return (
-    <SafeAreaView style={styles.header}>
+    <SafeAreaView style={styles.header}> 
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         //visible={spinner}
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />
-      <View style={styles.header}>
+      <ScrollView>
       {authType == ("admin" || "subadmin") ?
           <View style={styles.admin_deposit_withdrawel_header}>
               <CustomHeader 
@@ -570,25 +575,28 @@ const Deposit = () => {
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
-            <View style={styles.agent_container}>
+             <View style={styles.agent_container}>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                 <FlatList data={[{key: 'item1' }]}
+                  //style={{height: heightPercentageToDP("65%")}}
                   renderItem={({ item, index, separators }) => (
                     <TouchableOpacity>
                       <View style={styles.header}>
                         <TableRowEditDeposit header={true} rowData={agentTableHeader} />
                         <TableRowEditDeposit header={false} rowData={agentTableRowOne} />
                         <TableRowEditDeposit header={false} rowData={agentTableRowTwo} />
-                        <TableRowEditDeposit header={false} rowData={agentTableRowThree} />
+                        <TableRowEditDeposit header={false} rowData={agentTableRowThree} />          
                       </View>
                     </TouchableOpacity>)}
                   />
                 </View>
-              </View>
+               </View>
             :
             <>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                 <FlatList data={[{key: 'item1' }]}
+               // showsHorizontalScrollIndicator={false}
+                  style={{height: heightPercentageToDP("59%")}}
                   renderItem={({ item, index, separators }) => (
                     <TouchableOpacity>
                       <View style={styles.header}>
@@ -608,8 +616,10 @@ const Deposit = () => {
             ]
           :
             <>
+            {authType == 'client' ?
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
               <FlatList data={[{key: 'item1' }]}
+                //style={{height: heightPercentageToDP("51%")}}
                 renderItem={({ item, index, separators }) => (
                   <TouchableOpacity>
                     <View style={styles.header}>
@@ -617,6 +627,20 @@ const Deposit = () => {
                       <TableRow header={false} rowData={tableRowOne} />
                       <TableRow header={false} rowData={tableRowTwo} />
                       <TableRow header={false} rowData={tableRowThree} />
+                    </View>
+                  </TouchableOpacity>)}
+                />
+              </View>
+              :
+              <>
+              {authType == ("admin") ?
+              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+              <FlatList data={[{key: 'item1' }]}
+                //style={{height: widthPercentageToDP("80%")}}
+                renderItem={({ item, index, separators }) => (
+                  <TouchableOpacity>
+                    <View style={styles.header}>
+                      <TableRow header={true} rowData={tableHeader} />
                       <TableRow header={false} rowData={tableRowOne} />
                       <TableRow header={false} rowData={tableRowTwo} />
                       <TableRow header={false} rowData={tableRowThree} />
@@ -624,6 +648,24 @@ const Deposit = () => {
                   </TouchableOpacity>)}
                 />
               </View>
+              : 
+              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+              <FlatList data={[{key: 'item1' }]}
+               // style={{height: heightPercentageToDP("57%")}}
+                renderItem={({ item, index, separators }) => (
+                  <TouchableOpacity>
+                    <View style={styles.header}>
+                      <TableRow header={true} rowData={tableHeader} />
+                      <TableRow header={false} rowData={tableRowOne} />
+                      <TableRow header={false} rowData={tableRowTwo} />
+                      <TableRow header={false} rowData={tableRowThree} />
+                    </View>
+                  </TouchableOpacity>)}
+                />
+              </View>
+                }
+              </>
+              }
               <View style={styles.total}>
                 <View style={{flexDirection:"row"}}>
                   <View style={{flexDirection: "column"}}>
@@ -647,8 +689,8 @@ const Deposit = () => {
             </>
           }  
           </View>
-        </View>
-    </SafeAreaView>
+        </ScrollView>
+    </SafeAreaView> 
   );
 };
 

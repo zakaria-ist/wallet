@@ -9,7 +9,7 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import { useStateIfMounted } from "use-state-if-mounted";
 import {
-
+  KeyboardAvoidingView,
   View,
   Text,
   TextInput,
@@ -36,6 +36,7 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
 
   return useMemo(() => {
     return (
+      <KeyboardAvoidingView style={styles.header}>
       <View style={styles.view_message_rectangle}>
         <View style={styles.view_message_left}>
           <View style={styles.view_lineNumber}>
@@ -109,6 +110,7 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
             )}
         </View>
       </View>
+      </KeyboardAvoidingView>
     );
   })
 

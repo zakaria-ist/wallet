@@ -12,6 +12,7 @@ import {
   FlatList,
   StatusBar,
   Text,
+  ScrollView,
   TextInput,
   useColorScheme,
   View,
@@ -19,6 +20,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native';
+//import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -316,7 +318,7 @@ const Withdrawal = () => {
         onSpinnerChanged={false}
         textStyle={styles.spinnerTextStyle}
       />
-      <View style={styles.header}>
+      <ScrollView style={styles.header}>
       {authType == ("admin" || "subadmin") ?
         <View style={styles.admin_deposit_withdrawel_header}>
               <CustomHeader 
@@ -517,6 +519,7 @@ const Withdrawal = () => {
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
               <FlatList 
                 data={[{key: 'item1' }]}
+                style={{height: heightPercentageToDP("65%")}}
                 renderItem={({ item, index, separators }) => (
                 <TouchableOpacity>
                   <View style={styles.header}>
@@ -535,6 +538,7 @@ const Withdrawal = () => {
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
               <FlatList 
                 data={[{key: 'item1' }]}
+                style={{height: heightPercentageToDP("59%")}}
                 renderItem={({ item, index, separators }) => (
                 <TouchableOpacity>
                   <View style={styles.header}>
@@ -554,21 +558,56 @@ const Withdrawal = () => {
             ]
           :
             <>
+            {authType == 'client' ?
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-              <FlatList 
-                data={[{key: 'item1' }]}
+              <FlatList data={[{key: 'item1' }]}
+                style={{height: heightPercentageToDP("51%")}}
                 renderItem={({ item, index, separators }) => (
-                <TouchableOpacity>
-                  <View style={styles.header}>
-                      {/* {tableRowHtml} */}
-                    <TableRow header={true} rowData={tableHeader} />
-                    <TableRow header={false} rowData={tableRowOne} />
-                    <TableRow header={false} rowData={tableRowTwo} />
-                    <TableRow header={false} rowData={tableRowThree} />
-                  </View>
-                </TouchableOpacity>)}
-              />
+                  <TouchableOpacity>
+                    <View style={styles.header}>
+                      <TableRow header={true} rowData={tableHeader} />
+                      <TableRow header={false} rowData={tableRowOne} />
+                      <TableRow header={false} rowData={tableRowTwo} />
+                      <TableRow header={false} rowData={tableRowThree} />
+                    </View>
+                  </TouchableOpacity>)}
+                />
               </View>
+              :
+              <>
+              {authType == ("admin") ?
+              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+              <FlatList data={[{key: 'item1' }]}
+                style={{height: heightPercentageToDP("55%")}}
+                renderItem={({ item, index, separators }) => (
+                  <TouchableOpacity>
+                    <View style={styles.header}>
+                      <TableRow header={true} rowData={tableHeader} />
+                      <TableRow header={false} rowData={tableRowOne} />
+                      <TableRow header={false} rowData={tableRowTwo} />
+                      <TableRow header={false} rowData={tableRowThree} />
+                    </View>
+                  </TouchableOpacity>)}
+                />
+              </View>
+              : 
+              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+              <FlatList data={[{key: 'item1' }]}
+                style={{height: heightPercentageToDP("57%")}}
+                renderItem={({ item, index, separators }) => (
+                  <TouchableOpacity>
+                    <View style={styles.header}>
+                      <TableRow header={true} rowData={tableHeader} />
+                      <TableRow header={false} rowData={tableRowOne} />
+                      <TableRow header={false} rowData={tableRowTwo} />
+                      <TableRow header={false} rowData={tableRowThree} />
+                    </View>
+                  </TouchableOpacity>)}
+                />
+              </View>
+                }
+              </>
+            }
               <View style={styles.total}>
                 <View style={{flexDirection:"row"}}>
                   <View style={{flexDirection: "column"}}>
@@ -592,7 +631,7 @@ const Withdrawal = () => {
             </>
           }
           </View>
-        </View>
+        </ScrollView>
     </SafeAreaView>
   );
 };

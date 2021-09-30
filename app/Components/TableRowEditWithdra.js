@@ -13,8 +13,10 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView
 } from 'react-native';
+//import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
 import { WalletColors } from "../assets/Colors.js";
@@ -152,6 +154,7 @@ const TableRowEditWithdra = ({header, rowData}) => {
 
   return useMemo(() => {
     return (
+      <KeyboardAvoidingView style={styles.header}>
       <View style={styles.table_view_rectangle}>
         <View style={styles.table_view_left}>
           <View style={styles.view_lineNumber}>
@@ -169,6 +172,7 @@ const TableRowEditWithdra = ({header, rowData}) => {
           </View>
         </View>
       </View>
+      </KeyboardAvoidingView>
     );
   })
 

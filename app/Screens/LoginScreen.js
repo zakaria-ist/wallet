@@ -27,7 +27,8 @@ import {
   useColorScheme,
   TouchableOpacity,
   InteractionManager,
-  Keyboard
+  Keyboard,
+  ScrollView
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
 import CustomAlert from "../lib/alert";
@@ -238,14 +239,57 @@ const LoginScreen = ({navigation}) => {
   }
   
   return (
-    <SafeAreaView style={styles.header}>
+    <ScrollView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
-        visible={spinner}
+       // visible={spinner}
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />
-      <FlatList 
+        <ScrollView style={styles.header}>
+          <View style={styles.header}>
+          <View style={styles.view_logo}>
+            <View style={styles.view_logo_logo}>
+              <Image style={styles.logo} source={screensize.getSmallScreen() || screensize.getMediumScreen() || screensize.getLargeScreen()}/>
+            </View>
+          </View>
+          <View style={styles.login_view_input}>
+              <TextInput 
+                style={styles.login_text_input}
+                onChangeText={setUserName}
+                value={userName}
+                textAlign={'center'}
+                placeholder={'Username'}
+                placeholderTextColor={WalletColors.grey}
+                multiline={true}
+                onSubmitEditing={handleKeyDown}
+                blurOnSubmit={true}
+                returnKeyLabel='go'
+              />
+              <TextInput 
+                style={styles.login_text_input}
+                onChangeText={setPassword}
+                value={password}
+                textAlign={'center'}
+                placeholder={'Password'}
+                placeholderTextColor={WalletColors.grey}
+                secureTextEntry={true}
+                onSubmitEditing={handleKeyDown}
+                blurOnSubmit={true}
+                returnKeyLabel='go'
+              />
+              <TouchableOpacity
+                onPress={handleLogin}>
+                <View style={styles.sign_button}>
+                  <Text style={styles.sign_button_text}>
+                    Sign In
+                  </Text>
+                </View>
+              </TouchableOpacity>
+          </View>
+          </View>
+      </ScrollView>
+      {/* <FlatList 
         data={[{key: 'item1' }]}
         renderItem={({ item, index, separators }) => (
         <TouchableOpacity>
@@ -291,9 +335,9 @@ const LoginScreen = ({navigation}) => {
           </View>
           </View>
         </TouchableOpacity>)}
-      />
+      /> */}
 
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 

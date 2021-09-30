@@ -260,7 +260,7 @@ const CreateMessage = () => {
   // ];
 
   return (
-    <SafeAreaView style={styles.header}>
+    <ScrollView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
@@ -294,6 +294,7 @@ const CreateMessage = () => {
             </View>
           </TouchableOpacity>
           <FlatList data={[{key: 'item1' }]}
+           style={{height: heightPercentageToDP("57%")}}
            renderItem={({ item, index, separators }) => (
             <TouchableOpacity>
               <View style={styles.header}>
@@ -391,7 +392,7 @@ const CreateMessage = () => {
           </View>
           </KeyboardAvoidingView>
         </Modal>
-    </SafeAreaView>
+    </ScrollView>
   );
 };
 
