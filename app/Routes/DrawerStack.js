@@ -115,7 +115,7 @@ export default function DrawerStack() {
         screenOptions={{
             // drawerActiveTintColor: '#265684',
             headerShown: false,
-            drawerStyle: {width: widthPercentageToDP("65%")},
+            drawerStyle: {width: widthPercentageToDP("60%")},
             drawerItemStyle: styles.drawerItem,
             drawerLabelStyle:{fontSize: RFValue(15)},
         }}
