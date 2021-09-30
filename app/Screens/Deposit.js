@@ -326,7 +326,7 @@ const Deposit = () => {
     <View style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
-       // visible={spinner}
+        visible={spinner}
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />

@@ -260,7 +260,7 @@ const CreateMessage = () => {
   // ];
 
   return (
-    <ScrollView style={styles.header}>
+    <View style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
@@ -392,7 +392,7 @@ const CreateMessage = () => {
           </View>
           </KeyboardAvoidingView>
         </Modal>
-    </ScrollView>
+    </View>
   );
 };
 

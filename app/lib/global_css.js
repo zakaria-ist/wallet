@@ -145,9 +145,9 @@ const styles = StyleSheet.create({
 
     //Create Message Screen
     message_nav_top:{
-      flex:2.4, 
+      flex:2.3, 
       marginTop: heightPercentageToDP("1%"),
-      marginBottom: heightPercentageToDP("4.2%"),
+      marginBottom: heightPercentageToDP("2.5%"),
       flexDirection:"row", 
       alignSelf:"center",
     },
@@ -284,27 +284,29 @@ const styles = StyleSheet.create({
     },
     client_picker: {
         width: widthPercentageToDP("37%"),
-        marginBottom:heightPercentageToDP("1%"), 
-        flexDirection: "row",
+        marginBottom: heightPercentageToDP("2.5%"), 
+        marginTop: heightPercentageToDP("1.5%"),
     },
     client_dropdownpicker: {
         width: widthPercentageToDP("37%"),
-        marginTop:-heightPercentageToDP("1%"),
+       // marginTop:-heightPercentageToDP("2%"),
         height: heightPercentageToDP("5%")
     },
     picker: {
         marginTop: heightPercentageToDP("0.5%"),
         marginBottom:heightPercentageToDP("0.5%"), 
-        width: widthPercentageToDP("37%"),
+        flex:0.48,
+        //width: widthPercentageToDP("35%"),
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
         alignSelf: "center",
     },
     picker_admin: {
+        flex:0.48,
         marginTop: heightPercentageToDP("0.5%"),
         marginBottom:heightPercentageToDP("0.5%"), 
-        width: widthPercentageToDP("37%"),
+        //width: widthPercentageToDP("35%"),
         flexDirection: "row",
         alignItems: "center",
         marginRight: widthPercentageToDP("6%"), 
@@ -522,13 +524,13 @@ const styles = StyleSheet.create({
     summary_report_nav_top:{
       flex:1, 
       marginTop:heightPercentageToDP("1%"),
-      marginBottom:heightPercentageToDP("1%"),
+      marginBottom:heightPercentageToDP("1.5%"),
       flexDirection:"row", 
       alignSelf:"center"
     },
     summary_report_body: {
       backgroundColor: Colors.white,
-      flex:5.4,
+      flex:5.5,
       flexDirection: 'column',
       alignItems: "center",
       marginTop:heightPercentageToDP("0.5%"),

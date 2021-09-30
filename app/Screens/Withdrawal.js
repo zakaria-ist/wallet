@@ -313,7 +313,7 @@ const Withdrawal = () => {
     <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
-      //  visible={spinner}
+        visible={spinner}
         // textContent={"Loading..."}
         onSpinnerChanged={false}
         textStyle={styles.spinnerTextStyle}
