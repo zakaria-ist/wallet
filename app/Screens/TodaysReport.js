@@ -9,7 +9,7 @@
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
-  ScrollView,
+  FlatList,
   StatusBar,
   StyleSheet,
   Text,
@@ -73,7 +73,7 @@ const TodaysReport = () => {
   const tableRowOne = {
     // rowId: 1,
     time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
+    HDLtime: [""],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -179,9 +179,9 @@ const TodaysReport = () => {
       let total = 0;
       msg_html.push(<TableRow key={0} header={true} rowData={tableHeader} />)
       messages.map((msg) => {
-        let amount = parseFloat(String(msg.amount).replace(',', ''))
-        total += amount;
-        amount = format.separator(amount);
+      let amount = parseFloat(String(msg.amount).replace(',', ''))
+      total += amount;
+      amount = format.separator(amount);
         let msg_data = [];
         msg_data.push([time.format(msg.createdatetime), "(" + time.format(msg.updatedatetime) + ")"]);
         if (transType == 'Withdrawal') {
@@ -224,6 +224,7 @@ const TodaysReport = () => {
           />
            </View>
         </View>
+       
         <View style={styles.deposit_withdrawel_treport_body}>
           {transType == "Deposit" ?
           <View style={styles.agent_status_row_container}>
@@ -252,23 +253,31 @@ const TodaysReport = () => {
             </View>
             </View>
           :
-            <View style={{marginTop:-heightPercentageToDP("1%")}}></View>
+            <View style={{marginTop:-heightPercentageToDP("0.3%")}}></View>
           }
 
           <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-            <ScrollView>
-              {/* {tableRowHtml} */}
-            <TableRow header={true} rowData={tableHeader} />
-            <TableRow header={false} rowData={tableRowOne} />
-            <TableRow header={false} rowData={tableRowTwo} />
-            <TableRow header={false} rowData={tableRowThree} />
-            </ScrollView>
+          <FlatList 
+            data={[{key: 'item1' }]}
+            //style={{height: heightPercentageToDP("64%")}}
+            renderItem={({ item, index, separators }) => (
+            <TouchableOpacity>
+              <View style={styles.header}>
+                  {/* {tableRowHtml} */}
+                <TableRow header={true} rowData={tableHeader} />
+                <TableRow header={false} rowData={tableRowOne} />
+                <TableRow header={false} rowData={tableRowTwo} />
+                <TableRow header={false} rowData={tableRowThree} />
+              </View>
+            </TouchableOpacity>)}
+          />
           </View>
           <View styles={styles.total}>
-            <Text style={styles.total_text}>Total Amount : TK   {acceptedTotal}</Text>
+            
+            <Text style={styles.total_text}>Total Amount : TK {format.separator(acceptedTotal)}</Text>
+           
           </View>
         </View>
-      {/* </ScrollView> */}
     </SafeAreaView>
   );
 };

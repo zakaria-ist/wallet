@@ -15,7 +15,7 @@ import {
 import AsyncStorage from "@react-native-community/async-storage";
 import {
   SafeAreaView,
-  ScrollView,
+  FlatList,
   StatusBar,
   StyleSheet,
   View,
@@ -27,7 +27,8 @@ import {
   useColorScheme,
   TouchableOpacity,
   InteractionManager,
-  Keyboard
+  Keyboard,
+  ScrollView
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
 import CustomAlert from "../lib/alert";
@@ -60,12 +61,6 @@ const LoginScreen = ({navigation}) => {
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
   const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    // backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-    backgroundColor: Colors.lighter,
-    flex: 1
-  };
 
   // Must be outside of any component LifeCycle (such as `componentDidMount`).
   PushNotification.configure({
@@ -244,15 +239,18 @@ const LoginScreen = ({navigation}) => {
   }
   
   return (
-    <SafeAreaView style={backgroundStyle}>
+    <ScrollView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />
-      <ScrollView
-        style={backgroundStyle}>
+      <FlatList 
+        data={[{key: 'item1' }]}
+        renderItem={({ item, index, separators }) => (
+        <TouchableOpacity>
+          <View style={styles.header}>
           <View style={styles.view_logo}>
             <View style={styles.view_logo_logo}>
               <Image style={styles.logo} source={screensize.getSmallScreen() || screensize.getMediumScreen() || screensize.getLargeScreen()}/>
@@ -292,8 +290,11 @@ const LoginScreen = ({navigation}) => {
                 </View>
               </TouchableOpacity>
           </View>
-      </ScrollView>
-    </SafeAreaView>
+          </View>
+        </TouchableOpacity>)}
+      />
+
+    </ScrollView>
   );
 };
 

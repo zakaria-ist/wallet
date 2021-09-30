@@ -13,8 +13,10 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView
 } from 'react-native';
+//import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
 import { WalletColors } from "../assets/Colors.js";
@@ -59,7 +61,9 @@ const TableRowEditWithdra = ({header, rowData}) => {
     })
     return testCell;
   }
-
+  const ctime = (cellData) => {
+    return (rowData.HDLtime == "")
+  }
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
@@ -67,10 +71,16 @@ const TableRowEditWithdra = ({header, rowData}) => {
 
     leftCell.push(
       <View style={{flexDirection:"row"}}>
-      <View style={{flexDirection: "column"}}>
+        {ctime() ?
+         <View style={{flexDirection: "column"}}>
+         <Text style={styles.cell_text}>{cellData.time}</Text>
+         </View>
+        : 
+        <View style={{flexDirection: "column"}}>
         <Text style={styles.cell_text}>{cellData.time}</Text>
         <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
-      </View>
+        </View>
+        }
     </View>
     )
     setCellOne(leftCell);
@@ -152,6 +162,7 @@ const TableRowEditWithdra = ({header, rowData}) => {
 
   return useMemo(() => {
     return (
+      <KeyboardAvoidingView style={styles.header}>
       <View style={styles.table_view_rectangle}>
         <View style={styles.table_view_left}>
           <View style={styles.view_lineNumber}>
@@ -169,6 +180,7 @@ const TableRowEditWithdra = ({header, rowData}) => {
           </View>
         </View>
       </View>
+      </KeyboardAvoidingView>
     );
   })
 
