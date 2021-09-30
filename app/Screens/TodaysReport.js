@@ -73,7 +73,7 @@ const TodaysReport = () => {
   const tableRowOne = {
     // rowId: 1,
     time: "10:10 AM",
-    //HDLtime: ["(12:10 AM)"],
+    HDLtime: [""],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,

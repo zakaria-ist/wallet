@@ -22,7 +22,6 @@ const TableRow = ({header, rowData}) => {
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
   const [cellThree, setCellThree] = useStateIfMounted([]);
  
-
   useEffect(() => {
     if (header) {
       setCellOne(handleHeaderCell(rowData[0]));
@@ -42,17 +41,27 @@ const TableRow = ({header, rowData}) => {
     return testCell;
   }
 
+  const ctime = (cellData) => {
+    return (rowData.HDLtime == "")
+  }
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
     let rightCell = [];
 
+  
     leftCell.push(
       <View style={{flexDirection:"row"}}>
+        {ctime() ?
+         <View style={{flexDirection: "column"}}>
+         <Text style={styles.cell_text}>{cellData.time}</Text>
+         </View>
+        : 
         <View style={{flexDirection: "column"}}>
-          <Text style={styles.cell_text}>{cellData.time}</Text>
-          <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+        <Text style={styles.cell_text}>{cellData.time}</Text>
+        <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
         </View>
+        }
       </View>
     )
     setCellOne(leftCell);

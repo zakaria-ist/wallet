@@ -116,7 +116,7 @@ const Deposit = () => {
   };
   const tableRowThree = {
     time: ["10:10 AM"],
-    HDLtime: ["(12:10 AM)"],
+    HDLtime: [""],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -130,7 +130,7 @@ const Deposit = () => {
   const agentTableRowOne = {
     rowId: 1,
     time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
+    HDLtime: [""],
     wallet: "Alipay",
     amount: "11320",
     refNo: 1212121212,
@@ -326,7 +326,7 @@ const Deposit = () => {
     <View style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
-        visible={spinner}
+       // visible={spinner}
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />

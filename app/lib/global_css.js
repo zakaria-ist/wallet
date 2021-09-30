@@ -345,10 +345,9 @@ const styles = StyleSheet.create({
         fontSize: RFValue(14)
     },
     agent_container: {
-       // flex:10,
        // height: heightPercentageToDP("67%"),
         marginBottom:heightPercentageToDP("1%"),
-        marginTop:heightPercentageToDP("0.5%")
+        marginTop:-heightPercentageToDP("0.5%")
     },
     view_deposit_withdrawel_treport_rectangle: {
         flex:10,
