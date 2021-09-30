@@ -41,16 +41,24 @@ import { WalletColors } from "../assets/Colors.js";
 import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
+import Format from "../lib/format";
 
+const format = new Format();
 const request = new Request();
+const time = new KTime();
+
+let authType = "";
+let transType = "Today";
+let authToken = "";
+let walletType = 1;
 
 const Withdrawal = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
-  const [authType, setAuthType] = useStateIfMounted("");
-  const [token, setToken] = useStateIfMounted("");
-  const [transType, setTransType] = useStateIfMounted("Today");
-  const [walletType, setWalletType] = useStateIfMounted(1);
+  // const [authType, setAuthType] = useStateIfMounted("");
+  // const [token, setToken] = useStateIfMounted("");
+  // const [transType, setTransType] = useStateIfMounted("Today");
+  // const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletPickerType, setWalletPickerType] = useStateIfMounted(1);
   const [walletData, setWalletData] = useStateIfMounted([]);
   const [walletPickerList, setWalletPickerList] = useStateIfMounted([]);
@@ -155,12 +163,14 @@ const Withdrawal = () => {
       });
 
       AsyncStorage.getItem('token').then((token) => {
-        setToken(token);
+        // setToken(token);
+        authToken = token;
       })
 
       AsyncStorage.getItem('authType').then((auth_type) => {
         if (auth_type != null) {
-          setAuthType(auth_type);
+          // setAuthType(auth_type);
+          authType = auth_type;
           if (auth_type == 'admin' || auth_type == 'subadmin') {
             AsyncStorage.getItem('groupList').then((groups) => {
               if (groups != null) {
@@ -190,35 +200,39 @@ const Withdrawal = () => {
               }
             });
           }
+          renderTablesData();
         }
       });
-
-      renderTablesData();
     })
   }, []);
 
   const handleLeftButton = () => {
-    setTransType("Yesterday");
+    // setTransType("Yesterday");
+    transType = "Yesterday";
     renderTablesData();
   }
 
   const handleRightButton = () => {
-    setTransType("Today");
+    // setTransType("Today");
+    transType = "Today";
     renderTablesData();
   }
 
   const handleWalLeftButton = () => {
-    setWalletType(1);
+    // setWalletType(1);
+    walletType = 1;
     renderTablesData();
   }
 
   const handleWalMidButton = () => {
-    setWalletType(2);
+    // setWalletType(2);
+    walletType = 2;
     renderTablesData();
   }
 
   const handleWalRightButton = () => {
-    setWalletType(3);
+    // setWalletType(3);
+    walletType = 3;
     renderTablesData();
   }
 
@@ -228,16 +242,15 @@ const Withdrawal = () => {
   const renderTablesData = async () => {
     onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
-    let purpose = 'Yesterday';
+    let when = 'Today';
     if (transType == 'Yesterday') {
-      purpose = 'Today';
+      purpose = 'Yesterday';
     }
     const params = JSON.stringify(
       {
         token: token, 
         role: authType,
-        purpose: purpose,
-       // purpose: 'deposite',
+        purpose: "widhdrwal",
       }
     );
     const content = await request.post(msgsUrl, params);
@@ -249,6 +262,7 @@ const Withdrawal = () => {
         if (rejected && msg.status == 'rejected') return true;
         if (pending && msg.status == 'pending') return true;
         if (noStatus && msg.status == null) return true;
+        if (msg.status == 'new') return true;
 
         return false;
       })
@@ -275,15 +289,15 @@ const Withdrawal = () => {
       }
       
       let msg_html = [];
+      let total = 0;
       if (authType == 'agent' && transType == 'Today') {
         msg_html.push(<TableRowEditWithdra key={0} header={true} rowData={agentTableHeader} />)
         messages.map((msg) => {
           let msg_data = {
             rowId: msg.id,
-            time: KTime.format(msg.createdatetime),
+            time: time.format(msg.createdatetime),
             wallet: msg.walletName,
             amount: msg.amount,
-            refNo: msg.refno,
             mobile: msg.mobile,
             sent: false
           };
@@ -293,17 +307,35 @@ const Withdrawal = () => {
       } else {
         msg_html.push(<TableRow key={0} header={true} rowData={tableHeader} />)
         messages.map((msg) => {
-          let msg_data = [];
-          msg_data.push([KTime.format(msg.createdatetime), "(" + KTime.format(msg.updatedatetime) + ")"]);
+          let msg_data = {};
+          let amount = parseFloat(String(msg.amount).replace(',', ''))
+          total += amount;
           if (authType == 'agent') {
-            msg_data.push(["Pin No. : " + msg.refno, "Amount : " + msg.amount, "Wallet    : " + msg.walletName, "Mobile No  : " + msg.mobile]);
+            msg_data = {
+              time: time.format(msg.createdatetime),
+              HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+              wallet: msg.walletName,
+              amount: amount,
+              pinNo: msg.pinno ? msg.pinno : "",
+              mobile: msg.mobile ? msg.mobile : "",
+              status: msg.status,
+            };
           } else {
-            msg_data.push(["Pin No. : " + msg.pinno, "Amount : " + msg.amount, "Wallet    : " + msg.walletName, "Mobile No  : " + msg.mobile, "User      : " + msg.fromuser]);
+            msg_data = {
+              time: time.format(msg.createdatetime),
+              HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+              wallet: msg.walletName,
+              amount: amount,
+              pinNo: msg.pinno ? msg.pinno : "",
+              mobile: msg.mobile ? msg.mobile : "",
+              user: msg.fromuser,
+              status: msg.status,
+            };
           }
-          msg_data.push([msg.status]);
           msg_html.push(<TableRow key={msg.id} header={false} rowData={msg_data} />)
         })
         setTableRowHtml(msg_html);
+        setAcceptedTotal(total);
       }
     }
     onSpinnerChanged(false);
@@ -321,21 +353,21 @@ const Withdrawal = () => {
       <View style={styles.header}>
       {authType == ("admin" || "subadmin") ?
         <View style={styles.admin_deposit_withdrawel_header}>
-              <CustomHeader 
-                title={"Withdrawal"}
-              /> 
-              <View style={styles.admin_deposit_withdrawel_nav_top}>
-              <CommonTop
-                admin={authType == ("admin" || "subadmin") ? true : false}
-                LeftButton={LeftButton}
-                RightButton={RightButton}
-                handleLeftButton={handleLeftButton}
-                handleRightButton={handleRightButton}
-                handleWalLeftButton={handleWalLeftButton}
-                handleWalMidButton={handleWalMidButton}
-                handleWalRightButton={handleWalRightButton}
-              />
-              </View> 
+          <CustomHeader 
+            title={"Withdrawal"}
+          /> 
+          <View style={styles.admin_deposit_withdrawel_nav_top}>
+          <CommonTop
+            admin={authType == ("admin" || "subadmin") ? true : false}
+            LeftButton={LeftButton}
+            RightButton={RightButton}
+            handleLeftButton={handleLeftButton}
+            handleRightButton={handleRightButton}
+            handleWalLeftButton={handleWalLeftButton}
+            handleWalMidButton={handleWalMidButton}
+            handleWalRightButton={handleWalRightButton}
+          />
+          </View> 
         </View>
         :
         <View style={styles.header}>
