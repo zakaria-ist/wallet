@@ -41,9 +41,6 @@ const TableRow = ({header, rowData}) => {
     return testCell;
   }
 
-  const ctime = (cellData) => {
-    return (rowData.HDLtime == "")
-  }
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
@@ -52,39 +49,60 @@ const TableRow = ({header, rowData}) => {
   
     leftCell.push(
       <View style={{flexDirection:"row"}}>
-        {ctime() ?
-         <View style={{flexDirection: "column"}}>
-         <Text style={styles.cell_text}>{cellData.time}</Text>
-         </View>
-        : 
         <View style={{flexDirection: "column"}}>
-        <Text style={styles.cell_text}>{cellData.time}</Text>
-        <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+          <Text style={styles.cell_text}>{cellData.time}</Text>
+          <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
         </View>
-        }
       </View>
     )
     setCellOne(leftCell);
     midCell.push(
       <View style={{flexDirection:"row"}}>
         <View style={{flexDirection: "column"}}>
-          <Text style={styles.cell_text}>Ref. No.</Text>
-          <Text style={styles.cell_text}>Amount</Text>
-          <Text style={styles.cell_text}>Wallet</Text>
+          {cellData.hasOwnProperty("pinNo") ? (<Text style={styles.cell_text}>Pin No.</Text>) : <></>}
+          {cellData.hasOwnProperty("refNo") ? (<Text style={styles.cell_text}>Ref. No.</Text>) : <></>}
+          {cellData.hasOwnProperty("amount") ? (<Text style={styles.cell_text}>Amount</Text>) : <></>}
+          {cellData.hasOwnProperty("wallet") ? (<Text style={styles.cell_text}>Wallet</Text>) : <></>}
+          {cellData.hasOwnProperty("mobile") ? (<Text style={styles.cell_text}>Mobile</Text>) : <></>}
+          {cellData.hasOwnProperty("user") ? (<Text style={styles.cell_text}>User</Text>) : <></>}
         </View>
         <View style={{flexDirection: "column"}}>
-          <View style={{flexDirection: "row"}}>
-          <Text style={styles.cell_text}> : </Text>
-          <Text style={styles.cell_text}>{cellData.refNo}</Text>
-        </View>        
-        <View style={{flexDirection: "row"}}>
-          <Text style={styles.cell_text}> : </Text>
-          <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
-        </View>         
-        <View style={{flexDirection: "row"}}>
-          <Text style={styles.cell_text}> : </Text>
-          <Text style={styles.cell_text}>{cellData.wallet}</Text>
-         </View>    
+          {cellData.hasOwnProperty("pinNo") ? 
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text}>{cellData.pinNo}</Text>
+            </View>
+          : <></>}
+          {cellData.hasOwnProperty("refNo") ? 
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text}>{cellData.refNo}</Text>
+            </View>
+          : <></>}
+          {cellData.hasOwnProperty("amount") ?  
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
+            </View>   
+          : <></>}
+          {cellData.hasOwnProperty("wallet") ?      
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text}>{cellData.wallet}</Text>
+            </View>
+          : <></>}
+          {cellData.hasOwnProperty("mobile") ?      
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text}>{cellData.mobile}</Text>
+            </View>
+          : <></>}
+          {cellData.hasOwnProperty("user") ?      
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text}>{cellData.user}</Text>
+            </View>
+          : <></>}
         </View>  
       </View>       
     )

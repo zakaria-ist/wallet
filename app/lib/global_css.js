@@ -150,10 +150,15 @@ const styles = StyleSheet.create({
 
     //Create Message Screen
     message_nav_top:{
-      flex:2.3, 
+      // flex:2.3, 
       marginTop: heightPercentageToDP("1%"),
       marginBottom: heightPercentageToDP("2.5%"),
-      flexDirection:"row", 
+      minHeight: heightPercentageToDP("12%"),
+      // flexDirection:"row", 
+      alignSelf:"center",
+    },
+    message_quick_insert:{
+      marginTop: heightPercentageToDP("0.5%"),
       alignSelf:"center",
     },
     create_message_body: {
@@ -270,9 +275,10 @@ const styles = StyleSheet.create({
         flex:0.6,
     },
     deposit_withdrawel_nav_top:{
-        flex:2.3, 
+        // flex:2.3, 
         margin:heightPercentageToDP("1%"),
-        flexDirection:"row", 
+        minHeight: heightPercentageToDP("12%"),
+        // flexDirection:"row", 
         alignSelf:"center",
     },
     deposit_withdrawel_treport_body: {
@@ -676,7 +682,7 @@ const styles = StyleSheet.create({
     //CustomHeader
     view_header_root: {
       flexDirection: "row", 
-      flex: 1,
+      // flex: 1,
       borderBottomWidth: StyleSheet.hairlineWidth,
       borderColor: WalletColors.Wblue,
       alignItems: 'center',

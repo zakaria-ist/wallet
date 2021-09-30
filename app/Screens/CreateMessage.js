@@ -270,7 +270,7 @@ const CreateMessage = () => {
   // ];
 
   return (
-    <View style={styles.header}>
+    <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
@@ -291,9 +291,7 @@ const CreateMessage = () => {
             handleWalRightButton={handleWalRightButton}
           />
         </View>
-      </View>
-        <View
-          style={styles.create_message_body}>
+        <View style={styles.message_quick_insert}>
           <TouchableOpacity
             onPress={handleQuickInsert}
           >
@@ -303,6 +301,10 @@ const CreateMessage = () => {
               </Text>
             </View>
           </TouchableOpacity>
+        </View>
+      </View>
+        <View
+          style={styles.create_message_body}>
           <FlatList data={[{key: 'item1' }]}
            style={{height: heightPercentageToDP("57%")}}
            renderItem={({ item, index, separators }) => (
@@ -402,7 +404,7 @@ const CreateMessage = () => {
           </View>
           </KeyboardAvoidingView>
         </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 

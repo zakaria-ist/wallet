@@ -108,10 +108,9 @@ const TodaysReport = () => {
       AsyncStorage.getItem('authType').then((auth_type) => {
         if (auth_type != null) {
           setAuthType(auth_type);
+          renderTablesData();
         }
       })
-      
-      renderTablesData();
     })
   }, []);
 
@@ -147,7 +146,7 @@ const TodaysReport = () => {
     onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
     let purpose = 'deposit';
-    if (transType == 'deposit') {
+    if (transType == 'withdrawal') {
       purpose = 'withdrawal';
     }
     
@@ -160,7 +159,7 @@ const TodaysReport = () => {
     );
 
     const content = await request.post(msgsUrl, params);
-    // console.log(transType, content)
+    console.log(transType, content)
     if (content.ok) {
       // ftatus filter
       let messages = content.msg.filter((msg) => {
@@ -181,17 +180,31 @@ const TodaysReport = () => {
       messages.map((msg) => {
       let amount = parseFloat(String(msg.amount).replace(',', ''))
       total += amount;
-      amount = format.separator(amount);
-        let msg_data = [];
-        msg_data.push([time.format(msg.createdatetime), "(" + time.format(msg.updatedatetime) + ")"]);
-        if (transType == 'Withdrawal') {
-          msg_data.push(["Ref. No. : " + msg.refno, "Amount : " + amount, "Wallet    : " + msg.walletName]);
-        } else {
-          msg_data.push(["Pin No.  : " + msg.pino, "Amount : " + amount, "Wallet    : " + msg.walletName, "Mobile No.  : " + msg.mobile]);
-        }
-        msg_data.push([msg.status]);
+      // amount = format.separator(amount);
+      let msg_data = {};
+      if (purpose == 'deposit') {
+        msg_data = {
+          time: time.format(msg.createdatetime),
+          HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+          wallet: msg.walletName,
+          amount: amount,
+          refNo: msg.refno ? msg.refno : "",
+          status: msg.status,
+        };
+      } else {
+        msg_data = {
+          time: time.format(msg.createdatetime),
+          HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+          wallet: msg.walletName,
+          amount: amount,
+          pinNo: msg.pino ? msg.pino : "-",
+          mobile: msg.mobile ? msg.mobile : "",
+          status: msg.status,
+        };
+      }
+        
         msg_html.push(<TableRow key={msg.id} header={false} rowData={msg_data} />)
-
+        console.log('msg_data', msg_data)
       })
       setTableRowHtml(msg_html);
       setAcceptedTotal(total);
@@ -263,11 +276,11 @@ const TodaysReport = () => {
             renderItem={({ item, index, separators }) => (
             <TouchableOpacity>
               <View style={styles.header}>
-                  {/* {tableRowHtml} */}
-                <TableRow header={true} rowData={tableHeader} />
+                  {tableRowHtml}
+                {/* <TableRow header={true} rowData={tableHeader} />
                 <TableRow header={false} rowData={tableRowOne} />
                 <TableRow header={false} rowData={tableRowTwo} />
-                <TableRow header={false} rowData={tableRowThree} />
+                <TableRow header={false} rowData={tableRowThree} /> */}
               </View>
             </TouchableOpacity>)}
           />
