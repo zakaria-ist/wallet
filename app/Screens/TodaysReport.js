@@ -73,7 +73,7 @@ const TodaysReport = () => {
   const tableRowOne = {
     // rowId: 1,
     time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
+    //HDLtime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -259,7 +259,7 @@ const TodaysReport = () => {
           <View style={styles.view_deposit_withdrawel_treport_rectangle}>
           <FlatList 
             data={[{key: 'item1' }]}
-            style={{height: heightPercentageToDP("64%")}}
+            //style={{height: heightPercentageToDP("64%")}}
             renderItem={({ item, index, separators }) => (
             <TouchableOpacity>
               <View style={styles.header}>

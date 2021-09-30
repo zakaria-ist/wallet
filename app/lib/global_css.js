@@ -345,12 +345,13 @@ const styles = StyleSheet.create({
         fontSize: RFValue(14)
     },
     agent_container: {
+       // flex:10,
        // height: heightPercentageToDP("67%"),
         marginBottom:heightPercentageToDP("1%"),
         marginTop:heightPercentageToDP("0.5%")
     },
     view_deposit_withdrawel_treport_rectangle: {
-        //flex:10,
+        flex:10,
         flexDirection: "column",
         alignItems: "center",
         borderRadius: 20,
@@ -512,7 +513,7 @@ const styles = StyleSheet.create({
 
     //TodaysReport
    today_report_nav_top:{
-    flex:2.1, 
+    flex:2.3, 
     margin:heightPercentageToDP("1%"),
     flexDirection:"row", 
     alignSelf:"center",
