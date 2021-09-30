@@ -9,7 +9,7 @@
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
-  ScrollView,
+  FlatList,
   StatusBar,
   useColorScheme,
   View,
@@ -151,13 +151,19 @@ const SummaryReport = () => {
       </View>
       <View style={styles.summary_report_body}> 
         <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-        <ScrollView>
-          <SummaryTableRow header={true} rowData={tableHeader} />
-          <SummaryTableRow header={false} rowData={groupData} />
-          <SummaryTableRow header={false} rowData={groupData} />
-          <SummaryTableRow header={false} rowData={groupData} /> 
-          <SummaryTableRow header={false} rowData={groupData} />
-        </ScrollView>
+        <FlatList 
+          data={[{key: 'item1' }]}
+          renderItem={({ item, index, separators }) => (
+          <TouchableOpacity>
+            <View style={styles.header}>
+              <SummaryTableRow header={true} rowData={tableHeader} />
+              <SummaryTableRow header={false} rowData={groupData} />
+              <SummaryTableRow header={false} rowData={groupData} />
+              <SummaryTableRow header={false} rowData={groupData} /> 
+              <SummaryTableRow header={false} rowData={groupData} />
+            </View>
+          </TouchableOpacity>)}
+        />
         </View>
       </View>
     </SafeAreaView>

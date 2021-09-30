@@ -9,9 +9,10 @@
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
-  ScrollView,
+  FlatList,
   StatusBar,
   Text,
+  ScrollView,
   TextInput,
   useColorScheme,
   View,
@@ -19,6 +20,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native';
+//import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {
   heightPercentageToDP,
   widthPercentageToDP,
@@ -95,7 +97,7 @@ const Withdrawal = () => {
   };
   const tableRowTwo = {
     time: ["10:10 AM"],
-    HDLtime: ["(12:10 AM)"],
+    HDLtime: [""],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -112,7 +114,7 @@ const Withdrawal = () => {
   const agentTableRowOne = {
     rowId: 1,
     time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
+    HDLtime: [""],
     wallet: "Alipay",
     amount: 11320,
     mobile: 1212121212,
@@ -311,7 +313,7 @@ const Withdrawal = () => {
     <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
-        //visible={spinner}
+        visible={spinner}
         // textContent={"Loading..."}
         onSpinnerChanged={false}
         textStyle={styles.spinnerTextStyle}
@@ -515,23 +517,39 @@ const Withdrawal = () => {
             [transType == 'Today' ? 
             <View style={styles.agent_container}>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-                <ScrollView>
+              <FlatList 
+                data={[{key: 'item1' }]}
+               // style={{height: heightPercentageToDP("65%")}}
+                renderItem={({ item, index, separators }) => (
+                <TouchableOpacity>
+                  <View style={styles.header}>
+                      {/* {tableRowHtml} */}
                   <TableRowEditWithdra key={1} header={true} rowData={agentTableHeader} />
                   <TableRowEditWithdra  key={2} header={false} rowData={agentTableRowOne} />
                   <TableRowEditWithdra  key={3} header={false} rowData={agentTableRowTwo} />
                   <TableRowEditWithdra  key={4} header={false} rowData={agentTableRowThree} />
-                </ScrollView>
+                  </View>
+                </TouchableOpacity>)}
+              />
                 </View>
               </View>
             :
             <>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-              <ScrollView>
-                <TableRow header={true} rowData={tableHeader} />
-                <TableRow header={false} rowData={tableRowOne} />
-                <TableRow header={false} rowData={tableRowTwo} />
-                <TableRow header={false} rowData={tableRowThree} />
-               </ScrollView>
+              <FlatList 
+                data={[{key: 'item1' }]}
+               // style={{height: heightPercentageToDP("59%")}}
+                renderItem={({ item, index, separators }) => (
+                <TouchableOpacity>
+                  <View style={styles.header}>
+                      {/* {tableRowHtml} */}
+                    <TableRow header={true} rowData={tableHeader} />
+                    <TableRow header={false} rowData={tableRowOne} />
+                    <TableRow header={false} rowData={tableRowTwo} />
+                    <TableRow header={false} rowData={tableRowThree} />
+                  </View>
+                </TouchableOpacity>)}
+              />
               </View>
               <View styles={styles.total}>
                 <Text style={styles.total_text}>Total Amount  : TK   {acceptedTotal}</Text>
@@ -541,12 +559,18 @@ const Withdrawal = () => {
           :
             <>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-              <ScrollView>
-                <TableRow header={true} rowData={tableHeader} />
-                <TableRow header={false} rowData={tableRowOne} />
-                <TableRow header={false} rowData={tableRowTwo} />
-                <TableRow header={false} rowData={tableRowThree} />
-              </ScrollView>
+              <FlatList data={[{key: 'item1' }]}
+               // style={{height: heightPercentageToDP("51%")}}
+                renderItem={({ item, index, separators }) => (
+                  <TouchableOpacity>
+                    <View style={styles.header}>
+                      <TableRow header={true} rowData={tableHeader} />
+                      <TableRow header={false} rowData={tableRowOne} />
+                      <TableRow header={false} rowData={tableRowTwo} />
+                      <TableRow header={false} rowData={tableRowThree} />
+                    </View>
+                  </TouchableOpacity>)}
+                />
               </View>
               <View style={styles.total}>
                 <View style={{flexDirection:"row"}}>

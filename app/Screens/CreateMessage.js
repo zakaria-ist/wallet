@@ -9,6 +9,7 @@
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
+  FlatList,
   ScrollView,
   StatusBar,
   Text,
@@ -258,8 +259,18 @@ const CreateMessage = () => {
     setMessageFive(data);
   }
 
+  // const DATA = [
+  //   <ScrollView>
+  //   <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
+  //   <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
+  //   <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
+  //   <MessageBlock transType={transType} mData={messageFour} lineNumber={4} key={"lineNumber4"} parentReference={handleMessageFour} />
+  //   <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
+  //   </ScrollView>
+  // ];
+
   return (
-    <SafeAreaView style={styles.header}>
+    <View style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
@@ -281,34 +292,40 @@ const CreateMessage = () => {
           />
         </View>
       </View>
-      <View
-        style={styles.create_message_body}>
-        <TouchableOpacity
-          onPress={handleQuickInsert}
-        >
-          <View style={styles.insert_button}>
-            <Text style={styles.insert_button_text}>
-              Quick Insert
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <ScrollView>
-        <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
-        <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
-        <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
-        <MessageBlock transType={transType} mData={messageFour} lineNumber={4} key={"lineNumber4"} parentReference={handleMessageFour} />
-        <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
-        </ScrollView>
-        <TouchableOpacity
-          onPress={handleSubmit}
-        >
-          <View style={styles.sumbit_button}>
-            <Text style={styles.sumbit_button_text}>
-              Submit
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </View>
+        <View
+          style={styles.create_message_body}>
+          <TouchableOpacity
+            onPress={handleQuickInsert}
+          >
+            <View style={styles.insert_button}>
+              <Text style={styles.insert_button_text}>
+                Quick Insert
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <FlatList data={[{key: 'item1' }]}
+           style={{height: heightPercentageToDP("57%")}}
+           renderItem={({ item, index, separators }) => (
+            <TouchableOpacity>
+              <View style={styles.header}>
+                <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
+                <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
+                <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
+                <MessageBlock transType={transType} mData={messageFour} lineNumber={4} key={"lineNumber4"} parentReference={handleMessageFour} />
+                <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
+              </View>
+            </TouchableOpacity>)}
+          />
+          <TouchableOpacity
+            onPress={handleSubmit}
+          >
+            <View style={styles.sumbit_button}>
+              <Text style={styles.sumbit_button_text}>
+                Submit
+              </Text>
+            </View>
+          </TouchableOpacity>
+        </View>
     
       <Modal 
           isVisible={isModalVisible}
@@ -385,7 +402,7 @@ const CreateMessage = () => {
           </View>
           </KeyboardAvoidingView>
         </Modal>
-    </SafeAreaView>
+    </View>
   );
 };
 

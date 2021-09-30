@@ -13,8 +13,14 @@ import {
   View,
   Text,
   TextInput,
-  TouchableOpacity
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Platform,
 } from 'react-native';
+import {
+  heightPercentageToDP,
+} from "react-native-responsive-screen";
+//import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import { WalletColors } from "../assets/Colors.js";
 import Format from "../lib/format";
 import styles from '../lib/global_css.js';
@@ -60,7 +66,9 @@ const TableRowEditDeposit = ({header, rowData}) => {
     })
     return testCell;
   }
-
+  const ctime = (cellData) => {
+    return (rowData.HDLtime == "")
+  }
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
@@ -68,10 +76,16 @@ const TableRowEditDeposit = ({header, rowData}) => {
 
     leftCell.push(
       <View style={{flexDirection:"row"}}>
-      <View style={{flexDirection: "column"}}>
+        {ctime() ?
+         <View style={{flexDirection: "column"}}>
+         <Text style={styles.cell_text}>{cellData.time}</Text>
+         </View>
+        : 
+        <View style={{flexDirection: "column"}}>
         <Text style={styles.cell_text}>{cellData.time}</Text>
         <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
-      </View>
+        </View>
+        }
     </View>
     )
     setCellOne(leftCell);
@@ -174,6 +188,11 @@ const TableRowEditDeposit = ({header, rowData}) => {
 
   return useMemo(() => {
     return (
+      <KeyboardAvoidingView 
+      enabled
+      keyboardVerticalOffset={Platform.select({ios: 0, android:"padding"})}
+      style={styles.header}
+    >
       <View style={styles.table_view_rectangle}>
         <View style={styles.table_view_left}>
           <View style={styles.view_lineNumber}>
@@ -191,6 +210,7 @@ const TableRowEditDeposit = ({header, rowData}) => {
           </View>
         </View>
       </View>
+    </KeyboardAvoidingView>
     );
   })
 
