@@ -33,9 +33,9 @@ const format = new Format();
 const request = new Request();
 const alert = new CustomAlert();
 
-const TableRowEditDeposit = ({header, rowData}) => {
+const TableRowEditDeposit = ({rowData}) => {
   const [token, setToken] = useStateIfMounted("");
-  const [rowId, setRowId] = useStateIfMounted(rowData.rowId);
+  const [rowId, setRowId] = useStateIfMounted(rowData.id);
   const [amount, setAmount] = useState('');
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
@@ -46,29 +46,12 @@ const TableRowEditDeposit = ({header, rowData}) => {
     AsyncStorage.getItem('token').then((token) => {
       setToken(token);
     });
-    if (header) {
-      setCellOne(handleHeaderCell(rowData[0]));
-      setCellTwo(handleHeaderCell(rowData[1]));
-      setCellThree(handleHeaderCell(rowData[2]));
-    } else {
-      setRowId(rowData.rowId);
-      rowData.amount = format.separator(String(rowData.amount).split(',').join(''));
-      handleCell(rowData);
-    }
+    
+    setRowId(rowData.id);
+    rowData.amount = format.separator(String(rowData.amount).split(',').join(''));
+    handleCell(rowData);
   }, [rowData]);
 
-  const handleHeaderCell = (cellData) => {
-    let testCell = [];
-    cellData.map((cell) => {
-      testCell.push(
-        <Text style={header ? styles.cell_text_header : styles.cell_text}>{cell}</Text>
-      )
-    })
-    return testCell;
-  }
-  const ctime = (cellData) => {
-    return (rowData.HDLtime == "")
-  }
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
@@ -76,78 +59,92 @@ const TableRowEditDeposit = ({header, rowData}) => {
 
     leftCell.push(
       <View style={{flexDirection:"row"}}>
-        {ctime() ?
-         <View style={{flexDirection: "column"}}>
-         <Text style={styles.cell_text}>{cellData.time}</Text>
-         </View>
-        : 
         <View style={{flexDirection: "column"}}>
-        <Text style={styles.cell_text}>{cellData.time}</Text>
-        <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+          {cellData.hasOwnProperty("Header") ? 
+            <>
+            <Text style={styles.cell_text_header}>{cellData.Time}</Text>
+            <Text style={styles.cell_text_header}>{cellData.HDLTime}</Text>
+            </>
+          :
+            <>
+            <Text style={styles.cell_text}>{cellData.time}</Text>
+            <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+            </>
+          }
         </View>
-        }
     </View>
     )
     setCellOne(leftCell);
+
     midCell.push(
       <View style={{flexDirection:"row"}}>
         <View style={styles.table_view_column}>
-          <Text style={styles.cell_text_ref}>Ref. No.</Text>
-          <Text style={styles.cell_text_input}>Amount</Text>
-          <Text style={styles.cell_text}>Wallet</Text>
+          {cellData.hasOwnProperty("Header") ? 
+            (<Text style={styles.cell_text_header}>{cellData.Message}</Text>) 
+          :
+            <>
+              <Text style={styles.cell_text_ref}>Ref. No.</Text>
+              <Text style={styles.cell_text_input}>Amount</Text>
+              <Text style={styles.cell_text}>Wallet</Text>
+            </>
+          }
         </View>
-        <View style={{flexDirection: "column"}}>
-          <View style={{flexDirection: "row"}}>
-          <Text style={styles.cell_text}> : </Text>
-          <Text style={styles.cell_text}>{cellData.refNo}</Text>
-        </View>        
-        <View style={{flexDirection: "row"}}>
-          <Text style={styles.cell_text_input}> : </Text>
-          <TextInput 
-            style={styles.text_input}
-            onChangeText={amount => { 
-              rowData.amount = format.separator(String(amount).split(',').join('')); 
-              handleCell(rowData); 
-            }}
-            value={rowData.amount}
-            textAlign={'left'}
-            placeholderTextColor={WalletColors.grey}
-            keyboardType={'numeric'}
-          />
-        </View>         
-        <View style={{flexDirection: "row"}}>
-          <Text style={styles.cell_text}> : </Text>
-          <Text style={styles.cell_text}>{cellData.wallet}</Text>
-         </View>    
-        </View>  
+        {cellData.hasOwnProperty("Header") ? <></> :
+          <View style={{flexDirection: "column"}}>
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text}>{cellData.refNo}</Text>
+            </View>        
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text_input}> : </Text>
+              <TextInput 
+                style={styles.text_input}
+                onChangeText={amount => { 
+                  rowData.amount = format.separator(String(amount).split(',').join('')); 
+                  handleCell(rowData); 
+                }}
+                value={rowData.amount}
+                textAlign={'left'}
+                placeholderTextColor={WalletColors.grey}
+                keyboardType={'numeric'}
+              />
+            </View>         
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text}>{cellData.wallet}</Text>
+            </View>    
+          </View>
+        }
       </View>       
     )
-  
     setCellTwo(midCell);
 
-    if (rowData.sent) {
+    if (cellData.hasOwnProperty("Header")) {
+      rightCell.push(<Text style={styles.cell_text_header}>{cellData.Status}</Text>);
+    }
+    else if (rowData.sent) {
       rightCell.push([]);
     } else {
       rightCell.push(
         <View style={styles.button_view}>
-        <TouchableOpacity
-          onPress={onReject}
-        >
-          <View style={styles.send_button_reject}>
-            <Text style={styles.send_button_text}>
-              Reject
-            </Text>
-          </View>
-        </TouchableOpacity>
-        <TouchableOpacity
-          onPress={onAccept}
-        >
-          <View style={styles.send_button_accept}>
-            <Text style={styles.send_button_text}>
-              Accept
-            </Text>
-          </View>
-        </TouchableOpacity>
+          <TouchableOpacity
+            onPress={onReject}
+          >
+            <View style={styles.send_button_reject}>
+              <Text style={styles.send_button_text}>
+                Reject
+              </Text>
+            </View>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={onAccept}
+          >
+            <View style={styles.send_button_accept}>
+              <Text style={styles.send_button_text}>
+                Accept
+              </Text>
+            </View>
+          </TouchableOpacity>
         </View>
       )
     }
