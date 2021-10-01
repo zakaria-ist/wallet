@@ -13,7 +13,6 @@ import TodaysReport from "../Screens/TodaysReport";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
 // class CustomTabButton extends React.Component {
 //   render() {
 //     const {
@@ -38,7 +37,6 @@ const Stack = createStackNavigator();
 //     );
 //   }
 // }
-
 const screenOptionStyle = {
   headerStyle: {
     backgroundColor: "#9AC4F8",

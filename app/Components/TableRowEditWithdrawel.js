@@ -46,6 +46,11 @@ const TableRowEditWithdra = ({rowData}) => {
     handleCell(rowData);
   }, [rowData]);
   
+  const ctime = ((cellData) => {
+    return cellData.HDLTime == "";
+  }
+  );
+
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
@@ -56,13 +61,17 @@ const TableRowEditWithdra = ({rowData}) => {
         <View style={{flexDirection: "column"}}>
           {cellData.hasOwnProperty("Header") ? 
             <>
-            <Text style={styles.cell_text_header}>{cellData.Time}</Text>
-            <Text style={styles.cell_text_header}>{cellData.HDLTime}</Text>
+              <Text style={styles.cell_text_header}>{cellData.Time}</Text>
+              <Text style={styles.cell_text_header}>{cellData.HDLTime}</Text>
             </>
           :
             <>
-              <Text style={styles.cell_text}>{cellData.time}</Text>
-              {/* <Text style={styles.cell_text}>{cellData.HDLtime}</Text> */}
+            {ctime ? <Text style={styles.cell_text}>{cellData.time}</Text> :
+              <>
+                <Text style={styles.cell_text}>{cellData.time}</Text>
+                <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+              </>
+            }
             </>
           }
         </View>
@@ -89,13 +98,13 @@ const TableRowEditWithdra = ({rowData}) => {
             <View style={{flexDirection: "row"}}>
               <Text style={styles.cell_text_input_colon}> : </Text>
               <TextInput 
-                  style={styles.text_input}
-                  onChangeText={pinNo => { rowData.pinNo = pinNo; handleCell(rowData); }}
-                  value={rowData.pinNo}
-                  textAlign={'left'}
-                  placeholderTextColor={WalletColors.grey}
-                  keyboardType={'numeric'}
-                />
+                style={styles.text_input}
+                onChangeText={pinNo => { rowData.pinNo = pinNo; handleCell(rowData); }}
+                value={rowData.pinNo}
+                textAlign={'left'}
+                placeholderTextColor={WalletColors.grey}
+                keyboardType={'numeric'}
+              />
             </View>        
             <View style={{flexDirection: "row"}}>
               <Text style={styles.cell_text}> : </Text>
@@ -116,7 +125,9 @@ const TableRowEditWithdra = ({rowData}) => {
     setCellTwo(midCell);
 
     if (cellData.hasOwnProperty("Header")) {
-      rightCell.push(<Text style={styles.cell_text_header}>{cellData.Status}</Text>);
+      rightCell.push(
+      <Text style={styles.cell_text_header}>{cellData.Status}</Text>
+      );
     }
     else if (rowData.sent) {
       rightCell.push([]);
@@ -154,7 +165,6 @@ const TableRowEditWithdra = ({rowData}) => {
       rowData['sent'] = true;
       handleCell(rowData);
     }
-    
   }
 
   return useMemo(() => {
@@ -194,7 +204,6 @@ const TableRowEditWithdra = ({rowData}) => {
        </KeyboardAvoidingView>
     );
   })
-
 };
 
 

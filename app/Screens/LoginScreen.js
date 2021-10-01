@@ -244,15 +244,15 @@ const LoginScreen = ({navigation}) => {
       />
       <FlatList 
         data={[{key: 'item1' }]}
-        renderItem={({ item, index, separators }) => (
+        renderItem={() => (
         <TouchableOpacity>
           <View style={styles.header}>
-          <View style={styles.view_logo}>
-            <View style={styles.view_logo_logo}>
-              <Image style={styles.logo} source={screensize.getSmallScreen() || screensize.getMediumScreen() || screensize.getLargeScreen()}/>
+            <View style={styles.view_logo}>
+              <View style={styles.view_logo_logo}>
+                <Image style={styles.logo} source={screensize.getSmallScreen() || screensize.getMediumScreen() || screensize.getLargeScreen()}/>
+              </View>
             </View>
-          </View>
-          <View style={styles.login_view_input}>
+            <View style={styles.login_view_input}>
               <TextInput 
                 style={styles.login_text_input}
                 onChangeText={setUserName}
@@ -285,11 +285,10 @@ const LoginScreen = ({navigation}) => {
                   </Text>
                 </View>
               </TouchableOpacity>
-          </View>
+            </View>
           </View>
         </TouchableOpacity>)}
       />
-
     </ScrollView>
   );
 };

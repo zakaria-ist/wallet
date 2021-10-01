@@ -5,33 +5,22 @@
  * @format
  * @flow strict-local
  */
-import React, {useState, useEffect, useMemo} from 'react';
+import React, {useEffect, useMemo} from 'react';
 import {widthPercentageToDP} from "react-native-responsive-screen";
-import { useStateIfMounted } from "use-state-if-mounted";
-// import { useIsFocused } from "@react-navigation/native";
-import {
-  View,
-  Text,
-} from 'react-native';
+import {useStateIfMounted} from "use-state-if-mounted";
+import {View, Text} from 'react-native';
 import Format from "../lib/format";
 import styles from '../lib/global_css.js';
 import Screensize from '../lib/screensize.js';
 
 const format = new Format();
 const screensize = new Screensize();
-const smallwidth = 
-screensize.getSmallScreen()
-? {marginLeft:widthPercentageToDP("17.3%"), position:"absolute"} : smallwidth;
-const mediumwidth = 
-screensize.getMediumScreen()
-? {marginLeft:widthPercentageToDP("17.9%"), position:"absolute"} : largewidth;
-const largewidth = 
-screensize.getLargeScreen()
-? {marginLeft:widthPercentageToDP("17.9%"), position:"absolute"} : smallwidth;
+const smallwidth = screensize.getSmallScreen() ? styles.text_ss_width : mediumwidth;
+const mediumwidth = screensize.getMediumScreen() ? styles.text_ms_width : largewidth;
+const largewidth = screensize.getLargeScreen() ? styles.text_ls_width : smallwidth;
 const SummaryTableRow = ({header, rowData}) => {
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
-  // const isFocused = useIsFocused();
 
   useEffect(() => {
     if (header) {
@@ -52,7 +41,6 @@ const SummaryTableRow = ({header, rowData}) => {
   const handleDataCell = (cellData) => {
     let cellLeft = [];
     let cellRight = [];
-    
     cellData.map((group) => {
       cellLeft.push(
         <View style={styles.view_summary_border_line}>
@@ -68,63 +56,62 @@ const SummaryTableRow = ({header, rowData}) => {
      cellLeft.push(
       <View style={styles.view_summary_border_line}>
         <View style={styles.view_sub_row}>
-        {group.walletData.map((wallet) => {
-        cellLeft.push(
-          <View style={styles.view_summary_border_line}>
-            <View style={styles.view_sub_row}>
-              <View style={styles.view_sub_column}>
-                <Text style={styles.cell_text_end}>{wallet.wallet}</Text>
-              </View>
-              <View style={styles.view_sub_column}>
-                <View style={styles.view_sub_sub_row}>
-                  <Text style={styles.cell_text}>:</Text>
-                  <Text style={styles.cell_text}>(D)</Text>
+          {group.walletData.map((wallet) => {
+            cellLeft.push(
+              <View style={styles.view_summary_border_line}>
+                <View style={styles.view_sub_row}>
+                  <View style={styles.view_sub_column}>
+                    <Text style={styles.cell_text_end}>{wallet.wallet}</Text>
+                  </View>
+                  <View style={styles.view_sub_column}>
+                    <View style={styles.view_sub_sub_row}>
+                      <Text style={styles.cell_text}>:</Text>
+                      <Text style={styles.cell_text}>(D)</Text>
+                    </View>
+                    <View style={styles.view_sub_sub_row}>
+                      <Text style={styles.cell_text}>:</Text>
+                      <Text style={styles.cell_text}>(W)</Text> 
+                    </View>
+                  </View>
+                  <View style={styles.view_sub_column}>
+                    <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.count)}</Text>
+                    <Text style={styles.cell_text_end}>{format.separator(wallet.withdrawal.count)}</Text>
+                  </View>
+                  <View style={styles.view_sub_column}>
+                    <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.amount)}</Text>
+                    <Text style={styles.cell_text_end}>{format.separator(wallet.withdrawal.amount)}</Text>
+                  </View>
                 </View>
-                <View style={styles.view_sub_sub_row}>
-                  <Text style={styles.cell_text}>:</Text>
-                  <Text style={styles.cell_text}>(W)</Text> 
-                </View>
               </View>
-              <View style={styles.view_sub_column}>
-                <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.count)}</Text>
-                <Text style={styles.cell_text_end}>{format.separator(wallet.withdrawal.count)}</Text>
-              </View>
-              <View style={styles.view_sub_column}>
-                <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.amount)}</Text>
-                <Text style={styles.cell_text_end}>{format.separator(wallet.withdrawal.amount)}</Text>
-              </View>
-            </View>
+            )
+          })}
+          <View style={styles.view_sub_column}>
+            <Text style={styles.cell_text_bold}>Sub-Total</Text>
           </View>
-        )
-      })}
-            <View style={styles.view_sub_column}>
-              <Text style={styles.cell_text_bold}>Sub-Total</Text>
-            </View>
-            <View style={smallwidth || mediumwidth || largewidth}>
-              <View style={styles.view_sub_sub_row}>
+          <View style={smallwidth || mediumwidth || largewidth}>
+            <View style={styles.view_sub_sub_row}>
               <Text style={styles.cell_text_bold_start}>:</Text>
               <Text style={styles.cell_text_bold_start}>(D)</Text>
-              </View>
-              <View style={styles.view_sub_sub_row}>
+            </View>
+            <View style={styles.view_sub_sub_row}>
               <Text style={styles.cell_text_bold_start}>:</Text>
               <Text style={styles.cell_text_bold_start}>(W)</Text>
-              </View>
-           </View> 
-            <View style={styles.view_sub_column}>
-              <Text style={styles.cell_text_bold}>{format.separator(group.subtotal.deposit)}</Text>
-              <Text style={styles.cell_text_bold}>{format.separator(group.subtotal.withdrawal)}</Text>
             </View>
+          </View> 
+          <View style={styles.view_sub_column}>
+            <Text style={styles.cell_text_bold}>{format.separator(group.subtotal.deposit)}</Text>
+            <Text style={styles.cell_text_bold}>{format.separator(group.subtotal.withdrawal)}</Text>
           </View>
         </View>
-      )
+      </View>
+    )
       
-      setCellOne(cellLeft);
+    setCellOne(cellLeft);
       cellRight.push(
         <Text style={styles.cell_text_bold}>{format.separator(group.total)}</Text>
       );
       setCellTwo(cellRight)
     });
-    
   }
 
   return useMemo(() => {
@@ -143,7 +130,6 @@ const SummaryTableRow = ({header, rowData}) => {
       </View> 
     );
   })
-
 };
 
 

@@ -8,10 +8,8 @@ import {
   DrawerItem
 } from '@react-navigation/drawer';
 import DeviceInfo from 'react-native-device-info';
-import { RFValue } from "react-native-responsive-fontsize";
-import {
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {RFValue} from "react-native-responsive-fontsize";
+import {widthPercentageToDP} from "react-native-responsive-screen";
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from "@react-native-community/async-storage";
@@ -34,12 +32,9 @@ import {
   TabNavigationAgentWithdrawal,
   TabNavigationGroup, 
   TabNavigationGroupWithdrawal} from "./TabStack";
-import { color } from "react-native-reanimated";
-import { marginRight, padding } from "styled-system";
 import styles from "../lib/global_css";
 
 const alert = new CustomAlert();
-
 // function CustomDrawerContent(props) {
 //   return (
 //     <DrawerContentScrollView {...props}>
@@ -52,8 +47,6 @@ const alert = new CustomAlert();
 //     </DrawerContentScrollView>
 //   );
 // }
-
-
 const Drawer = createDrawerNavigator();
 
 export default function DrawerStack() {

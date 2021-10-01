@@ -217,10 +217,10 @@ const TodaysReport = () => {
         textStyle={styles.spinnerTextStyle}
       />
       <View style={styles.header}>
-          <CustomHeader 
-            title={"Today's Report"}
-          />
-          <View style={styles.today_report_nav_top}>
+        <CustomHeader 
+          title={"Today's Report"}
+        />
+        <View style={styles.today_report_nav_top}>
           <CommonTop
             admin={false}
             LeftButton={LeftButton}
@@ -231,11 +231,10 @@ const TodaysReport = () => {
             handleWalMidButton={handleWalMidButton}
             handleWalRightButton={handleWalRightButton}
           />
-           </View>
         </View>
-       
-        <View style={styles.deposit_withdrawel_treport_body}>
-          {transType == "deposit" ?
+      </View>
+      <View style={styles.deposit_withdrawel_treport_body}>
+        {transType == "deposit" ?
           <View style={styles.agent_status_row_container}>
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
@@ -263,28 +262,28 @@ const TodaysReport = () => {
             </View>
           :
             <View style={{marginTop:-heightPercentageToDP("0.3%")}}></View>
+        }
+        <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+          {tableData ?
+            <FlatList
+              data={tableData}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                />
+              }
+            />
+          :
+            <></>
           }
-          <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-            {tableData ?
-              <FlatList
-                data={tableData}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                  />
-                }
-              />
-            :
-              <></>
-            }
-          </View>
-          <View styles={styles.total}>
-            <Text style={styles.total_text}>Total Amount : TK {format.separator(acceptedTotal)}</Text>
-          </View>
         </View>
+        <View styles={styles.total}>
+          <Text style={styles.total_text}>Total Amount : TK {format.separator(acceptedTotal)}</Text>
+        </View>
+      </View>
     </SafeAreaView>
   );
 };

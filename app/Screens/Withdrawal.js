@@ -419,9 +419,8 @@ const Withdrawal = () => {
                     textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
                   />
-                  {/* </View> */}
                 </View>
-                <View style={smalladminpicker || mediumadminpicker || largeadminpicker}>
+                <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
@@ -540,32 +539,29 @@ const Withdrawal = () => {
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
-            <View style={styles.agent_container}>
-               {/* <View style={{marginTop:heightPercentageToDP("1.5%"), height:heightPercentageToDP("68%")}}> */}
-              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-                {tableEditData ?
-                 <KeyboardAwareScrollView style={styles.header}>
-                  <FlatList
-                    data={tableEditData}
-                    renderItem={renderItemEdit}
-                    keyExtractor={item => item.id}
-                    refreshControl={
-                      <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                      />
-                    }
-                  />
-                  </KeyboardAwareScrollView>
-                :
-                  <></>
-                }
-              </View>
-              {/* </View> */}
+              <View style={styles.agent_container}>
+                <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+                  {tableEditData ?
+                  <KeyboardAwareScrollView style={styles.header}>
+                    <FlatList
+                      data={tableEditData}
+                      renderItem={renderItemEdit}
+                      keyExtractor={item => item.id}
+                      refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                        />
+                      }
+                    />
+                    </KeyboardAwareScrollView>
+                  :
+                    <></>
+                  }
+                </View>
               </View>
             :
             <>
-            <View style={styles.agent_yesterday_container}>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                 {tableData ?
                   <FlatList
@@ -582,7 +578,6 @@ const Withdrawal = () => {
                 :
                   <></>
                 }
-              </View>
               </View>
               <View styles={styles.total}>
                 <Text style={styles.total_text}>Total Amount : TK  {format.separator(acceptedTotal)}</Text>
@@ -630,8 +625,8 @@ const Withdrawal = () => {
               </View>
             </>
           }
-          </View>
         </View>
+      </View>
     </SafeAreaView> 
  //</ScrollView>
   );

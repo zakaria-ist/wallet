@@ -7,7 +7,6 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
 import { RFValue } from "react-native-responsive-fontsize";
 
-const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 const styles = StyleSheet.create({
@@ -20,7 +19,6 @@ const styles = StyleSheet.create({
   },
   activityIndicator: {
     alignItems: 'center',
-    //height: 80,
     height: windowHeight / 2 - heightPercentageToDP("60%"),
   },
 
@@ -374,7 +372,7 @@ const styles = StyleSheet.create({
   },
   agent_container: {
     marginBottom:heightPercentageToDP("1%"),
-   // marginTop:-heightPercentageToDP("0.5%")
+    marginTop:-heightPercentageToDP("0.5%")
   },
   view_deposit_withdrawel_treport_rectangle: {
     flex:10,
@@ -629,6 +627,18 @@ const styles = StyleSheet.create({
   cell_text_bold_start: {
     fontSize: RFValue(13),
     fontWeight: "bold",
+  },
+  text_ss_width: {
+    marginLeft:widthPercentageToDP("18.5%"), 
+    position:"absolute"
+  },
+  text_ms_width: {
+    marginLeft:widthPercentageToDP("17.9%"), 
+    position:"absolute"
+  },
+  text_ls_width: {
+    marginLeft:widthPercentageToDP("18%"), 
+    position:"absolute"
   },
 
   //MessageBlock

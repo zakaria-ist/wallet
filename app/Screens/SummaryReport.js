@@ -31,7 +31,6 @@ const SummaryReport = () => {
   const [transType, setTransType] = useStateIfMounted("Today");
   const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletData, setWalletData] = useStateIfMounted([]);
-
   const LeftButton = "Yesterday";
   const RightButton = "Today";
   const tableHeader = [
@@ -136,33 +135,33 @@ const SummaryReport = () => {
           title={"Summary Report"}
         />   
         <View style={styles.summary_report_nav_top}>
-        <CommonTop
-          admin={true}
-          LeftButton={LeftButton}
-          RightButton={RightButton}
-          handleLeftButton={handleLeftButton}
-          handleRightButton={handleRightButton}
-          handleWalLeftButton={handleWalLeftButton}
-          handleWalMidButton={handleWalMidButton}
-          handleWalRightButton={handleWalRightButton}
-        />
-      </View>
+          <CommonTop
+            admin={true}
+            LeftButton={LeftButton}
+            RightButton={RightButton}
+            handleLeftButton={handleLeftButton}
+            handleRightButton={handleRightButton}
+            handleWalLeftButton={handleWalLeftButton}
+            handleWalMidButton={handleWalMidButton}
+            handleWalRightButton={handleWalRightButton}
+          />
+        </View>
       </View>
       <View style={styles.summary_report_body}> 
         <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-        <FlatList 
-          data={[{key: 'item1' }]}
-          renderItem={({ item, index, separators }) => (
-          <TouchableOpacity>
-            <View style={styles.header}>
-              <SummaryTableRow header={true} rowData={tableHeader} />
-              <SummaryTableRow header={false} rowData={groupData} />
-              <SummaryTableRow header={false} rowData={groupData} />
-              <SummaryTableRow header={false} rowData={groupData} /> 
-              <SummaryTableRow header={false} rowData={groupData} />
-            </View>
-          </TouchableOpacity>)}
-        />
+          <FlatList 
+            data={[{key: 'item1' }]}
+            renderItem={({ item, index, separators }) => (
+            <TouchableOpacity>
+              <View style={styles.header}>
+                <SummaryTableRow header={true} rowData={tableHeader} />
+                <SummaryTableRow header={false} rowData={groupData} />
+                <SummaryTableRow header={false} rowData={groupData} />
+                <SummaryTableRow header={false} rowData={groupData} /> 
+                <SummaryTableRow header={false} rowData={groupData} />
+              </View>
+            </TouchableOpacity>)}
+          />
         </View>
       </View>
     </SafeAreaView>

@@ -19,9 +19,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 
-import {
-  heightPercentageToDP, widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 // import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -33,20 +31,13 @@ import CustomHeader from "../Components/CustomHeader";
 import TableRowEditDeposit from "../Components/TableRowEditDeposit";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
-import { height, marginBottom } from 'styled-system';
-import { parseSync } from '@babel/core';
 import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
 import Format from "../lib/format";
-import { useHeaderHeight } from 'react-navigation-stack';
-import { ScrollView } from 'react-native-gesture-handler';
-import Screensize from '../lib/screensize';
 import Picker from '../lib/picker';
 
-const screensize = new Screensize();
 const format = new Format();
 const request = new Request();
 const time = new KTime();
@@ -321,33 +312,33 @@ const Deposit = () => {
  
   return (
     <SafeAreaView style={styles.header}> 
-    <View style={styles.header}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Spinner
-        visible={spinner}
-        // textContent={"Loading..."}
-        textStyle={styles.spinnerTextStyle}
-      />
-      
       <View style={styles.header}>
-      <View style={(authType == ("admin" || "subadmin") ?styles.admin_deposit_withdrawel_header : styles.header)}>
-          <CustomHeader 
-            title={"Deposit"}
-          /> 
-          <View style={(authType == ("admin" || "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
-            <CommonTop
-              admin={authType == ("admin" || "subadmin") ? true : false}
-              LeftButton={LeftButton}
-              RightButton={RightButton}
-              handleLeftButton={handleLeftButton}
-              handleRightButton={handleRightButton}
-              handleWalLeftButton={handleWalLeftButton}
-              handleWalMidButton={handleWalMidButton}
-              handleWalRightButton={handleWalRightButton}
-            />
-          </View> 
-        </View>
-        <View style={styles.deposit_withdrawel_treport_body}>
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <Spinner
+          visible={spinner}
+          // textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
+      
+        <View style={styles.header}>
+          <View style={(authType == ("admin" || "subadmin") ?styles.admin_deposit_withdrawel_header : styles.header)}>
+            <CustomHeader 
+              title={"Deposit"}
+            /> 
+              <View style={(authType == ("admin" || "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
+                <CommonTop
+                  admin={authType == ("admin" || "subadmin") ? true : false}
+                  LeftButton={LeftButton}
+                  RightButton={RightButton}
+                  handleLeftButton={handleLeftButton}
+                  handleRightButton={handleRightButton}
+                  handleWalLeftButton={handleWalLeftButton}
+                  handleWalMidButton={handleWalMidButton}
+                  handleWalRightButton={handleWalRightButton}
+                />
+              </View> 
+          </View>
+          <View style={styles.deposit_withdrawel_treport_body}>
           {authType == "client" ? 
           <View style={picker.smallclientpicker() || picker.mediumclientpicker() || picker.largeclientpicker()}>
           <DropDownPicker
@@ -534,8 +525,7 @@ const Deposit = () => {
                 />
                 </View>
             </View>
-          ]
-          )
+          ])
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
@@ -580,7 +570,6 @@ const Deposit = () => {
               <View styles={styles.total}>
                 <Text style={styles.total_text}>Total Amount : TK  {format.separator(acceptedTotal)}</Text>
               </View>
-              
             </>
             ]
           :
@@ -602,7 +591,6 @@ const Deposit = () => {
                   <></>
                 }
               </View>
-              
               <View style={styles.total}>
                 <View style={{flexDirection:"row"}}>
                   <View style={{flexDirection: "column"}}>
@@ -627,7 +615,7 @@ const Deposit = () => {
           }  
           </View>
         </View>
-         </View>
+      </View>
     </SafeAreaView> 
   );
 };

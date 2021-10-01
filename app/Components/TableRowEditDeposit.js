@@ -51,6 +51,11 @@ const TableRowEditDeposit = ({rowData}) => {
     handleCell(rowData);
   }, [rowData]);
 
+  const ctime = ((cellData) => {
+    return cellData.HDLTime == "";
+  }
+  );
+
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
@@ -61,13 +66,17 @@ const TableRowEditDeposit = ({rowData}) => {
         <View style={{flexDirection: "column"}}>
           {cellData.hasOwnProperty("Header") ? 
             <>
-            <Text style={styles.cell_text_header}>{cellData.Time}</Text>
-            <Text style={styles.cell_text_header}>{cellData.HDLTime}</Text>
+              <Text style={styles.cell_text_header}>{cellData.Time}</Text>
+              <Text style={styles.cell_text_header}>{cellData.HDLTime}</Text>
             </>
           :
             <>
-            <Text style={styles.cell_text}>{cellData.time}</Text>
-            {/* <Text style={styles.cell_text}>{cellData.HDLtime}</Text> */}
+            {ctime ? <Text style={styles.cell_text}>{cellData.time}</Text> :
+              <>
+                <Text style={styles.cell_text}>{cellData.time}</Text>
+                <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+              </>
+            }
             </>
           }
         </View>
@@ -185,10 +194,10 @@ const TableRowEditDeposit = ({rowData}) => {
   return useMemo(() => {
     return (
       <KeyboardAvoidingView 
-      enabled
-      keyboardVerticalOffset={Platform.select({ios: 0, android:"padding"})}
-      style={styles.header}
-    >
+        enabled
+        keyboardVerticalOffset={Platform.select({ios: 0, android:"padding"})}
+        style={styles.header}
+      >
       <View style={styles.table_view_rectangle}>
         <View style={styles.table_view_left}>
           <View style={styles.view_lineNumber}>
