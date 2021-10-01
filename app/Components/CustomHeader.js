@@ -5,13 +5,9 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect, useMemo} from 'react';
 import { useNavigation } from '@react-navigation/native';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 import {
@@ -33,8 +29,8 @@ const CustomHeader = ({title}) => {
   const navigation = useNavigation();
   const [headerTitle, setHeaderTitle] = useStateIfMounted(title);
 
-  const isSmallRF = screensize.getSmallScreen() ? RFValue(14) : isMediumRF;
-  const isMediumRF = screensize.getMediumScreen() ? RFValue(19) : isLargeRF;
+  const isSmallRF = screensize.getSmallScreen() ? RFValue(9) : isMediumRF;
+  const isMediumRF = screensize.getMediumScreen() ? RFValue(17) : isLargeRF;
   const isLargeRF = screensize.getLargeScreen() ? RFValue(32) : isSmallRF;
 
   useEffect(() => {

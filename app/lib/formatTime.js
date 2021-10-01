@@ -1,5 +1,3 @@
-
-
 class KTime {
     format(unixTime){
         if(unixTime){

@@ -1,5 +1,3 @@
-
-
 class Format {
     separator(number){
         if(number){

@@ -5,13 +5,9 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect} from 'react';
 import { useStateIfMounted } from "use-state-if-mounted";
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
 import AsyncStorage from "@react-native-community/async-storage";
 import { RFValue } from "react-native-responsive-fontsize";
 import {

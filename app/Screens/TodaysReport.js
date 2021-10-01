@@ -5,7 +5,6 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
@@ -22,10 +21,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -73,7 +69,7 @@ const TodaysReport = () => {
   const tableRowOne = {
     // rowId: 1,
     time: "10:10 AM",
-    HDLtime: [""],
+    hdltime: [""],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -82,7 +78,7 @@ const TodaysReport = () => {
   const tableRowTwo = {
     // rowId: 1,
     time: ["10:10 AM"],
-    HDLtime: ["(12:10 AM)"],
+    hdltime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -91,7 +87,7 @@ const TodaysReport = () => {
   const tableRowThree = {
     // rowId: 1,
     time: ["10:10 AM"],
-    HDLtime: ["(12:10 AM)"],
+    hdltime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,

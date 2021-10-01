@@ -5,12 +5,8 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect, useMemo} from 'react';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {widthPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 // import { useIsFocused } from "@react-navigation/native";
 import {
@@ -19,9 +15,19 @@ import {
 } from 'react-native';
 import Format from "../lib/format";
 import styles from '../lib/global_css.js';
+import Screensize from '../lib/screensize.js';
 
 const format = new Format();
-
+const screensize = new Screensize();
+const smallwidth = 
+screensize.getSmallScreen()
+? {marginLeft:widthPercentageToDP("17.3%"), position:"absolute"} : smallwidth;
+const mediumwidth = 
+screensize.getMediumScreen()
+? {marginLeft:widthPercentageToDP("17.9%"), position:"absolute"} : largewidth;
+const largewidth = 
+screensize.getLargeScreen()
+? {marginLeft:widthPercentageToDP("17.9%"), position:"absolute"} : smallwidth;
 const SummaryTableRow = ({header, rowData}) => {
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
@@ -94,7 +100,7 @@ const SummaryTableRow = ({header, rowData}) => {
             <View style={styles.view_sub_column}>
               <Text style={styles.cell_text_bold}>Sub-Total</Text>
             </View>
-            <View style={{marginLeft:widthPercentageToDP("19.3%"), position:"absolute"}}>
+            <View style={smallwidth || mediumwidth || largewidth}>
               <View style={styles.view_sub_sub_row}>
               <Text style={styles.cell_text_bold_start}>:</Text>
               <Text style={styles.cell_text_bold_start}>(D)</Text>

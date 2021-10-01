@@ -5,7 +5,6 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect, useMemo} from 'react';
 import { useStateIfMounted } from "use-state-if-mounted";
 // import { useIsFocused } from "@react-navigation/native";
@@ -62,7 +61,7 @@ const TableRowEditWithdra = ({header, rowData}) => {
     return testCell;
   }
   const ctime = (cellData) => {
-    return (rowData.HDLtime == "")
+    return (rowData.hdltime == "")
   }
   const handleCell = (cellData) => {
     let leftCell = [];
@@ -78,7 +77,7 @@ const TableRowEditWithdra = ({header, rowData}) => {
         : 
         <View style={{flexDirection: "column"}}>
         <Text style={styles.cell_text}>{cellData.time}</Text>
-        <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+        <Text style={styles.cell_text}>{cellData.hdltime}</Text>
         </View>
         }
     </View>
@@ -162,7 +161,18 @@ const TableRowEditWithdra = ({header, rowData}) => {
 
   return useMemo(() => {
     return (
-      <KeyboardAvoidingView style={styles.header}>
+      <KeyboardAvoidingView style={{justifyContent : 'flex-end' }}
+      // behavior='padding'
+      // keyboardVerticalOffset={
+      //   Platform.select({
+      //     ios: () => -100,
+      //     android: () => -400
+      //   })()
+      // }
+      resetScrollToCoords={{ x: 0, y: 0 }}
+      scrollEnabled={false}
+      behavior={Platform.OS === 'ios' ? 'padding' : null} enabled 
+      >
       <View style={styles.table_view_rectangle}>
         <View style={styles.table_view_left}>
           <View style={styles.view_lineNumber}>

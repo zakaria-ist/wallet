@@ -5,13 +5,9 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect} from 'react';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
   SafeAreaView,
@@ -303,7 +299,7 @@ screensize.getSmallScreen()
 screensize.getMediumScreen()
 ? require('../assets/images/wallet_logo_128.png') : screensize.getLargeScreen();
 screensize.getLargeScreen()
-? require('../assets/images/wallet_logo.png') : screensize.getMediumScreen();
+? require('../assets/images/wallet_logo.png') : screensize.getSmallScreen();
 
 
 export default LoginScreen;

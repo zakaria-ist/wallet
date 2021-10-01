@@ -11,9 +11,7 @@ import SummaryReport from "../Screens/SummaryReport";
 import TodaysReport from "../Screens/TodaysReport";
 import { WalletColors } from "../assets/Colors.js";
 import { borderRadius, styles } from "styled-system";
-import {
-  heightPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP} from "react-native-responsive-screen";
 
 const Tab = createBottomTabNavigator();
 // class CustomTabButton extends React.Component {

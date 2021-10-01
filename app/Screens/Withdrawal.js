@@ -5,7 +5,6 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
@@ -21,10 +20,7 @@ import {
   KeyboardAvoidingView
 } from 'react-native';
 //import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP, widthPercentageToDP,} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -33,7 +29,7 @@ import CheckBox from "@react-native-community/checkbox";
 import DropDownPicker from 'react-native-dropdown-picker';
 import Spinner from "react-native-loading-spinner-overlay";
 import CustomHeader from "../Components/CustomHeader";
-import TableRowEditWithdra from "../Components/TableRowEditWithdra";
+import TableRowEditWithdra from "../Components/TableRowEditWithdrawel";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -41,8 +37,39 @@ import { WalletColors } from "../assets/Colors.js";
 import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
+import Screensize from '../lib/screensize';
 
+const screensize = new Screensize();
 const request = new Request();
+const smallclientpicker = 
+screensize.getSmallScreen()
+? styles.client_ss_picker : mediumclientpicker;
+const mediumclientpicker = 
+screensize.getMediumScreen()
+? styles.client_ms_picker : largeclientpicker;
+const largeclientpicker = 
+screensize.getLargeScreen()
+? styles.client_ls_picker : smallclientpicker;
+
+const smallclientdpicker = 
+screensize.getSmallScreen()
+? styles.client_ss_dropdownpicker : mediumclientdpicker;
+const mediumclientdpicker = 
+screensize.getMediumScreen()
+? styles.client_ms_dropdownpicker : largeclientdpicker;
+const largeclientdpicker = 
+screensize.getLargeScreen()
+? styles.client_ls_dropdownpicker : smallclientdpicker;
+
+const smalladminpicker = 
+screensize.getSmallScreen()
+? styles.picker_ss_admin : mediumadminpicker;
+const mediumadminpicker = 
+screensize.getMediumScreen()
+? styles.picker_ms_admin : largeadminpicker;
+const largeadminpicker = 
+screensize.getLargeScreen()
+? styles.picker_ls_admin : smalladminpicker;
 
 const Withdrawal = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -225,6 +252,7 @@ const Withdrawal = () => {
   const handleCheckBox = () => {
     renderTablesData();
   }
+
   const renderTablesData = async () => {
     onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
@@ -358,10 +386,9 @@ const Withdrawal = () => {
       }
         <View style={styles.deposit_withdrawel_treport_body}>
           {authType == "client" ? 
-          <View style={styles.client_picker}>
-            <View style={styles.picker}>
+          <View style={smallclientpicker || mediumclientpicker || largeclientpicker}>
               <DropDownPicker
-                style={styles.client_dropdownpicker}
+                style={smallclientdpicker || mediumclientdpicker || largeclientdpicker}
                 onChangeValue={(value) => {
                   setPickerUser(value); 
                   renderTablesData();
@@ -376,11 +403,10 @@ const Withdrawal = () => {
                 labelStyle={{fontWeight: "bold"}}
               />
             </View>
-            </View>
           :
             [authType == ("admin" || "subadmin") ? 
               <View style={{flexDirection: "row"}}>
-                <View style={styles.picker_admin}>
+                <View style={smalladminpicker || mediumadminpicker || largeadminpicker}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
@@ -396,8 +422,9 @@ const Withdrawal = () => {
                     textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
                   />
+                  {/* </View> */}
                 </View>
-                <View style={styles.picker_admin}>
+                <View style={smalladminpicker || mediumadminpicker || largeadminpicker}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
@@ -413,7 +440,8 @@ const Withdrawal = () => {
                     textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
                   />
-                </View>
+                  </View>
+                {/* </View> */}
               </View>
             :
               <View/>
@@ -515,6 +543,7 @@ const Withdrawal = () => {
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
+            <KeyboardAvoidingView style={{flex:1}}>
             <View style={styles.agent_container}>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
               <FlatList 
@@ -533,6 +562,7 @@ const Withdrawal = () => {
               />
                 </View>
               </View>
+              </KeyboardAvoidingView>
             :
             <>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>

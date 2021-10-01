@@ -5,7 +5,6 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
@@ -24,9 +23,7 @@ import {
   Keyboard 
 } from 'react-native';
 //import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {
-  heightPercentageToDP, widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 // import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -47,8 +44,41 @@ import Request from "../lib/request";
 import KTime from '../lib/formatTime';
 import { useHeaderHeight } from 'react-navigation-stack';
 import { ScrollView } from 'react-native-gesture-handler';
+import Screensize from '../lib/screensize';
 
+const screensize = new Screensize();
 const request = new Request();
+
+const smallclientpicker = 
+screensize.getSmallScreen()
+? styles.client_ss_picker : mediumclientpicker;
+const mediumclientpicker = 
+screensize.getMediumScreen()
+? styles.client_ms_picker : largeclientpicker;
+const largeclientpicker = 
+screensize.getLargeScreen()
+? styles.client_ls_picker : smallclientpicker;
+
+const smallclientdpicker = 
+screensize.getSmallScreen()
+? styles.client_ss_dropdownpicker : mediumclientdpicker;
+const mediumclientdpicker = 
+screensize.getMediumScreen()
+? styles.client_ms_dropdownpicker : largeclientdpicker;
+const largeclientdpicker = 
+screensize.getLargeScreen()
+? styles.client_ls_dropdownpicker : smallclientdpicker;
+
+
+const smalladminpicker = 
+screensize.getSmallScreen()
+? styles.picker_ss_admin : mediumadminpicker;
+const mediumadminpicker = 
+screensize.getMediumScreen()
+? styles.picker_ms_admin : largeadminpicker;
+const largeadminpicker = 
+screensize.getLargeScreen()
+? styles.picker_ls_admin : smalladminpicker;
 
 const Deposit = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -100,7 +130,7 @@ const Deposit = () => {
   ];
   const tableRowOne = {
     time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
+    hdltime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -108,7 +138,7 @@ const Deposit = () => {
   };
   const tableRowTwo = {
     time: ["10:10 AM"],
-    HDLtime: ["(12:10 AM)"],
+    hdltime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -116,7 +146,7 @@ const Deposit = () => {
   };
   const tableRowThree = {
     time: ["10:10 AM"],
-    HDLtime: [""],
+    hdltime: [""],
     wallet: "Alipay",
     amount: 11320,
     refNo: 12345,
@@ -130,7 +160,7 @@ const Deposit = () => {
   const agentTableRowOne = {
     rowId: 1,
     time: "10:10 AM",
-    HDLtime: [""],
+    hdltime: [""],
     wallet: "Alipay",
     amount: "11320",
     refNo: 1212121212,
@@ -139,7 +169,7 @@ const Deposit = () => {
   const agentTableRowTwo = {
     rowId: 2,
     time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
+    hdltime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: "12320",
     refNo: 1313131313,
@@ -148,7 +178,7 @@ const Deposit = () => {
   const agentTableRowThree = {
     rowId: 3,
     time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
+    hdltime: ["(12:10 AM)"],
     wallet: "Alipay",
     amount: "13320",
     refNo: 1414141414,
@@ -372,10 +402,9 @@ const Deposit = () => {
       
         <View style={styles.deposit_withdrawel_treport_body}>
           {authType == "client" ? 
-          <View style={styles.client_picker}>
-            <View style={styles.picker}>
-              <DropDownPicker
-                style={styles.client_dropdownpicker}
+          <View style={smallclientpicker || mediumclientpicker || largeclientpicker}>
+          <DropDownPicker
+            style={smallclientdpicker || mediumclientdpicker || largeclientdpicker}
                 onChangeValue={(value) => {
                   setPickerUser(value); 
                   renderTablesData();
@@ -389,12 +418,11 @@ const Deposit = () => {
                 textStyle={{fontSize: RFValue(13)}}
                 labelStyle={{fontWeight: "bold"}}
               />
-              </View>
             </View>
           :
             [authType == ("admin" || "subadmin") ? 
               <View style={{flexDirection: "row"}}>
-                <View style={styles.picker_admin}>
+                 <View style={smalladminpicker || mediumadminpicker || largeadminpicker}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
@@ -411,7 +439,7 @@ const Deposit = () => {
                     labelStyle={{fontWeight: "bold"}}
                   />
                 </View>
-                <View style={styles.picker_admin}>
+                <View style={smalladminpicker || mediumadminpicker || largeadminpicker}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {

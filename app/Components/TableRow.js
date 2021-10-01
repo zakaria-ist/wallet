@@ -5,7 +5,6 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect, useMemo} from 'react';
 import { useStateIfMounted } from "use-state-if-mounted";
 import {
@@ -42,7 +41,7 @@ const TableRow = ({header, rowData}) => {
   }
 
   const ctime = (cellData) => {
-    return (rowData.HDLtime == "")
+    return (rowData.hdltime == "")
   }
   const handleCell = (cellData) => {
     let leftCell = [];
@@ -59,7 +58,7 @@ const TableRow = ({header, rowData}) => {
         : 
         <View style={{flexDirection: "column"}}>
         <Text style={styles.cell_text}>{cellData.time}</Text>
-        <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+        <Text style={styles.cell_text}>{cellData.hdltime}</Text>
         </View>
         }
       </View>

@@ -5,7 +5,6 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
@@ -21,9 +20,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native';
-import {
-  heightPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP} from "react-native-responsive-screen";
 import Modal from "react-native-modal";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
