@@ -13,17 +13,13 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
+  RefreshControl,
   useColorScheme,
   View,
-  Dimensions,
   InteractionManager,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   KeyboardAvoidingView,
-  Keyboard 
 } from 'react-native';
-//import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
+
 import {
   heightPercentageToDP, widthPercentageToDP,
 } from "react-native-responsive-screen";
@@ -81,6 +77,7 @@ const Deposit = () => {
   const [pickerUserList, setPickerUserList] = useStateIfMounted([]);
   const [tableData, setTableData] = useStateIfMounted([]);
   const [tableEditData, setTableEditData] = useStateIfMounted([]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
 
   const LeftButton = "Yesterday";
@@ -101,57 +98,16 @@ const Deposit = () => {
     Status: "Action",
     Header: true
   };
-  const tableRowOne = {
-    time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Pending",
-  };
-  const tableRowTwo = {
-    time: ["10:10 AM"],
-    HDLtime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Accepted",
-  };
-  const tableRowThree = {
-    time: ["10:10 AM"],
-    HDLtime: [""],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Rejected",
-  };
-  const agentTableRowOne = {
-    rowId: 1,
-    time: "10:10 AM",
-    HDLtime: [""],
-    wallet: "Alipay",
-    amount: "11320",
-    refNo: 1212121212,
-    sent: false
-  };
-  const agentTableRowTwo = {
-    rowId: 2,
-    time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: "12320",
-    refNo: 1313131313,
-    sent: false
-  };
-  const agentTableRowThree = {
-    rowId: 3,
-    time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: "13320",
-    refNo: 1414141414,
-    sent: false
-  };
+  
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    renderTablesData();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -623,6 +579,12 @@ const Deposit = () => {
                       data={tableEditData}
                       renderItem={renderItemEdit}
                       keyExtractor={item => item.id}
+                      refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                        />
+                      }
                     />
                   :
                     <></>
@@ -637,6 +599,12 @@ const Deposit = () => {
                     data={tableData}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                      />
+                    }
                   />
                 :
                   <></>
@@ -656,6 +624,12 @@ const Deposit = () => {
                     data={tableData}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                      />
+                    }
                   />
                 :
                   <></>

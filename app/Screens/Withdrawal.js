@@ -17,6 +17,7 @@ import {
   useColorScheme,
   View,
   InteractionManager,
+  RefreshControl,
   TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native';
@@ -74,6 +75,7 @@ const Withdrawal = () => {
   const [pickerUserList, setPickerUserList] = useStateIfMounted([]);
   const [tableData, setTableData] = useStateIfMounted([]);
   const [tableEditData, setTableEditData] = useStateIfMounted([]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const backgroundStyle = {
     backgroundColor: Colors.white
@@ -98,6 +100,16 @@ const Withdrawal = () => {
     Status: "Action",
     Header: true
   };
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    renderTablesData();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -523,6 +535,12 @@ const Withdrawal = () => {
                     data={tableEditData}
                     renderItem={renderItemEdit}
                     keyExtractor={item => item.id}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                      />
+                    }
                   />
                 :
                   <></>
@@ -537,6 +555,12 @@ const Withdrawal = () => {
                     data={tableData}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                      />
+                    }
                   />
                 :
                   <></>
@@ -555,6 +579,12 @@ const Withdrawal = () => {
                     data={tableData}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                      />
+                    }
                   />
                 :
                   <></>
