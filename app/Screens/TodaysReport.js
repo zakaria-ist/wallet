@@ -42,13 +42,18 @@ const format = new Format();
 const request = new Request();
 const time = new KTime();
 
+let authType = "";
+let transType = "withdrawal";
+let authToken = "";
+let walletType = 1;
+
 const TodaysReport = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
-  const [transType, setTransType] = useStateIfMounted("withdrawal");
-  const [token, setToken] = useStateIfMounted("");
-  const [authType, setAuthType] = useStateIfMounted("");
-  const [walletType, setWalletType] = useStateIfMounted(1);
+  // const [transType, setTransType] = useStateIfMounted("withdrawal");
+  // const [token, setToken] = useStateIfMounted("");
+  // const [authType, setAuthType] = useStateIfMounted("");
+  // const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletData, setWalletData] = useStateIfMounted([]);
   const [rejected, setRejected] = useStateIfMounted(true);
   const [accepted, setAccepted] = useStateIfMounted(true);
@@ -99,40 +104,46 @@ const TodaysReport = () => {
         setWalletData(JSON.parse(walletData));
       })
       AsyncStorage.getItem('token').then((token) => {
-        setToken(token);
+        // setToken(token);
+        authToken = token;
       })
       AsyncStorage.getItem('authType').then((auth_type) => {
         if (auth_type != null) {
-          setAuthType(auth_type);
+          // setAuthType(auth_type);
+          authType = auth_type;
+          renderTablesData();
         }
       })
-      
-      renderTablesData();
     })
   }, []);
 
   const handleLeftButton = () => {
-    setTransType("deposit");
+    // setTransType("deposit");
+    transType = "deposit";
     renderTablesData();
   }
 
   const handleRightButton = () => {
-    setTransType("withdrawal");
+    // setTransType("withdrawal");
+    transType = "withdrawal";
     renderTablesData();
   }
 
   const handleWalLeftButton = () => {
-    setWalletType(1);
+    // setWalletType(1);
+    walletType = 1;
     renderTablesData();
   }
 
   const handleWalMidButton = () => {
-    setWalletType(2);
+    // setWalletType(2);
+    walletType = 2;
     renderTablesData();
   }
 
   const handleWalRightButton = () => {
-    setWalletType(3);
+    // setWalletType(3);
+    walletType = 3;
     renderTablesData();
   }
 
@@ -143,20 +154,20 @@ const TodaysReport = () => {
     onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
     let purpose = 'deposit';
-    if (transType == 'deposit') {
+    if (transType == 'withdrawal') {
       purpose = 'withdrawal';
     }
     
     const params = JSON.stringify(
       {
-        token: token, 
+        token: authToken, 
         role: authType,
         purpose: purpose,
       }
     );
 
     const content = await request.post(msgsUrl, params);
-    // console.log(transType, content)
+    console.log(transType, content)
     if (content.ok) {
       // ftatus filter
       let messages = content.msg.filter((msg) => {
@@ -177,17 +188,31 @@ const TodaysReport = () => {
       messages.map((msg) => {
       let amount = parseFloat(String(msg.amount).replace(',', ''))
       total += amount;
-      amount = format.separator(amount);
-        let msg_data = [];
-        msg_data.push([time.format(msg.createdatetime), "(" + time.format(msg.updatedatetime) + ")"]);
-        if (transType == 'Withdrawal') {
-          msg_data.push(["Ref. No. : " + msg.refno, "Amount : " + amount, "Wallet    : " + msg.walletName]);
-        } else {
-          msg_data.push(["Pin No.  : " + msg.pino, "Amount : " + amount, "Wallet    : " + msg.walletName, "Mobile No.  : " + msg.mobile]);
-        }
-        msg_data.push([msg.status]);
+      // amount = format.separator(amount);
+      let msg_data = {};
+      if (purpose == 'deposit') {
+        msg_data = {
+          time: time.format(msg.createdatetime),
+          HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+          wallet: msg.walletName,
+          amount: amount,
+          refNo: msg.refno ? msg.refno : "",
+          status: msg.status,
+        };
+      } else {
+        msg_data = {
+          time: time.format(msg.createdatetime),
+          HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+          wallet: msg.walletName,
+          amount: amount,
+          pinNo: msg.pino ? msg.pino : "-",
+          mobile: msg.mobile ? msg.mobile : "",
+          status: msg.status,
+        };
+      }
+        
         msg_html.push(<TableRow key={msg.id} header={false} rowData={msg_data} />)
-
+        console.log('msg_data', msg_data)
       })
       setTableRowHtml(msg_html);
       setAcceptedTotal(total);
@@ -222,7 +247,7 @@ const TodaysReport = () => {
         </View>
        
         <View style={styles.deposit_withdrawel_treport_body}>
-          {transType == "Deposit" ?
+          {transType == "deposit" ?
           <View style={styles.agent_status_row_container}>
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
@@ -259,19 +284,13 @@ const TodaysReport = () => {
             renderItem={({ item, index, separators }) => (
             <TouchableOpacity>
               <View style={styles.header}>
-                  {/* {tableRowHtml} */}
-                <TableRow header={true} rowData={tableHeader} />
-                <TableRow header={false} rowData={tableRowOne} />
-                <TableRow header={false} rowData={tableRowTwo} />
-                <TableRow header={false} rowData={tableRowThree} />
+                {tableRowHtml}
               </View>
             </TouchableOpacity>)}
           />
           </View>
           <View styles={styles.total}>
-            
             <Text style={styles.total_text}>Total Amount : TK {format.separator(acceptedTotal)}</Text>
-           
           </View>
         </View>
     </SafeAreaView>

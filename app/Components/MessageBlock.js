@@ -43,72 +43,44 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
           </View>
         </View>
         <View style={styles.view_message_right}>
-          {transType == "Deposit" ? (
+        <View style={styles.view_input}>
+        {transType == "Deposit" ? 
+          (<View style={styles.view_message_input_label}>
+              <Text style={styles.view_message_text}>Ref. Code</Text>
+              <Text style={styles.view_message_text}>Amount</Text>
+            </View>)
+          :
+          (<View style={styles.view_message_input_label}>
+              <Text style={styles.view_message_text}>Mobile No.</Text>
+              <Text style={styles.view_message_text}>Amount</Text>
+            </View>)}
+          <View style={styles.view_message_input_box}>
             <View style={styles.view_input}>
-              <View style={styles.view_message_input_label}>
-                <Text style={styles.view_message_text}>Ref. Code</Text>
-                <Text style={styles.view_message_text}>Amount</Text>
-              </View>
-              <View style={styles.view_message_input_box}>
-                <View style={styles.view_input}>
-                  <Text style={styles.view_message_text}> : </Text>
-                  <TextInput 
-                  style={styles.text_message_input}
-                  onChangeText={setRefCode}
-                  value={refCode}
-                  onBlur={handleChange}
-                  placeholderTextColor={WalletColors.grey}
-                  keyboardType={'numeric'}
+              <Text style={styles.view_message_text}> : </Text>
+              <TextInput 
+                style={styles.text_message_input}
+                onChangeText={setRefCode}
+                value={refCode}
+                onBlur={handleChange}
+                placeholderTextColor={WalletColors.grey}
+                keyboardType={'numeric'}
+              />
+            </View>
+            <View style={styles.view_input}>
+              <Text style={styles.view_message_text}> : </Text>
+              <TextInput 
+                style={styles.text_message_input}
+                onChangeText={setAmount}
+                value={amount}
+                onBlur={handleChange}
+                placeholderTextColor={WalletColors.grey}
+                keyboardType={'numeric'}
                 />
-                </View>
-                <View style={styles.view_input}>
-                  <Text style={styles.view_message_text}> : </Text>
-                  <TextInput 
-                    style={styles.text_message_input}
-                    onChangeText={setAmount}
-                    value={amount}
-                    onBlur={handleChange}
-                    placeholderTextColor={WalletColors.grey}
-                    keyboardType={'numeric'}
-                  />
-                </View>
+            </View>
               </View>
             </View>
-            ) : (
-              <View style={styles.view_input}>
-                <View style={styles.view_message_input_label}>
-                  <Text style={styles.view_message_text}>Mobile No.</Text>
-                  <Text style={styles.view_message_text}>Amount</Text>
-                </View> 
-                <View style={styles.view_message_input_box}>
-                <View style={styles.view_input}>
-                    <Text style={styles.view_message_text}> : </Text>
-                    <TextInput 
-                    style={styles.text_message_input}
-                    onChangeText={setRefCode}
-                    value={refCode}
-                    onBlur={handleChange}
-                    placeholderTextColor={WalletColors.grey}
-                    keyboardType={'numeric'}
-                  />
-                </View>
-                <View style={styles.view_input}>
-                  <Text style={styles.view_message_text}> : </Text>
-                  <TextInput 
-                    style={styles.text_message_input}
-                    onChangeText={setAmount}
-                    value={amount}
-                    //textAlignVertical={'center'}
-                    onBlur={handleChange}
-                    placeholderTextColor={WalletColors.grey}
-                    keyboardType={'numeric'}
-                  />
-                </View>
-              </View>
-           </View>
-            )}
+          </View>
         </View>
-      </View>
       </KeyboardAvoidingView>
     );
   })

@@ -61,7 +61,7 @@ const TableRowEditWithdra = ({header, rowData}) => {
     return testCell;
   }
   const ctime = (cellData) => {
-    return (rowData.hdltime == "")
+    return (rowData.HDLtime == "")
   }
   const handleCell = (cellData) => {
     let leftCell = [];
@@ -77,7 +77,7 @@ const TableRowEditWithdra = ({header, rowData}) => {
         : 
         <View style={{flexDirection: "column"}}>
         <Text style={styles.cell_text}>{cellData.time}</Text>
-        <Text style={styles.cell_text}>{cellData.hdltime}</Text>
+        <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
         </View>
         }
     </View>

@@ -55,6 +55,11 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth, 
     borderBottomColor:'#265684',
   },
+  version: {
+    paddingTop: -10,
+    alignContent:'center',
+    alignSelf:'center',
+  },
 
   //Login Screen
   login_text_input: {
@@ -141,14 +146,19 @@ const styles = StyleSheet.create({
 
   //Create Message Screen
   message_nav_top:{
-    flex:2.3, 
-    marginTop: heightPercentageToDP("1%"),
-    marginBottom: heightPercentageToDP("3%"),
-    flexDirection:"row", 
+   // flex:2, 
+    //marginTop: heightPercentageToDP("1%"),
+    marginBottom: heightPercentageToDP("2.4%"),
+    minHeight: heightPercentageToDP("12%"),
+    // flexDirection:"row", 
+    alignSelf:"center",
+  },
+  message_quick_insert:{
+    marginTop: heightPercentageToDP("0.5%"),
     alignSelf:"center",
   },
   create_message_body: {
-    flex:3.1,
+    flex:3,
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",

@@ -108,6 +108,7 @@ const CreateMessage = () => {
   }
 
   const sendMessageToAgent = async (message, url) => {
+    onSpinnerChanged(true);
     if (token) {
       let purpose = "deposit";
       if (transType == "Withdrawal") {
@@ -136,9 +137,11 @@ const CreateMessage = () => {
             const deviceId = tokenDB._data.deviceId;
             const key = 'AAAAFusuHOI:APA91bFmsoK3xCuADeTunV7kCDrI5cBTd-wXN7WTZi-_fxT0NuZtVXkxcjzzZnD_uqeuHEqZ7ojrMK0SjCrNEkWtEewfPV8DTGtAxPeQBPQs_SCZNWlntcTm3bsYVYcuVI2dOY3f1WdI';
             // message build
-            let sender = result.message.fromuser;
-            let body = "fromuser: " + result.message.fromuser + ", toagent: " + result.message.toagent + ", refno: " + result.message.refNo + ", mobile: " + result.message.mobile + ", purpose: " + result.message.purpose + ", payment: " + result.message.payment + ", amount: " + result.message.amount;
-            body += ", belongclient: " + result.message.belongclient + ", cct_status: " + result.message.cct_status + ", cct_author_id: " + result.message.cct_author_id + ", status: " + result.message.status;
+            let sender = result.message.fromuser + " (" + purpose + ")";
+            let refNo = result.message.refNo ? result.message.refNo : "";
+            let mobile = result.message.mobile ? result.message.mobile : "";
+            let body = "fromuser: " + result.message.fromuser + ", toagent: " + result.message.toagent + ", refno: " + refNo + ", mobile: " + mobile + ", walletId: " + result.message.payment + ", amount: " + result.message.amount;
+            // body += ", belongclient: " + result.message.belongclient + ", cct_status: " + result.message.cct_status + ", cct_author_id: " + result.message.cct_author_id + ", status: " + result.message.status;
             const message = {
               sender: sender,
               body: body
@@ -155,13 +158,16 @@ const CreateMessage = () => {
             let pushUrl = request.getPushNotificationUrl();
             const results = await request.post(pushUrl, params);
             console.log('results', results);
+            return true;
           }
         }
+        return false;
       }
     } else {
       alert.warning("Empty token or Superior Agent is missing");
     }
-    
+    onSpinnerChanged(false);
+    return false;
   }
 
   const getUserTokenPromise = (userName) => {
@@ -170,25 +176,29 @@ const CreateMessage = () => {
         .get()
   }
 
-  const handleSubmit = () => {
-    onSpinnerChanged(true);
+  const handleSubmit = async () => {
+    let sent = false;
     const userSendMessageUrl = request.getUserSendMessageUrl();
     if (messageOne.refCode != "" && messageOne.amount != "") {
-      sendMessageToAgent(messageOne, userSendMessageUrl);
+      sent = await sendMessageToAgent(messageOne, userSendMessageUrl);
     }
     if (messageTwo.refCode != "" && messageTwo.amount != "") {
-      sendMessageToAgent(messageTwo, userSendMessageUrl);
+      sent = await sendMessageToAgent(messageTwo, userSendMessageUrl);
     }
     if (messageThree.refCode != "" && messageThree.amount != "") {
-      sendMessageToAgent(messageThree, userSendMessageUrl);
+      sent = await sendMessageToAgent(messageThree, userSendMessageUrl);
     }
     if (messageFour.refCode != "" && messageFour.amount != "") {
-      sendMessageToAgent(messageFour, userSendMessageUrl);
+      sent = await sendMessageToAgent(messageFour, userSendMessageUrl);
     }
     if (messageFive.refCode != "" && messageFive.amount != "") {
-      sendMessageToAgent(messageFive, userSendMessageUrl);
+      sent = await sendMessageToAgent(messageFive, userSendMessageUrl);
     }
-    onSpinnerChanged(false);
+
+    if (sent) {
+      onSpinnerChanged(false);
+      alert.warning("Messages are sent.");
+    }
   }
 
   const handleQuickInsert = () => {
@@ -257,7 +267,7 @@ const CreateMessage = () => {
   // ];
 
   return (
-    <View style={styles.header}>
+    <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
@@ -278,9 +288,7 @@ const CreateMessage = () => {
             handleWalRightButton={handleWalRightButton}
           />
         </View>
-      </View>
-        <View
-          style={styles.create_message_body}>
+        <View style={styles.message_quick_insert}>
           <TouchableOpacity
             onPress={handleQuickInsert}
           >
@@ -290,6 +298,10 @@ const CreateMessage = () => {
               </Text>
             </View>
           </TouchableOpacity>
+        </View>
+      </View>
+        <View
+          style={styles.create_message_body}>
           <FlatList data={[{key: 'item1' }]}
            style={{height: heightPercentageToDP("57%")}}
            renderItem={({ item, index, separators }) => (
@@ -347,7 +359,7 @@ const CreateMessage = () => {
                   >
                     <View
                       style={styles.modal_close,{alignSelf:"flex-end",marginTop:-heightPercentageToDP("3%")}}>
-                      <Fontisto name="close" color={WalletColors.red} size={20} />
+                      <Fontisto name="close" color={WalletColors.red} size={30} />
                     </View>
                   </TouchableOpacity>
                 </View>
@@ -389,7 +401,7 @@ const CreateMessage = () => {
           </View>
           </KeyboardAvoidingView>
         </Modal>
-    </View>
+    </SafeAreaView>
   );
 };
 
