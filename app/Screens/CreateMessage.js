@@ -359,7 +359,7 @@ const CreateMessage = () => {
                   >
                     <View
                       style={styles.modal_close,{alignSelf:"flex-end",marginTop:-heightPercentageToDP("3%")}}>
-                      <Fontisto name="close" color={WalletColors.red} size={30} />
+                      <Fontisto name="close" color={WalletColors.red} size={25} />
                     </View>
                   </TouchableOpacity>
                 </View>

@@ -12,9 +12,7 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  Dimensions,
-  PixelRatio,
-  TextInput,
+  RefreshControl,
   useColorScheme,
   View,
   InteractionManager,
@@ -55,6 +53,7 @@ const TodaysReport = () => {
   const [accepted, setAccepted] = useStateIfMounted(true);
   const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("");
   const [tableData, setTableData] = useStateIfMounted([]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
   const backgroundStyle = {
     backgroundColor: Colors.white
@@ -70,6 +69,16 @@ const TodaysReport = () => {
     Status: "Status",
     Header: true
   };
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    renderTablesData();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -261,6 +270,12 @@ const TodaysReport = () => {
                 data={tableData}
                 renderItem={renderItem}
                 keyExtractor={item => item.id}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
               />
             :
               <></>

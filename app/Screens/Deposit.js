@@ -12,18 +12,16 @@ import {
   StatusBar,
   StyleSheet,
   Text,
-  TextInput,
+  RefreshControl,
   useColorScheme,
   View,
-  Dimensions,
   InteractionManager,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
   KeyboardAvoidingView,
-  Keyboard 
 } from 'react-native';
-//import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
+
+import {
+  heightPercentageToDP, widthPercentageToDP,
+} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 // import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -46,47 +44,18 @@ import Format from "../lib/format";
 import { useHeaderHeight } from 'react-navigation-stack';
 import { ScrollView } from 'react-native-gesture-handler';
 import Screensize from '../lib/screensize';
+import Picker from '../lib/picker';
 
 const screensize = new Screensize();
 const format = new Format();
 const request = new Request();
 const time = new KTime();
+const picker = new Picker();
 
 let authType = "";
 let transType = "Today";
 let authToken = "";
 let walletType = 1;
-
-const smallclientpicker = 
-screensize.getSmallScreen()
-? styles.client_ss_picker : mediumclientpicker;
-const mediumclientpicker = 
-screensize.getMediumScreen()
-? styles.client_ms_picker : largeclientpicker;
-const largeclientpicker = 
-screensize.getLargeScreen()
-? styles.client_ls_picker : smallclientpicker;
-
-const smallclientdpicker = 
-screensize.getSmallScreen()
-? styles.client_ss_dropdownpicker : mediumclientdpicker;
-const mediumclientdpicker = 
-screensize.getMediumScreen()
-? styles.client_ms_dropdownpicker : largeclientdpicker;
-const largeclientdpicker = 
-screensize.getLargeScreen()
-? styles.client_ls_dropdownpicker : smallclientdpicker;
-
-
-const smalladminpicker = 
-screensize.getSmallScreen()
-? styles.picker_ss_admin : mediumadminpicker;
-const mediumadminpicker = 
-screensize.getMediumScreen()
-? styles.picker_ms_admin : largeadminpicker;
-const largeadminpicker = 
-screensize.getLargeScreen()
-? styles.picker_ls_admin : smalladminpicker;
 
 const Deposit = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -111,6 +80,7 @@ const Deposit = () => {
   const [pickerUserList, setPickerUserList] = useStateIfMounted([]);
   const [tableData, setTableData] = useStateIfMounted([]);
   const [tableEditData, setTableEditData] = useStateIfMounted([]);
+  const [refreshing, setRefreshing] = React.useState(false);
 
 
   const LeftButton = "Yesterday";
@@ -131,57 +101,16 @@ const Deposit = () => {
     Status: "Action",
     Header: true
   };
-  const tableRowOne = {
-    time: "10:10 AM",
-    hdltime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Pending",
-  };
-  const tableRowTwo = {
-    time: ["10:10 AM"],
-    hdltime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Accepted",
-  };
-  const tableRowThree = {
-    time: ["10:10 AM"],
-    hdltime: [""],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Rejected",
-  };
-  const agentTableRowOne = {
-    rowId: 1,
-    time: "10:10 AM",
-    hdltime: [""],
-    wallet: "Alipay",
-    amount: "11320",
-    refNo: 1212121212,
-    sent: false
-  };
-  const agentTableRowTwo = {
-    rowId: 2,
-    time: "10:10 AM",
-    hdltime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: "12320",
-    refNo: 1313131313,
-    sent: false
-  };
-  const agentTableRowThree = {
-    rowId: 3,
-    time: "10:10 AM",
-    hdltime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: "13320",
-    refNo: 1414141414,
-    sent: false
-  };
+  
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    renderTablesData();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -420,9 +349,9 @@ const Deposit = () => {
         </View>
         <View style={styles.deposit_withdrawel_treport_body}>
           {authType == "client" ? 
-          <View style={smallclientpicker || mediumclientpicker || largeclientpicker}>
+          <View style={picker.smallclientpicker() || picker.mediumclientpicker() || picker.largeclientpicker()}>
           <DropDownPicker
-            style={smallclientdpicker || mediumclientdpicker || largeclientdpicker}
+            style={picker.smallclientdpicker() || picker.mediumclientdpicker() || picker.largeclientdpicker()}
                 onChangeValue={(value) => {
                   setPickerUser(value); 
                   renderTablesData();
@@ -440,7 +369,7 @@ const Deposit = () => {
           :
             [authType == ("admin" || "subadmin") ? 
               <View style={{flexDirection: "row"}}>
-                 <View style={smalladminpicker || mediumadminpicker || largeadminpicker}>
+                 <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
@@ -457,7 +386,7 @@ const Deposit = () => {
                     labelStyle={{fontWeight: "bold"}}
                   />
                 </View>
-                <View style={smalladminpicker || mediumadminpicker || largeadminpicker}>
+                <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
@@ -617,6 +546,12 @@ const Deposit = () => {
                       data={tableEditData}
                       renderItem={renderItemEdit}
                       keyExtractor={item => item.id}
+                      refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                        />
+                      }
                     />
                   :
                     <></>
@@ -631,6 +566,12 @@ const Deposit = () => {
                     data={tableData}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                      />
+                    }
                   />
                 :
                   <></>
@@ -650,6 +591,12 @@ const Deposit = () => {
                     data={tableData}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
+                    refreshControl={
+                      <RefreshControl
+                        refreshing={refreshing}
+                        onRefresh={onRefresh}
+                      />
+                    }
                   />
                 :
                   <></>

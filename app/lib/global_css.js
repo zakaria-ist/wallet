@@ -267,10 +267,10 @@ const styles = StyleSheet.create({
   },
   deposit_withdrawel_nav_top:{
     flex:2.3, 
-    //minHeight: heightPercentageToDP("12%"),
+    //minHeight: heightPercentageToDP("2%"),
     margin:heightPercentageToDP("1.1%"),
     flexDirection:"row", 
-    alignSelf:"flex-end",
+    alignSelf:"center",
   },
   deposit_withdrawel_treport_body: {
     flex:3.5,
@@ -374,7 +374,7 @@ const styles = StyleSheet.create({
   },
   agent_container: {
     marginBottom:heightPercentageToDP("1%"),
-    marginTop:-heightPercentageToDP("0.5%")
+   // marginTop:-heightPercentageToDP("0.5%")
   },
   view_deposit_withdrawel_treport_rectangle: {
     flex:10,
