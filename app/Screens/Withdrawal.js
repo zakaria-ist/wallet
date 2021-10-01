@@ -17,8 +17,10 @@ import {
   View,
   InteractionManager,
   TouchableOpacity,
+  Animated, Keyboard,
   KeyboardAvoidingView
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 //import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {heightPercentageToDP, widthPercentageToDP,} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
@@ -83,10 +85,6 @@ let walletType = 1;
 const Withdrawal = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
-  // const [authType, setAuthType] = useStateIfMounted("");
-  // const [token, setToken] = useStateIfMounted("");
-  // const [transType, setTransType] = useStateIfMounted("Today");
-  // const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletPickerType, setWalletPickerType] = useStateIfMounted(1);
   const [walletData, setWalletData] = useStateIfMounted([]);
   const [walletPickerList, setWalletPickerList] = useStateIfMounted([]);
@@ -104,8 +102,9 @@ const Withdrawal = () => {
   const [groupList, setGroupList] = useStateIfMounted([]);
   const [userList, setUserList] = useStateIfMounted([]);
   const [pickerUserList, setPickerUserList] = useStateIfMounted([]);
-  const [tableRowHtml, setTableRowHtml] = useStateIfMounted([]);
-  const [tableRowEditHtml, setTableRowEditHtml] = useStateIfMounted([]);
+  const [tableData, setTableData] = useStateIfMounted([]);
+  const [tableEditData, setTableEditData] = useStateIfMounted([]);
+  const [keyboard, setKeyboard] = useState(Boolean);
 
   const backgroundStyle = {
     backgroundColor: Colors.white
@@ -113,70 +112,47 @@ const Withdrawal = () => {
 
   const LeftButton = "Yesterday";
   const RightButton = "Today";
-  const tableHeader = [
-    ["Time", "(HDL Time)"],
-    ["Message"],
-    ["Status"],
-  ];
-  const agentTableHeader = [
-    ["Time", "(HDL Time)"],
-    ["Message"],
-    ["Action"],
-  ];
-  const tableRowOne = {
-    time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Pending",
+  
+  const tableHeader = {
+    id: "0",
+    Time: "Time",
+    HDLTime: "(HDL Time)",
+    Message: "Message",
+    Status: "Status",
+    Header: true
   };
-  const tableRowTwo = {
-    time: ["10:10 AM"],
-    HDLtime: [""],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Accepted",
+  const agentTableHeader = {
+    id: "0",
+    Time: "Time",
+    HDLTime: "(HDL Time)",
+    Message: "Message",
+    Status: "Action",
+    Header: true
   };
-  const tableRowThree = {
-    time: ["10:10 AM"],
-    HDLtime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Accepted",
-  };
-  const agentTableRowOne = {
-    rowId: 1,
-    time: "10:10 AM",
-    HDLtime: [""],
-    wallet: "Alipay",
-    amount: 11320,
-    mobile: 1212121212,
-    pinNo: "",
-    sent: false
-  };
-  const agentTableRowTwo = {
-    rowId: 2,
-    time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: 12320,
-    mobile: 1313131313,
-    pinNo: "",
-    sent: false
-  };
-  const agentTableRowThree = {
-    rowId: 3,
-    time: "10:10 AM",
-    HDLtime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: 13320,
-    mobile: 1414141414,
-    pinNo: "",
-    sent: false
-  };
+
+  // useEffect(() => {
+  //   Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+  //   Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    
+  //   return () => {
+  //     //Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+  //     Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+  //   };
+  // }, []);
+
+  // const _keyboardDidShow = () => {
+  //   setKeyboard(true);
+  // };
+
+  // const _keyboardDidHide = () => {
+  //   setKeyboard(false);
+  // };
+
+  // const HideKeyboard = ({ children }) => (
+  //   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+  //     {children}
+  //   </TouchableWithoutFeedback>
+  // );
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
@@ -199,6 +175,7 @@ const Withdrawal = () => {
         if (auth_type != null) {
           // setAuthType(auth_type);
           authType = auth_type;
+          transType = "Today";
           if (auth_type == 'admin' || auth_type == 'subadmin') {
             AsyncStorage.getItem('groupList').then((groups) => {
               if (groups != null) {
@@ -271,13 +248,13 @@ const Withdrawal = () => {
   const renderTablesData = async () => {
     onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
-    let when = 'Today';
+    let when = 'today';
     if (transType == 'Yesterday') {
-      purpose = 'Yesterday';
+      when = 'yesterday';
     }
     const params = JSON.stringify(
       {
-        token: token, 
+        token: authToken, 
         role: authType,
         purpose: "widhdrwal",
       }
@@ -288,7 +265,7 @@ const Withdrawal = () => {
       // ftatus filter
       let messages = content.msg.filter((msg) => {
         if (accepted && msg.status == 'accepted') return true;
-        if (rejected && msg.status == 'rejected') return true;
+        // if (rejected && msg.status == 'rejected') return true;
         if (pending && msg.status == 'pending') return true;
         if (noStatus && msg.status == null) return true;
         if (msg.status == 'new') return true;
@@ -317,30 +294,40 @@ const Withdrawal = () => {
         })
       }
       
-      let msg_html = [];
-      let total = 0;
+      let msg_list = [];
+      let accepted_total = 0;
+      let pending_total = 0;
       if (authType == 'agent' && transType == 'Today') {
-        msg_html.push(<TableRowEditWithdra key={0} header={true} rowData={agentTableHeader} />)
+        msg_list.push(agentTableHeader);
         messages.map((msg) => {
+          let amount = parseFloat(String(msg.amount).replace(',', ''));
+          accepted_total += amount;
           let msg_data = {
-            rowId: msg.id,
+            id: msg.id,
             time: time.format(msg.createdatetime),
             wallet: msg.walletName,
-            amount: msg.amount,
+            amount: amount,
             mobile: msg.mobile,
             sent: false
           };
-          msg_html.push(<TableRowEditWithdra key={msg.id} header={false} rowData={msg_data} />)
+          msg_list.push(msg_data);
         })
-        setTableRowEditHtml(msg_html);
+        setTableEditData(msg_list);
+        setAcceptedTotal(accepted_total);
       } else {
-        msg_html.push(<TableRow key={0} header={true} rowData={tableHeader} />)
+        msg_list.push(tableHeader);
         messages.map((msg) => {
           let msg_data = {};
-          let amount = parseFloat(String(msg.amount).replace(',', ''))
-          total += amount;
+          let amount = parseFloat(String(msg.amount).replace(',', ''));
+          if (msg.status == 'pending') {
+            pending_total += amount;
+          }
+          else {
+            accepted_total += amount;
+          }
           if (authType == 'agent') {
             msg_data = {
+              id: msg.id,
               time: time.format(msg.createdatetime),
               HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
               wallet: msg.walletName,
@@ -351,6 +338,7 @@ const Withdrawal = () => {
             };
           } else {
             msg_data = {
+              id: msg.id,
               time: time.format(msg.createdatetime),
               HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
               wallet: msg.walletName,
@@ -361,20 +349,30 @@ const Withdrawal = () => {
               status: msg.status,
             };
           }
-          msg_html.push(<TableRow key={msg.id} header={false} rowData={msg_data} />)
+          msg_list.push(msg_data);
         })
-        setTableRowHtml(msg_html);
-        setAcceptedTotal(total);
+        setTableData(msg_list);
+        setAcceptedTotal(accepted_total);
+        setPendingTotal(pending_total);
       }
     }
     onSpinnerChanged(false);
   }
 
+  const renderItem = ({ item }) => (
+    <TableRow rowData={item} />
+  );
+  const renderItemEdit = ({ item }) => (
+    <TableRowEditWithdra rowData={item} />
+  );
+
   return (
+    <KeyboardAvoidingView style={styles.header}>
+     {/* {(!keyboard && */}
     <SafeAreaView style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
-        //visible={spinner}
+        visible={spinner}
         // textContent={"Loading..."}
         onSpinnerChanged={false}
         textStyle={styles.spinnerTextStyle}
@@ -556,64 +554,55 @@ const Withdrawal = () => {
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
-            <KeyboardAvoidingView style={{flex:1}}>
             <View style={styles.agent_container}>
+            
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-              <FlatList 
-                data={[{key: 'item1' }]}
-               // style={{height: heightPercentageToDP("65%")}}
-                renderItem={({ item, index, separators }) => (
-                <TouchableOpacity>
-                  <View style={styles.header}>
-                      {/* {tableRowHtml} */}
-                  <TableRowEditWithdra key={1} header={true} rowData={agentTableHeader} />
-                  <TableRowEditWithdra  key={2} header={false} rowData={agentTableRowOne} />
-                  <TableRowEditWithdra  key={3} header={false} rowData={agentTableRowTwo} />
-                  <TableRowEditWithdra  key={4} header={false} rowData={agentTableRowThree} />
-                  </View>
-                </TouchableOpacity>)}
-              />
-                </View>
+                {tableEditData ?
+                 //{/* <KeyboardAwareScrollView style={styles.header}>
+                 //  <KeyboardAvoidingView style={{position: 'absolute', left: 0, right: 0, bottom: 0}} behavior="position"> */}
+                  <FlatList
+                    data={tableEditData}
+                    renderItem={renderItemEdit}
+                    keyExtractor={item => item.id}
+                  />
+                 // {/* </KeyboardAvoidingView> 
+                  // </KeyboardAwareScrollView>*/}
+                :
+                  <></>
+                }
               </View>
-              </KeyboardAvoidingView>
+
+              </View>
             :
             <>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-              <FlatList 
-                data={[{key: 'item1' }]}
-               // style={{height: heightPercentageToDP("59%")}}
-                renderItem={({ item, index, separators }) => (
-                <TouchableOpacity>
-                  <View style={styles.header}>
-                      {/* {tableRowHtml} */}
-                    <TableRow header={true} rowData={tableHeader} />
-                    <TableRow header={false} rowData={tableRowOne} />
-                    <TableRow header={false} rowData={tableRowTwo} />
-                    <TableRow header={false} rowData={tableRowThree} />
-                  </View>
-                </TouchableOpacity>)}
-              />
+                {tableData ?
+                  <FlatList
+                    data={tableData}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                  />
+                :
+                  <></>
+                }
               </View>
               <View styles={styles.total}>
-                <Text style={styles.total_text}>Total Amount  : TK   {acceptedTotal}</Text>
+                <Text style={styles.total_text}>Total Amount : TK  {format.separator(acceptedTotal)}</Text>
               </View>
             </>
             ]
           :
             <>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-              <FlatList data={[{key: 'item1' }]}
-               // style={{height: heightPercentageToDP("51%")}}
-                renderItem={({ item, index, separators }) => (
-                  <TouchableOpacity>
-                    <View style={styles.header}>
-                      <TableRow header={true} rowData={tableHeader} />
-                      <TableRow header={false} rowData={tableRowOne} />
-                      <TableRow header={false} rowData={tableRowTwo} />
-                      <TableRow header={false} rowData={tableRowThree} />
-                    </View>
-                  </TouchableOpacity>)}
-                />
+                {tableData ?
+                  <FlatList
+                    data={tableData}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                  />
+                :
+                  <></>
+                }
               </View>
               <View style={styles.total}>
                 <View style={{flexDirection:"row"}}>
@@ -624,13 +613,13 @@ const Withdrawal = () => {
                   <View style={{flexDirection: "column"}}>
                   <View style={{flexDirection: "row"}}>
                     <Text style={styles.total_text}> : </Text>
-                    <Text style={styles.total_text}>TK   </Text>
-                    <Text style={styles.total_text}>{pendingTotal}</Text>
+                    <Text style={styles.total_text}>TK  </Text>
+                    <Text style={styles.total_text}>{format.separator(pendingTotal)}</Text>
                   </View> 
                   <View style={{flexDirection: "row"}}>
                     <Text style={styles.total_text}> : </Text>
-                    <Text style={styles.total_text}>TK   </Text>
-                    <Text style={styles.total_text}>{acceptedTotal}</Text>
+                    <Text style={styles.total_text}>TK  </Text>
+                    <Text style={styles.total_text}>{format.separator(acceptedTotal)}</Text>
                   </View>
                   </View>    
                 </View>
@@ -639,7 +628,30 @@ const Withdrawal = () => {
           }
           </View>
         </View>
-    </SafeAreaView>
+    </SafeAreaView> 
+ {/* )
+    :
+    <ScrollView style={{height:heightPercentageToDP("100%"), margin:20}}>
+    <KeyboardAvoidingView style={styles.header}>
+              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+                {tableEditData ?
+                 <KeyboardAwareScrollView style={styles.header}>
+                 
+                  <FlatList
+                    data={tableEditData}
+                    renderItem={renderItemEdit}
+                    keyExtractor={item => item.id}
+                  />
+                  </KeyboardAwareScrollView>
+                :
+                  <></>
+                }
+              </View>
+    </KeyboardAvoidingView>
+    </ScrollView>
+    } */}
+    
+    </KeyboardAvoidingView>
   );
 };
 

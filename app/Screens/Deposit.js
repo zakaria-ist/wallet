@@ -91,10 +91,6 @@ screensize.getLargeScreen()
 const Deposit = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
-  // const [authType, setAuthType] = useStateIfMounted("");
-  // const [token, setToken] = useStateIfMounted("");
-  // const [transType, setTransType] = useStateIfMounted("Today");
-  // const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletPickerType, setWalletPickerType] = useStateIfMounted(1);
   const [walletData, setWalletData] = useStateIfMounted([]);
   const [walletPickerList, setWalletPickerList] = useStateIfMounted([]);
@@ -113,17 +109,28 @@ const Deposit = () => {
   const [groupList, setGroupList] = useStateIfMounted([]);
   const [userList, setUserList] = useStateIfMounted([]);
   const [pickerUserList, setPickerUserList] = useStateIfMounted([]);
-  const [tableRowHtml, setTableRowHtml] = useStateIfMounted([]);
-  const [tableRowEditHtml, setTableRowEditHtml] = useStateIfMounted([]);
+  const [tableData, setTableData] = useStateIfMounted([]);
+  const [tableEditData, setTableEditData] = useStateIfMounted([]);
 
 
   const LeftButton = "Yesterday";
   const RightButton = "Today";
-  const tableHeader = [
-    ["Time", "(HDL Time)"],
-    ["Message"],
-    ["Status"],
-  ];
+  const tableHeader = {
+    id: "0",
+    Time: "Time",
+    HDLTime: "(HDL Time)",
+    Message: "Message",
+    Status: "Status",
+    Header: true
+  };
+  const agentTableHeader = {
+    id: "0",
+    Time: "Time",
+    HDLTime: "(HDL Time)",
+    Message: "Message",
+    Status: "Action",
+    Header: true
+  };
   const tableRowOne = {
     time: "10:10 AM",
     hdltime: ["(12:10 AM)"],
@@ -148,11 +155,6 @@ const Deposit = () => {
     refNo: 12345,
     status: "Rejected",
   };
-  const agentTableHeader = [
-    ["Time", "(HDL Time)"],
-    ["Message"],
-    ["Action"],
-  ];
   const agentTableRowOne = {
     rowId: 1,
     time: "10:10 AM",
@@ -202,6 +204,7 @@ const Deposit = () => {
         if (auth_type != null) {
           // setAuthType(auth_type);
           authType = auth_type;
+          transType = "Today";
           if (auth_type == 'admin' || auth_type == 'subadmin') {
             AsyncStorage.getItem('groupList').then((groups) => {
               if (groups != null) {
@@ -272,11 +275,10 @@ const Deposit = () => {
   }
   const renderTablesData = async () => {
     onSpinnerChanged(true);
-    //onSpinnerChanged(false);
     const msgsUrl = request.getAllMessageUrl();
     let when = 'yesterday';
     if (transType == 'Today') {
-      when = 'Today';
+      when = 'today';
     }
     const params = JSON.stringify(
       {
@@ -320,30 +322,38 @@ const Deposit = () => {
         })
       }
       
-      let msg_html = [];
-      let total = 0;
+      let msg_list = [];
+      let accepted_total = 0;
+      let pending_total = 0;
       if (authType == 'agent' && transType == 'Today') {
-        msg_html.push(<TableRowEditDeposit key={0} header={true} rowData={agentTableHeader} />)
+        msg_list.push(agentTableHeader);
         messages.map((msg) => {
           let msg_data = {
-            rowId: msg.id,
+            id: msg.id,
             time: time.format(msg.createdatetime),
             wallet: msg.walletName,
             amount: msg.amount,
             refNo: msg.refno,
             sent: false
           };
-          msg_html.push(<TableRowEditDeposit key={msg.id} header={false} rowData={msg_data} />)
+          msg_list.push(msg_data);
         })
-        setTableRowEditHtml(msg_html);
+        setTableEditData(msg_list);
+        setAcceptedTotal(accepted_total);
       } else {
-        msg_html.push(<TableRow key={0} header={true} rowData={tableHeader} />)
+        msg_list.push(tableHeader);
         messages.map((msg) => {
           let msg_data = {};
           let amount = parseFloat(String(msg.amount).replace(',', ''))
-          total += amount;
+          if (msg.status == 'pending') {
+            pending_total += amount;
+          }
+          else {
+            accepted_total += amount;
+          }
           if (authType == 'client' || authType == 'admin' || authType == 'subadmin') {
             msg_data = {
+              id: msg.id,
               time: time.format(msg.createdatetime),
               HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
               wallet: msg.walletName,
@@ -354,6 +364,7 @@ const Deposit = () => {
             };
           } else {
             msg_data = {
+              id: msg.id,
               time: time.format(msg.createdatetime),
               HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
               wallet: msg.walletName,
@@ -362,21 +373,29 @@ const Deposit = () => {
               status: msg.status,
             };
           }
-          msg_html.push(<TableRow key={msg.id} header={false} rowData={msg_data} />)
+          msg_list.push(msg_data);
         })
-        setTableRowHtml(msg_html);
-        setAcceptedTotal(total);
+        setTableData(msg_list);
+        setAcceptedTotal(accepted_total);
+        setPendingTotal(pending_total);
       }
     }
     onSpinnerChanged(false);
   }
+
+  const renderItem = ({ item }) => (
+    <TableRow rowData={item} />
+  );
+  const renderItemEdit = ({ item }) => (
+    <TableRowEditDeposit rowData={item} />
+  );
  
   return (
     <SafeAreaView style={styles.header}> 
     <View style={styles.header}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
-       // visible={spinner}
+        visible={spinner}
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />
@@ -505,16 +524,16 @@ const Deposit = () => {
             <View style={styles.admin_subadmin_status_row_container}>
              <View style={styles.status_row}>
                <View style={styles.checkboxContainer}>
-                   <Text style={styles.label}>Status:   </Text>
-                   <Text style={styles.label}>Pending</Text>
-                   <CheckBox
-                  value={pending}
-                  onValueChange={setPending}
-                  style={styles.checkbox}
-                  onChange={handleCheckBox}
-                  tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                />
-               </View>
+                  <Text style={styles.label}>Status:   </Text>
+                  <Text style={styles.label}>Pending</Text>
+                  <CheckBox
+                    value={pending}
+                    onValueChange={setPending}
+                    style={styles.checkbox}
+                    onChange={handleCheckBox}
+                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                  />
+                </View>
               </View>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Accepted</Text>
@@ -552,18 +571,18 @@ const Deposit = () => {
             </View>
             :
             <View style={styles.others_status_row_container}>
-             <View style={styles.status_row}>
-               <View style={styles.checkboxContainer}>
-                   <Text style={styles.label}>Status:   </Text>
-                   <Text style={styles.label}>Pending</Text>
-                   <CheckBox
-                  value={pending}
-                  onValueChange={setPending}
-                  style={styles.checkbox}
-                  onChange={handleCheckBox}
-                  tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                />
-               </View>
+              <View style={styles.status_row}>
+                <View style={styles.checkboxContainer}>
+                  <Text style={styles.label}>Status:   </Text>
+                  <Text style={styles.label}>Pending</Text>
+                  <CheckBox
+                    value={pending}
+                    onValueChange={setPending}
+                    style={styles.checkbox}
+                    onChange={handleCheckBox}
+                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                  />
+                </View>
               </View>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Accepted</Text>
@@ -592,41 +611,33 @@ const Deposit = () => {
           {authType == 'agent' ?
             [transType == 'Today' ? 
              <View style={styles.agent_container}>
-              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-                <FlatList data={[{key: 'item1' }]}
-                
-                  //style={{height: heightPercentageToDP("65%")}}
-                  renderItem={({ item, index, separators }) => (
-                    <TouchableOpacity>
-                      <View style={styles.header}>
-                        <TableRowEditDeposit header={true} rowData={agentTableHeader} />
-                        <TableRowEditDeposit header={false} rowData={agentTableRowOne} />
-                        <TableRowEditDeposit header={false} rowData={agentTableRowTwo} />
-                        <TableRowEditDeposit header={false} rowData={agentTableRowThree} />          
-                      </View>
-                    </TouchableOpacity>)}
-                  />
+                <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+                  {tableEditData ?
+                    <FlatList
+                      data={tableEditData}
+                      renderItem={renderItemEdit}
+                      keyExtractor={item => item.id}
+                    />
+                  :
+                    <></>
+                  }
                 </View>
-               </View>
+              </View>
             :
             <>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-                <FlatList data={[{key: 'item1' }]}
-               // showsHorizontalScrollIndicator={false}
-                 // style={{height: heightPercentageToDP("59%")}}
-                  renderItem={({ item, index, separators }) => (
-                    <TouchableOpacity>
-                      <View style={styles.header}>
-                        <TableRow header={true} rowData={tableHeader} />
-                        <TableRow header={false} rowData={tableRowOne} />
-                        <TableRow header={false} rowData={tableRowTwo} />
-                        <TableRow header={false} rowData={tableRowThree} />
-                      </View>
-                    </TouchableOpacity>)}
+                {tableData ?
+                  <FlatList
+                    data={tableData}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
                   />
+                :
+                  <></>
+                }
               </View>
               <View styles={styles.total}>
-                <Text style={styles.total_text}>Total Amount : TK {format.separator(acceptedTotal)}</Text>
+                <Text style={styles.total_text}>Total Amount : TK  {format.separator(acceptedTotal)}</Text>
               </View>
               
             </>
@@ -634,18 +645,15 @@ const Deposit = () => {
           :
             <>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-              <FlatList data={[{key: 'item1' }]}
-                //style={{height: heightPercentageToDP("51%")}}
-                renderItem={({ item, index, separators }) => (
-                  <TouchableOpacity>
-                    <View style={styles.header}>
-                      <TableRow header={true} rowData={tableHeader} />
-                      <TableRow header={false} rowData={tableRowOne} />
-                      <TableRow header={false} rowData={tableRowTwo} />
-                      <TableRow header={false} rowData={tableRowThree} />
-                    </View>
-                  </TouchableOpacity>)}
-                />
+                {tableData ?
+                  <FlatList
+                    data={tableData}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                  />
+                :
+                  <></>
+                }
               </View>
               
               <View style={styles.total}>
@@ -657,13 +665,13 @@ const Deposit = () => {
                   <View style={{flexDirection: "column"}}>
                   <View style={{flexDirection: "row"}}>
                     <Text style={styles.total_text}> : </Text>
-                    <Text style={styles.total_text}>TK   </Text>
-                    <Text style={styles.total_text}>{pendingTotal}</Text>
+                    <Text style={styles.total_text}>TK  </Text>
+                    <Text style={styles.total_text}>{format.separator(pendingTotal)}</Text>
                   </View> 
                   <View style={{flexDirection: "row"}}>
                     <Text style={styles.total_text}> : </Text>
-                    <Text style={styles.total_text}>TK   </Text>
-                    <Text style={styles.total_text}>{acceptedTotal}</Text>
+                    <Text style={styles.total_text}>TK  </Text>
+                    <Text style={styles.total_text}>{format.separator(acceptedTotal)}</Text>
                   </View>
                   </View>    
                 </View>

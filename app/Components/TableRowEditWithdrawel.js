@@ -8,6 +8,7 @@
 import React, {useState, useEffect, useMemo} from 'react';
 import { useStateIfMounted } from "use-state-if-mounted";
 // import { useIsFocused } from "@react-navigation/native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   View,
   Text,
@@ -29,9 +30,9 @@ const format = new Format();
 const request = new Request();
 const alert = new CustomAlert();
 
-const TableRowEditWithdra = ({header, rowData}) => {
+const TableRowEditWithdra = ({rowData}) => {
   const [token, setToken] = useStateIfMounted("");
-  const [rowId, setRowId] = useStateIfMounted(rowData.rowId);
+  const [rowId, setRowId] = useStateIfMounted(rowData.id);
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
   const [cellThree, setCellThree] = useStateIfMounted([]);
@@ -40,87 +41,84 @@ const TableRowEditWithdra = ({header, rowData}) => {
     AsyncStorage.getItem('token').then((token) => {
       setToken(token);
     });
-    if (header) {
-      setCellOne(handleHeaderCell(rowData[0]));
-      setCellTwo(handleHeaderCell(rowData[1]));
-      setCellThree(handleHeaderCell(rowData[2]));
-    } else {
-      setRowId(rowData.rowId);
-      // setPinNo(String(rowData.rowId));
-      handleCell(rowData);
-    }
-  }, [rowData]);
 
-  const handleHeaderCell = (cellData) => {
-    let testCell = [];
-    cellData.map((cell) => {
-      testCell.push(
-        <Text style={header ? styles.cell_text_header : styles.cell_text}>{cell}</Text>
-      )
-    })
-    return testCell;
-  }
-  const ctime = (cellData) => {
-    return (rowData.HDLtime == "")
-  }
+    setRowId(rowData.id);
+    handleCell(rowData);
+  }, [rowData]);
+  
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
     let rightCell = [];
 
     leftCell.push(
-      <View style={{flexDirection:"row"}}>
-        {ctime() ?
-         <View style={{flexDirection: "column"}}>
-         <Text style={styles.cell_text}>{cellData.time}</Text>
-         </View>
-        : 
+      <View style={{flexDirection:"row"}}> 
         <View style={{flexDirection: "column"}}>
-        <Text style={styles.cell_text}>{cellData.time}</Text>
-        <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+          {cellData.hasOwnProperty("Header") ? 
+            <>
+            <Text style={styles.cell_text_header}>{cellData.Time}</Text>
+            <Text style={styles.cell_text_header}>{cellData.HDLTime}</Text>
+            </>
+          :
+            <>
+              <Text style={styles.cell_text}>{cellData.time}</Text>
+              {/* <Text style={styles.cell_text}>{cellData.HDLtime}</Text> */}
+            </>
+          }
         </View>
-        }
     </View>
     )
     setCellOne(leftCell);
+    
     midCell.push(
-        <View style={{flexDirection:"row"}}>
+      <View style={{flexDirection:"row"}}>
         <View style={styles.table_view_column}>
-        <Text style={styles.cell_text_pin}>Pin No.</Text>
-        <Text style={styles.cell_text}>Amount</Text>
-        <Text style={styles.cell_text}>Wallet</Text>
-        <Text style={styles.cell_text}>Mobile No.</Text>
+          {cellData.hasOwnProperty("Header") ? 
+            (<Text style={styles.cell_text_header}>{cellData.Message}</Text>) 
+          : 
+            <>
+              <Text style={styles.cell_text_pin}>Pin No.</Text>
+              <Text style={styles.cell_text}>Amount</Text>
+              <Text style={styles.cell_text}>Wallet</Text>
+              <Text style={styles.cell_text}>Mobile No.</Text>
+            </>
+          }
         </View>
-        <View style={{flexDirection: "column"}}>
-          <View style={{flexDirection: "row"}}>
-           <Text style={styles.cell_text_input_colon}> : </Text>
-           <TextInput 
-          style={styles.text_input}
-          onChangeText={pinNo => { rowData.pinNo = pinNo; handleCell(rowData); }}
-          value={rowData.pinNo}
-          textAlign={'left'}
-          placeholderTextColor={WalletColors.grey}
-          keyboardType={'numeric'}
-        />
-        </View>        
-          <View style={{flexDirection: "row"}}>
-           <Text style={styles.cell_text}> : </Text>
-           <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
-        </View>         
-          <View style={{flexDirection: "row"}}>
-           <Text style={styles.cell_text}> : </Text>
-           <Text style={styles.cell_text}>{cellData.wallet}</Text>
-        </View>         
-          <View style={{flexDirection: "row"}}>
-           <Text style={styles.cell_text}> : </Text>
-           <Text style={styles.cell_text}>{cellData.mobile}</Text>
-        </View>         
-        </View>
-        </View>
-      )
+        {cellData.hasOwnProperty("Header") ? <></> :
+          <View style={{flexDirection: "column"}}>
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text_input_colon}> : </Text>
+              <TextInput 
+                  style={styles.text_input}
+                  onChangeText={pinNo => { rowData.pinNo = pinNo; handleCell(rowData); }}
+                  value={rowData.pinNo}
+                  textAlign={'left'}
+                  placeholderTextColor={WalletColors.grey}
+                  keyboardType={'numeric'}
+                />
+            </View>        
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
+            </View>         
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text}>{cellData.wallet}</Text>
+            </View>         
+            <View style={{flexDirection: "row"}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text}>{cellData.mobile}</Text>
+            </View>         
+          </View>
+        }
+      </View>
+    )
     setCellTwo(midCell);
 
-    if (rowData.sent) {
+    if (cellData.hasOwnProperty("Header")) {
+      rightCell.push(<Text style={styles.cell_text_header}>{cellData.Status}</Text>);
+    }
+    else if (rowData.sent) {
       rightCell.push([]);
     } else {
       rightCell.push(
@@ -161,7 +159,7 @@ const TableRowEditWithdra = ({header, rowData}) => {
 
   return useMemo(() => {
     return (
-      <KeyboardAvoidingView style={{justifyContent : 'flex-end' }}
+      // <KeyboardAwareScrollView style={{flex:1}}
       // behavior='padding'
       // keyboardVerticalOffset={
       //   Platform.select({
@@ -169,10 +167,12 @@ const TableRowEditWithdra = ({header, rowData}) => {
       //     android: () => -400
       //   })()
       // }
-      resetScrollToCoords={{ x: 0, y: 0 }}
-      scrollEnabled={false}
-      behavior={Platform.OS === 'ios' ? 'padding' : null} enabled 
-      >
+      // resetScrollToCoords={{ x: 0, y: 0 }}
+      // scrollEnabled={false}
+      // //behavior={Platform.OS === 'ios' ? 'padding' : null} enabled 
+      // >
+      <KeyboardAvoidingView style={{flex:1}}>
+      {/* <KeyboardAvoidingView style={{position: 'absolute', left: 0, right: 0, bottom: 0}} behavior="position"> */}
       <View style={styles.table_view_rectangle}>
         <View style={styles.table_view_left}>
           <View style={styles.view_lineNumber}>
@@ -190,7 +190,8 @@ const TableRowEditWithdra = ({header, rowData}) => {
           </View>
         </View>
       </View>
-      </KeyboardAvoidingView>
+       {/* </KeyboardAvoidingView> */}
+       </KeyboardAvoidingView>
     );
   })
 

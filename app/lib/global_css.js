@@ -267,12 +267,15 @@ const styles = StyleSheet.create({
   },
   deposit_withdrawel_nav_top:{
     flex:2.3, 
-    margin:heightPercentageToDP("1%"),
+    //minHeight: heightPercentageToDP("12%"),
+    margin:heightPercentageToDP("1.1%"),
     flexDirection:"row", 
-    alignSelf:"center",
+    alignSelf:"flex-end",
   },
   deposit_withdrawel_treport_body: {
     flex:3.5,
+    //minHeight: heightPercentageToDP("65%"),
+    //marginTop:heightPercentageToDP("1.1%"),
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",

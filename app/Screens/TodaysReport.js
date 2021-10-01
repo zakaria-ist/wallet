@@ -50,15 +50,11 @@ let walletType = 1;
 const TodaysReport = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
-  // const [transType, setTransType] = useStateIfMounted("withdrawal");
-  // const [token, setToken] = useStateIfMounted("");
-  // const [authType, setAuthType] = useStateIfMounted("");
-  // const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletData, setWalletData] = useStateIfMounted([]);
   const [rejected, setRejected] = useStateIfMounted(true);
   const [accepted, setAccepted] = useStateIfMounted(true);
-  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("20,000");
-  const [tableRowHtml, setTableRowHtml] = useStateIfMounted([]);
+  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("");
+  const [tableData, setTableData] = useStateIfMounted([]);
 
   const backgroundStyle = {
     backgroundColor: Colors.white
@@ -66,38 +62,15 @@ const TodaysReport = () => {
 
   const LeftButton = "Deposit";
   const RightButton = "Withdrawal";
-  const tableHeader = [
-    ["Time", "(HDL Time)"],
-    ["Message"],
-    ["Status"],
-  ];
-  const tableRowOne = {
-    // rowId: 1,
-    time: "10:10 AM",
-    hdltime: [""],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Pending",
+  const tableHeader = {
+    id: "0",
+    Time: "Time",
+    HDLTime: "(HDL Time)",
+    Message: "Message",
+    Status: "Status",
+    Header: true
   };
-  const tableRowTwo = {
-    // rowId: 1,
-    time: ["10:10 AM"],
-    hdltime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Accepted",
-  };
-  const tableRowThree = {
-    // rowId: 1,
-    time: ["10:10 AM"],
-    hdltime: ["(12:10 AM)"],
-    wallet: "Alipay",
-    amount: 11320,
-    refNo: 12345,
-    status: "Accepted",
-  };
+
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       AsyncStorage.getItem('walletData').then((walletData) => {
@@ -111,6 +84,7 @@ const TodaysReport = () => {
         if (auth_type != null) {
           // setAuthType(auth_type);
           authType = auth_type;
+          transType = "withdrawal";
           renderTablesData();
         }
       })
@@ -167,7 +141,7 @@ const TodaysReport = () => {
     );
 
     const content = await request.post(msgsUrl, params);
-    console.log(transType, content)
+    console.log(transType, authType, authToken, walletType, content)
     if (content.ok) {
       // ftatus filter
       let messages = content.msg.filter((msg) => {
@@ -182,43 +156,48 @@ const TodaysReport = () => {
         return false;
       })
       
-      let msg_html = [];
+      let msg_list = [];
       let total = 0;
-      msg_html.push(<TableRow key={0} header={true} rowData={tableHeader} />)
+      msg_list.push(tableHeader);
       messages.map((msg) => {
-      let amount = parseFloat(String(msg.amount).replace(',', ''))
-      total += amount;
-      // amount = format.separator(amount);
-      let msg_data = {};
-      if (purpose == 'deposit') {
-        msg_data = {
-          time: time.format(msg.createdatetime),
-          HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
-          wallet: msg.walletName,
-          amount: amount,
-          refNo: msg.refno ? msg.refno : "",
-          status: msg.status,
-        };
-      } else {
-        msg_data = {
-          time: time.format(msg.createdatetime),
-          HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
-          wallet: msg.walletName,
-          amount: amount,
-          pinNo: msg.pino ? msg.pino : "-",
-          mobile: msg.mobile ? msg.mobile : "",
-          status: msg.status,
-        };
-      }
-        
-        msg_html.push(<TableRow key={msg.id} header={false} rowData={msg_data} />)
-        console.log('msg_data', msg_data)
+        let amount = parseFloat(String(msg.amount).replace(',', ''))
+        total += amount;
+        // amount = format.separator(amount);
+        let msg_data = {};
+        if (purpose == 'deposit') {
+          msg_data = {
+            id: msg.id,
+            time: time.format(msg.createdatetime),
+            HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+            wallet: msg.walletName,
+            amount: amount,
+            refNo: msg.refno ? msg.refno : "",
+            status: msg.status,
+          };
+        } else {
+          msg_data = {
+            id: msg.id,
+            time: time.format(msg.createdatetime),
+            HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+            wallet: msg.walletName,
+            amount: amount,
+            pinNo: msg.pino ? msg.pino : "-",
+            mobile: msg.mobile ? msg.mobile : "",
+            status: msg.status,
+          };
+        }
+        msg_list.push(msg_data);
       })
-      setTableRowHtml(msg_html);
+      // console.log('msg_data', msg_list);
+      setTableData(msg_list);
       setAcceptedTotal(total);
     }
     onSpinnerChanged(false);
   }
+
+  const renderItem = ({ item }) => (
+    <TableRow rowData={item} />
+  );
 
   return (
     <SafeAreaView style={styles.header}>
@@ -276,18 +255,16 @@ const TodaysReport = () => {
           :
             <View style={{marginTop:-heightPercentageToDP("0.3%")}}></View>
           }
-
           <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-          <FlatList 
-            data={[{key: 'item1' }]}
-            //style={{height: heightPercentageToDP("64%")}}
-            renderItem={({ item, index, separators }) => (
-            <TouchableOpacity>
-              <View style={styles.header}>
-                {tableRowHtml}
-              </View>
-            </TouchableOpacity>)}
-          />
+            {tableData ?
+              <FlatList
+                data={tableData}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+              />
+            :
+              <></>
+            }
           </View>
           <View styles={styles.total}>
             <Text style={styles.total_text}>Total Amount : TK {format.separator(acceptedTotal)}</Text>
