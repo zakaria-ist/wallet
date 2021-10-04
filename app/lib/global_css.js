@@ -22,10 +22,8 @@ const styles = StyleSheet.create({
   //DrawerStack
   drawercontainer: {
     flex: 1,
-    marginTop: 20,
-    marginBottom: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: heightPercentageToDP("1%"),
+    marginBottom: heightPercentageToDP("15%"),
     flexDirection: 'column'
   },
   drawerHeader: {
@@ -35,13 +33,13 @@ const styles = StyleSheet.create({
     marginBottom: heightPercentageToDP("5%")
   },
   drawerImage: {
+    alignSelf:'center',
     height: heightPercentageToDP("15%"),
     width: heightPercentageToDP("15%"),
     borderRadius: 75
   },
   userName: {
     paddingTop: 10,
-    alignContent:'center',
     alignSelf:'center',
   },
   drawerItem: {
@@ -51,9 +49,11 @@ const styles = StyleSheet.create({
     borderBottomColor:'#265684',
   },
   version: {
-    paddingTop: -10,
-    alignContent:'center',
-    alignSelf:'center',
+    paddingRight: heightPercentageToDP("2%"),
+    paddingTop: -heightPercentageToDP("1%"),
+    alignSelf:'flex-end',
+    fontSize: RFValue(10),
+    color: WalletColors.grey,
   },
 
   //Login Screen
