@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-import React, {useState, useEffect}  from 'react';
+import React, {useState, useEffect, useCallback}  from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -350,6 +350,19 @@ const Withdrawal = () => {
     <TableRowEditWithdra rowData={item} />
   );
 
+  const onWalletPickerOpen = useCallback(() => {
+    setOpenClientPicker(false);
+    setOpenAdminPickerGroup(false);
+  }, []);
+  const onGroupPickerOpen = useCallback(() => {
+    setOpenClientPicker(false);
+    setOpenAdminPickerWallet(false);
+  }, []);
+  const onClientPickerOpen = useCallback(() => {
+    setOpenAdminPickerGroup(false);
+    setOpenAdminPickerWallet(false);
+  }, []);
+
   return (
 
     <SafeAreaView style={styles.header}>
@@ -402,6 +415,7 @@ const Withdrawal = () => {
                 textStyle={{fontSize: RFValue(13)}}
                 labelStyle={{fontWeight: "bold"}}
                 placeholder="Select User"
+                onOpen={onClientPickerOpen}
               />
             </View>
           :
@@ -423,6 +437,7 @@ const Withdrawal = () => {
                     textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
                     placeholder="Select Client"
+                    onOpen={onGroupPickerOpen}
                   />
                 </View>
                 <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
@@ -441,6 +456,7 @@ const Withdrawal = () => {
                     textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
                     placeholder="Select Wallet"
+                    onOpen={onWalletPickerOpen}
                   />
                   </View>
                 {/* </View> */}

@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-import React, {useState, useEffect}  from 'react';
+import React, {useState, useEffect, useCallback}  from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -205,13 +205,13 @@ const Deposit = () => {
         token: authToken, 
         role: authType,
         purpose: 'deposite',
-        when: when
+        // when: when
       }
     );
     const content = await request.post(msgsUrl, params);
-
+    console.log(content);
     if (content.ok) {
-      //console.log(content.msg);
+      // console.log(content.msg);
       // ftatus filter
       let messages = content.msg.filter((msg) => {
         if (accepted && msg.status == 'accepted') return true;
@@ -311,6 +311,19 @@ const Deposit = () => {
   const renderItemEdit = ({ item }) => (
     <TableRowEditDeposit rowData={item} />
   );
+
+  const onWalletPickerOpen = useCallback(() => {
+    setOpenClientPicker(false);
+    setOpenAdminPickerGroup(false);
+  }, []);
+  const onGroupPickerOpen = useCallback(() => {
+    setOpenClientPicker(false);
+    setOpenAdminPickerWallet(false);
+  }, []);
+  const onClientPickerOpen = useCallback(() => {
+    setOpenAdminPickerGroup(false);
+    setOpenAdminPickerWallet(false);
+  }, []);
  
   return (
     <SafeAreaView style={styles.header}> 
@@ -333,7 +346,7 @@ const Deposit = () => {
             /> 
               <View style={((authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
                 <CommonTop
-                  admin={authType == ("admin" || "subadmin") ? true : false}
+                  admin={(authType == "admin" || authType == "subadmin") ? true : false}
                   LeftButton={LeftButton}
                   RightButton={RightButton}
                   handleLeftButton={handleLeftButton}
@@ -362,6 +375,7 @@ const Deposit = () => {
                     textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
                     placeholder="Select User"
+                    onOpen={onClientPickerOpen}
                   />
               </View>
             :
@@ -383,6 +397,7 @@ const Deposit = () => {
                       textStyle={{fontSize: RFValue(13)}}
                       labelStyle={{fontWeight: "bold"}}
                       placeholder="Select Client"
+                      onOpen={onGroupPickerOpen}
                     />
                   </View>
                   <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
@@ -392,6 +407,7 @@ const Deposit = () => {
                         setWalletPickerType(value); 
                         renderTablesData();
                       }}
+                      selectedValue={walletPickerType}
                       open={openAdminPickerWallet}
                       value={walletPickerType}
                       items={walletPickerList}
@@ -401,6 +417,7 @@ const Deposit = () => {
                       textStyle={{fontSize: RFValue(13)}}
                       labelStyle={{fontWeight: "bold"}}
                       placeholder="Select Wallet"
+                      onOpen={onWalletPickerOpen}
                     />
                   </View>
                 </View>
