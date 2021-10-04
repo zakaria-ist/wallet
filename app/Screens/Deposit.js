@@ -205,7 +205,7 @@ const Deposit = () => {
         token: authToken, 
         role: authType,
         purpose: 'deposite',
-        when: when
+       // when: when
       }
     );
     const content = await request.post(msgsUrl, params);
@@ -333,7 +333,7 @@ const Deposit = () => {
             /> 
               <View style={((authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
                 <CommonTop
-                  admin={authType == ("admin" || "subadmin") ? true : false}
+                  admin={(authType == "admin" || authType == "subadmin") ? true : false}
                   LeftButton={LeftButton}
                   RightButton={RightButton}
                   handleLeftButton={handleLeftButton}
@@ -349,20 +349,21 @@ const Deposit = () => {
               <View style={picker.smallclientpicker() || picker.mediumclientpicker() || picker.largeclientpicker()}>
                 <DropDownPicker
                   style={picker.smallclientdpicker() || picker.mediumclientdpicker() || picker.largeclientdpicker()}
-                    onChangeValue={(value) => {
+                  listItemContainerStyle={{height: heightPercentageToDP("5%")}}
+                  onChangeValue={(value) => {
                       setPickerUser(value); 
                       renderTablesData();
                     }}
-                    open={openClientPicker}
-                    value={pickerUser}
-                    items={pickerUserList}
-                    setOpen={setOpenClientPicker}
-                    setValue={setPickerUser}
-                    setItems={setPickerUserList}
-                    textStyle={{fontSize: RFValue(13)}}
-                    labelStyle={{fontWeight: "bold"}}
-                    placeholder="Select User"
-                  />
+                  open={openClientPicker}
+                  value={pickerUser}
+                  items={pickerUserList}
+                  setOpen={setOpenClientPicker}
+                  setValue={setPickerUser}
+                  setItems={setPickerUserList}
+                  textStyle={{fontSize: RFValue(13)}}
+                  labelStyle={{fontWeight: "bold"}}
+                  placeholder="Select User"
+                />
               </View>
             :
               [(authType == "admin" || authType == "subadmin") ? 
@@ -370,6 +371,7 @@ const Deposit = () => {
                   <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                     <DropDownPicker
                       style={{height: heightPercentageToDP("5%")}}
+                      listItemContainerStyle={{height: heightPercentageToDP("5%")}}
                       onChangeValue={(value) => {
                         setPickerGroup(value); 
                         renderTablesData();
@@ -388,6 +390,7 @@ const Deposit = () => {
                   <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                     <DropDownPicker
                       style={{height: heightPercentageToDP("5%")}}
+                      listItemContainerStyle={{height: heightPercentageToDP("5%")}}
                       onChangeValue={(value) => {
                         setWalletPickerType(value); 
                         renderTablesData();
@@ -444,7 +447,7 @@ const Deposit = () => {
                   />
                 </View>
               </View>
-              </View>
+            </View>
               :
               <View></View>
             ]

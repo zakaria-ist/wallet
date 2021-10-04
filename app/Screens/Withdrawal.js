@@ -106,29 +106,6 @@ const Withdrawal = () => {
     Header: true
   };
 
-  // useEffect(() => {
-  //   Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-  //   Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    
-  //   return () => {
-  //     //Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-  //     Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-  //   };
-  // }, []);
-
-  // const _keyboardDidShow = () => {
-  //   setKeyboard(true);
-  // };
-
-  // const _keyboardDidHide = () => {
-  //   setKeyboard(false);
-  // };
-
-  // const HideKeyboard = ({ children }) => (
-  //   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-  //     {children}
-  //   </TouchableWithoutFeedback>
-  // );
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   }
@@ -242,7 +219,7 @@ const Withdrawal = () => {
         token: authToken, 
         role: authType,
         purpose: "widhdrwal",
-        when: when
+       // when: when
       }
     );
     const content = await request.post(msgsUrl, params);
@@ -365,51 +342,52 @@ const Withdrawal = () => {
         textStyle={styles.spinnerTextStyle}
       />
       <View style={styles.header}>
-        <View style={(authType == ("admin" || "subadmin") ?styles.admin_deposit_withdrawel_header : styles.header)}>
+        <View style={((authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_header : styles.header)}>
           <CustomHeader 
             title={"Withdrawal"}
           /> 
-          <View style={(authType == ("admin" || "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
-            <CommonTop
-              admin={authType == ("admin" || "subadmin") ? true : false}
-              LeftButton={LeftButton}
-              RightButton={RightButton}
-              handleLeftButton={handleLeftButton}
-              handleRightButton={handleRightButton}
-              handleWalLeftButton={handleWalLeftButton}
-              handleWalMidButton={handleWalMidButton}
-              handleWalRightButton={handleWalRightButton}
+            <View style={((authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
+              <CommonTop
+                admin={(authType == "admin" || authType == "subadmin") ? true : false}
+                LeftButton={LeftButton}
+                RightButton={RightButton}
+                handleLeftButton={handleLeftButton}
+                handleRightButton={handleRightButton}
+                handleWalLeftButton={handleWalLeftButton}
+                handleWalMidButton={handleWalMidButton}
+                handleWalRightButton={handleWalRightButton}
             />
           </View> 
         </View>
         
         <View style={styles.deposit_withdrawel_treport_body}>
-
           {authType == "client" ? 
           <View style={picker.smallclientpicker() || picker.mediumclientpicker() || picker.largeclientpicker()}>
-          <DropDownPicker
-            style={picker.smallclientdpicker() || picker.mediumclientdpicker() || picker.largeclientdpicker()}
-                onChangeValue={(value) => {
-                  setPickerUser(value); 
-                  renderTablesData();
-                }}
-                open={openClientPicker}
-                value={pickerUser}
-                items={pickerUserList}
-                setOpen={setOpenClientPicker}
-                setValue={setPickerUser}
-                setItems={setPickerUserList}
-                textStyle={{fontSize: RFValue(13)}}
-                labelStyle={{fontWeight: "bold"}}
-                placeholder="Select User"
-              />
-            </View>
+            <DropDownPicker
+              style={picker.smallclientdpicker() || picker.mediumclientdpicker() || picker.largeclientdpicker()}
+              listItemContainerStyle={{height: heightPercentageToDP("5%")}}    
+              onChangeValue={(value) => {
+                setPickerUser(value); 
+                renderTablesData();
+              }}
+              open={openClientPicker}
+              value={pickerUser}
+              items={pickerUserList}
+              setOpen={setOpenClientPicker}
+              setValue={setPickerUser}
+              setItems={setPickerUserList}
+              textStyle={{fontSize: RFValue(13)}}
+              labelStyle={{fontWeight: "bold"}}
+              placeholder="Select User"
+            />
+          </View>
           :
-            [authType == ("admin" || "subadmin") ? 
+            [(authType == "admin" || authType == "subadmin") ? 
               <View style={{flexDirection: "row"}}>
                 <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
+                    listItemContainerStyle={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
                       setPickerGroup(value); 
                       renderTablesData();
@@ -428,6 +406,7 @@ const Withdrawal = () => {
                 <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
+                    listItemContainerStyle={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
                       setWalletPickerType(value); 
                       renderTablesData();
@@ -443,10 +422,9 @@ const Withdrawal = () => {
                     placeholder="Select Wallet"
                   />
                   </View>
-                {/* </View> */}
               </View>
             :
-              <View/>
+            <></>
             ]
           }
           {authType == 'agent' ?
@@ -463,7 +441,6 @@ const Withdrawal = () => {
                     onChange={handleCheckBox}
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
-                  
                 </View>
                 <View style={styles.checkboxContainer}>
                   <Text style={styles.label}>No Status</Text>
@@ -475,12 +452,13 @@ const Withdrawal = () => {
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
                 </View>
-              </View></View>
+              </View>
+            </View>
               :
               <View></View>
             ]
           :
-          ([authType == ("admin" || "subadmin") ?
+          ([(authType == "admin" || authType == "subadmin") ?
             <View style={styles.admin_subadmin_status_row_container}>
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
