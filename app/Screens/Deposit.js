@@ -51,7 +51,7 @@ let walletType = 1;
 const Deposit = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
-  const [walletPickerType, setWalletPickerType] = useStateIfMounted(1);
+  const [walletPickerType, setWalletPickerType] = useStateIfMounted("");
   const [walletData, setWalletData] = useStateIfMounted([]);
   const [walletPickerList, setWalletPickerList] = useStateIfMounted([]);
   const [pending, setPending] = useStateIfMounted(true);
@@ -109,7 +109,10 @@ const Deposit = () => {
         setWalletData(JSON.parse(walletData));
         let data = JSON.parse(walletData);
         let wData = [];
-        data.map((wallet) => {
+        data.map((wallet, index) => {
+          if (index == 0) {
+            setWalletPickerType(wallet.id);
+          }
           wData.push({label: wallet.name, value: wallet.id})
         })
         setWalletPickerList(wData);
@@ -132,7 +135,10 @@ const Deposit = () => {
                 setGroupList(groups);
 
                 let pickerGroupList = [];
-                groups.map(group => {
+                groups.map((group, index) => {
+                  if (index == 0) {
+                    setPickerGroup(group.username);
+                  }
                   pickerGroupList.push({label: group.username, value: group.username})
                 })
                 setPickerGroupList(pickerGroupList);
@@ -146,7 +152,10 @@ const Deposit = () => {
 
                 if (auth_type == 'client') {
                   let pickerUserList = [];
-                  users.map(user => {
+                  users.map((user, index) => {
+                    if (index == 0) {
+                      setPickerUser(user.username);
+                    }
                     pickerUserList.push({label: user.username, value: user.username})
                   })
                   setPickerUserList(pickerUserList);
@@ -373,7 +382,7 @@ const Deposit = () => {
                     setItems={setPickerUserList}
                     textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
-                    placeholder="Select User"
+                    placeholder="Users"
                     onOpen={onClientPickerOpen}
                   />
               </View>
@@ -396,7 +405,7 @@ const Deposit = () => {
                       setItems={setPickerGroupList}
                       textStyle={{fontSize: RFValue(13)}}
                       labelStyle={{fontWeight: "bold"}}
-                      placeholder="Select Client"
+                      placeholder="Clients"
                       onOpen={onGroupPickerOpen}
                     />
                   </View>
@@ -417,7 +426,7 @@ const Deposit = () => {
                       setItems={setWalletPickerList}
                       textStyle={{fontSize: RFValue(13)}}
                       labelStyle={{fontWeight: "bold"}}
-                      placeholder="Select Wallet"
+                      placeholder="1"
                       onOpen={onWalletPickerOpen}
                     />
                   </View>
