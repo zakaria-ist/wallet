@@ -327,11 +327,11 @@ const Deposit = () => {
         />
       
         <View style={styles.header}>
-          <View style={(authType == ("admin" || "subadmin") ?styles.admin_deposit_withdrawel_header : styles.header)}>
+          <View style={((authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_header : styles.header)}>
             <CustomHeader 
               title={"Deposit"}
             /> 
-              <View style={(authType == ("admin" || "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
+              <View style={((authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
                 <CommonTop
                   admin={authType == ("admin" || "subadmin") ? true : false}
                   LeftButton={LeftButton}
@@ -345,69 +345,69 @@ const Deposit = () => {
               </View> 
           </View>
           <View style={styles.deposit_withdrawel_treport_body}>
-          {authType == "client" ? 
-          <View style={picker.smallclientpicker() || picker.mediumclientpicker() || picker.largeclientpicker()}>
-          <DropDownPicker
-            style={picker.smallclientdpicker() || picker.mediumclientdpicker() || picker.largeclientdpicker()}
-                onChangeValue={(value) => {
-                  setPickerUser(value); 
-                  renderTablesData();
-                }}
-                open={openClientPicker}
-                value={pickerUser}
-                items={pickerUserList}
-                setOpen={setOpenClientPicker}
-                setValue={setPickerUser}
-                setItems={setPickerUserList}
-                textStyle={{fontSize: RFValue(13)}}
-                labelStyle={{fontWeight: "bold"}}
-                placeholder="Select User"
-              />
-            </View>
-          :
-            [authType == ("admin" || "subadmin") ? 
-              <View style={{flexDirection: "row"}}>
-                 <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
-                  <DropDownPicker
-                    style={{height: heightPercentageToDP("5%")}}
+            {authType == "client" ? 
+              <View style={picker.smallclientpicker() || picker.mediumclientpicker() || picker.largeclientpicker()}>
+                <DropDownPicker
+                  style={picker.smallclientdpicker() || picker.mediumclientdpicker() || picker.largeclientdpicker()}
                     onChangeValue={(value) => {
-                      setPickerGroup(value); 
+                      setPickerUser(value); 
                       renderTablesData();
                     }}
-                    open={openAdminPickerGroup}
-                    value={pickerGroup}
-                    items={pickerGroupList}
-                    setOpen={setOpenAdminPickerGroup}
-                    setValue={setPickerGroup}
-                    setItems={setPickerGroupList}
+                    open={openClientPicker}
+                    value={pickerUser}
+                    items={pickerUserList}
+                    setOpen={setOpenClientPicker}
+                    setValue={setPickerUser}
+                    setItems={setPickerUserList}
                     textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
-                    placeholder="Select Client"
+                    placeholder="Select User"
                   />
-                </View>
-                <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
-                  <DropDownPicker
-                    style={{height: heightPercentageToDP("5%")}}
-                    onChangeValue={(value) => {
-                      setWalletPickerType(value); 
-                      renderTablesData();
-                    }}
-                    open={openAdminPickerWallet}
-                    value={walletPickerType}
-                    items={walletPickerList}
-                    setOpen={setOpenAdminPickerWallet}
-                    setValue={setWalletPickerType}
-                    setItems={setWalletPickerList}
-                    textStyle={{fontSize: RFValue(13)}}
-                    labelStyle={{fontWeight: "bold"}}
-                    placeholder="Select Wallet"
-                  />
-                </View>
               </View>
             :
-              <View/>
-            ]
-          }
+              [(authType == "admin" || authType == "subadmin") ? 
+                <View style={{flexDirection: "row"}}>
+                  <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
+                    <DropDownPicker
+                      style={{height: heightPercentageToDP("5%")}}
+                      onChangeValue={(value) => {
+                        setPickerGroup(value); 
+                        renderTablesData();
+                      }}
+                      open={openAdminPickerGroup}
+                      value={pickerGroup}
+                      items={pickerGroupList}
+                      setOpen={setOpenAdminPickerGroup}
+                      setValue={setPickerGroup}
+                      setItems={setPickerGroupList}
+                      textStyle={{fontSize: RFValue(13)}}
+                      labelStyle={{fontWeight: "bold"}}
+                      placeholder="Select Client"
+                    />
+                  </View>
+                  <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
+                    <DropDownPicker
+                      style={{height: heightPercentageToDP("5%")}}
+                      onChangeValue={(value) => {
+                        setWalletPickerType(value); 
+                        renderTablesData();
+                      }}
+                      open={openAdminPickerWallet}
+                      value={walletPickerType}
+                      items={walletPickerList}
+                      setOpen={setOpenAdminPickerWallet}
+                      setValue={setWalletPickerType}
+                      setItems={setWalletPickerList}
+                      textStyle={{fontSize: RFValue(13)}}
+                      labelStyle={{fontWeight: "bold"}}
+                      placeholder="Select Wallet"
+                    />
+                  </View>
+                </View>
+              :
+                <></>
+              ]
+            }
           {authType == 'agent' ?
             [transType == 'Yesterday' ?
             <View style={styles.agent_status_row_container}>
@@ -449,7 +449,7 @@ const Deposit = () => {
               <View></View>
             ]
           :
-          ([authType == ("admin" || "subadmin") ?
+          ([(authType == "admin" || authType == "subadmin") ?
             <View style={styles.admin_subadmin_status_row_container}>
              <View style={styles.status_row}>
                <View style={styles.checkboxContainer}>
