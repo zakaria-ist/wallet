@@ -297,21 +297,21 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("5%")
   },
   client_ms_picker: {
-    width: widthPercentageToDP("35%"),
+    width: widthPercentageToDP("34%"),
     marginBottom: heightPercentageToDP("1%"),
     marginTop:-heightPercentageToDP("0.8%"),
   },
   client_ms_dropdownpicker: {
-    width: widthPercentageToDP("35%"),
+    width: widthPercentageToDP("34%"),
     height: heightPercentageToDP("5%")
   },
   client_ls_picker: {
-    width: widthPercentageToDP("40%"),
-    marginBottom: heightPercentageToDP("1%"),
-    marginTop:-heightPercentageToDP("0.8%"), 
+    width: widthPercentageToDP("39%"),
+    marginBottom: heightPercentageToDP("0.5%"), 
+    marginTop:-heightPercentageToDP("0.8%"),
   },
   client_ls_dropdownpicker: {
-    width: widthPercentageToDP("40%"),
+    width: widthPercentageToDP("39%"),
     height: heightPercentageToDP("5%")
   },
   picker_ss_admin: {
@@ -324,9 +324,9 @@ const styles = StyleSheet.create({
     marginLeft: widthPercentageToDP("6%"),
   },
   picker_ms_admin: {
-    flex:0.48,
+    flex:0.46,
     marginTop: -heightPercentageToDP("0.5%"),
-    marginBottom:heightPercentageToDP("0.8%"), 
+    marginBottom:heightPercentageToDP("0.5%"), 
     flexDirection: "row",
     alignItems: "center",
     marginRight: widthPercentageToDP("6%"), 
@@ -334,6 +334,7 @@ const styles = StyleSheet.create({
   },
   picker_ls_admin: {
     flex:0.50,
+    marginTop: -heightPercentageToDP("0.5%"),
     marginBottom:heightPercentageToDP("0.5%"), 
     flexDirection: "row",
     alignItems: "center",
