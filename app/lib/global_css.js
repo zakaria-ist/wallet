@@ -229,7 +229,8 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("25%"),
     marginTop: heightPercentageToDP("2%"),
     padding: heightPercentageToDP("1%"),
-    paddingLeft: heightPercentageToDP("1.5%"),
+    paddingLeft: heightPercentageToDP("2.5%"),
+    paddingRight: heightPercentageToDP("2.5%"),
     borderColor: WalletColors.Wblue,
     borderRadius: 15,
     borderStyle: 'solid',
@@ -289,11 +290,11 @@ const styles = StyleSheet.create({
     alignSelf:"center",
   },
   client_ss_picker: {
-    width: widthPercentageToDP("32%"),
+    width: widthPercentageToDP("30%"),
     marginBottom: heightPercentageToDP("1%"), 
   },
   client_ss_dropdownpicker: {
-    width: widthPercentageToDP("32%"),
+    width: widthPercentageToDP("30%"),
     height: heightPercentageToDP("5%")
   },
   client_ms_picker: {
@@ -678,8 +679,8 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("45%"),
     height: heightPercentageToDP("4%"),
     padding: heightPercentageToDP("0.5%"),
-    paddingLeft: heightPercentageToDP("1%"),
-    paddingRight: heightPercentageToDP("1%"),
+    paddingLeft: heightPercentageToDP("1.5%"),
+    paddingRight: heightPercentageToDP("1.5%"),
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
