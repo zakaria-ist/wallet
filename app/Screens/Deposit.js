@@ -452,7 +452,7 @@ const Deposit = () => {
               <View></View>
             ]
           :
-          ([authType == ("admin" || "subadmin") ?
+          ([(authType == "admin" || authType == "subadmin") ?
             <View style={styles.admin_subadmin_status_row_container}>
              <View style={styles.status_row}>
                <View style={styles.checkboxContainer}>
