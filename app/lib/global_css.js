@@ -1,11 +1,8 @@
-import {
-    StyleSheet,
-    Dimensions
-} from 'react-native';
+import {StyleSheet,Dimensions} from 'react-native';
 import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { WalletColors } from "../assets/Colors.js";
-import { RFValue } from "react-native-responsive-fontsize";
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {WalletColors} from "../assets/Colors.js";
+import {RFValue} from "react-native-responsive-fontsize";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -317,7 +314,6 @@ const styles = StyleSheet.create({
   },
   picker_ss_admin: {
     flex:0.41,
-    //marginTop: heightPercentageToDP("0.5%"),
     marginBottom:heightPercentageToDP("0.5%"), 
     flexDirection: "row",
     alignItems: "center",
@@ -553,7 +549,6 @@ const styles = StyleSheet.create({
   summary_report_nav_top:{
     flex:1.3, 
     marginTop:heightPercentageToDP("1.4%"),
-   // marginBottom:heightPercentageToDP("1.5%"),
     flexDirection:"row", 
     alignSelf:"center"
   },
