@@ -558,7 +558,7 @@ const Withdrawal = () => {
                         />
                       }
                     />
-                    </KeyboardAwareScrollView>
+                  </KeyboardAwareScrollView>
                   :
                     <></>
                   }

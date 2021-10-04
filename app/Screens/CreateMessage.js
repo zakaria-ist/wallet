@@ -20,7 +20,7 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native';
-import {heightPercentageToDP} from "react-native-responsive-screen";
+import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
 import Modal from "react-native-modal";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -252,7 +252,7 @@ const CreateMessage = () => {
   return (
     <SafeAreaView style={styles.header}>
       <KeyboardAvoidingView style={styles.header}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      behavior={Platform.OS === "ios" ? "padding" : "absolute"}
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
       enabled={true}>   
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
@@ -324,20 +324,8 @@ const CreateMessage = () => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <View styles={styles.modal_header}>
-                  <View
-                    style={styles.modal_title}
-                  >
-                    <Text
-                      style={{
-                        marginTop: -10,
-                        marginLeft: 5,
-                        color: WalletColors.black,
-                        fontSize: RFValue(18),
-                        fontWeight: "bold"
-                      }}
-                    >
-                      Data Insert
-                    </Text>
+                  <View style={styles.modal_title}>
+                    <Text style={styles.modal_text}>Data Insert</Text>
                   </View>
                   <TouchableOpacity
                     onPress={() => {
@@ -345,8 +333,8 @@ const CreateMessage = () => {
                     }}
                   >
                     <View
-                      style={styles.modal_close,{alignSelf:"flex-end",marginTop:-heightPercentageToDP("3%")}}>
-                      <Fontisto name="close" color={WalletColors.red} size={25} />
+                      style={styles.modal_close}>
+                      <Fontisto name="close" color={WalletColors.red} size={heightPercentageToDP("3.5%")} />
                     </View>
                   </TouchableOpacity>
                 </View>

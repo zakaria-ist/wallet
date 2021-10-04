@@ -18,7 +18,7 @@ import {
   InteractionManager,
   KeyboardAvoidingView,
 } from 'react-native';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {heightPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -298,6 +298,7 @@ const Deposit = () => {
         setTableData(msg_list);
         setAcceptedTotal(accepted_total);
         setPendingTotal(pending_total);
+        console.log(msg_list)
       }
     }
     onSpinnerChanged(false);
@@ -536,6 +537,7 @@ const Deposit = () => {
              <View style={styles.agent_container}>
                 <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                   {tableEditData ?
+                  <KeyboardAwareScrollView style={styles.header}>
                     <FlatList
                       data={tableEditData}
                       renderItem={renderItemEdit}
@@ -547,6 +549,7 @@ const Deposit = () => {
                         />
                       }
                     />
+                  </KeyboardAwareScrollView>
                   :
                     <></>
                   }
