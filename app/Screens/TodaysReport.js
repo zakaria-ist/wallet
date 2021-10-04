@@ -150,7 +150,7 @@ const TodaysReport = () => {
     );
 
     const content = await request.post(msgsUrl, params);
-    console.log(transType, authType, authToken, walletType, content)
+
     if (content.ok) {
       // ftatus filter
       let messages = content.msg.filter((msg) => {
@@ -161,8 +161,7 @@ const TodaysReport = () => {
       })
       // wallet filter
       messages = messages.filter((msg) => {
-        if (parseInt(walletType) == parseInt(msg.walletId)) return true;
-        return false;
+        return (parseInt(walletType) == parseInt(msg.walletId))
       })
       
       let msg_list = [];

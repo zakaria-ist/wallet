@@ -110,7 +110,7 @@ const Deposit = () => {
         let data = JSON.parse(walletData);
         let wData = [];
         data.map((wallet) => {
-          wData.push({label: wallet.name, value: wallet.name})
+          wData.push({label: wallet.name, value: wallet.id})
         })
         setWalletPickerList(wData);
       });
@@ -204,12 +204,14 @@ const Deposit = () => {
       {
         token: authToken, 
         role: authType,
-        purpose: 'deposite'
+        purpose: 'deposite',
+        when: when
       }
     );
     const content = await request.post(msgsUrl, params);
 
     if (content.ok) {
+      //console.log(content.msg);
       // ftatus filter
       let messages = content.msg.filter((msg) => {
         if (accepted && msg.status == 'accepted') return true;
@@ -222,23 +224,23 @@ const Deposit = () => {
       })
       // wallet filter
       messages = messages.filter((msg) => {
-        if (parseInt(walletType) == parseInt(msg.walletId)) return true;
         if (authType == 'admin' || authType == 'subadmin') {
-          if (parseInt(walletPickerType) == parseInt(msg.walletId)) return true;
+          return (parseInt(walletPickerType) == parseInt(msg.walletId))
+        } else {
+          return (parseInt(walletType) == parseInt(msg.walletId))
         }
-        return false;
       })
+
       // user & client filter
       if (authType == 'admin' || authType == 'subadmin') {
         messages = messages.filter((msg) => {
-          if (pickerGroup && pickerGroup == msg.belongclient) return true;
-          return false;
+          return (pickerGroup && pickerGroup == msg.belongclient)
         })
       }
+
       if (authType == 'client') {
         messages = messages.filter((msg) => {
-          if (pickerUser && pickerUser == msg.fromuser) return true;
-          return false;
+          return (pickerUser && pickerUser == msg.fromuser)
         })
       }
       
@@ -359,6 +361,7 @@ const Deposit = () => {
                 setItems={setPickerUserList}
                 textStyle={{fontSize: RFValue(13)}}
                 labelStyle={{fontWeight: "bold"}}
+                placeholder="Select User"
               />
             </View>
           :
@@ -379,6 +382,7 @@ const Deposit = () => {
                     setItems={setPickerGroupList}
                     textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
+                    placeholder="Select Client"
                   />
                 </View>
                 <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
@@ -396,6 +400,7 @@ const Deposit = () => {
                     setItems={setWalletPickerList}
                     textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
+                    placeholder="Select Wallet"
                   />
                 </View>
               </View>

@@ -63,7 +63,7 @@ const styles = StyleSheet.create({
   login_text_input: {
     width: widthPercentageToDP("70%"),
     height: heightPercentageToDP("6.5%"),
-    marginTop: heightPercentageToDP("2.5%"),
+    marginTop: heightPercentageToDP("2.2%"),
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
@@ -74,18 +74,20 @@ const styles = StyleSheet.create({
     color: WalletColors.black,
     flex: 1, 
     fontSize: RFValue(14),
+    alignSelf: 'center'
   },
   sign_button: {
     width: widthPercentageToDP("35%"),
     height: heightPercentageToDP("8%"),
-    marginTop: heightPercentageToDP("8%"),
+    marginTop: heightPercentageToDP("6%"),
     borderRadius: 30,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
     backgroundColor: WalletColors.Wblue,
-    alignItems: 'center'
+    alignItems: 'center',
+    alignSelf: 'center'
   },
   sign_button_text: {
     color: WalletColors.white,
@@ -122,7 +124,6 @@ const styles = StyleSheet.create({
     flex: 1, 
     textAlign:'center',
     justifyContent: 'center',
-    alignItems: 'center',
     marginTop: heightPercentageToDP("8%"),
   },
 

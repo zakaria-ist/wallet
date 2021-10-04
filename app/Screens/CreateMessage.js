@@ -133,7 +133,13 @@ const CreateMessage = () => {
             let sender = result.message.fromuser + " (" + purpose + ")";
             let refNo = result.message.refNo ? result.message.refNo : "";
             let mobile = result.message.mobile ? result.message.mobile : "";
-            let body = "fromuser: " + result.message.fromuser + ", toagent: " + result.message.toagent + ", refno: " + refNo + ", mobile: " + mobile + ", walletId: " + result.message.payment + ", amount: " + result.message.amount;
+            let walletName = "";
+            walletData.map((wallet) => {
+              if (result.message.payment == wallet.id) {
+                walletName = wallet.name;
+              }
+            })
+            let body = "fromuser: " + result.message.fromuser + ", toagent: " + result.message.toagent + ", refno: " + refNo + ", mobile: " + mobile + ", walletName: " + walletName + ", amount: " + result.message.amount;
             // body += ", belongclient: " + result.message.belongclient + ", cct_status: " + result.message.cct_status + ", cct_author_id: " + result.message.cct_author_id + ", status: " + result.message.status;
             const message = {
               sender: sender,
