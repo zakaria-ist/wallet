@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-import React, {useState, useEffect}  from 'react';
+import React, {useState, useEffect, useCallback}  from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -51,7 +51,7 @@ let walletType = 1;
 const Deposit = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
-  const [walletPickerType, setWalletPickerType] = useStateIfMounted(1);
+  const [walletPickerType, setWalletPickerType] = useStateIfMounted("");
   const [walletData, setWalletData] = useStateIfMounted([]);
   const [walletPickerList, setWalletPickerList] = useStateIfMounted([]);
   const [pending, setPending] = useStateIfMounted(true);
@@ -109,7 +109,10 @@ const Deposit = () => {
         setWalletData(JSON.parse(walletData));
         let data = JSON.parse(walletData);
         let wData = [];
-        data.map((wallet) => {
+        data.map((wallet, index) => {
+          if (index == 0) {
+            setWalletPickerType(wallet.id);
+          }
           wData.push({label: wallet.name, value: wallet.id})
         })
         setWalletPickerList(wData);
@@ -132,7 +135,10 @@ const Deposit = () => {
                 setGroupList(groups);
 
                 let pickerGroupList = [];
-                groups.map(group => {
+                groups.map((group, index) => {
+                  if (index == 0) {
+                    setPickerGroup(group.username);
+                  }
                   pickerGroupList.push({label: group.username, value: group.username})
                 })
                 setPickerGroupList(pickerGroupList);
@@ -146,7 +152,10 @@ const Deposit = () => {
 
                 if (auth_type == 'client') {
                   let pickerUserList = [];
-                  users.map(user => {
+                  users.map((user, index) => {
+                    if (index == 0) {
+                      setPickerUser(user.username);
+                    }
                     pickerUserList.push({label: user.username, value: user.username})
                   })
                   setPickerUserList(pickerUserList);
@@ -205,13 +214,11 @@ const Deposit = () => {
         token: authToken, 
         role: authType,
         purpose: 'deposite',
-       // when: when
+        when: when
       }
     );
     const content = await request.post(msgsUrl, params);
-
     if (content.ok) {
-      //console.log(content.msg);
       // ftatus filter
       let messages = content.msg.filter((msg) => {
         if (accepted && msg.status == 'accepted') return true;
@@ -312,6 +319,19 @@ const Deposit = () => {
   const renderItemEdit = ({ item }) => (
     <TableRowEditDeposit rowData={item} />
   );
+
+  const onWalletPickerOpen = useCallback(() => {
+    setOpenClientPicker(false);
+    setOpenAdminPickerGroup(false);
+  }, []);
+  const onGroupPickerOpen = useCallback(() => {
+    setOpenClientPicker(false);
+    setOpenAdminPickerWallet(false);
+  }, []);
+  const onClientPickerOpen = useCallback(() => {
+    setOpenAdminPickerGroup(false);
+    setOpenAdminPickerWallet(false);
+  }, []);
  
   return (
     <SafeAreaView style={styles.header}> 
@@ -354,16 +374,17 @@ const Deposit = () => {
                       setPickerUser(value); 
                       renderTablesData();
                     }}
-                  open={openClientPicker}
-                  value={pickerUser}
-                  items={pickerUserList}
-                  setOpen={setOpenClientPicker}
-                  setValue={setPickerUser}
-                  setItems={setPickerUserList}
-                  textStyle={{fontSize: RFValue(13)}}
-                  labelStyle={{fontWeight: "bold"}}
-                  placeholder="Select User"
-                />
+                    open={openClientPicker}
+                    value={pickerUser}
+                    items={pickerUserList}
+                    setOpen={setOpenClientPicker}
+                    setValue={setPickerUser}
+                    setItems={setPickerUserList}
+                    textStyle={{fontSize: RFValue(13)}}
+                    labelStyle={{fontWeight: "bold"}}
+                    placeholder="Users"
+                    onOpen={onClientPickerOpen}
+                  />
               </View>
             :
               [(authType == "admin" || authType == "subadmin") ? 
@@ -384,7 +405,8 @@ const Deposit = () => {
                       setItems={setPickerGroupList}
                       textStyle={{fontSize: RFValue(13)}}
                       labelStyle={{fontWeight: "bold"}}
-                      placeholder="Select Client"
+                      placeholder="Clients"
+                      onOpen={onGroupPickerOpen}
                     />
                   </View>
                   <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
@@ -395,6 +417,7 @@ const Deposit = () => {
                         setWalletPickerType(value); 
                         renderTablesData();
                       }}
+                      selectedValue={walletPickerType}
                       open={openAdminPickerWallet}
                       value={walletPickerType}
                       items={walletPickerList}
@@ -403,7 +426,8 @@ const Deposit = () => {
                       setItems={setWalletPickerList}
                       textStyle={{fontSize: RFValue(13)}}
                       labelStyle={{fontWeight: "bold"}}
-                      placeholder="Select Wallet"
+                      placeholder="1"
+                      onOpen={onWalletPickerOpen}
                     />
                   </View>
                 </View>
@@ -413,10 +437,110 @@ const Deposit = () => {
             }
           {authType == 'agent' ?
             [transType == 'Yesterday' ?
-            <View style={styles.agent_status_row_container}>
+              <View style={styles.agent_status_row_container}>
+                <View style={styles.status_row}>
+                  <View style={styles.checkboxContainer}>
+                    <Text style={styles.label}>Status:  </Text>
+                    <Text style={styles.label}>Accepted</Text>
+                    <CheckBox
+                      value={accepted}
+                      onValueChange={setAccepted}
+                      style={styles.checkbox}
+                      onChange={handleCheckBox}
+                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                    />
+                  </View>
+                  <View style={styles.checkboxContainer}>
+                    <Text style={styles.label}>Rejected</Text>
+                    <CheckBox
+                      value={rejected}
+                      onValueChange={setRejected}
+                      style={styles.checkbox}
+                      onChange={handleCheckBox}
+                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                    />
+                  </View>
+                  <View style={styles.checkboxContainer}>
+                    <Text style={styles.label}>No Status</Text>
+                    <CheckBox
+                      value={noStatus}
+                      onValueChange={setNoStatus}
+                      style={styles.checkbox}
+                      onChange={handleCheckBox}
+                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                    />
+                  </View>
+                </View>
+              </View>
+                :
+                <View></View>
+              ]
+            :
+            ([(authType == "admin" || authType == "subadmin") ?
+              <View style={styles.admin_subadmin_status_row_container}>
               <View style={styles.status_row}>
                 <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>Status:  </Text>
+                    <Text style={styles.label}>Status:   </Text>
+                    <Text style={styles.label}>Pending</Text>
+                    <CheckBox
+                      value={pending}
+                      onValueChange={setPending}
+                      style={styles.checkbox}
+                      onChange={handleCheckBox}
+                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                    />
+                  </View>
+                </View>
+                <View style={styles.checkboxContainer}>
+                  <Text style={styles.label}>Accepted</Text>
+                  <CheckBox
+                    value={accepted}
+                    onValueChange={setAccepted}
+                    style={styles.checkbox}
+                    onChange={handleCheckBox}
+                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                  />
+                </View>
+                {transType == "Today" ? 
+                  <View style={styles.checkboxContainer}>
+                    <Text style={styles.label}>Rejected</Text>
+                    <CheckBox
+                      value={rejected}
+                      onValueChange={setRejected}
+                      style={styles.checkbox}
+                      onChange={handleCheckBox}
+                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                    />
+                  </View>
+                :
+                  <View style={styles.checkboxContainer}>
+                    <Text style={styles.label}>No Status</Text>
+                    <CheckBox
+                      value={noStatus}
+                      onValueChange={setNoStatus}
+                      style={styles.checkbox}
+                      onChange={handleCheckBox}
+                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                    />
+                  </View>
+                }
+              </View>
+              :
+              <View style={styles.others_status_row_container}>
+                <View style={styles.status_row}>
+                  <View style={styles.checkboxContainer}>
+                    <Text style={styles.label}>Status:   </Text>
+                    <Text style={styles.label}>Pending</Text>
+                    <CheckBox
+                      value={pending}
+                      onValueChange={setPending}
+                      style={styles.checkbox}
+                      onChange={handleCheckBox}
+                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                    />
+                  </View>
+                </View>
+                <View style={styles.checkboxContainer}>
                   <Text style={styles.label}>Accepted</Text>
                   <CheckBox
                     value={accepted}
@@ -427,117 +551,17 @@ const Deposit = () => {
                   />
                 </View>
                 <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>Rejected</Text>
+                  {transType == "Today" ? <Text style={styles.label}>Rejected</Text> : <Text style={styles.label}>No Status</Text>}
                   <CheckBox
-                    value={rejected}
-                    onValueChange={setRejected}
+                    value={transType == "Today" ? rejected : noStatus}
+                    onValueChange={transType == "Today" ? setRejected : setNoStatus}
                     style={styles.checkbox}
                     onChange={handleCheckBox}
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
-                </View>
-                <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>No Status</Text>
-                  <CheckBox
-                    value={noStatus}
-                    onValueChange={setNoStatus}
-                    style={styles.checkbox}
-                    onChange={handleCheckBox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
-                </View>
+                  </View>
               </View>
-            </View>
-              :
-              <View></View>
-            ]
-          :
-          ([(authType == "admin" || authType == "subadmin") ?
-            <View style={styles.admin_subadmin_status_row_container}>
-             <View style={styles.status_row}>
-               <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>Status:   </Text>
-                  <Text style={styles.label}>Pending</Text>
-                  <CheckBox
-                    value={pending}
-                    onValueChange={setPending}
-                    style={styles.checkbox}
-                    onChange={handleCheckBox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
-                </View>
-              </View>
-              <View style={styles.checkboxContainer}>
-                <Text style={styles.label}>Accepted</Text>
-                <CheckBox
-                  value={accepted}
-                  onValueChange={setAccepted}
-                  style={styles.checkbox}
-                  onChange={handleCheckBox}
-                  tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                />
-              </View>
-              {transType == "Today" ? 
-                <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>Rejected</Text>
-                  <CheckBox
-                    value={rejected}
-                    onValueChange={setRejected}
-                    style={styles.checkbox}
-                    onChange={handleCheckBox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
-                </View>
-              :
-                <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>No Status</Text>
-                  <CheckBox
-                    value={noStatus}
-                    onValueChange={setNoStatus}
-                    style={styles.checkbox}
-                    onChange={handleCheckBox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
-                </View>
-              }
-            </View>
-            :
-            <View style={styles.others_status_row_container}>
-              <View style={styles.status_row}>
-                <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>Status:   </Text>
-                  <Text style={styles.label}>Pending</Text>
-                  <CheckBox
-                    value={pending}
-                    onValueChange={setPending}
-                    style={styles.checkbox}
-                    onChange={handleCheckBox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
-                </View>
-              </View>
-              <View style={styles.checkboxContainer}>
-                <Text style={styles.label}>Accepted</Text>
-                <CheckBox
-                  value={accepted}
-                  onValueChange={setAccepted}
-                  style={styles.checkbox}
-                  onChange={handleCheckBox}
-                  tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                />
-              </View>
-              <View style={styles.checkboxContainer}>
-                {transType == "Today" ? <Text style={styles.label}>Rejected</Text> : <Text style={styles.label}>No Status</Text>}
-                <CheckBox
-                  value={transType == "Today" ? rejected : noStatus}
-                  onValueChange={transType == "Today" ? setRejected : setNoStatus}
-                  style={styles.checkbox}
-                  onChange={handleCheckBox}
-                  tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                />
-                </View>
-            </View>
-          ])
+            ])
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 

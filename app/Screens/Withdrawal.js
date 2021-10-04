@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-import React, {useState, useEffect}  from 'react';
+import React, {useState, useEffect, useCallback}  from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -60,7 +60,7 @@ let walletType = 1;
 const Withdrawal = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
-  const [walletPickerType, setWalletPickerType] = useStateIfMounted(1);
+  const [walletPickerType, setWalletPickerType] = useStateIfMounted("");
   const [walletData, setWalletData] = useStateIfMounted([]);
   const [walletPickerList, setWalletPickerList] = useStateIfMounted([]);
   const [noStatus, setNoStatus] = useStateIfMounted(true);
@@ -122,7 +122,10 @@ const Withdrawal = () => {
         setWalletData(JSON.parse(walletData));
         let data = JSON.parse(walletData);
         let wData = [];
-        data.map((wallet) => {
+        data.map((wallet, index) => {
+          if (index == 0) {
+            setWalletPickerType(wallet.id);
+          }
           wData.push({label: wallet.name, value: wallet.id})
         })
         setWalletPickerList(wData);
@@ -145,7 +148,10 @@ const Withdrawal = () => {
                 setGroupList(groups);
 
                 let pickerGroupList = [];
-                groups.map(group => {
+                groups.map((group, index) => {
+                  if (index == 0) {
+                    setPickerGroup(group.username);
+                  }
                   pickerGroupList.push({label: group.username, value: group.username})
                 })
                 setPickerGroupList(pickerGroupList);
@@ -159,7 +165,10 @@ const Withdrawal = () => {
 
                 if (auth_type == 'client') {
                   let pickerUserList = [];
-                  users.map(user => {
+                  users.map((user, index) => {
+                    if (index == 0) {
+                      setPickerUser(user.username);
+                    }
                     pickerUserList.push({label: user.username, value: user.username})
                   })
                   setPickerUserList(pickerUserList);
@@ -219,7 +228,7 @@ const Withdrawal = () => {
         token: authToken, 
         role: authType,
         purpose: "widhdrwal",
-       // when: when
+        when: when
       }
     );
     const content = await request.post(msgsUrl, params);
@@ -328,6 +337,19 @@ const Withdrawal = () => {
     <TableRowEditWithdra rowData={item} />
   );
 
+  const onWalletPickerOpen = useCallback(() => {
+    setOpenClientPicker(false);
+    setOpenAdminPickerGroup(false);
+  }, []);
+  const onGroupPickerOpen = useCallback(() => {
+    setOpenClientPicker(false);
+    setOpenAdminPickerWallet(false);
+  }, []);
+  const onClientPickerOpen = useCallback(() => {
+    setOpenAdminPickerGroup(false);
+    setOpenAdminPickerWallet(false);
+  }, []);
+
   return (
 
     <SafeAreaView style={styles.header}>
@@ -363,70 +385,73 @@ const Withdrawal = () => {
         
         <View style={styles.deposit_withdrawel_treport_body}>
           {authType == "client" ? 
-          <View style={picker.smallclientpicker() || picker.mediumclientpicker() || picker.largeclientpicker()}>
-            <DropDownPicker
-              style={picker.smallclientdpicker() || picker.mediumclientdpicker() || picker.largeclientdpicker()}
-              listItemContainerStyle={{height: heightPercentageToDP("5%")}}    
-              onChangeValue={(value) => {
-                setPickerUser(value); 
-                renderTablesData();
-              }}
-              open={openClientPicker}
-              value={pickerUser}
-              items={pickerUserList}
-              setOpen={setOpenClientPicker}
-              setValue={setPickerUser}
-              setItems={setPickerUserList}
-              textStyle={{fontSize: RFValue(13)}}
-              labelStyle={{fontWeight: "bold"}}
-              placeholder="Select User"
-            />
-          </View>
-          :
-            [(authType == "admin" || authType == "subadmin") ? 
-              <View style={{flexDirection: "row"}}>
-                <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
-                  <DropDownPicker
-                    style={{height: heightPercentageToDP("5%")}}
-                    listItemContainerStyle={{height: heightPercentageToDP("5%")}}
-                    onChangeValue={(value) => {
-                      setPickerGroup(value); 
-                      renderTablesData();
-                    }}
-                    open={openAdminPickerGroup}
-                    value={pickerGroup}
-                    items={pickerGroupList}
-                    setOpen={setOpenAdminPickerGroup}
-                    setValue={setPickerGroup}
-                    setItems={setPickerGroupList}
-                    textStyle={{fontSize: RFValue(13)}}
-                    labelStyle={{fontWeight: "bold"}}
-                    placeholder="Select Client"
-                  />
-                </View>
-                <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
-                  <DropDownPicker
-                    style={{height: heightPercentageToDP("5%")}}
-                    listItemContainerStyle={{height: heightPercentageToDP("5%")}}
-                    onChangeValue={(value) => {
-                      setWalletPickerType(value); 
-                      renderTablesData();
-                    }}
-                    open={openAdminPickerWallet}
-                    value={walletPickerType}
-                    items={walletPickerList}
-                    setOpen={setOpenAdminPickerWallet}
-                    setValue={setWalletPickerType}
-                    setItems={setWalletPickerList}
-                    textStyle={{fontSize: RFValue(13)}}
-                    labelStyle={{fontWeight: "bold"}}
-                    placeholder="Select Wallet"
-                  />
-                  </View>
+            <View style={picker.smallclientpicker() || picker.mediumclientpicker() || picker.largeclientpicker()}>
+              <DropDownPicker
+                style={picker.smallclientdpicker() || picker.mediumclientdpicker() || picker.largeclientdpicker()}
+                listItemContainerStyle={{height: heightPercentageToDP("5%")}}
+                  onChangeValue={(value) => {
+                    setPickerUser(value); 
+                    renderTablesData();
+                  }}
+                  open={openClientPicker}
+                  value={pickerUser}
+                  items={pickerUserList}
+                  setOpen={setOpenClientPicker}
+                  setValue={setPickerUser}
+                  setItems={setPickerUserList}
+                  textStyle={{fontSize: RFValue(13)}}
+                  labelStyle={{fontWeight: "bold"}}
+                  placeholder="Users"
+                  onOpen={onClientPickerOpen}
+                />
               </View>
             :
-            <></>
-            ]
+              [(authType == "admin" || authType == "subadmin") ? 
+                <View style={{flexDirection: "row"}}>
+                  <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
+                    <DropDownPicker
+                      style={{height: heightPercentageToDP("5%")}}
+                      listItemContainerStyle={{height: heightPercentageToDP("5%")}}
+                      onChangeValue={(value) => {
+                        setPickerGroup(value); 
+                        renderTablesData();
+                      }}
+                      open={openAdminPickerGroup}
+                      value={pickerGroup}
+                      items={pickerGroupList}
+                      setOpen={setOpenAdminPickerGroup}
+                      setValue={setPickerGroup}
+                      setItems={setPickerGroupList}
+                      textStyle={{fontSize: RFValue(13)}}
+                      labelStyle={{fontWeight: "bold"}}
+                      placeholder="Clients"
+                      onOpen={onGroupPickerOpen}
+                    />
+                  </View>
+                  <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
+                    <DropDownPicker
+                      style={{height: heightPercentageToDP("5%")}}
+                      listItemContainerStyle={{height: heightPercentageToDP("5%")}}
+                      onChangeValue={(value) => {
+                        setWalletPickerType(value); 
+                        renderTablesData();
+                      }}
+                      open={openAdminPickerWallet}
+                      value={walletPickerType}
+                      items={walletPickerList}
+                      setOpen={setOpenAdminPickerWallet}
+                      setValue={setWalletPickerType}
+                      setItems={setWalletPickerList}
+                      textStyle={{fontSize: RFValue(13)}}
+                      labelStyle={{fontWeight: "bold"}}
+                      placeholder="Wallets"
+                      onOpen={onWalletPickerOpen}
+                    />
+                    </View>
+                </View>
+              :
+                <></>
+              ]
           }
           {authType == 'agent' ?
             [transType == 'Yesterday' ?
