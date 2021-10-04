@@ -666,6 +666,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  view_message_dot:{
+    fontSize: RFValue(13),
+  },
   view_message_text:{
     fontSize: RFValue(13),
     margin: heightPercentageToDP("1%"),
