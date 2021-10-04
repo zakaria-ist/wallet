@@ -5,13 +5,9 @@
  * @format
  * @flow strict-local
  */
-
-import React, {useState, useEffect, useMemo} from 'react';
-import { useStateIfMounted } from "use-state-if-mounted";
-import {
-  View,
-  Text,
-} from 'react-native';
+import React, {useEffect, useMemo} from 'react';
+import {useStateIfMounted} from "use-state-if-mounted";
+import {View,Text} from 'react-native';
 import Format from "../lib/format";
 import styles from '../lib/global_css.js';
 
@@ -26,24 +22,31 @@ const TableRow = ({rowData}) => {
       handleCell(rowData);
   }, [rowData]);
 
+  const ctime = ((cellData) => {
+    return cellData.HDLTime == "";
+  });
+
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
     let rightCell = [];
 
-  
     leftCell.push(
       <View style={{flexDirection:"row"}}>
         <View style={{flexDirection: "column"}}>
           {cellData.hasOwnProperty("Header") ? 
             <>
-            <Text style={styles.cell_text_header}>{cellData.Time}</Text>
-            <Text style={styles.cell_text_header}>{cellData.HDLTime}</Text>
+              <Text style={styles.cell_text_header}>{cellData.Time}</Text>
+              <Text style={styles.cell_text_header}>{cellData.HDLTime}</Text>
             </>
           :
             <>
-            <Text style={styles.cell_text}>{cellData.time}</Text>
-            <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+            {ctime ? <Text style={styles.cell_text}>{cellData.time}</Text> :
+              <>
+                <Text style={styles.cell_text}>{cellData.time}</Text>
+                <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+              </>
+            }
             </>
           }
         </View>

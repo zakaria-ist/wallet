@@ -5,10 +5,10 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect, useMemo} from 'react';
 import { useStateIfMounted } from "use-state-if-mounted";
 // import { useIsFocused } from "@react-navigation/native";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {
   View,
   Text,
@@ -46,6 +46,11 @@ const TableRowEditWithdra = ({rowData}) => {
     handleCell(rowData);
   }, [rowData]);
   
+  const ctime = ((cellData) => {
+    return cellData.HDLTime == "";
+  }
+  );
+
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
@@ -56,13 +61,17 @@ const TableRowEditWithdra = ({rowData}) => {
         <View style={{flexDirection: "column"}}>
           {cellData.hasOwnProperty("Header") ? 
             <>
-            <Text style={styles.cell_text_header}>{cellData.Time}</Text>
-            <Text style={styles.cell_text_header}>{cellData.HDLTime}</Text>
+              <Text style={styles.cell_text_header}>{cellData.Time}</Text>
+              <Text style={styles.cell_text_header}>{cellData.HDLTime}</Text>
             </>
           :
             <>
-              <Text style={styles.cell_text}>{cellData.time}</Text>
-              <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+            {ctime ? <Text style={styles.cell_text}>{cellData.time}</Text> :
+              <>
+                <Text style={styles.cell_text}>{cellData.time}</Text>
+                <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+              </>
+            }
             </>
           }
         </View>
@@ -89,13 +98,13 @@ const TableRowEditWithdra = ({rowData}) => {
             <View style={{flexDirection: "row"}}>
               <Text style={styles.cell_text_input_colon}> : </Text>
               <TextInput 
-                  style={styles.text_input}
-                  onChangeText={pinNo => { rowData.pinNo = pinNo; handleCell(rowData); }}
-                  value={rowData.pinNo}
-                  textAlign={'left'}
-                  placeholderTextColor={WalletColors.grey}
-                  keyboardType={'numeric'}
-                />
+                style={styles.text_input}
+                onChangeText={pinNo => { rowData.pinNo = pinNo; handleCell(rowData); }}
+                value={rowData.pinNo}
+                textAlign={'left'}
+                placeholderTextColor={WalletColors.grey}
+                keyboardType={'numeric'}
+              />
             </View>        
             <View style={{flexDirection: "row"}}>
               <Text style={styles.cell_text}> : </Text>
@@ -116,7 +125,9 @@ const TableRowEditWithdra = ({rowData}) => {
     setCellTwo(midCell);
 
     if (cellData.hasOwnProperty("Header")) {
-      rightCell.push(<Text style={styles.cell_text_header}>{cellData.Status}</Text>);
+      rightCell.push(
+      <Text style={styles.cell_text_header}>{cellData.Status}</Text>
+      );
     }
     else if (rowData.sent) {
       rightCell.push([]);
@@ -154,12 +165,29 @@ const TableRowEditWithdra = ({rowData}) => {
       rowData['sent'] = true;
       handleCell(rowData);
     }
-    
   }
 
   return useMemo(() => {
     return (
-      <KeyboardAvoidingView style={styles.header}>
+      // <KeyboardAwareScrollView style={{flex:1}}
+      // behavior='padding'
+      // keyboardVerticalOffset={
+      //   Platform.select({
+      //     ios: () => -100,
+      //     android: () => -400
+      //   })()
+      // }
+      // resetScrollToCoords={{ x: 0, y: 0 }}
+      // scrollEnabled={false}
+      // //behavior={Platform.OS === 'ios' ? 'padding' : null} enabled 
+      // >
+      //{/* <KeyboardAvoidingView style={{flexGrow:1}}>
+      //<KeyboardAvoidingView style={{position: 'absolute', left: 0, right: 0, bottom: 0}} behavior="position"> */}
+      <KeyboardAvoidingView style={styles.header}
+      //behavior='padding' 
+     // behavior={Platform.OS === "ios" ? "position" : null}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      enabled={true}>  
       <View style={styles.table_view_rectangle}>
         <View style={styles.table_view_left}>
           <View style={styles.view_lineNumber}>
@@ -177,10 +205,10 @@ const TableRowEditWithdra = ({rowData}) => {
           </View>
         </View>
       </View>
-      </KeyboardAvoidingView>
+     </KeyboardAvoidingView> 
+     //  </KeyboardAvoidingView>*/}
     );
   })
-
 };
 
 

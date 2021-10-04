@@ -1,5 +1,6 @@
 import axios from "axios";
 import { Alert } from "react-native";
+
 class CustomAlert {
   async warning(text, func) {
     if (func) {

@@ -5,13 +5,9 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect} from 'react';
 import { Colors } from 'react-native/Libraries/NewAppScreen';
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
 import AsyncStorage from "@react-native-community/async-storage";
 import {
   SafeAreaView,
@@ -28,6 +24,7 @@ import {
   TouchableOpacity,
   InteractionManager,
   Keyboard,
+  KeyboardAvoidingView,
   ScrollView
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
@@ -45,6 +42,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import Screensize from '../lib/screensize.js';
 import styles from '../lib/global_css.js';
 import Spinner from "react-native-loading-spinner-overlay";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -239,7 +237,14 @@ const LoginScreen = ({navigation}) => {
   }
   
   return (
-    <ScrollView style={styles.header}>
+    <KeyboardAwareScrollView style={styles.header}>
+      <KeyboardAvoidingView style={styles.header}
+     // behavior='absolute' 
+      //behavior={Platform.OS === "ios" ? "position" : null}
+     // behavior="padding"
+      //keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      enabled={true}>         
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
@@ -248,15 +253,15 @@ const LoginScreen = ({navigation}) => {
       />
       <FlatList 
         data={[{key: 'item1' }]}
-        renderItem={({ item, index, separators }) => (
+        renderItem={() => (
         <TouchableOpacity>
           <View style={styles.header}>
-          <View style={styles.view_logo}>
-            <View style={styles.view_logo_logo}>
-              <Image style={styles.logo} source={screensize.getSmallScreen() || screensize.getMediumScreen() || screensize.getLargeScreen()}/>
+            <View style={styles.view_logo}>
+              <View style={styles.view_logo_logo}>
+                <Image style={styles.logo} source={screensize.getSmallScreen() || screensize.getMediumScreen() || screensize.getLargeScreen()}/>
+              </View>
             </View>
-          </View>
-          <View style={styles.login_view_input}>
+            <View style={styles.login_view_input}>
               <TextInput 
                 style={styles.login_text_input}
                 onChangeText={setUserName}
@@ -289,12 +294,12 @@ const LoginScreen = ({navigation}) => {
                   </Text>
                 </View>
               </TouchableOpacity>
-          </View>
+            </View>
           </View>
         </TouchableOpacity>)}
       />
-
-    </ScrollView>
+      </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
 
@@ -303,7 +308,7 @@ screensize.getSmallScreen()
 screensize.getMediumScreen()
 ? require('../assets/images/wallet_logo_128.png') : screensize.getLargeScreen();
 screensize.getLargeScreen()
-? require('../assets/images/wallet_logo.png') : screensize.getMediumScreen();
+? require('../assets/images/wallet_logo.png') : screensize.getSmallScreen();
 
 
 export default LoginScreen;

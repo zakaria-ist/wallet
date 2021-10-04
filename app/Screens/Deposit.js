@@ -5,7 +5,6 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
@@ -20,9 +19,7 @@ import {
   KeyboardAvoidingView,
 } from 'react-native';
 
-import {
-  heightPercentageToDP, widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 // import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -34,20 +31,17 @@ import CustomHeader from "../Components/CustomHeader";
 import TableRowEditDeposit from "../Components/TableRowEditDeposit";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
-import { height, marginBottom } from 'styled-system';
-import { parseSync } from '@babel/core';
 import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
 import Format from "../lib/format";
-import { useHeaderHeight } from 'react-navigation-stack';
-import { ScrollView } from 'react-native-gesture-handler';
+import Picker from '../lib/picker';
 
 const format = new Format();
 const request = new Request();
 const time = new KTime();
+const picker = new Picker();
 
 let authType = "";
 let transType = "Today";
@@ -318,59 +312,41 @@ const Deposit = () => {
  
   return (
     <SafeAreaView style={styles.header}> 
-    <View style={styles.header}>
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Spinner
-        visible={spinner}
-        // textContent={"Loading..."}
-        textStyle={styles.spinnerTextStyle}
-      />
-      
+      <KeyboardAvoidingView style={styles.header}
+      behavior='absolute' 
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      enabled={true}>   
       <View style={styles.header}>
-      {authType == ("admin" || "subadmin") ?
-        <View style={styles.admin_deposit_withdrawel_header}>
-          <CustomHeader 
-            title={"Deposit"}
-          /> 
-          <View style={styles.admin_deposit_withdrawel_nav_top}>
-            <CommonTop
-              admin={authType == ("admin" || "subadmin") ? true : false}
-              LeftButton={LeftButton}
-              RightButton={RightButton}
-              handleLeftButton={handleLeftButton}
-              handleRightButton={handleRightButton}
-              handleWalLeftButton={handleWalLeftButton}
-              handleWalMidButton={handleWalMidButton}
-              handleWalRightButton={handleWalRightButton}
-            />
-          </View> 
-        </View>
-        :
-        <View style={styles.header}>
-          <CustomHeader 
-            title={"Deposit"}
-          /> 
-          <View style={styles.deposit_withdrawel_nav_top}>
-            <CommonTop
-              admin={authType == ("admin" || "subadmin") ? true : false}
-              LeftButton={LeftButton}
-              RightButton={RightButton}
-              handleLeftButton={handleLeftButton}
-              handleRightButton={handleRightButton}
-              handleWalLeftButton={handleWalLeftButton}
-              handleWalMidButton={handleWalMidButton}
-              handleWalRightButton={handleWalRightButton}
-            />
-          </View> 
-        </View>
-      }
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <Spinner
+          visible={spinner}
+          // textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
       
-        <View style={styles.deposit_withdrawel_treport_body}>
+        <View style={styles.header}>
+          <View style={(authType == ("admin" || "subadmin") ?styles.admin_deposit_withdrawel_header : styles.header)}>
+            <CustomHeader 
+              title={"Deposit"}
+            /> 
+              <View style={(authType == ("admin" || "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
+                <CommonTop
+                  admin={authType == ("admin" || "subadmin") ? true : false}
+                  LeftButton={LeftButton}
+                  RightButton={RightButton}
+                  handleLeftButton={handleLeftButton}
+                  handleRightButton={handleRightButton}
+                  handleWalLeftButton={handleWalLeftButton}
+                  handleWalMidButton={handleWalMidButton}
+                  handleWalRightButton={handleWalRightButton}
+                />
+              </View> 
+          </View>
+          <View style={styles.deposit_withdrawel_treport_body}>
           {authType == "client" ? 
-          <View style={styles.client_picker}>
-            <View style={styles.picker}>
-              <DropDownPicker
-                style={styles.client_dropdownpicker}
+          <View style={picker.smallclientpicker() || picker.mediumclientpicker() || picker.largeclientpicker()}>
+          <DropDownPicker
+            style={picker.smallclientdpicker() || picker.mediumclientdpicker() || picker.largeclientdpicker()}
                 onChangeValue={(value) => {
                   setPickerUser(value); 
                   renderTablesData();
@@ -384,12 +360,11 @@ const Deposit = () => {
                 textStyle={{fontSize: RFValue(13)}}
                 labelStyle={{fontWeight: "bold"}}
               />
-              </View>
             </View>
           :
             [authType == ("admin" || "subadmin") ? 
               <View style={{flexDirection: "row"}}>
-                <View style={styles.picker_admin}>
+                 <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
@@ -406,7 +381,7 @@ const Deposit = () => {
                     labelStyle={{fontWeight: "bold"}}
                   />
                 </View>
-                <View style={styles.picker_admin}>
+                <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
@@ -543,32 +518,18 @@ const Deposit = () => {
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
               </View>
-              {transType == "Today" ? 
-                <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>Rejected</Text>
-                  <CheckBox
-                    value={rejected}
-                    onValueChange={setRejected}
-                    style={styles.checkbox}
-                    onChange={handleCheckBox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
+              <View style={styles.checkboxContainer}>
+                {transType == "Today" ? <Text style={styles.label}>Rejected</Text> : <Text style={styles.label}>No Status</Text>}
+                <CheckBox
+                  value={transType == "Today" ? rejected : noStatus}
+                  onValueChange={transType == "Today" ? setRejected : setNoStatus}
+                  style={styles.checkbox}
+                  onChange={handleCheckBox}
+                  tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                />
                 </View>
-              :
-                <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>No Status</Text>
-                  <CheckBox
-                    value={noStatus}
-                    onValueChange={setNoStatus}
-                    style={styles.checkbox}
-                    onChange={handleCheckBox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
-                </View>
-              }
             </View>
-          ]
-          )
+          ])
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
@@ -613,7 +574,6 @@ const Deposit = () => {
               <View styles={styles.total}>
                 <Text style={styles.total_text}>Total Amount : TK  {format.separator(acceptedTotal)}</Text>
               </View>
-              
             </>
             ]
           :
@@ -635,7 +595,6 @@ const Deposit = () => {
                   <></>
                 }
               </View>
-              
               <View style={styles.total}>
                 <View style={{flexDirection:"row"}}>
                   <View style={{flexDirection: "column"}}>
@@ -660,7 +619,8 @@ const Deposit = () => {
           }  
           </View>
         </View>
-         </View>
+      </View>
+      </KeyboardAvoidingView>
     </SafeAreaView> 
   );
 };

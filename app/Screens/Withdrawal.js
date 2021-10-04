@@ -5,7 +5,6 @@
  * @format
  * @flow strict-local
  */
-
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
@@ -19,13 +18,12 @@ import {
   InteractionManager,
   RefreshControl,
   TouchableOpacity,
+  Animated, Keyboard,
   KeyboardAvoidingView
 } from 'react-native';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 //import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
-import {
-  heightPercentageToDP,
-  widthPercentageToDP,
-} from "react-native-responsive-screen";
+import {heightPercentageToDP, widthPercentageToDP,} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -34,7 +32,7 @@ import CheckBox from "@react-native-community/checkbox";
 import DropDownPicker from 'react-native-dropdown-picker';
 import Spinner from "react-native-loading-spinner-overlay";
 import CustomHeader from "../Components/CustomHeader";
-import TableRowEditWithdra from "../Components/TableRowEditWithdra";
+import TableRowEditWithdra from "../Components/TableRowEditWithdrawel";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
@@ -42,7 +40,13 @@ import { WalletColors } from "../assets/Colors.js";
 import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
+import Screensize from '../lib/screensize';
 import Format from "../lib/format";
+import Picker from '../lib/picker';
+import { marginTop } from 'styled-system';
+
+const screensize = new Screensize();
+const picker = new Picker();
 
 const format = new Format();
 const request = new Request();
@@ -75,6 +79,7 @@ const Withdrawal = () => {
   const [pickerUserList, setPickerUserList] = useStateIfMounted([]);
   const [tableData, setTableData] = useStateIfMounted([]);
   const [tableEditData, setTableEditData] = useStateIfMounted([]);
+  const [keyboard, setKeyboard] = useState(Boolean);
   const [refreshing, setRefreshing] = React.useState(false);
 
   const backgroundStyle = {
@@ -101,6 +106,29 @@ const Withdrawal = () => {
     Header: true
   };
 
+  // useEffect(() => {
+  //   Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
+  //   Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+    
+  //   return () => {
+  //     //Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
+  //     Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
+  //   };
+  // }, []);
+
+  // const _keyboardDidShow = () => {
+  //   setKeyboard(true);
+  // };
+
+  // const _keyboardDidHide = () => {
+  //   setKeyboard(false);
+  // };
+
+  // const HideKeyboard = ({ children }) => (
+  //   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
+  //     {children}
+  //   </TouchableWithoutFeedback>
+  // );
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   }
@@ -201,6 +229,7 @@ const Withdrawal = () => {
   const handleCheckBox = () => {
     renderTablesData();
   }
+
   const renderTablesData = async () => {
     onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
@@ -323,7 +352,12 @@ const Withdrawal = () => {
   );
 
   return (
+
     <SafeAreaView style={styles.header}>
+      <KeyboardAvoidingView style={styles.header}
+      behavior='absolute' 
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      enabled={true}>          
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
@@ -332,30 +366,11 @@ const Withdrawal = () => {
         textStyle={styles.spinnerTextStyle}
       />
       <View style={styles.header}>
-      {authType == ("admin" || "subadmin") ?
-        <View style={styles.admin_deposit_withdrawel_header}>
+        <View style={(authType == ("admin" || "subadmin") ?styles.admin_deposit_withdrawel_header : styles.header)}>
           <CustomHeader 
             title={"Withdrawal"}
           /> 
-          <View style={styles.admin_deposit_withdrawel_nav_top}>
-          <CommonTop
-            admin={authType == ("admin" || "subadmin") ? true : false}
-            LeftButton={LeftButton}
-            RightButton={RightButton}
-            handleLeftButton={handleLeftButton}
-            handleRightButton={handleRightButton}
-            handleWalLeftButton={handleWalLeftButton}
-            handleWalMidButton={handleWalMidButton}
-            handleWalRightButton={handleWalRightButton}
-          />
-          </View> 
-        </View>
-        :
-        <View style={styles.header}>
-          <CustomHeader 
-            title={"Withdrawal"}
-          /> 
-          <View style={styles.deposit_withdrawel_nav_top}>
+          <View style={(authType == ("admin" || "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
             <CommonTop
               admin={authType == ("admin" || "subadmin") ? true : false}
               LeftButton={LeftButton}
@@ -368,32 +383,31 @@ const Withdrawal = () => {
             />
           </View> 
         </View>
-      }
+        
         <View style={styles.deposit_withdrawel_treport_body}>
+
           {authType == "client" ? 
-            <View style={styles.client_picker}>
-              <View style={styles.picker}>
-                <DropDownPicker
-                  style={styles.client_dropdownpicker}
-                  onChangeValue={(value) => {
-                    setPickerUser(value); 
-                    renderTablesData();
-                  }}
-                  open={openClientPicker}
-                  value={pickerUser}
-                  items={pickerUserList}
-                  setOpen={setOpenClientPicker}
-                  setValue={setPickerUser}
-                  setItems={setPickerUserList}
-                  textStyle={{fontSize: RFValue(13)}}
-                  labelStyle={{fontWeight: "bold"}}
-                />
-              </View>
+          <View style={picker.smallclientpicker() || picker.mediumclientpicker() || picker.largeclientpicker()}>
+          <DropDownPicker
+            style={picker.smallclientdpicker() || picker.mediumclientdpicker() || picker.largeclientdpicker()}
+                onChangeValue={(value) => {
+                  setPickerUser(value); 
+                  renderTablesData();
+                }}
+                open={openClientPicker}
+                value={pickerUser}
+                items={pickerUserList}
+                setOpen={setOpenClientPicker}
+                setValue={setPickerUser}
+                setItems={setPickerUserList}
+                textStyle={{fontSize: RFValue(13)}}
+                labelStyle={{fontWeight: "bold"}}
+              />
             </View>
           :
             [authType == ("admin" || "subadmin") ? 
               <View style={{flexDirection: "row"}}>
-                <View style={styles.picker_admin}>
+                <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
@@ -410,7 +424,7 @@ const Withdrawal = () => {
                     labelStyle={{fontWeight: "bold"}}
                   />
                 </View>
-                <View style={styles.picker_admin}>
+                <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                   <DropDownPicker
                     style={{height: heightPercentageToDP("5%")}}
                     onChangeValue={(value) => {
@@ -426,7 +440,8 @@ const Withdrawal = () => {
                     textStyle={{fontSize: RFValue(13)}}
                     labelStyle={{fontWeight: "bold"}}
                   />
-                </View>
+                  </View>
+                {/* </View> */}
               </View>
             :
               <View/>
@@ -528,25 +543,27 @@ const Withdrawal = () => {
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
-            <View style={styles.agent_container}>
-              <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-                {tableEditData ?
-                  <FlatList
-                    data={tableEditData}
-                    renderItem={renderItemEdit}
-                    keyExtractor={item => item.id}
-                    refreshControl={
-                      <RefreshControl
-                        refreshing={refreshing}
-                        onRefresh={onRefresh}
-                      />
-                    }
-                  />
-                :
-                  <></>
-                }
+              <View style={styles.agent_container}>
+                <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+                  {tableEditData ?
+                  <KeyboardAwareScrollView style={styles.header}>
+                    <FlatList
+                      data={tableEditData}
+                      renderItem={renderItemEdit}
+                      keyExtractor={item => item.id}
+                      refreshControl={
+                        <RefreshControl
+                          refreshing={refreshing}
+                          onRefresh={onRefresh}
+                        />
+                      }
+                    />
+                    </KeyboardAwareScrollView>
+                  :
+                    <></>
+                  }
+                </View>
               </View>
-            </View>
             :
             <>
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
@@ -612,9 +629,11 @@ const Withdrawal = () => {
               </View>
             </>
           }
-          </View>
         </View>
-    </SafeAreaView>
+      </View>
+      </KeyboardAvoidingView>
+    </SafeAreaView> 
+
   );
 };
 
