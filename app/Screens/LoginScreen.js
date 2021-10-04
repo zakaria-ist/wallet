@@ -24,6 +24,7 @@ import {
   TouchableOpacity,
   InteractionManager,
   Keyboard,
+  KeyboardAvoidingView,
   ScrollView
 } from 'react-native';
 import { WalletColors } from "../assets/Colors.js";
@@ -41,6 +42,7 @@ import { useStateIfMounted } from 'use-state-if-mounted';
 import Screensize from '../lib/screensize.js';
 import styles from '../lib/global_css.js';
 import Spinner from "react-native-loading-spinner-overlay";
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -235,7 +237,14 @@ const LoginScreen = ({navigation}) => {
   }
   
   return (
-    <ScrollView style={styles.header}>
+    <KeyboardAwareScrollView style={styles.header}>
+      <KeyboardAvoidingView style={styles.header}
+     // behavior='absolute' 
+      //behavior={Platform.OS === "ios" ? "position" : null}
+     // behavior="padding"
+      //keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      enabled={true}>         
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
@@ -289,7 +298,8 @@ const LoginScreen = ({navigation}) => {
           </View>
         </TouchableOpacity>)}
       />
-    </ScrollView>
+      </KeyboardAvoidingView>
+    </KeyboardAwareScrollView>
   );
 };
 

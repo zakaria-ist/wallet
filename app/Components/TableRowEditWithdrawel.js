@@ -181,8 +181,13 @@ const TableRowEditWithdra = ({rowData}) => {
       // scrollEnabled={false}
       // //behavior={Platform.OS === 'ios' ? 'padding' : null} enabled 
       // >
-      <KeyboardAvoidingView style={{flex:1}}>
-      {/* <KeyboardAvoidingView style={{position: 'absolute', left: 0, right: 0, bottom: 0}} behavior="position"> */}
+      //{/* <KeyboardAvoidingView style={{flexGrow:1}}>
+      //<KeyboardAvoidingView style={{position: 'absolute', left: 0, right: 0, bottom: 0}} behavior="position"> */}
+      <KeyboardAvoidingView style={styles.header}
+      //behavior='padding' 
+     // behavior={Platform.OS === "ios" ? "position" : null}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      enabled={true}>  
       <View style={styles.table_view_rectangle}>
         <View style={styles.table_view_left}>
           <View style={styles.view_lineNumber}>
@@ -200,8 +205,8 @@ const TableRowEditWithdra = ({rowData}) => {
           </View>
         </View>
       </View>
-       {/* </KeyboardAvoidingView> */}
-       </KeyboardAvoidingView>
+     </KeyboardAvoidingView> 
+     //  </KeyboardAvoidingView>*/}
     );
   })
 };

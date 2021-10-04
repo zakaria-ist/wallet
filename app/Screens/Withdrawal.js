@@ -43,6 +43,7 @@ import KTime from '../lib/formatTime';
 import Screensize from '../lib/screensize';
 import Format from "../lib/format";
 import Picker from '../lib/picker';
+import { marginTop } from 'styled-system';
 
 const screensize = new Screensize();
 const picker = new Picker();
@@ -351,9 +352,12 @@ const Withdrawal = () => {
   );
 
   return (
-    //  <KeyboardAvoidingView style={styles.header}>
-            //   <ScrollView style={styles.header}>
+
     <SafeAreaView style={styles.header}>
+      <KeyboardAvoidingView style={styles.header}
+      behavior='absolute' 
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      enabled={true}>          
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
@@ -627,8 +631,9 @@ const Withdrawal = () => {
           }
         </View>
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView> 
- //</ScrollView>
+
   );
 };
 

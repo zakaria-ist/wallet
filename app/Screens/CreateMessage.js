@@ -251,6 +251,10 @@ const CreateMessage = () => {
 
   return (
     <SafeAreaView style={styles.header}>
+      <KeyboardAvoidingView style={styles.header}
+      behavior={Platform.OS === "ios" ? "padding" : "height"}
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      enabled={true}>   
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
@@ -384,6 +388,7 @@ const CreateMessage = () => {
           </View>
           </KeyboardAvoidingView>
         </Modal>
+      </KeyboardAvoidingView>
     </SafeAreaView>
   );
 };

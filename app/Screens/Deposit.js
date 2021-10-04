@@ -312,6 +312,10 @@ const Deposit = () => {
  
   return (
     <SafeAreaView style={styles.header}> 
+      <KeyboardAvoidingView style={styles.header}
+      behavior='absolute' 
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      enabled={true}>   
       <View style={styles.header}>
         <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
         <Spinner
@@ -616,6 +620,7 @@ const Deposit = () => {
           </View>
         </View>
       </View>
+      </KeyboardAvoidingView>
     </SafeAreaView> 
   );
 };
