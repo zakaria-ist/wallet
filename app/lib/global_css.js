@@ -536,7 +536,7 @@ const styles = StyleSheet.create({
 
   //TodaysReport
   today_report_nav_top:{
-    flex:2.3, 
+    flex:2.4, 
     margin:heightPercentageToDP("1%"),
     flexDirection:"row", 
     alignSelf:"center",
