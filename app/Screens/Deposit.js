@@ -328,11 +328,11 @@ const Deposit = () => {
         />
       
         <View style={styles.header}>
-          <View style={(authType == ("admin" || "subadmin") ?styles.admin_deposit_withdrawel_header : styles.header)}>
+          <View style={authType == ("admin" || "subadmin") ?styles.admin_deposit_withdrawel_header : styles.header}>
             <CustomHeader 
               title={"Deposit"}
             /> 
-              <View style={(authType == ("admin" || "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
+              <View style={authType == ("admin" || "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top}>
                 <CommonTop
                   admin={authType == ("admin" || "subadmin") ? true : false}
                   LeftButton={LeftButton}

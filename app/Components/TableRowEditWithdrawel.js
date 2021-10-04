@@ -169,20 +169,6 @@ const TableRowEditWithdra = ({rowData}) => {
 
   return useMemo(() => {
     return (
-      // <KeyboardAwareScrollView style={{flex:1}}
-      // behavior='padding'
-      // keyboardVerticalOffset={
-      //   Platform.select({
-      //     ios: () => -100,
-      //     android: () => -400
-      //   })()
-      // }
-      // resetScrollToCoords={{ x: 0, y: 0 }}
-      // scrollEnabled={false}
-      // //behavior={Platform.OS === 'ios' ? 'padding' : null} enabled 
-      // >
-      //{/* <KeyboardAvoidingView style={{flexGrow:1}}>
-      //<KeyboardAvoidingView style={{position: 'absolute', left: 0, right: 0, bottom: 0}} behavior="position"> */}
       <KeyboardAvoidingView style={styles.header}
       //behavior='padding' 
      // behavior={Platform.OS === "ios" ? "position" : null}
@@ -206,7 +192,6 @@ const TableRowEditWithdra = ({rowData}) => {
         </View>
       </View>
      </KeyboardAvoidingView> 
-     //  </KeyboardAvoidingView>*/}
     );
   })
 };

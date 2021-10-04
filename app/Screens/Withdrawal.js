@@ -106,29 +106,6 @@ const Withdrawal = () => {
     Header: true
   };
 
-  // useEffect(() => {
-  //   Keyboard.addListener('keyboardDidShow', _keyboardDidShow);
-  //   Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-    
-  //   return () => {
-  //     //Keyboard.removeListener('keyboardDidShow', _keyboardDidShow);
-  //     Keyboard.addListener('keyboardDidHide', _keyboardDidHide);
-  //   };
-  // }, []);
-
-  // const _keyboardDidShow = () => {
-  //   setKeyboard(true);
-  // };
-
-  // const _keyboardDidHide = () => {
-  //   setKeyboard(false);
-  // };
-
-  // const HideKeyboard = ({ children }) => (
-  //   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-  //     {children}
-  //   </TouchableWithoutFeedback>
-  // );
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
   }
@@ -338,6 +315,7 @@ const Withdrawal = () => {
         setTableData(msg_list);
         setAcceptedTotal(accepted_total);
         setPendingTotal(pending_total);
+        console.log(msg_list);
       }
     }
     onSpinnerChanged(false);
