@@ -18,7 +18,7 @@ import {
   InteractionManager,
   KeyboardAvoidingView,
 } from 'react-native';
-
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {heightPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -300,6 +300,7 @@ const Deposit = () => {
         setTableData(msg_list);
         setAcceptedTotal(accepted_total);
         setPendingTotal(pending_total);
+        console.log(msg_list)
       }
     }
     onSpinnerChanged(false);
@@ -325,13 +326,12 @@ const Deposit = () => {
           // textContent={"Loading..."}
           textStyle={styles.spinnerTextStyle}
         />
-      
         <View style={styles.header}>
-          <View style={((authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_header : styles.header)}>
+          <View style={(authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_header : styles.header}>
             <CustomHeader 
               title={"Deposit"}
             /> 
-              <View style={((authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top)}>
+              <View style={(authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top}>
                 <CommonTop
                   admin={(authType == "admin" || authType == "subadmin") ? true : false}
                   LeftButton={LeftButton}
@@ -544,6 +544,7 @@ const Deposit = () => {
              <View style={styles.agent_container}>
                 <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                   {tableEditData ?
+                  <KeyboardAwareScrollView style={styles.header}>
                     <FlatList
                       data={tableEditData}
                       renderItem={renderItemEdit}
@@ -555,6 +556,7 @@ const Deposit = () => {
                         />
                       }
                     />
+                  </KeyboardAwareScrollView>
                   :
                     <></>
                   }

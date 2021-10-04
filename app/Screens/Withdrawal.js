@@ -315,6 +315,7 @@ const Withdrawal = () => {
         setTableData(msg_list);
         setAcceptedTotal(accepted_total);
         setPendingTotal(pending_total);
+        console.log(msg_list);
       }
     }
     onSpinnerChanged(false);
@@ -538,7 +539,7 @@ const Withdrawal = () => {
                         />
                       }
                     />
-                    </KeyboardAwareScrollView>
+                  </KeyboardAwareScrollView>
                   :
                     <></>
                   }
