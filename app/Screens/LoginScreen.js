@@ -201,6 +201,7 @@ const LoginScreen = ({navigation}) => {
       // navigate to user pages
       navigation.replace('DrawerStack');
     } else {
+      onSpinnerChanged(false);
       alert.warning("Sign in is unsuccessful. Check the username or password. ");
     }
   }
@@ -239,22 +240,15 @@ const LoginScreen = ({navigation}) => {
   return (
     <KeyboardAwareScrollView style={styles.header}>
       <KeyboardAvoidingView style={styles.header}
-     // behavior='absolute' 
-      //behavior={Platform.OS === "ios" ? "position" : null}
-     // behavior="padding"
-      //keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
-      behavior={Platform.OS === "ios" ? "padding" : "height"}
-      enabled={true}>         
-      <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
-      <Spinner
-        visible={spinner}
-        // textContent={"Loading..."}
-        textStyle={styles.spinnerTextStyle}
-      />
-      <FlatList 
-        data={[{key: 'item1' }]}
-        renderItem={() => (
-        <TouchableOpacity>
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        enabled={true}>     
+        <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
+        <Spinner
+          visible={spinner}
+          // textContent={"Loading..."}
+          textStyle={styles.spinnerTextStyle}
+        />
+        <ScrollView>
           <View style={styles.header}>
             <View style={styles.view_logo}>
               <View style={styles.view_logo_logo}>
@@ -282,9 +276,6 @@ const LoginScreen = ({navigation}) => {
                 placeholder={'Password'}
                 placeholderTextColor={WalletColors.grey}
                 secureTextEntry={true}
-                onSubmitEditing={handleKeyDown}
-                blurOnSubmit={true}
-                returnKeyLabel='go'
               />
               <TouchableOpacity
                 onPress={handleLogin}>
@@ -296,8 +287,7 @@ const LoginScreen = ({navigation}) => {
               </TouchableOpacity>
             </View>
           </View>
-        </TouchableOpacity>)}
-      />
+        </ScrollView>
       </KeyboardAvoidingView>
     </KeyboardAwareScrollView>
   );
