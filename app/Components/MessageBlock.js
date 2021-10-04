@@ -39,7 +39,7 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
         <View style={styles.view_message_rectangle}>
           <View style={styles.view_message_left}>
             <View style={styles.view_lineNumber}>
-              <Text style={styles.view_message_text}>{lineNumber}. </Text>
+              <Text style={styles.view_message_dot}>{lineNumber}. </Text>
             </View>
           </View>
           <View style={styles.view_message_right}>

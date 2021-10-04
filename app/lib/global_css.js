@@ -1,11 +1,8 @@
-import {
-    StyleSheet,
-    Dimensions
-} from 'react-native';
+import {StyleSheet,Dimensions} from 'react-native';
 import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { WalletColors } from "../assets/Colors.js";
-import { RFValue } from "react-native-responsive-fontsize";
+import {Colors} from 'react-native/Libraries/NewAppScreen';
+import {WalletColors} from "../assets/Colors.js";
+import {RFValue} from "react-native-responsive-fontsize";
 
 const windowHeight = Dimensions.get('window').height;
 
@@ -229,7 +226,8 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("25%"),
     marginTop: heightPercentageToDP("2%"),
     padding: heightPercentageToDP("1%"),
-    paddingLeft: heightPercentageToDP("1.5%"),
+    paddingLeft: heightPercentageToDP("2.5%"),
+    paddingRight: heightPercentageToDP("2.5%"),
     borderColor: WalletColors.Wblue,
     borderRadius: 15,
     borderStyle: 'solid',
@@ -289,11 +287,11 @@ const styles = StyleSheet.create({
     alignSelf:"center",
   },
   client_ss_picker: {
-    width: widthPercentageToDP("32%"),
+    width: widthPercentageToDP("30%"),
     marginBottom: heightPercentageToDP("1%"), 
   },
   client_ss_dropdownpicker: {
-    width: widthPercentageToDP("32%"),
+    width: widthPercentageToDP("30%"),
     height: heightPercentageToDP("5%")
   },
   client_ms_picker: {
@@ -316,7 +314,6 @@ const styles = StyleSheet.create({
   },
   picker_ss_admin: {
     flex:0.41,
-    //marginTop: heightPercentageToDP("0.5%"),
     marginBottom:heightPercentageToDP("0.5%"), 
     flexDirection: "row",
     alignItems: "center",
@@ -552,7 +549,6 @@ const styles = StyleSheet.create({
   summary_report_nav_top:{
     flex:1.3, 
     marginTop:heightPercentageToDP("1.4%"),
-   // marginBottom:heightPercentageToDP("1.5%"),
     flexDirection:"row", 
     alignSelf:"center"
   },
@@ -670,6 +666,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+  view_message_dot:{
+    fontSize: RFValue(13),
+  },
   view_message_text:{
     fontSize: RFValue(13),
     margin: heightPercentageToDP("1%"),
@@ -678,8 +677,8 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("45%"),
     height: heightPercentageToDP("4%"),
     padding: heightPercentageToDP("0.5%"),
-    paddingLeft: heightPercentageToDP("1%"),
-    paddingRight: heightPercentageToDP("1%"),
+    paddingLeft: heightPercentageToDP("1.5%"),
+    paddingRight: heightPercentageToDP("1.5%"),
     borderRadius: 20,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wblue,
