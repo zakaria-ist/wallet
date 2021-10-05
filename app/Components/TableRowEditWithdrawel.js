@@ -170,9 +170,6 @@ const TableRowEditWithdra = ({rowData}) => {
   return useMemo(() => {
     return (
       <KeyboardAvoidingView style={styles.header}
-      //behavior='padding' 
-     // behavior={Platform.OS === "ios" ? "position" : null}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
       enabled={true}>  
       <View style={styles.table_view_rectangle}>
         <View style={styles.table_view_left}>

@@ -7,17 +7,18 @@
  */
 import React, {useState, useEffect, useCallback}  from 'react';
 import {
-  SafeAreaView,
   FlatList,
   StatusBar,
-  StyleSheet,
   Text,
   RefreshControl,
   useColorScheme,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
   InteractionManager,
   KeyboardAvoidingView,
 } from 'react-native';
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {heightPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
@@ -119,13 +120,11 @@ const Deposit = () => {
       });
 
       AsyncStorage.getItem('token').then((token) => {
-        // setToken(token);
         authToken = token;
       })
 
       AsyncStorage.getItem('authType').then((auth_type) => {
         if (auth_type != null) {
-          // setAuthType(auth_type);
           authType = auth_type;
           transType = "Today";
           if (auth_type == 'admin' || auth_type == 'subadmin') {
@@ -170,31 +169,26 @@ const Deposit = () => {
   }, []);
 
   const handleLeftButton = () => {
-    // setTransType("Yesterday");
     transType = "Yesterday";
     renderTablesData();
   }
 
   const handleRightButton = () => {
-    // setTransType("Today");
     transType = "Today";
     renderTablesData();
   }
 
   const handleWalLeftButton = () => {
-    // setWalletType(1);
     walletType = 1;
     renderTablesData();
   }
 
   const handleWalMidButton = () => {
-    // setWalletType(2);
     walletType = 2;
     renderTablesData();
   }
 
   const handleWalRightButton = () => {
-    // setWalletType(3);
     walletType = 3;
     renderTablesData();
   }
@@ -231,7 +225,7 @@ const Deposit = () => {
         if (rejected && msg.status == 'rejected') return true;
         if (pending && msg.status == 'pending') return true;
         if (noStatus && msg.status == null) return true;
-        // if (msg.status == 'new') return true;
+         //if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter
@@ -312,17 +306,20 @@ const Deposit = () => {
         setTableData(msg_list);
         setAcceptedTotal(accepted_total);
         setPendingTotal(pending_total);
-        console.log(msg_list)
       }
     }
     onSpinnerChanged(false);
   }
 
   const renderItem = ({ item }) => (
-    <TableRow rowData={item} />
+    <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
+      <TableRow rowData={item} />
+    </TouchableOpacity> 
   );
   const renderItemEdit = ({ item }) => (
-    <TableRowEditDeposit rowData={item} />
+    <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
+      <TableRowEditDeposit rowData={item} />
+    </TouchableOpacity> 
   );
 
   const onWalletPickerOpen = useCallback(() => {
@@ -339,7 +336,7 @@ const Deposit = () => {
   }, []);
  
   return (
-    <SafeAreaView style={styles.header}> 
+   <TouchableWithoutFeedback onPress={() => onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} style={styles.header}> 
       <KeyboardAvoidingView style={styles.header}
       behavior='absolute' 
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
@@ -413,7 +410,7 @@ const Deposit = () => {
                       placeholder="Clients"
                       onOpen={onGroupPickerOpen}
                     />
-                  </View>
+                 </View>
                   <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                     <DropDownPicker
                       style={{height: heightPercentageToDP("5%")}}
@@ -650,10 +647,10 @@ const Deposit = () => {
             </>
           }  
           </View>
-        </View>
+        </View> 
       </View>
       </KeyboardAvoidingView>
-    </SafeAreaView> 
+    </TouchableWithoutFeedback> 
   );
 };
 

@@ -30,7 +30,6 @@ import Spinner from "react-native-loading-spinner-overlay";
 import CustomHeader from "../Components/CustomHeader";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
