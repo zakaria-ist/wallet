@@ -277,7 +277,7 @@ const Deposit = () => {
           if (msg.status == 'pending') {
             pending_total += amount;
           }
-          else {
+          else if (msg.status == 'accepted') {
             accepted_total += amount;
           }
           if (authType == 'client' || authType == 'admin' || authType == 'subadmin') {

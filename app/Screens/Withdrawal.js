@@ -292,7 +292,7 @@ const Withdrawal = () => {
           if (msg.status == 'pending') {
             pending_total += amount;
           }
-          else {
+          else if (msg.status == 'accepted') {
             accepted_total += amount;
           }
           if (authType == 'agent') {
