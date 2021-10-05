@@ -11,18 +11,14 @@ import {
   FlatList,
   StatusBar,
   Text,
-  ScrollView,
-  TextInput,
   useColorScheme,
   View,
   InteractionManager,
   RefreshControl,
-  TouchableOpacity,
-  Animated, Keyboard,
+  TouchableWithoutFeedback,
   KeyboardAvoidingView
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-//import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {heightPercentageToDP, widthPercentageToDP,} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -43,7 +39,6 @@ import KTime from '../lib/formatTime';
 import Screensize from '../lib/screensize';
 import Format from "../lib/format";
 import Picker from '../lib/picker';
-import { marginTop } from 'styled-system';
 
 const screensize = new Screensize();
 const picker = new Picker();
@@ -132,13 +127,11 @@ const Withdrawal = () => {
       });
 
       AsyncStorage.getItem('token').then((token) => {
-        // setToken(token);
         authToken = token;
       })
 
       AsyncStorage.getItem('authType').then((auth_type) => {
         if (auth_type != null) {
-          // setAuthType(auth_type);
           authType = auth_type;
           transType = "Today";
           if (auth_type == 'admin' || auth_type == 'subadmin') {
@@ -183,31 +176,26 @@ const Withdrawal = () => {
   }, []);
 
   const handleLeftButton = () => {
-    // setTransType("Yesterday");
     transType = "Yesterday";
     renderTablesData();
   }
 
   const handleRightButton = () => {
-    // setTransType("Today");
     transType = "Today";
     renderTablesData();
   }
 
   const handleWalLeftButton = () => {
-    // setWalletType(1);
     walletType = 1;
     renderTablesData();
   }
 
   const handleWalMidButton = () => {
-    // setWalletType(2);
     walletType = 2;
     renderTablesData();
   }
 
   const handleWalRightButton = () => {
-    // setWalletType(3);
     walletType = 3;
     renderTablesData();
   }
@@ -357,7 +345,7 @@ const Withdrawal = () => {
 
   return (
 
-    <SafeAreaView style={styles.header}>
+    <TouchableWithoutFeedback onPress={() => onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} style={styles.header}>
       <KeyboardAvoidingView style={styles.header}
       behavior='absolute' 
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
@@ -663,8 +651,7 @@ const Withdrawal = () => {
         </View>
       </View>
       </KeyboardAvoidingView>
-    </SafeAreaView> 
-
+    </TouchableWithoutFeedback>
   );
 };
 

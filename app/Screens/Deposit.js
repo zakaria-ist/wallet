@@ -14,6 +14,7 @@ import {
   Text,
   RefreshControl,
   useColorScheme,
+  TouchableWithoutFeedback,
   View,
   InteractionManager,
   KeyboardAvoidingView,
@@ -37,6 +38,7 @@ import Request from "../lib/request";
 import KTime from '../lib/formatTime';
 import Format from "../lib/format";
 import Picker from '../lib/picker';
+import { Touchable } from 'react-native';
 
 const format = new Format();
 const request = new Request();
@@ -119,13 +121,11 @@ const Deposit = () => {
       });
 
       AsyncStorage.getItem('token').then((token) => {
-        // setToken(token);
         authToken = token;
       })
 
       AsyncStorage.getItem('authType').then((auth_type) => {
         if (auth_type != null) {
-          // setAuthType(auth_type);
           authType = auth_type;
           transType = "Today";
           if (auth_type == 'admin' || auth_type == 'subadmin') {
@@ -170,31 +170,26 @@ const Deposit = () => {
   }, []);
 
   const handleLeftButton = () => {
-    // setTransType("Yesterday");
     transType = "Yesterday";
     renderTablesData();
   }
 
   const handleRightButton = () => {
-    // setTransType("Today");
     transType = "Today";
     renderTablesData();
   }
 
   const handleWalLeftButton = () => {
-    // setWalletType(1);
     walletType = 1;
     renderTablesData();
   }
 
   const handleWalMidButton = () => {
-    // setWalletType(2);
     walletType = 2;
     renderTablesData();
   }
 
   const handleWalRightButton = () => {
-    // setWalletType(3);
     walletType = 3;
     renderTablesData();
   }
@@ -312,7 +307,6 @@ const Deposit = () => {
         setTableData(msg_list);
         setAcceptedTotal(accepted_total);
         setPendingTotal(pending_total);
-        console.log(msg_list)
       }
     }
     onSpinnerChanged(false);
@@ -339,7 +333,7 @@ const Deposit = () => {
   }, []);
  
   return (
-    <SafeAreaView style={styles.header}> 
+    <TouchableWithoutFeedback onPress={() => onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} style={styles.header}> 
       <KeyboardAvoidingView style={styles.header}
       behavior='absolute' 
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
@@ -413,7 +407,7 @@ const Deposit = () => {
                       placeholder="Clients"
                       onOpen={onGroupPickerOpen}
                     />
-                  </View>
+                 </View>
                   <View style={picker.smalladminpicker() || picker.mediumadminpicker() || picker.largeadminpicker()}>
                     <DropDownPicker
                       style={{height: heightPercentageToDP("5%")}}
@@ -653,7 +647,7 @@ const Deposit = () => {
         </View>
       </View>
       </KeyboardAvoidingView>
-    </SafeAreaView> 
+    </TouchableWithoutFeedback> 
   );
 };
 
