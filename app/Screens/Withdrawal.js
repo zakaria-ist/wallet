@@ -527,8 +527,22 @@ const Withdrawal = () => {
                   onChange={handleCheckBox}
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
-                 </View>
               </View>
+              {[(authType == "client") ?
+              <></>
+              :
+              <View style={styles.checkboxContainer}> 
+                  <Text style={styles.label}>No Status</Text>
+                  <CheckBox
+                    value={noStatus}
+                    onValueChange={setNoStatus}
+                    style={styles.checkbox}
+                    onChange={handleCheckBox}
+                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                  />
+                </View>
+              ]}
+            </View>
               {transType == "Today" ?
                 <View style={styles.checkboxContainer}>
                   <Text style={styles.label}>Pending</Text>
@@ -596,8 +610,6 @@ const Withdrawal = () => {
             ]
           :
             <>
-            {/* {[transType == 'Today' ? 
-            <View style={styles.header}> */}
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                 {tableData ?
                   <FlatList
