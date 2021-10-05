@@ -66,8 +66,8 @@ const Withdrawal = () => {
   const [noStatus, setNoStatus] = useStateIfMounted(true);
   const [pending, setPending] = useStateIfMounted(true);
   const [accepted, setAccepted] = useStateIfMounted(true);
-  const [pendingTotal, setPendingTotal] = useStateIfMounted("10,000");
-  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("20,000");
+  const [pendingTotal, setPendingTotal] = useStateIfMounted(0);
+  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted(0);
   const [openClientPicker, setOpenClientPicker] = useStateIfMounted(false);
   const [openAdminPickerGroup, setOpenAdminPickerGroup] = useStateIfMounted(false);
   const [openAdminPickerWallet, setOpenAdminPickerWallet] = useStateIfMounted(false);

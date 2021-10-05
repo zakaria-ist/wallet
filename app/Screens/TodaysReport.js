@@ -168,8 +168,10 @@ const TodaysReport = () => {
       let total = 0;
       msg_list.push(tableHeader);
       messages.map((msg) => {
-        let amount = parseFloat(String(msg.amount).replace(',', ''))
-        total += amount;
+        let amount = parseFloat(String(msg.amount).replace(',', ''));
+        if (msg.status == 'accepted') {
+          total += amount;
+        }
         // amount = format.separator(amount);
         let msg_data = {};
         if (purpose == 'deposit') {

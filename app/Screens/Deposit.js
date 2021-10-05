@@ -58,8 +58,8 @@ const Deposit = () => {
   const [accepted, setAccepted] = useStateIfMounted(true);
   const [rejected, setRejected] = useStateIfMounted(true);
   const [noStatus, setNoStatus] = useStateIfMounted(true);
-  const [pendingTotal, setPendingTotal] = useStateIfMounted("10,000");
-  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("20,000");
+  const [pendingTotal, setPendingTotal] = useStateIfMounted(0);
+  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted(0);
   const [openClientPicker, setOpenClientPicker] = useState(false);
   const [openAdminPickerGroup, setOpenAdminPickerGroup] = useStateIfMounted(false);
   const [openAdminPickerWallet, setOpenAdminPickerWallet] = useStateIfMounted(false);
