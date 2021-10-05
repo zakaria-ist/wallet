@@ -213,7 +213,7 @@ const Deposit = () => {
       authToken = await AsyncStorage.getItem('token');
     }
     if (authType == "") {
-      authToken = await AsyncStorage.getItem('authType');
+      authType = await AsyncStorage.getItem('authType');
     }
     const params = JSON.stringify(
       {
