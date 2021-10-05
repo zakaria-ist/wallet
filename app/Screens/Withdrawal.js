@@ -66,8 +66,8 @@ const Withdrawal = () => {
   const [noStatus, setNoStatus] = useStateIfMounted(true);
   const [pending, setPending] = useStateIfMounted(true);
   const [accepted, setAccepted] = useStateIfMounted(true);
-  const [pendingTotal, setPendingTotal] = useStateIfMounted("10,000");
-  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("20,000");
+  const [pendingTotal, setPendingTotal] = useStateIfMounted(0);
+  const [acceptedTotal, setAcceptedTotal] = useStateIfMounted(0);
   const [openClientPicker, setOpenClientPicker] = useStateIfMounted(false);
   const [openAdminPickerGroup, setOpenAdminPickerGroup] = useStateIfMounted(false);
   const [openAdminPickerWallet, setOpenAdminPickerWallet] = useStateIfMounted(false);
@@ -223,6 +223,12 @@ const Withdrawal = () => {
     if (transType == 'Yesterday') {
       when = 'yesterday';
     }
+    if (authToken == "") {
+      authToken = await AsyncStorage.getItem('token');
+    }
+    if (authType == "") {
+      authToken = await AsyncStorage.getItem('authType');
+    }
     const params = JSON.stringify(
       {
         token: authToken, 
@@ -240,8 +246,7 @@ const Withdrawal = () => {
         // if (rejected && msg.status == 'rejected') return true;
         if (pending && msg.status == 'pending') return true;
         if (noStatus && msg.status == null) return true;
-        if (msg.status == 'new') return true;
-
+        // if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter
@@ -292,7 +297,7 @@ const Withdrawal = () => {
           if (msg.status == 'pending') {
             pending_total += amount;
           }
-          else {
+          else if (msg.status == 'accepted') {
             accepted_total += amount;
           }
           if (authType == 'agent') {

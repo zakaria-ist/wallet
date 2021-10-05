@@ -136,7 +136,12 @@ const TodaysReport = () => {
     if (transType == 'withdrawal') {
       purpose = 'withdrawal';
     }
-    
+    if (authToken == "") {
+      authToken = await AsyncStorage.getItem('token');
+    }
+    if (authType == "") {
+      authToken = await AsyncStorage.getItem('authType');
+    }
     const params = JSON.stringify(
       {
         token: authToken, 
@@ -152,7 +157,7 @@ const TodaysReport = () => {
       let messages = content.msg.filter((msg) => {
         if (accepted && msg.status == 'accepted') return true;
         if (rejected && msg.status == 'rejected') return true;
-        if (msg.status == 'new') return true;
+        // if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter
@@ -164,8 +169,10 @@ const TodaysReport = () => {
       let total = 0;
       msg_list.push(tableHeader);
       messages.map((msg) => {
-        let amount = parseFloat(String(msg.amount).replace(',', ''))
-        total += amount;
+        let amount = parseFloat(String(msg.amount).replace(',', ''));
+        if (msg.status == 'accepted') {
+          total += amount;
+        }
         // amount = format.separator(amount);
         let msg_data = {};
         if (purpose == 'deposit') {

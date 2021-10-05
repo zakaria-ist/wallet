@@ -171,7 +171,8 @@ const styles = StyleSheet.create({
   },
   sumbit_confirm_text: {
     color: WalletColors.white,
-    fontSize: RFValue(14)
+    fontSize: RFValue(14),
+    alignSelf: "center"
   },
   insert_button: {
     width: widthPercentageToDP("30%"),

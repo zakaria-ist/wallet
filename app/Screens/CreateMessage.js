@@ -101,13 +101,15 @@ const CreateMessage = () => {
   }
 
   const sendMessageToAgent = async (message, url) => {
+    if (token == "") {
+      token = await AsyncStorage.getItem('token');
+    }
     onSpinnerChanged(true);
-    if (token) {
+    if (superiorAgent.username) {
       let purpose = "deposit";
       if (transType == "Withdrawal") {
         purpose = "withdrawal";
       }
-
       let params = JSON.stringify(
         {
           token: token, 
@@ -121,7 +123,6 @@ const CreateMessage = () => {
       );
       if (url) {
         const result = await request.post(url, params);
-        console.log('result', result);
         if (result.ok && result.message) {
           let agentName = result.myAgent;
           if (agentName && agentName != "") {
@@ -159,11 +160,16 @@ const CreateMessage = () => {
             console.log('results', results);
             return true;
           }
+        } else {
+          onSpinnerChanged(false);
         }
         return false;
+      } else {
+        onSpinnerChanged(false);
       }
     } else {
-      alert.warning("Empty token or Superior Agent is missing");
+      onSpinnerChanged(false);
+      alert.warning("Superior Agent is missing");
     }
     onSpinnerChanged(false);
     return false;
@@ -197,6 +203,8 @@ const CreateMessage = () => {
     if (sent) {
       onSpinnerChanged(false);
       alert.warning("Messages are sent.");
+    } else {
+      onSpinnerChanged(false);
     }
   }
 
@@ -207,27 +215,24 @@ const CreateMessage = () => {
 
   const handleConfirmInsert = () => {
     setIsModalVisible(!isModalVisible);
-    let messages = quickMessages.replace('==', ',').replace('=', ',').replace('--', ',').replace('-', ',');
-    let blocks = messages.split(',');
-    if (blocks.length && blocks[0] != "") {
-      let count = 1;
-      for(let i=0; i< blocks.length; i++) {
-        let code = blocks[i].trim();
-        i++;
-        let amount = blocks[i].trim();
-        let data = {
-            refCode: code,
-            amount: amount
-        }
-        if (count == 1) setMessageOne(data);
-        else if (count == 2) setMessageTwo(data);
-        else if (count == 3) setMessageThree(data);
-        else if (count == 4) setMessageFour(data);
-        else if (count == 5) setMessageFive(data);
-
-        count++;
+    var lines = quickMessages.split(/[\n\r]+/);
+    lines.map((line, index) => {
+      let messages = line.replace('==', ',').replace('=', ',').replace('--', ',').replace('-', ',');
+      let blocks = messages.split(',');
+      if (blocks.length && blocks[0] != "" && blocks[1] != "") {
+          let code = blocks[0].trim();
+          let amount = blocks[1].trim();
+          let data = {
+              refCode: code,
+              amount: amount
+          }
+          if (index == 0) setMessageOne(data);
+          else if (index == 1) setMessageTwo(data);
+          else if (index == 2) setMessageThree(data);
+          else if (index == 3) setMessageFour(data);
+          else if (index == 4) setMessageFive(data);
       }
-    }
+    })
   }
 
   const handleMessageOne = (data) => {
@@ -351,6 +356,7 @@ const CreateMessage = () => {
                   }}
                   textAlignVertical="top"
                   style={styles.modal_text_input}
+                  keyboardType={'numeric'}
                 ></TextInput>
                 <TouchableOpacity
                   style={styles.confirm}
