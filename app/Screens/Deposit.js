@@ -7,10 +7,8 @@
  */
 import React, {useState, useEffect, useCallback}  from 'react';
 import {
-  SafeAreaView,
   FlatList,
   StatusBar,
-  StyleSheet,
   Text,
   RefreshControl,
   useColorScheme,
@@ -38,7 +36,6 @@ import Request from "../lib/request";
 import KTime from '../lib/formatTime';
 import Format from "../lib/format";
 import Picker from '../lib/picker';
-import { Touchable } from 'react-native';
 
 const format = new Format();
 const request = new Request();
