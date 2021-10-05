@@ -22,10 +22,8 @@ const styles = StyleSheet.create({
   //DrawerStack
   drawercontainer: {
     flex: 1,
-    marginTop: 20,
-    marginBottom: 80,
-    justifyContent: 'center',
-    alignItems: 'center',
+    marginTop: heightPercentageToDP("1%"),
+    marginBottom: heightPercentageToDP("15%"),
     flexDirection: 'column'
   },
   drawerHeader: {
@@ -35,13 +33,13 @@ const styles = StyleSheet.create({
     marginBottom: heightPercentageToDP("5%")
   },
   drawerImage: {
+    alignSelf:'center',
     height: heightPercentageToDP("15%"),
     width: heightPercentageToDP("15%"),
     borderRadius: 75
   },
   userName: {
     paddingTop: 10,
-    alignContent:'center',
     alignSelf:'center',
   },
   drawerItem: {
@@ -51,9 +49,11 @@ const styles = StyleSheet.create({
     borderBottomColor:'#265684',
   },
   version: {
-    paddingTop: -10,
-    alignContent:'center',
-    alignSelf:'center',
+    paddingRight: heightPercentageToDP("2%"),
+    paddingTop: -heightPercentageToDP("1%"),
+    alignSelf:'flex-end',
+    fontSize: RFValue(10),
+    color: WalletColors.grey,
   },
 
   //Login Screen
@@ -169,7 +169,7 @@ const styles = StyleSheet.create({
     backgroundColor: WalletColors.Wgreen,
     alignItems: 'center'
   },
-  sumbit_button_text: {
+  sumbit_confirm_text: {
     color: WalletColors.white,
     fontSize: RFValue(14)
   },
@@ -226,8 +226,8 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("25%"),
     marginTop: heightPercentageToDP("2%"),
     padding: heightPercentageToDP("1%"),
-    paddingLeft: heightPercentageToDP("2.5%"),
-    paddingRight: heightPercentageToDP("2.5%"),
+    paddingLeft: heightPercentageToDP("2%"),
+    paddingRight: heightPercentageToDP("2%"),
     borderColor: WalletColors.Wblue,
     borderRadius: 15,
     borderStyle: 'solid',
@@ -246,12 +246,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   modal_title: {
-    width:widthPercentageToDP("25%"),
     alignSelf: "center",
-    color: WalletColors.black,
-  },
-  modal_text:{
-    marginTop: -heightPercentageToDP("2%"),
     marginLeft: heightPercentageToDP("0.8%"),
     color: WalletColors.black,
     fontSize: RFValue(18),
@@ -261,7 +256,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
     color: WalletColors.black,
     textAlign: "center",
-    marginTop:-heightPercentageToDP("3%")
+    marginTop:-heightPercentageToDP("4%")
   },
 
   //Deposit & Withdrawel Screen
