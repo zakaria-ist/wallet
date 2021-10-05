@@ -288,13 +288,12 @@ const CreateMessage = () => {
         </View>
         <View style={styles.message_quick_insert}>
           <TouchableOpacity
+            style={styles.insert_button}
             onPress={handleQuickInsert}
           >
-            <View style={styles.insert_button}>
-              <Text style={styles.insert_button_text}>
-                Quick Insert
-              </Text>
-            </View>
+            <Text style={styles.insert_button_text}>
+              Quick Insert
+            </Text>
           </TouchableOpacity>
         </View>
       </View>
@@ -317,7 +316,7 @@ const CreateMessage = () => {
             onPress={handleSubmit}
           >
             <View style={styles.sumbit_button}>
-              <Text style={styles.sumbit_button_text}>
+              <Text style={styles.sumbit_confirm_text}>
                 Submit
               </Text>
             </View>
@@ -335,18 +334,14 @@ const CreateMessage = () => {
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <View styles={styles.modal_header}>
-                  <View style={styles.modal_title}>
-                    <Text style={styles.modal_text}>Data Insert</Text>
-                  </View>
+                  <Text style={styles.modal_title}>Data Insert</Text>
                   <TouchableOpacity
+                    style={styles.modal_close}
                     onPress={() => {
                       handleQuickInsert()
                     }}
                   >
-                    <View
-                      style={styles.modal_close}>
                       <Fontisto name="close" color={WalletColors.red} size={heightPercentageToDP("3.5%")} />
-                    </View>
                   </TouchableOpacity>
                 </View>
                 <TextInput
@@ -364,24 +359,12 @@ const CreateMessage = () => {
                   keyboardType={'numeric'}
                 ></TextInput>
                 <TouchableOpacity
+                  style={styles.confirm}
                   onPress={() => {
                     handleConfirmInsert()
                   }}
                 >
-                  <View
-                    backgroundColor={WalletColors.Wgreen}
-                    style={styles.confirm}
-                  >
-                    <Text
-                      style={{
-                        alignSelf: "center",
-                        color: WalletColors.white,
-                        fontSize: RFValue(14)
-                      }}
-                    >
-                      Confirm
-                    </Text>
-                  </View>
+                  <Text style={styles.sumbit_confirm_text}>Confirm</Text>
                 </TouchableOpacity>
               </View>
             </View>

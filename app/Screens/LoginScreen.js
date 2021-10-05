@@ -48,7 +48,6 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 
-
 const request = new Request();
 const screensize = new Screensize();
 const alert = new CustomAlert();
