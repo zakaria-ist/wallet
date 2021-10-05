@@ -156,7 +156,7 @@ const TodaysReport = () => {
       let messages = content.msg.filter((msg) => {
         if (accepted && msg.status == 'accepted') return true;
         if (rejected && msg.status == 'rejected') return true;
-        if (msg.status == 'new') return true;
+        // if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter
