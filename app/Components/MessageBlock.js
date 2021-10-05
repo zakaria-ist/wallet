@@ -28,7 +28,7 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
   const handleChange = () => {
     let data = {
       refCode: refCode,
-      amount: amount
+      amount: amount.replace(/[^0-9]/g, '')
     }
     parentReference(data);
   }
