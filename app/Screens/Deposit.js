@@ -12,11 +12,13 @@ import {
   Text,
   RefreshControl,
   useColorScheme,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   View,
   InteractionManager,
   KeyboardAvoidingView,
 } from 'react-native';
+
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {heightPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
@@ -223,7 +225,7 @@ const Deposit = () => {
         if (rejected && msg.status == 'rejected') return true;
         if (pending && msg.status == 'pending') return true;
         if (noStatus && msg.status == null) return true;
-        // if (msg.status == 'new') return true;
+         //if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter
@@ -310,10 +312,14 @@ const Deposit = () => {
   }
 
   const renderItem = ({ item }) => (
-    <TableRow rowData={item} />
+    <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
+      <TableRow rowData={item} />
+    </TouchableOpacity> 
   );
   const renderItemEdit = ({ item }) => (
-    <TableRowEditDeposit rowData={item} />
+    <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
+      <TableRowEditDeposit rowData={item} />
+    </TouchableOpacity> 
   );
 
   const onWalletPickerOpen = useCallback(() => {
@@ -330,7 +336,7 @@ const Deposit = () => {
   }, []);
  
   return (
-    <TouchableWithoutFeedback onPress={() => onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} style={styles.header}> 
+   <TouchableWithoutFeedback onPress={() => onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} style={styles.header}> 
       <KeyboardAvoidingView style={styles.header}
       behavior='absolute' 
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
@@ -641,7 +647,7 @@ const Deposit = () => {
             </>
           }  
           </View>
-        </View>
+        </View> 
       </View>
       </KeyboardAvoidingView>
     </TouchableWithoutFeedback> 

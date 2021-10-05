@@ -7,7 +7,6 @@
  */
 import React, {useState, useEffect, useCallback}  from 'react';
 import {
-  SafeAreaView,
   FlatList,
   StatusBar,
   Text,
@@ -15,6 +14,7 @@ import {
   View,
   InteractionManager,
   RefreshControl,
+  TouchableOpacity,
   TouchableWithoutFeedback,
   KeyboardAvoidingView
 } from 'react-native';
@@ -36,11 +36,9 @@ import { WalletColors } from "../assets/Colors.js";
 import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
-import Screensize from '../lib/screensize';
 import Format from "../lib/format";
 import Picker from '../lib/picker';
 
-const screensize = new Screensize();
 const picker = new Picker();
 
 const format = new Format();
@@ -234,7 +232,7 @@ const Withdrawal = () => {
         // if (rejected && msg.status == 'rejected') return true;
         if (pending && msg.status == 'pending') return true;
         if (noStatus && msg.status == null) return true;
-        // if (msg.status == 'new') return true;
+         //if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter
@@ -324,12 +322,15 @@ const Withdrawal = () => {
   }
 
   const renderItem = ({ item }) => (
-    <TableRow rowData={item} />
+    <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
+      <TableRow rowData={item} />
+    </TouchableOpacity> 
   );
   const renderItemEdit = ({ item }) => (
-    <TableRowEditWithdra rowData={item} />
+    <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
+       <TableRowEditWithdra rowData={item} />
+    </TouchableOpacity> 
   );
-
   const onWalletPickerOpen = useCallback(() => {
     setOpenClientPicker(false);
     setOpenAdminPickerGroup(false);
@@ -344,7 +345,6 @@ const Withdrawal = () => {
   }, []);
 
   return (
-
     <TouchableWithoutFeedback onPress={() => onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} style={styles.header}>
       <KeyboardAvoidingView style={styles.header}
       behavior='absolute' 
@@ -524,16 +524,20 @@ const Withdrawal = () => {
               {[(authType == "client") ?
               <></>
               :
-              <View style={styles.checkboxContainer}> 
+              [transType == "Yesterday" ?
+                <View style={styles.checkboxContainer}> 
                   <Text style={styles.label}>No Status</Text>
-                  <CheckBox
-                    value={noStatus}
-                    onValueChange={setNoStatus}
-                    style={styles.checkbox}
-                    onChange={handleCheckBox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
+                    <CheckBox
+                      value={noStatus}
+                      onValueChange={setNoStatus}
+                      style={styles.checkbox}
+                      onChange={handleCheckBox}
+                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                    />
                 </View>
+               :
+                 <View style={styles.checkboxContainer}></View>
+              ]
               ]}
             </View>
               {transType == "Today" ?
