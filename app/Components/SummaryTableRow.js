@@ -6,7 +6,6 @@
  * @flow strict-local
  */
 import React, {useEffect, useMemo} from 'react';
-import {widthPercentageToDP} from "react-native-responsive-screen";
 import {useStateIfMounted} from "use-state-if-mounted";
 import {View, Text} from 'react-native';
 import Format from "../lib/format";
@@ -30,14 +29,16 @@ const SummaryTableRow = ({header, rowData}) => {
       handleDataCell(rowData);
     }
   }, [rowData]);
+ 
 
   const handleHeaderCell = (cellData) => {
     let testCell = [];
     testCell.push(
-      <Text style={styles.cell_summary_text_header}>{cellData[0]}</Text> 
+      <Text style={styles.cell_summary_text_header}>{cellData[0]}</Text>
     )
     return testCell;
   }
+
   const handleDataCell = (cellData) => {
     let cellLeft = [];
     let cellRight = [];
@@ -105,11 +106,11 @@ const SummaryTableRow = ({header, rowData}) => {
         </View>
       </View>
     )
-      
     setCellOne(cellLeft);
+
       cellRight.push(
         <Text style={styles.cell_text_bold}>{format.separator(group.total)}</Text>
-      );
+     );
       setCellTwo(cellRight)
     });
   }
