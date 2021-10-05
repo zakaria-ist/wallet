@@ -55,10 +55,6 @@ const TodaysReport = () => {
   const [tableData, setTableData] = useStateIfMounted([]);
   const [refreshing, setRefreshing] = React.useState(false);
 
-  const backgroundStyle = {
-    backgroundColor: Colors.white
-  };
-
   const LeftButton = "Deposit";
   const RightButton = "Withdrawal";
   const tableHeader = {
