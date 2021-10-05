@@ -11,6 +11,7 @@ const userSendMessageUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/userSe
 const pushNotificationUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/pushNotification";
 const agentReplyMessageUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/agentReplyMessage";
 const allMessageUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/readMessages";
+const statisticUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/adminGetStatistic";
 
 class Request {
   getAuthUrl() {
@@ -42,6 +43,9 @@ class Request {
   }
   getAllMessageUrl() {
     return allMessageUrl;
+  }
+  getStatisticUrl() {
+    return statisticUrl;
   }
   async get(url) {
     const response = await fetch(url, {
