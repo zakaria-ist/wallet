@@ -501,29 +501,16 @@ const Deposit = () => {
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
                 </View>
-                {transType == "Today" ? 
-                  <View style={styles.checkboxContainer}>
-                    <Text style={styles.label}>Rejected</Text>
-                    <CheckBox
-                      value={rejected}
-                      onValueChange={setRejected}
-                      style={styles.checkbox}
-                      onChange={handleCheckBox}
-                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                    />
-                  </View>
-                :
-                  <View style={styles.checkboxContainer}>
-                    <Text style={styles.label}>No Status</Text>
-                    <CheckBox
-                      value={noStatus}
-                      onValueChange={setNoStatus}
-                      style={styles.checkbox}
-                      onChange={handleCheckBox}
-                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                    />
-                  </View>
-                }
+                <View style={styles.checkboxContainer}>
+                  {transType == "Today" ? <Text style={styles.label}>Rejected</Text> : <Text style={styles.label}>No Status</Text>}
+                  <CheckBox
+                    value={transType == "Today" ? rejected : noStatus}
+                    onValueChange={transType == "Today" ? setRejected : setNoStatus}
+                    style={styles.checkbox}
+                    onChange={handleCheckBox}
+                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                  />
+                </View>
               </View>
               :
               <View style={styles.others_status_row_container}>
