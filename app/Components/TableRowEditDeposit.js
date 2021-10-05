@@ -195,8 +195,6 @@ const TableRowEditDeposit = ({rowData}) => {
     return (
       <KeyboardAvoidingView 
         enabled={true}
-        //keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
-        //keyboardVerticalOffset={Platform.select({ios: 0, android:"padding"})}
         style={styles.header}
       >
       <View style={styles.table_view_rectangle}>

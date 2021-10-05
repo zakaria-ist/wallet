@@ -7,22 +7,18 @@
  */
 import React, {useState, useEffect, useCallback}  from 'react';
 import {
-  SafeAreaView,
   FlatList,
   StatusBar,
   Text,
-  ScrollView,
-  TextInput,
   useColorScheme,
   View,
   InteractionManager,
   RefreshControl,
   TouchableOpacity,
-  Animated, Keyboard,
+  TouchableWithoutFeedback,
   KeyboardAvoidingView
 } from 'react-native';
 import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
-//import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 import {heightPercentageToDP, widthPercentageToDP,} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -40,12 +36,9 @@ import { WalletColors } from "../assets/Colors.js";
 import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
-import Screensize from '../lib/screensize';
 import Format from "../lib/format";
 import Picker from '../lib/picker';
-import { marginTop } from 'styled-system';
 
-const screensize = new Screensize();
 const picker = new Picker();
 
 const format = new Format();
@@ -132,13 +125,11 @@ const Withdrawal = () => {
       });
 
       AsyncStorage.getItem('token').then((token) => {
-        // setToken(token);
         authToken = token;
       })
 
       AsyncStorage.getItem('authType').then((auth_type) => {
         if (auth_type != null) {
-          // setAuthType(auth_type);
           authType = auth_type;
           transType = "Today";
           if (auth_type == 'admin' || auth_type == 'subadmin') {
@@ -183,31 +174,26 @@ const Withdrawal = () => {
   }, []);
 
   const handleLeftButton = () => {
-    // setTransType("Yesterday");
     transType = "Yesterday";
     renderTablesData();
   }
 
   const handleRightButton = () => {
-    // setTransType("Today");
     transType = "Today";
     renderTablesData();
   }
 
   const handleWalLeftButton = () => {
-    // setWalletType(1);
     walletType = 1;
     renderTablesData();
   }
 
   const handleWalMidButton = () => {
-    // setWalletType(2);
     walletType = 2;
     renderTablesData();
   }
 
   const handleWalRightButton = () => {
-    // setWalletType(3);
     walletType = 3;
     renderTablesData();
   }
@@ -222,6 +208,12 @@ const Withdrawal = () => {
     let when = 'today';
     if (transType == 'Yesterday') {
       when = 'yesterday';
+    }
+    if (authToken == "") {
+      authToken = await AsyncStorage.getItem('token');
+    }
+    if (authType == "") {
+      authType = await AsyncStorage.getItem('authType');
     }
     const params = JSON.stringify(
       {
@@ -240,7 +232,7 @@ const Withdrawal = () => {
         // if (rejected && msg.status == 'rejected') return true;
         if (pending && msg.status == 'pending') return true;
         if (noStatus && msg.status == null) return true;
-        // if (msg.status == 'new') return true;
+         //if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter
@@ -330,12 +322,15 @@ const Withdrawal = () => {
   }
 
   const renderItem = ({ item }) => (
-    <TableRow rowData={item} />
+    <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
+      <TableRow rowData={item} />
+    </TouchableOpacity> 
   );
   const renderItemEdit = ({ item }) => (
-    <TableRowEditWithdra rowData={item} />
+    <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
+       <TableRowEditWithdra rowData={item} />
+    </TouchableOpacity> 
   );
-
   const onWalletPickerOpen = useCallback(() => {
     setOpenClientPicker(false);
     setOpenAdminPickerGroup(false);
@@ -350,8 +345,7 @@ const Withdrawal = () => {
   }, []);
 
   return (
-
-    <SafeAreaView style={styles.header}>
+    <TouchableWithoutFeedback onPress={() => onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} style={styles.header}>
       <KeyboardAvoidingView style={styles.header}
       behavior='absolute' 
       keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
@@ -526,8 +520,26 @@ const Withdrawal = () => {
                   onChange={handleCheckBox}
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
-                 </View>
               </View>
+              {[(authType == "client") ?
+              <></>
+              :
+              [transType == "Yesterday" ?
+                <View style={styles.checkboxContainer}> 
+                  <Text style={styles.label}>No Status</Text>
+                    <CheckBox
+                      value={noStatus}
+                      onValueChange={setNoStatus}
+                      style={styles.checkbox}
+                      onChange={handleCheckBox}
+                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                    />
+                </View>
+               :
+                 <View style={styles.checkboxContainer}></View>
+              ]
+              ]}
+            </View>
               {transType == "Today" ?
                 <View style={styles.checkboxContainer}>
                   <Text style={styles.label}>Pending</Text>
@@ -612,33 +624,38 @@ const Withdrawal = () => {
                   <></>
                 }
               </View>
-              <View style={styles.total}>
-                <View style={{flexDirection:"row"}}>
-                  <View style={{flexDirection: "column"}}>
-                    <Text style={styles.total_text}>Pending</Text>
-                    <Text style={styles.total_text}>Accepted</Text>
-                  </View>  
-                  <View style={{flexDirection: "column"}}>
-                  <View style={{flexDirection: "row"}}>
-                    <Text style={styles.total_text}> : </Text>
-                    <Text style={styles.total_text}>TK  </Text>
-                    <Text style={styles.total_text}>{format.separator(pendingTotal)}</Text>
-                  </View> 
-                  <View style={{flexDirection: "row"}}>
-                    <Text style={styles.total_text}> : </Text>
-                    <Text style={styles.total_text}>TK  </Text>
-                    <Text style={styles.total_text}>{format.separator(acceptedTotal)}</Text>
+              {[transType == 'Today' ? 
+                <View style={styles.total}>
+                  <View style={{flexDirection:"row"}}>
+                    <View style={{flexDirection: "column"}}>
+                      <Text style={styles.total_text}>Pending</Text>
+                      <Text style={styles.total_text}>Accepted</Text>
+                    </View>  
+                    <View style={{flexDirection: "column"}}>
+                    <View style={{flexDirection: "row"}}>
+                      <Text style={styles.total_text}> : </Text>
+                      <Text style={styles.total_text}>TK  </Text>
+                      <Text style={styles.total_text}>{format.separator(pendingTotal)}</Text>
+                    </View> 
+                    <View style={{flexDirection: "row"}}>
+                      <Text style={styles.total_text}> : </Text>
+                      <Text style={styles.total_text}>TK  </Text>
+                      <Text style={styles.total_text}>{format.separator(acceptedTotal)}</Text>
+                    </View>
+                    </View>    
                   </View>
-                  </View>    
-                </View>
+                </View>                
+            : 
+              <View styles={styles.total}>
+                <Text style={styles.total_text}>Accepted : TK  {format.separator(acceptedTotal)}</Text>
               </View>
+            ]}
             </>
           }
         </View>
       </View>
       </KeyboardAvoidingView>
-    </SafeAreaView> 
-
+    </TouchableWithoutFeedback>
   );
 };
 

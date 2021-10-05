@@ -13,8 +13,7 @@ import {
   useColorScheme,
   View,
   InteractionManager,
-  TouchableOpacity,
-  KeyboardAvoidingView
+  RefreshControl,
 } from 'react-native';
 import { useStateIfMounted } from "use-state-if-mounted";
 import Fontisto from 'react-native-vector-icons/Fontisto';
@@ -24,103 +23,159 @@ import SummaryTableRow from "../Components/SummaryTableRow";
 import CustomHeader from "../Components/CustomHeader";
 import CommonTop from "../Components/CommonTop";
 import styles from '../lib/global_css';
+import Request from "../lib/request";
+import KTime from '../lib/formatTime';
+import Format from "../lib/format";
+
+const format = new Format();
+const request = new Request();
+const time = new KTime();
+
+let authType = "";
+let transType = "Today";
+let authToken = "";
+let walletType = 1;
 
 const SummaryReport = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
-  const [transType, setTransType] = useStateIfMounted("Today");
-  const [walletType, setWalletType] = useStateIfMounted(1);
   const [walletData, setWalletData] = useStateIfMounted([]);
+  const [tableData, setTableData] = useStateIfMounted([]);
+  const [refreshing, setRefreshing] = React.useState(false);
+
   const LeftButton = "Yesterday";
   const RightButton = "Today";
   const tableHeader = [
     ["Group Details"],
     ["Total(TK)"],
   ];
-  let groupData = [
-    {
-      "group": "1. Group A",
-      "subtotal": {
-        "deposit" : 10500,
-        "withdrawal" : 19500
-      },
-      "total": -9000,
-      "walletData" : [
-        {
-          "wallet" : "Alipay",
-          "deposit" : {
-            "count": 100,
-            "amount": 3500,
-          },
-          "withdrawal" : {
-            "count": 50,
-            "amount": 6500,
-          }
-        },
-        {
-          "wallet" : "Alipay",
-          "deposit" : {
-            "count": 100,
-            "amount": 3500,
-          },
-          "withdrawal" : {
-            "count": 50,
-            "amount": 6500,
-          }
-        },
-        {
-          "wallet" : "Alipay",
-          "deposit" : {
-            "count": 100,
-            "amount": 3500,
-          },
-          "withdrawal" : {
-            "count": 50,
-            "amount": 6500,
-          }
-        }
-      ]
-    }
-  ];
+
+  const wait = (timeout) => {
+    return new Promise(resolve => setTimeout(resolve, timeout));
+  }
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    renderTablesData();
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       AsyncStorage.getItem('walletData').then((walletData) => {
         setWalletData(JSON.parse(walletData));
       })
+      AsyncStorage.getItem('token').then((token) => {
+        authToken = token;
+      })
+      AsyncStorage.getItem('authType').then((auth_type) => {
+        if (auth_type != null) {
+          authType = auth_type;
+          transType = "Today";
+          renderTablesData();
+        }
+      })
     })
   }, []);
 
   const handleLeftButton = () => {
-    setTransType("Yesterday");
+    transType = "Yesterday";
     renderTablesData();
   }
 
   const handleRightButton = () => {
-    setTransType("Today");
+    transType = "Today";
     renderTablesData();
   }
 
   const handleWalLeftButton = () => {
-    setWalletType(1);
+    walletType = 1;
     renderTablesData();
   }
 
   const handleWalMidButton = () => {
-    setWalletType(2);
+    walletType = 2;
     renderTablesData();
   }
 
   const handleWalRightButton = () => {
-    setWalletType(3);
+    walletType = 3;
     renderTablesData();
   }
 
   const renderTablesData = async () => {
     onSpinnerChanged(true);
-
+    const statisticUrl = request.getStatisticUrl();
+    let when = 'Yesterday';
+    if (transType == 'Today') {
+      when = 'Today';
+    }
+    const params = JSON.stringify(
+      {
+        token: authToken, 
+        role: authType,
+        when: when
+      }
+    );
+    const content = await request.post(statisticUrl, params);
+    if (content.ok) {
+      let msg_list = [];
+      msg_list.push(tableHeader);
+      messages = content.msg.filter((msg, grandTotal) => {
+        if (transType == 'Today') {
+           msg_data = {
+            id: msg.id,
+            wallet: msg.walletName,
+            amount: msg.amount,
+          };
+           sub_data ={ 
+            totalwithdrawamount: grandTotal.totalwithdrawamount,
+            totalwithdrawmsgcount: grandTotal.totalwithdrawmsgcount,
+            totaldepositamount: grandTotal.totaldepositamount,
+            totaldepositmsgcount: grandTotal.totaldepositmsgcount,
+            totalamount: grandTotal.totalamount,
+            totalmsgcount: grandTotal.totalmsgcount
+          };
+          msg_list.push(msg_data);
+          msg_list.push(sub_data);
+         // console.log('msg_data', msg_data);
+         // console.log('sub_data', sub_data);
+        } else {
+          msg_data = {
+            id: msg.id,
+            wallet: msg.walletName,
+            amount: msg.amount,
+          };
+           sub_data ={ 
+            totalwithdrawamount: grandTotal.totalwithdrawamount,
+            totalwithdrawmsgcount: grandTotal.totalwithdrawmsgcount,
+            totaldepositamount: grandTotal.totaldepositamount,
+            totaldepositmsgcount: grandTotal.totaldepositmsgcount,
+            totalamount: grandTotal.totalamount,
+            totalmsgcount: grandTotal.totalmsgcount
+          };
+          msg_list.push(msg_data);
+          msg_list.push(sub_data);
+         // console.log('msg_data', msg_data);
+          //console.log('sub_data', sub_data);
+          msg_list.push(msg_data);
+          msg_list.push(sub_data);
+        }
+        msg_list.push(msg_data);
+      })
+        setTableData(msg_list);
+       // console.log('msg_list', msg_list);
+       onSpinnerChanged(false);
+    }
     onSpinnerChanged(false);
   }
+
+  const renderItem = ({ item }) => (
+    <View style={styles.header}>
+     {/* <SummaryTableRow header={true} rowData={tableHeader} />*/}
+     {/*  <SummaryTableRow header={false} rowData={item} />*/}
+    </View>
+  );
 
   return (
     <SafeAreaView style={styles.header}>
@@ -149,19 +204,17 @@ const SummaryReport = () => {
       </View>
       <View style={styles.summary_report_body}> 
         <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-          <FlatList 
-            data={[{key: 'item1' }]}
-            renderItem={({ item, index, separators }) => (
-            <TouchableOpacity>
-              <View style={styles.header}>
-                <SummaryTableRow header={true} rowData={tableHeader} />
-                <SummaryTableRow header={false} rowData={groupData} />
-                <SummaryTableRow header={false} rowData={groupData} />
-                <SummaryTableRow header={false} rowData={groupData} /> 
-                <SummaryTableRow header={false} rowData={groupData} />
-              </View>
-            </TouchableOpacity>)}
-          />
+            <FlatList
+              data={tableData}
+              renderItem={renderItem}
+              keyExtractor={item => item.id}
+              refreshControl={
+                <RefreshControl
+                  refreshing={refreshing}
+                  onRefresh={onRefresh}
+                />
+              }
+            />
         </View>
       </View>
     </SafeAreaView>

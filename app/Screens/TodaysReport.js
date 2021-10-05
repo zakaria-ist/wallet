@@ -30,7 +30,6 @@ import Spinner from "react-native-loading-spinner-overlay";
 import CustomHeader from "../Components/CustomHeader";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
@@ -54,10 +53,6 @@ const TodaysReport = () => {
   const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("");
   const [tableData, setTableData] = useStateIfMounted([]);
   const [refreshing, setRefreshing] = React.useState(false);
-
-  const backgroundStyle = {
-    backgroundColor: Colors.white
-  };
 
   const LeftButton = "Deposit";
   const RightButton = "Withdrawal";
@@ -140,7 +135,12 @@ const TodaysReport = () => {
     if (transType == 'withdrawal') {
       purpose = 'withdrawal';
     }
-    
+    if (authToken == "") {
+      authToken = await AsyncStorage.getItem('token');
+    }
+    if (authType == "") {
+      authType = await AsyncStorage.getItem('authType');
+    }
     const params = JSON.stringify(
       {
         token: authToken, 
