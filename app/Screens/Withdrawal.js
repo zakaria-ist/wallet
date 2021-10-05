@@ -223,6 +223,12 @@ const Withdrawal = () => {
     if (transType == 'Yesterday') {
       when = 'yesterday';
     }
+    if (authToken == "") {
+      authToken = await AsyncStorage.getItem('token');
+    }
+    if (authType == "") {
+      authToken = await AsyncStorage.getItem('authType');
+    }
     const params = JSON.stringify(
       {
         token: authToken, 
