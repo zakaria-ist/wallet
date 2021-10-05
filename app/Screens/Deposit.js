@@ -616,26 +616,32 @@ const Deposit = () => {
                   <></>
                 }
               </View>
-              <View style={styles.total}>
-                <View style={{flexDirection:"row"}}>
-                  <View style={{flexDirection: "column"}}>
-                    <Text style={styles.total_text}>Pending</Text>
-                    <Text style={styles.total_text}>Accepted</Text>
-                  </View>  
-                  <View style={{flexDirection: "column"}}>
-                  <View style={{flexDirection: "row"}}>
-                    <Text style={styles.total_text}> : </Text>
-                    <Text style={styles.total_text}>TK  </Text>
-                    <Text style={styles.total_text}>{format.separator(pendingTotal)}</Text>
-                  </View> 
-                  <View style={{flexDirection: "row"}}>
-                    <Text style={styles.total_text}> : </Text>
-                    <Text style={styles.total_text}>TK  </Text>
-                    <Text style={styles.total_text}>{format.separator(acceptedTotal)}</Text>
+              {[transType == 'Today' ? 
+                <View style={styles.total}>
+                  <View style={{flexDirection:"row"}}>
+                    <View style={{flexDirection: "column"}}>
+                      <Text style={styles.total_text}>Pending</Text>
+                      <Text style={styles.total_text}>Accepted</Text>
+                    </View>  
+                    <View style={{flexDirection: "column"}}>
+                    <View style={{flexDirection: "row"}}>
+                      <Text style={styles.total_text}> : </Text>
+                      <Text style={styles.total_text}>TK  </Text>
+                      <Text style={styles.total_text}>{format.separator(pendingTotal)}</Text>
+                    </View> 
+                    <View style={{flexDirection: "row"}}>
+                      <Text style={styles.total_text}> : </Text>
+                      <Text style={styles.total_text}>TK  </Text>
+                      <Text style={styles.total_text}>{format.separator(acceptedTotal)}</Text>
+                    </View>
+                    </View>    
                   </View>
-                  </View>    
                 </View>
-              </View>
+              : 
+                <View styles={styles.total}>
+                  <Text style={styles.total_text}>Accepted : TK  {format.separator(acceptedTotal)}</Text>
+                </View>
+              ]}
             </>
           }  
           </View>
