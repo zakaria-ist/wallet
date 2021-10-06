@@ -28,7 +28,7 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
   const handleChange = () => {
     let data = {
       refCode: refCode,
-      amount: amount.replace(/[^0-9]/g, '')
+      amount: amount
     }
     parentReference(data);
   }
@@ -70,7 +70,7 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
                   <Text style={styles.view_message_text}> : </Text>
                   <TextInput 
                     style={styles.text_message_input}
-                    onChangeText={setAmount}
+                    onChangeText={e => setAmount(e.replace(/[^0-9]/g, ''))}
                     value={amount}
                     onBlur={handleChange}
                     placeholderTextColor={WalletColors.grey}
