@@ -10,6 +10,7 @@ import {
   FlatList,
   StatusBar,
   Text,
+  SafeAreaView,
   useColorScheme,
   View,
   InteractionManager,
@@ -18,7 +19,6 @@ import {
   TouchableWithoutFeedback,
   KeyboardAvoidingView
 } from 'react-native';
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {heightPercentageToDP, widthPercentageToDP,} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -74,10 +74,6 @@ const Withdrawal = () => {
   const [tableEditData, setTableEditData] = useStateIfMounted([]);
   const [keyboard, setKeyboard] = useState(Boolean);
   const [refreshing, setRefreshing] = React.useState(false);
-
-  const backgroundStyle = {
-    backgroundColor: Colors.white
-  };
 
   const LeftButton = "Yesterday";
   const RightButton = "Today";
@@ -325,18 +321,19 @@ const Withdrawal = () => {
     onSpinnerChanged(false);
   }
 
-  const renderItem = ({ item }) => (
+  const renderItem = useCallback(({ item }) => (
     <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
       <TableRow rowData={item} />
     </TouchableOpacity> 
-  );
-  const renderItemEdit = ({ item }) => (
+  ));
+  const renderItemEdit = useCallback(({ item }) => (
     <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
        <TableRowEditWithdra rowData={item} />
     </TouchableOpacity> 
-  );
+  ));
   const memoizedItemValue = useMemo(() => renderItem);
   const memoizedItemEditValue = useMemo(() => renderItemEdit);
+  const keyExtractor = useCallback((item) => item.id.toString(), []);
   const onWalletPickerOpen = useCallback(() => {
     setOpenClientPicker(false);
     setOpenAdminPickerGroup(false);
@@ -543,11 +540,10 @@ const Withdrawal = () => {
               <View style={styles.agent_container}>
                 <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                   {tableEditData ?
-                  <KeyboardAwareScrollView style={styles.header}>
                     <FlatList
                       data={tableEditData}
                       renderItem={memoizedItemEditValue}
-                      keyExtractor={item => item.id}
+                      keyExtractor={keyExtractor}
                       refreshControl={
                         <RefreshControl
                           refreshing={refreshing}
@@ -555,7 +551,6 @@ const Withdrawal = () => {
                         />
                       }
                     />
-                  </KeyboardAwareScrollView>
                   :
                     <></>
                   }
@@ -568,7 +563,7 @@ const Withdrawal = () => {
                   <FlatList
                     data={tableData}
                     renderItem={memoizedItemValue}
-                    keyExtractor={item => item.id}
+                    keyExtractor={keyExtractor}
                     refreshControl={
                       <RefreshControl
                         refreshing={refreshing}
@@ -592,7 +587,7 @@ const Withdrawal = () => {
                   <FlatList
                     data={tableData}
                     renderItem={memoizedItemValue}
-                    keyExtractor={item => item.id}
+                    keyExtractor={keyExtractor}
                     refreshControl={
                       <RefreshControl
                         refreshing={refreshing}

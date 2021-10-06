@@ -18,8 +18,6 @@ import {
   InteractionManager,
   KeyboardAvoidingView,
 } from 'react-native';
-
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 import {heightPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import { RFValue } from "react-native-responsive-fontsize";
@@ -73,7 +71,6 @@ const Deposit = () => {
   const [tableData, setTableData] = useStateIfMounted([]);
   const [tableEditData, setTableEditData] = useStateIfMounted([]);
   const [refreshing, setRefreshing] = React.useState(false);
-
 
   const LeftButton = "Yesterday";
   const RightButton = "Today";
@@ -320,18 +317,19 @@ const Deposit = () => {
     onSpinnerChanged(false);
   }
 
-  const renderItem = ({ item }) => (
+  const renderItem = useCallback(({ item }) => (
     <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
       <TableRow rowData={item} />
     </TouchableOpacity> 
-  );
-  const renderItemEdit = ({ item }) => (
+  ));
+  const renderItemEdit = useCallback(({ item }) => (
     <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
       <TableRowEditDeposit rowData={item} />
     </TouchableOpacity> 
-  );
+  ));
   const memoizedItemValue = useMemo(() => renderItem);
   const memoizedItemEditValue = useMemo(() => renderItemEdit);
+  const keyExtractor = useCallback((item) => item.id.toString(), []);
   const onWalletPickerOpen = useCallback(() => {
     setOpenClientPicker(false);
     setOpenAdminPickerGroup(false);
@@ -567,11 +565,12 @@ const Deposit = () => {
              <View style={styles.agent_container}>
                 <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                   {tableEditData ?
-                  <KeyboardAwareScrollView style={styles.header}>
                     <FlatList
+                      horizontal={false}
+                      nestedScrollEnabled={true}
                       data={tableEditData}
                       renderItem={memoizedItemEditValue}
-                      keyExtractor={item => item.id}
+                      keyExtractor={keyExtractor}
                       refreshControl={
                         <RefreshControl
                           refreshing={refreshing}
@@ -579,7 +578,6 @@ const Deposit = () => {
                         />
                       }
                     />
-                  </KeyboardAwareScrollView>
                   :
                     <></>
                   }
@@ -590,9 +588,11 @@ const Deposit = () => {
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                 {tableData ?
                   <FlatList
+                    horizontal={false}
+                    nestedScrollEnabled={true}
                     data={tableData}
                     renderItem={memoizedItemValue}
-                    keyExtractor={item => item.id}
+                    keyExtractor={keyExtractor}
                     refreshControl={
                       <RefreshControl
                         refreshing={refreshing}
@@ -614,9 +614,11 @@ const Deposit = () => {
               <View style={styles.view_deposit_withdrawel_treport_rectangle}>
                 {tableData ?
                   <FlatList
+                    horizontal={false}
+                    nestedScrollEnabled={true}
                     data={tableData}
                     renderItem={memoizedItemValue}
-                    keyExtractor={item => item.id}
+                    keyExtractor={keyExtractor}
                     refreshControl={
                       <RefreshControl
                         refreshing={refreshing}

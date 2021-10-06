@@ -359,7 +359,7 @@ const CreateMessage = () => {
                   multiline={true}
                   value={quickMessages}
                   onChangeText={(value) => {
-                    setQuickMessages(value);
+                    setQuickMessages(value.replace(/[.-]/, ''));
                   }}
                   textAlignVertical="top"
                   style={styles.modal_text_input}
