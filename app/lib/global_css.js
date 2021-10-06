@@ -417,17 +417,17 @@ const styles = StyleSheet.create({
     width: widthPercentageToDP("85%"),
   },
   table_view_left: {
-    flex: 0.9,
+    flex: 1/4,
     alignItems: "flex-start",
     justifyContent: "center",
   },
   table_view_center: {
-    flex: 2,
+    flex: 2/4,
     alignItems: "flex-start",
     justifyContent: "center",
   },
   table_view_right: {
-    flex: 1,
+    flex: 1/4,
     alignItems: "flex-end",
     justifyContent: "center",
   },
