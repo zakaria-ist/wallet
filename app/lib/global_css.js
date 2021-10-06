@@ -487,7 +487,7 @@ const styles = StyleSheet.create({
   },
   cell_text_header: {
     alignSelf: "flex-start",
-    fontSize: RFValue(13),
+    fontSize: RFValue(11),
     fontWeight: "bold"
   },
   button_view: {
@@ -609,12 +609,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end"
   },
   cell_summary_text_header: {
-    fontSize: RFValue(13),
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  cell_summary_text_header: {
-    fontSize: RFValue(13),
+    fontSize: RFValue(11),
     fontWeight: "bold",
     textAlign: "center",
   },

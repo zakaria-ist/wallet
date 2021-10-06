@@ -9,7 +9,6 @@ import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
   FlatList,
-  ScrollView,
   StatusBar,
   Text,
   Dimensions,
@@ -202,6 +201,15 @@ const CreateMessage = () => {
     if (sent) {
       onSpinnerChanged(false);
       alert.warning("Messages are sent.");
+      let data = {
+        refCode: "",
+        amount: ""
+      }
+      setMessageOne(data);
+      setMessageTwo(data);
+      setMessageThree(data);
+      setMessageFour(data);
+      setMessageFive(data);
     } else {
       onSpinnerChanged(false);
     }
@@ -209,7 +217,7 @@ const CreateMessage = () => {
 
   const handleQuickInsert = () => {
     setIsModalVisible(!isModalVisible);
-    console.log('handleQuickInsert')
+    setQuickMessages("");
   }
 
   const handleConfirmInsert = () => {
@@ -222,8 +230,8 @@ const CreateMessage = () => {
           let code = blocks[0].trim();
           let amount = blocks[1].trim();
           let data = {
-              refCode: code,
-              amount: amount
+            refCode: code,
+            amount: amount
           }
           if (index == 0) setMessageOne(data);
           else if (index == 1) setMessageTwo(data);

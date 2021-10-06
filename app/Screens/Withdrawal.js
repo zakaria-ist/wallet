@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-import React, {useState, useEffect, useCallback}  from 'react';
+import React, {useMemo, useState, useEffect, useCallback}  from 'react';
 import {
   FlatList,
   StatusBar,
@@ -334,6 +334,8 @@ const Withdrawal = () => {
        <TableRowEditWithdra rowData={item} />
     </TouchableOpacity> 
   );
+  const memoizedItemValue = useMemo(() => renderItem);
+  const memoizedItemEditValue = useMemo(() => renderItemEdit);
   const onWalletPickerOpen = useCallback(() => {
     setOpenClientPicker(false);
     setOpenAdminPickerGroup(false);
@@ -543,7 +545,7 @@ const Withdrawal = () => {
                   <KeyboardAwareScrollView style={styles.header}>
                     <FlatList
                       data={tableEditData}
-                      renderItem={renderItemEdit}
+                      renderItem={memoizedItemEditValue}
                       keyExtractor={item => item.id}
                       refreshControl={
                         <RefreshControl
@@ -564,7 +566,7 @@ const Withdrawal = () => {
                 {tableData ?
                   <FlatList
                     data={tableData}
-                    renderItem={renderItem}
+                    renderItem={memoizedItemValue}
                     keyExtractor={item => item.id}
                     refreshControl={
                       <RefreshControl
@@ -588,7 +590,7 @@ const Withdrawal = () => {
                 {tableData ?
                   <FlatList
                     data={tableData}
-                    renderItem={renderItem}
+                    renderItem={memoizedItemValue}
                     keyExtractor={item => item.id}
                     refreshControl={
                       <RefreshControl
