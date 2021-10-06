@@ -220,7 +220,6 @@ const Withdrawal = () => {
       }
     );
     const content = await request.post(msgsUrl, params);
-
     if (content.ok) {
       // ftatus filter
       let messages = content.msg.filter((msg) => {
@@ -228,7 +227,7 @@ const Withdrawal = () => {
         // if (rejected && msg.status == 'rejected') return true;
         if (pending && (msg.status == 'pending' || msg.status == 'new')) return true;
         if (noStatus && msg.status == null) return true;
-         //if (msg.status == 'new') return true;
+        if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter

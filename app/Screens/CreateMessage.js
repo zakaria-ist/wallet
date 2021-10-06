@@ -139,7 +139,7 @@ const CreateMessage = () => {
                 walletName = wallet.name;
               }
             })
-            let body = "Ref No.: " + refNo + "\nMobile No.: " + mobile + "\nWallet: " + walletName + "\nAmount: " + result.message.amount;
+            let body = "Ref No.: " + refNo + "\r\nMobile No.: " + mobile + "\r\nWallet: " + walletName + "\r\nAmount: " + result.message.amount;
             const message = {
               sender: sender,
               body: body
