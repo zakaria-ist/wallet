@@ -225,7 +225,7 @@ const Deposit = () => {
         if (rejected && msg.status == 'rejected') return true;
         if (pending && (msg.status == 'pending' || msg.status == 'new')) return true;
         if (noStatus && msg.status == null) return true;
-         //if (msg.status == 'new') return true;
+        if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter
