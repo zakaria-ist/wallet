@@ -223,7 +223,7 @@ const Deposit = () => {
       let messages = content.msg.filter((msg) => {
         if (accepted && msg.status == 'accepted') return true;
         if (rejected && msg.status == 'rejected') return true;
-        if (pending && msg.status == 'pending') return true;
+        if (pending && (msg.status == 'pending' || msg.status == 'new')) return true;
         if (noStatus && msg.status == null) return true;
          //if (msg.status == 'new') return true;
         return false;
@@ -267,18 +267,27 @@ const Deposit = () => {
           msg_list.push(msg_data);
         })
         setTableEditData(msg_list);
-        setAcceptedTotal(accepted_total);
       } else {
         msg_list.push(tableHeader);
         messages.map((msg) => {
           let msg_data = {};
           let amount = parseFloat(String(msg.amount).replace(',', ''))
-          if (msg.status == 'pending') {
+          if (msg.status == 'pending' || msg.status == 'new') {
             pending_total += amount;
+            if (when == 'today') {
+              msg.status = 'Pending'
+            } else {
+              msg.status = ''
+            }
           }
           else if (msg.status == 'accepted') {
             accepted_total += amount;
+            msg.status = 'Accepted'
           }
+          else if (msg.status == 'rejected') {
+            msg.status == 'Rejected'
+          }
+
           if (authType == 'client' || authType == 'admin' || authType == 'subadmin') {
             msg_data = {
               id: msg.id,

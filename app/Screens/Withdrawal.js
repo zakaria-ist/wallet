@@ -230,7 +230,7 @@ const Withdrawal = () => {
       let messages = content.msg.filter((msg) => {
         if (accepted && msg.status == 'accepted') return true;
         // if (rejected && msg.status == 'rejected') return true;
-        if (pending && msg.status == 'pending') return true;
+        if (pending && (msg.status == 'pending' || msg.status == 'new')) return true;
         if (noStatus && msg.status == null) return true;
          //if (msg.status == 'new') return true;
         return false;
@@ -262,7 +262,6 @@ const Withdrawal = () => {
         msg_list.push(agentTableHeader);
         messages.map((msg) => {
           let amount = parseFloat(String(msg.amount).replace(',', ''));
-          accepted_total += amount;
           let msg_data = {
             id: msg.id,
             time: time.format(msg.createdatetime),
@@ -274,17 +273,22 @@ const Withdrawal = () => {
           msg_list.push(msg_data);
         })
         setTableEditData(msg_list);
-        setAcceptedTotal(accepted_total);
       } else {
         msg_list.push(tableHeader);
         messages.map((msg) => {
           let msg_data = {};
           let amount = parseFloat(String(msg.amount).replace(',', ''));
-          if (msg.status == 'pending') {
+          if (msg.status == 'pending' || msg.status == 'new') {
             pending_total += amount;
+            if (when == 'today') {
+              msg.status = 'Pending'
+            } else {
+              msg.status = ''
+            }
           }
           else if (msg.status == 'accepted') {
             accepted_total += amount;
+            msg.status = 'Accepted'
           }
           if (authType == 'agent') {
             msg_data = {
