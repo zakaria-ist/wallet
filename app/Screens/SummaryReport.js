@@ -34,6 +34,7 @@ const time = new KTime();
 let authType = "";
 let transType = "Today";
 let authToken = "";
+let walletType = 1;
 
 const SummaryReport = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -121,7 +122,7 @@ const SummaryReport = () => {
       let msg_list = [];
       msg_list.push(tableHeader);
       messages = content.msg.filter((msg, grandTotal) => {
-           if (transType == 'Today') {
+        if (transType == 'Today') {
            msg_data = {
             id: msg.id,
             wallet: msg.walletName,
@@ -139,7 +140,7 @@ const SummaryReport = () => {
           msg_list.push(sub_data);
          // console.log('msg_data', msg_data);
          // console.log('sub_data', sub_data);
-        }else {
+        } else {
           msg_data = {
             id: msg.id,
             wallet: msg.walletName,
@@ -164,6 +165,7 @@ const SummaryReport = () => {
       })
         setTableData(msg_list);
        // console.log('msg_list', msg_list);
+       onSpinnerChanged(false);
     }
     onSpinnerChanged(false);
   }

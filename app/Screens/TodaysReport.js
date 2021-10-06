@@ -139,7 +139,7 @@ const TodaysReport = () => {
       authToken = await AsyncStorage.getItem('token');
     }
     if (authType == "") {
-      authToken = await AsyncStorage.getItem('authType');
+      authType = await AsyncStorage.getItem('authType');
     }
     const params = JSON.stringify(
       {
@@ -171,6 +171,10 @@ const TodaysReport = () => {
         let amount = parseFloat(String(msg.amount).replace(',', ''));
         if (msg.status == 'accepted') {
           total += amount;
+          msg.status == 'Accepted'
+        }
+        else if (msg.status == 'rejected') {
+          msg.status == 'Rejected'
         }
         // amount = format.separator(amount);
         let msg_data = {};

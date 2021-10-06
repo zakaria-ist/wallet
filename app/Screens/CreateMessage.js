@@ -140,8 +140,7 @@ const CreateMessage = () => {
                 walletName = wallet.name;
               }
             })
-            let body = "fromuser: " + result.message.fromuser + ", toagent: " + result.message.toagent + ", refno: " + refNo + ", mobile: " + mobile + ", walletName: " + walletName + ", amount: " + result.message.amount;
-            // body += ", belongclient: " + result.message.belongclient + ", cct_status: " + result.message.cct_status + ", cct_author_id: " + result.message.cct_author_id + ", status: " + result.message.status;
+            let body = "Ref No.: " + refNo + "\nMobile No.: " + mobile + "\nWallet: " + walletName + "\nAmount: " + result.message.amount;
             const message = {
               sender: sender,
               body: body
