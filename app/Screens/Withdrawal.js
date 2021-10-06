@@ -496,20 +496,16 @@ const Withdrawal = () => {
                 />
                  </View>
               </View>
-              {transType == "Today" ?
-                <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>Pending</Text>
+              <View style={styles.checkboxContainer}>
+                  {transType == "Today" ? <Text style={styles.label}>Pending</Text> : <Text style={styles.label}>No Status</Text>}
                   <CheckBox
-                    value={pending}
-                    onValueChange={setPending}
+                    value={transType == "Today" ? pending : noStatus}
+                    onValueChange={transType == "Today" ? setPending : setNoStatus}
                     style={styles.checkbox}
                     onChange={handleCheckBox}
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
-                </View>
-              :
-                <View style={styles.checkboxContainer}></View>
-              }
+              </View>
             </View>
             :
             <View style={styles.others_status_row_container}>
@@ -525,39 +521,17 @@ const Withdrawal = () => {
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
               </View>
-              {[(authType == "client") ?
-              <></>
-              :
-              [transType == "Yesterday" ?
-                <View style={styles.checkboxContainer}> 
-                  <Text style={styles.label}>No Status</Text>
-                    <CheckBox
-                      value={noStatus}
-                      onValueChange={setNoStatus}
-                      style={styles.checkbox}
-                      onChange={handleCheckBox}
-                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                    />
-                </View>
-               :
-                 <View style={styles.checkboxContainer}></View>
-              ]
-              ]}
             </View>
-              {transType == "Today" ?
-                <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>Pending</Text>
+              <View style={styles.checkboxContainer}>
+                {transType == "Today" ? <Text style={styles.label}>Pending</Text> : <Text style={styles.label}>No Status</Text>}
                   <CheckBox
-                    value={pending}
-                    onValueChange={setPending}
+                    value={transType == "Today" ? pending : noStatus}
+                    onValueChange={transType == "Today" ? setPending : setNoStatus}
                     style={styles.checkbox}
                     onChange={handleCheckBox}
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
-                </View>
-              :
-                <View style={styles.checkboxContainer}></View>
-              }
+              </View>
             </View>
            ]
            )
