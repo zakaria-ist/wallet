@@ -28,6 +28,20 @@ xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 5. run `./gradlew clean`
 6. run `cd ..`
 7. run `react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res`
-8. run `npm run android` or `npm run ios`
+8. cd android && ./gradlew clean
 9. you can also run it with android studio
- 
+
+
+************************************************
+* RELEASE COMMAND: *
+************************************************
+ 1. npm install, if it shows error then run `rm -rf package-lock.json node_modules/` then run npm install again
+2. go to the project root, run `gradle wrapper`
+3. run `cd android`
+4. run `gradle wrapper`
+5. run `./gradlew clean`
+6. run `cd ..`
+7. run `react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res`
+8. rm -rf android/app/src/main/res/drawable-* && rm -rf android/app/src/main/res/raw/*
+9. cd android && ./gradlew clean
+10. ./gradlew assembleRelease or ./gradlew bundleRelease
