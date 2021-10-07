@@ -142,17 +142,15 @@ const styles = StyleSheet.create({
 
   //Create Message Screen
   message_nav_top:{
-    flex:2.1, 
-    marginTop: heightPercentageToDP("1%"),
-    marginBottom: heightPercentageToDP("3.4%"),
+    flex:2.3, 
     alignSelf:"center",
   },
   message_quick_insert:{
-    marginTop: heightPercentageToDP("0.5%"),
+    marginTop: heightPercentageToDP("3%"),
     alignSelf:"center",
   },
   create_message_body: {
-    flex:2.8,
+    flex:3.55,
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",
@@ -266,7 +264,7 @@ const styles = StyleSheet.create({
   },
   deposit_withdrawel_nav_top:{
     flex:2.3, 
-    margin:heightPercentageToDP("1.1%"),
+    //margin:heightPercentageToDP("1.1%"),
     flexDirection:"row", 
     alignSelf:"center",
   },
@@ -278,7 +276,7 @@ const styles = StyleSheet.create({
   },
   admin_deposit_withdrawel_nav_top: {
     flex:1, 
-    margin:heightPercentageToDP("1.1%"),
+   // margin:heightPercentageToDP("1.1%"),
     flexDirection:"row", 
     alignSelf:"center",
   },
@@ -741,7 +739,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.white,
     alignItems: 'center',
-    marginTop: widthPercentageToDP("1%"),
+    marginTop: widthPercentageToDP("2.5%"),
     marginRight: widthPercentageToDP("2%")
   },
   left_button_focus: {
@@ -754,7 +752,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.Wblue,
     alignItems: 'center',
-    marginTop: widthPercentageToDP("1%"),
+    marginTop: widthPercentageToDP("2.5%"),
     marginRight: widthPercentageToDP("2%")
   },
   right_button: {
@@ -767,7 +765,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.white,
     alignItems: 'center',
-    marginTop: widthPercentageToDP("1%"),
+    marginTop: widthPercentageToDP("2.5%"),
     marginLeft: widthPercentageToDP("2%")
   },
   right_button_focus: {
@@ -780,7 +778,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.Wblue,
     alignItems: 'center',
-    marginTop: widthPercentageToDP("1%"),
+    marginTop: widthPercentageToDP("2.5%"),
     marginLeft: widthPercentageToDP("2%")
   },
   button_text_focus: {

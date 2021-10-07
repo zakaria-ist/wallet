@@ -297,6 +297,8 @@ const CreateMessage = () => {
             handleWalRightButton={handleWalRightButton}
           />
         </View>
+        </View>
+        <View style={{flex:0.3}}>
         <View style={styles.message_quick_insert}>
           <TouchableOpacity
             style={styles.insert_button}
@@ -307,7 +309,7 @@ const CreateMessage = () => {
             </Text>
           </TouchableOpacity>
         </View>
-      </View>
+        </View>
         <View
           style={styles.create_message_body}>
           <FlatList data={[{key: 'item1' }]}
