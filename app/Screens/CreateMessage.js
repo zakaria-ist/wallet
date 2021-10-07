@@ -359,11 +359,10 @@ const CreateMessage = () => {
                   multiline={true}
                   value={quickMessages}
                   onChangeText={(value) => {
-                    setQuickMessages(value.replace(/[.-]/, ''));
+                    setQuickMessages(value.replace(/[^/\r/\n/\s0-9,=-]/g, ''));
                   }}
                   textAlignVertical="top"
                   style={styles.modal_text_input}
-                  keyboardType={'numeric'}
                 ></TextInput>
                 <TouchableOpacity
                   style={styles.confirm}
