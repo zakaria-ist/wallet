@@ -1,17 +1,20 @@
-import {Dimensions} from 'react-native';
+import {Dimensions, PixelRatio} from 'react-native';
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 class Screensize {
   getSmallScreen(){
-   return (windowWidth <320 && windowHeight <480)
+   return (PixelRatio.getPixelSizeForLayoutSize(windowWidth) <320 
+    && PixelRatio.getPixelSizeForLayoutSize(windowHeight) <480)
   } 
   getMediumScreen(){
-    return (320 <= windowWidth <999 && 480 <= windowHeight <1000)
+    return (320 <= PixelRatio.getPixelSizeForLayoutSize(windowWidth) <999 
+    && 480 <= PixelRatio.getPixelSizeForLayoutSize(windowHeight) <1000)
   } 
   getLargeScreen(){
-    return (windowWidth>=999 && windowHeight>=1000)
+    return (PixelRatio.getPixelSizeForLayoutSize(windowWidth)>=999 
+    && PixelRatio.getPixelSizeForLayoutSize(windowHeight)>=1000)
   } 
 }
 
