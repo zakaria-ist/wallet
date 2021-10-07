@@ -281,7 +281,7 @@ const Deposit = () => {
             msg.status = 'Accepted'
           }
           else if (msg.status == 'rejected') {
-            msg.status == 'Rejected'
+            msg.status = 'Rejected'
           }
 
           if (authType == 'client' || authType == 'admin' || authType == 'subadmin') {

@@ -151,13 +151,13 @@ const TodaysReport = () => {
 
     const content = await request.post(msgsUrl, params);
     if (content.ok) {
-      let myUserName = content.myUserName;
+      let myUserName = content.myUsername;
       let messages = content.msg.filter((msg) => {
         return msg.toagent == myUserName;
       })
       // status filter
-      messages = content.msg.filter((msg) => {
-        if (accepted && (msg.status == 'accepted' || msg.status == 'Sent')) return true;
+      messages = messages.filter((msg) => {
+        if (accepted && (msg.status == 'accepted' || msg.status == 'Sent' || msg.status == "Updated & Accepted")) return true;
         if (rejected && msg.status == 'rejected') return true;
         return false;
       })
@@ -171,12 +171,12 @@ const TodaysReport = () => {
       msg_list.push(tableHeader);
       messages.map((msg) => {
         let amount = parseFloat(String(msg.amount).replace(',', ''));
-        if (msg.status == 'accepted' || msg.status == 'Sent') {
+        if (msg.status == 'accepted' || msg.status == 'Sent' || msg.status == "Updated & Accepted") {
           total += amount;
-          msg.status == 'Accepted'
+          msg.status = 'Accepted'
         }
         else if (msg.status == 'rejected') {
-          msg.status == 'Rejected'
+          msg.status = 'Rejected'
         }
         let msg_data = {};
         if (purpose == 'deposit') {

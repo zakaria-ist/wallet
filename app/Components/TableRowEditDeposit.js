@@ -179,7 +179,7 @@ const TableRowEditDeposit = ({rowData}) => {
         token: authToken,
         action: action,
         messageId: rowData.id, 
-        amount: rowData.amount,
+        amount: String(rowData.amount).replace(",", ""),
         pinNo: rowData.pinNo
       }
     );

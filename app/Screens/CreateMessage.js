@@ -131,8 +131,8 @@ const CreateMessage = () => {
             const key = 'AAAAFusuHOI:APA91bFmsoK3xCuADeTunV7kCDrI5cBTd-wXN7WTZi-_fxT0NuZtVXkxcjzzZnD_uqeuHEqZ7ojrMK0SjCrNEkWtEewfPV8DTGtAxPeQBPQs_SCZNWlntcTm3bsYVYcuVI2dOY3f1WdI';
             // message build
             let sender = result.message.fromuser + " (" + purpose + ")";
-            let refNo = result.message.refNo ? result.message.refNo : "";
-            let mobile = result.message.mobile ? result.message.mobile : "";
+            let refNo = purpose == "deposit" ? result.message.refno ? result.message.refno : "" : "";
+            let mobile = purpose == "withdrawal" ? result.message.mobile ? result.message.mobile : "" : "";
             let walletName = "";
             walletData.map((wallet) => {
               if (result.message.payment == wallet.id) {
