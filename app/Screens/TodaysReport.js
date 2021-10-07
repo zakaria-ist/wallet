@@ -150,11 +150,14 @@ const TodaysReport = () => {
     );
 
     const content = await request.post(msgsUrl, params);
-
     if (content.ok) {
-      // ftatus filter
+      let myUserName = content.myUserName;
       let messages = content.msg.filter((msg) => {
-        if (accepted && msg.status == 'accepted') return true;
+        return msg.toagent == myUserName;
+      })
+      // status filter
+      messages = content.msg.filter((msg) => {
+        if (accepted && (msg.status == 'accepted' || msg.status == 'Sent')) return true;
         if (rejected && msg.status == 'rejected') return true;
         return false;
       })
@@ -168,7 +171,7 @@ const TodaysReport = () => {
       msg_list.push(tableHeader);
       messages.map((msg) => {
         let amount = parseFloat(String(msg.amount).replace(',', ''));
-        if (msg.status == 'accepted') {
+        if (msg.status == 'accepted' || msg.status == 'Sent') {
           total += amount;
           msg.status == 'Accepted'
         }
@@ -193,14 +196,13 @@ const TodaysReport = () => {
             HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
             wallet: msg.walletName,
             amount: amount,
-            pinNo: msg.pino ? msg.pino : "-",
+            pinNo: msg.pinno ? msg.pinno : "-",
             mobile: msg.mobile ? msg.mobile : "",
             status: msg.status,
           };
         }
         msg_list.push(msg_data);
       })
-      // console.log('msg_data', msg_list);
       setTableData(msg_list);
       setAcceptedTotal(total);
     }

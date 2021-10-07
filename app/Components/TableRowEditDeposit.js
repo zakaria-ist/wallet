@@ -32,8 +32,9 @@ const format = new Format();
 const request = new Request();
 const alert = new CustomAlert();
 
+let authToken = "";
+
 const TableRowEditDeposit = ({rowData}) => {
-  const [token, setToken] = useStateIfMounted("");
   const [rowId, setRowId] = useStateIfMounted(rowData.id);
   const [amount, setAmount] = useState('');
   const [cellOne, setCellOne] = useStateIfMounted([]);
@@ -43,7 +44,7 @@ const TableRowEditDeposit = ({rowData}) => {
 
   useEffect(() => {
     AsyncStorage.getItem('token').then((token) => {
-      setToken(token);
+      authToken = token;
     });
     
     setRowId(rowData.id);
@@ -175,9 +176,9 @@ const TableRowEditDeposit = ({rowData}) => {
     const sendUrl = request.getAgentReplyMessageUrl();
     let params = JSON.stringify(
       {
-        token: token,
+        token: authToken,
         action: action,
-        message_id: rowData.rowId, 
+        messageId: rowData.id, 
         amount: rowData.amount,
         pinNo: rowData.pinNo
       }

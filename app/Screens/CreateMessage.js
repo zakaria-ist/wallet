@@ -200,7 +200,7 @@ const CreateMessage = () => {
 
     if (sent) {
       onSpinnerChanged(false);
-      alert.warning("Messages are sent.");
+      alert.info("Messages have been sent.");
       let data = {
         refCode: "",
         amount: ""
