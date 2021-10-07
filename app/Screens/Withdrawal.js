@@ -496,38 +496,7 @@ const Withdrawal = () => {
               <View></View>
             ]
           :
-          ([(authType == "admin" || authType == "subadmin") ?
-            <View style={styles.status_row_container}>
-            <View style={styles.status_row}>
-              <View style={styles.checkboxContainer}>
-                <Text style={styles.label}>Status:   </Text>
-                <Text style={styles.label}>Accepted</Text>
-                <CheckBox
-                  value={accepted}
-                  onValueChange={value => {
-                      accepted = value;
-                      handleCheckBox();
-                    }}
-                  style={styles.checkbox}
-                  tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                />
-                 </View>
-              </View>
-              <View style={styles.checkboxContainer}>
-                  {transType == "Today" ? <Text style={styles.label}>Pending</Text> : <Text style={styles.label}>No Status</Text>}
-                  <CheckBox
-                    value={transType == "Today" ? pending : noStatus}
-                    onValueChange={value => {
-                      transType == "Today" ? pending = value : noStatus = value;
-                      handleCheckBox();
-                    }}
-                    style={styles.checkbox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
-              </View>
-            </View>
-            :
-            <View style={(authType == "client") ? styles.status_row_container : styles.status_agent_user_row_container}>
+            <View style={(authType == "admin" || authType == "subadmin" || authType == "client") ? styles.status_row_container : styles.status_agent_user_row_container}>
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Status:   </Text>
@@ -556,8 +525,6 @@ const Withdrawal = () => {
                   />
               </View>
             </View>
-           ]
-           )
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
