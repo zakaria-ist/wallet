@@ -347,7 +347,7 @@ const styles = StyleSheet.create({
   },
   label: {
     marginTop: widthPercentageToDP("-1%"),
-    marginLeft: widthPercentageToDP("1.5%"),
+    marginLeft: widthPercentageToDP("1.8%"),
     fontSize: RFValue(14)
   },
   agent_container: {
