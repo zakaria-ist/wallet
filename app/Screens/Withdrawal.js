@@ -221,8 +221,23 @@ const Withdrawal = () => {
     );
     const content = await request.post(msgsUrl, params);
     if (content.ok) {
+      let myUserName = content.myUsername;
+      let messages = [];
+      if (authType == 'agent') {
+        messages = content.msg.filter((msg) => {
+          return msg.toagent == myUserName;
+        })
+      } else if (authType == 'client') {
+        messages = content.msg.filter((msg) => {
+          return msg.belongclient == myUserName;
+        })
+      } else if (authType == 'user') {
+        messages = content.msg.filter((msg) => {
+          return msg.fromuser == myUserName;
+        })
+      }
       // ftatus filter
-      let messages = content.msg.filter((msg) => {
+      messages = messages.filter((msg) => {
         if (accepted && msg.status == 'accepted') return true;
         // if (rejected && msg.status == 'rejected') return true;
         if (pending && (msg.status == 'pending' || msg.status == 'new')) return true;
