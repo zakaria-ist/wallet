@@ -226,7 +226,7 @@ const TodaysReport = () => {
         <CustomHeader 
           title={"Today's Report"}
         />
-        <View style={styles.today_report_nav_top}>
+        <View style={styles.deposit_withdrawel_today_nav_top}>
           <CommonTop
             admin={false}
             LeftButton={LeftButton}
@@ -241,7 +241,7 @@ const TodaysReport = () => {
       </View>
       <View style={styles.deposit_withdrawel_treport_body}>
         {transType == "deposit" ?
-          <View style={styles.agent_status_row_container}>
+          <View style={styles.status_agent_row_container}>
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Status:   </Text>

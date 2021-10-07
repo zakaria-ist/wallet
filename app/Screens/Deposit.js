@@ -360,7 +360,7 @@ const Deposit = () => {
             <CustomHeader 
               title={"Deposit"}
             /> 
-              <View style={(authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_nav_top}>
+              <View style={(authType == "admin" || authType == "subadmin") ? styles.admin_deposit_withdrawel_nav_top : styles.deposit_withdrawel_today_nav_top}>
                 <CommonTop
                   admin={(authType == "admin" || authType == "subadmin") ? true : false}
                   LeftButton={LeftButton}
@@ -446,7 +446,7 @@ const Deposit = () => {
             }
           {authType == 'agent' ?
             [transType == 'Yesterday' ?
-              <View style={styles.agent_status_row_container}>
+              <View style={styles.status_agent_user_row_container}>
                 <View style={styles.status_row}>
                   <View style={styles.checkboxContainer}>
                     <Text style={styles.label}>Status:  </Text>
@@ -492,7 +492,7 @@ const Deposit = () => {
               ]
             :
             ([(authType == "admin" || authType == "subadmin") ?
-              <View style={styles.admin_subadmin_status_row_container}>
+              <View style={styles.status_row_container}>
               <View style={styles.status_row}>
                 <View style={styles.checkboxContainer}>
                     <Text style={styles.label}>Status:   </Text>
@@ -534,7 +534,7 @@ const Deposit = () => {
                 </View>
               </View>
               :
-              <View style={styles.others_status_row_container}>
+              <View style={(authType == "client") ? styles.status_row_container : styles.status_agent_user_row_container}>
                 <View style={styles.status_row}>
                   <View style={styles.checkboxContainer}>
                     <Text style={styles.label}>Status:   </Text>

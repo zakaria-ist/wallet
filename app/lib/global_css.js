@@ -142,17 +142,15 @@ const styles = StyleSheet.create({
 
   //Create Message Screen
   message_nav_top:{
-    flex:2.1, 
-    marginTop: heightPercentageToDP("1%"),
-    marginBottom: heightPercentageToDP("3.4%"),
+    flex:2.4, 
     alignSelf:"center",
   },
   message_quick_insert:{
-    marginTop: heightPercentageToDP("0.5%"),
+    marginTop: heightPercentageToDP("3%"),
     alignSelf:"center",
   },
   create_message_body: {
-    flex:2.8,
+    flex:3.55,
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",
@@ -260,31 +258,28 @@ const styles = StyleSheet.create({
     marginTop:-heightPercentageToDP("4%")
   },
 
-  //Deposit & Withdrawel Screen
+  //Deposit & Withdrawel & today Screen
   admin_deposit_withdrawel_header:{
-    flex:0.6,
+    flex:0.64,
   },
-  deposit_withdrawel_nav_top:{
-    flex:2.3, 
-    margin:heightPercentageToDP("1.1%"),
+  deposit_withdrawel_today_nav_top:{
+    flex:2.4, 
     flexDirection:"row", 
     alignSelf:"center",
   },
   deposit_withdrawel_treport_body: {
-    flex:3.5,
+    flex:3.8,
     backgroundColor: Colors.white,
     flexDirection: 'column',
     alignItems: "center",
   },
   admin_deposit_withdrawel_nav_top: {
-    flex:1, 
-    margin:heightPercentageToDP("1.1%"),
+    flex:1.35, 
     flexDirection:"row", 
     alignSelf:"center",
   },
   client_ss_picker: {
     width: widthPercentageToDP("30%"),
-    marginBottom: heightPercentageToDP("1%"), 
   },
   client_ss_dropdownpicker: {
     width: widthPercentageToDP("30%"),
@@ -292,8 +287,6 @@ const styles = StyleSheet.create({
   },
   client_ms_picker: {
     width: widthPercentageToDP("34%"),
-    marginBottom: heightPercentageToDP("1%"),
-    marginTop:-heightPercentageToDP("0.8%"),
   },
   client_ms_dropdownpicker: {
     width: widthPercentageToDP("34%"),
@@ -301,8 +294,6 @@ const styles = StyleSheet.create({
   },
   client_ls_picker: {
     width: widthPercentageToDP("39%"),
-    marginBottom: heightPercentageToDP("0.5%"), 
-    marginTop:-heightPercentageToDP("0.8%"),
   },
   client_ls_dropdownpicker: {
     width: widthPercentageToDP("39%"),
@@ -317,9 +308,7 @@ const styles = StyleSheet.create({
     marginLeft: widthPercentageToDP("6%"),
   },
   picker_ms_admin: {
-    flex:0.46,
-    marginTop: -heightPercentageToDP("0.5%"),
-    marginBottom:heightPercentageToDP("0.5%"), 
+    flex:0.46, 
     flexDirection: "row",
     alignItems: "center",
     marginRight: widthPercentageToDP("6%"), 
@@ -327,24 +316,17 @@ const styles = StyleSheet.create({
   },
   picker_ls_admin: {
     flex:0.50,
-    marginTop: -heightPercentageToDP("0.5%"),
-    marginBottom:heightPercentageToDP("0.5%"), 
     flexDirection: "row",
     alignItems: "center",
     marginRight: widthPercentageToDP("6%"), 
     marginLeft: widthPercentageToDP("6%"),
   },
-  agent_status_row_container: {
-    marginTop: -heightPercentageToDP("2%"),
+  status_row_container: {
     flexDirection: "row"
   },
-  admin_subadmin_status_row_container: {
-    marginTop: -heightPercentageToDP("1%"),
-    flexDirection: "row"
-  },
-  others_status_row_container: {
+  status_agent_user_row_container: {
+    flexDirection: "row",
     marginTop: -heightPercentageToDP("2%"),
-    flexDirection:"row"
   },
   status_row: {
     flexDirection: "row",
@@ -532,28 +514,17 @@ const styles = StyleSheet.create({
     fontSize: RFValue(10)
   },
 
-  //TodaysReport
-  today_report_nav_top:{
-    flex:2.4, 
-    margin:heightPercentageToDP("0.5%"),
-    marginTop:heightPercentageToDP("1.3%"),
-    flexDirection:"row", 
-    alignSelf:"center",
-  },
-
   //SummaryReport
   summary_report_nav_top:{
-    flex:1.3, 
-    marginTop:heightPercentageToDP("1.4%"),
+    flex:1.5, 
     flexDirection:"row", 
     alignSelf:"center"
   },
   summary_report_body: {
     backgroundColor: Colors.white,
-    flex:5.4,
+    flex:5.5,
     flexDirection: 'column',
     alignItems: "center",
-    marginTop:-heightPercentageToDP("0.8%"),
     paddingBottom: heightPercentageToDP("1%"),
   },
 
@@ -741,7 +712,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.white,
     alignItems: 'center',
-    marginTop: widthPercentageToDP("1%"),
+    marginTop: widthPercentageToDP("2.5%"),
     marginRight: widthPercentageToDP("2%")
   },
   left_button_focus: {
@@ -754,7 +725,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.Wblue,
     alignItems: 'center',
-    marginTop: widthPercentageToDP("1%"),
+    marginTop: widthPercentageToDP("2.5%"),
     marginRight: widthPercentageToDP("2%")
   },
   right_button: {
@@ -767,7 +738,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.white,
     alignItems: 'center',
-    marginTop: widthPercentageToDP("1%"),
+    marginTop: widthPercentageToDP("2.5%"),
     marginLeft: widthPercentageToDP("2%")
   },
   right_button_focus: {
@@ -780,7 +751,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     backgroundColor: WalletColors.Wblue,
     alignItems: 'center',
-    marginTop: widthPercentageToDP("1%"),
+    marginTop: widthPercentageToDP("2.5%"),
     marginLeft: widthPercentageToDP("2%")
   },
   button_text_focus: {
