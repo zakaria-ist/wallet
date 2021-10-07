@@ -341,9 +341,8 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP("1%"),
   },
   checkbox: {
-    transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
+    transform: [{ scaleX: 0.55 }, { scaleY: 0.55 }],
     marginLeft: widthPercentageToDP("-2%"),
-    marginRight: widthPercentageToDP("2%"),
   },
   label: {
     marginTop: widthPercentageToDP("-1%"),
@@ -525,7 +524,6 @@ const styles = StyleSheet.create({
     flex:6.25,
     flexDirection: 'column',
     alignItems: "center",
-    paddingBottom: heightPercentageToDP("1%"),
   },
 
   //SummaryReportTableRow
