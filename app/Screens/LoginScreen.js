@@ -70,9 +70,7 @@ const LoginScreen = ({navigation}) => {
 
     // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
     onAction: function (notification) {
-      // alert.warning(JSON.stringify(notification))
       processNoti(notification)
-      // process the action
     },
 
     // Should the initial notification be popped automatically
@@ -116,7 +114,6 @@ const LoginScreen = ({navigation}) => {
     messaging()
       .getInitialNotification()
       .then((remoteMessage) => {
-        // alert.warning('on init'+ JSON.stringify(remoteMessage))
         console.log('remoteMessage', 'getInitialNotification', remoteMessage);
         processNoti(remoteMessage)
       });

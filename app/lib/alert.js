@@ -5,7 +5,7 @@ class CustomAlert {
   async warning(text, func) {
     if (func) {
       Alert.alert(
-        "warning",
+        "Warning",
         text,
         [
           {
@@ -19,7 +19,36 @@ class CustomAlert {
       );
     } else {
       Alert.alert(
-        "warning",
+        "Warning",
+        text,
+        [
+          {
+            text: "OK",
+          },
+        ],
+        { cancelable: false }
+      );
+    }
+  }
+
+  async info(text, func) {
+    if (func) {
+      Alert.alert(
+        "Information",
+        text,
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              func();
+            },
+          }
+        ],
+        { cancelable: false }
+      );
+    } else {
+      Alert.alert(
+        "Information",
         text,
         [
           {
@@ -33,7 +62,7 @@ class CustomAlert {
 
   async ask(text, func) {
     Alert.alert(
-      "warning",
+      "Warning",
       text,
       [
         {
