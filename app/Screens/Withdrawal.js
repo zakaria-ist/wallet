@@ -49,6 +49,9 @@ let authType = "";
 let transType = "Today";
 let authToken = "";
 let walletType = 1;
+let pending = true;
+let noStatus = true;
+let accepted = true;
 
 const Withdrawal = () => {
   const isDarkMode = useColorScheme() === 'dark';
@@ -56,9 +59,6 @@ const Withdrawal = () => {
   const [walletPickerType, setWalletPickerType] = useStateIfMounted("");
   const [walletData, setWalletData] = useStateIfMounted([]);
   const [walletPickerList, setWalletPickerList] = useStateIfMounted([]);
-  const [noStatus, setNoStatus] = useStateIfMounted(true);
-  const [pending, setPending] = useStateIfMounted(true);
-  const [accepted, setAccepted] = useStateIfMounted(true);
   const [pendingTotal, setPendingTotal] = useStateIfMounted(0);
   const [acceptedTotal, setAcceptedTotal] = useStateIfMounted(0);
   const [openClientPicker, setOpenClientPicker] = useStateIfMounted(false);
@@ -102,7 +102,7 @@ const Withdrawal = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     renderTablesData();
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, []);
 
   useEffect(() => {
@@ -227,7 +227,6 @@ const Withdrawal = () => {
         // if (rejected && msg.status == 'rejected') return true;
         if (pending && (msg.status == 'pending' || msg.status == 'new')) return true;
         if (noStatus && msg.status == null) return true;
-        if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter
@@ -314,7 +313,6 @@ const Withdrawal = () => {
         setTableData(msg_list);
         setAcceptedTotal(accepted_total);
         setPendingTotal(pending_total);
-        console.log(msg_list);
       }
     }
     onSpinnerChanged(false);
@@ -457,9 +455,11 @@ const Withdrawal = () => {
                   <Text style={styles.label}>Accepted</Text>
                   <CheckBox
                     value={accepted}
-                    onValueChange={setAccepted}
+                    onValueChange={value => {
+                      accepted = value;
+                      handleCheckBox();
+                    }}
                     style={styles.checkbox}
-                    onChange={handleCheckBox}
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
                 </View>
@@ -467,9 +467,11 @@ const Withdrawal = () => {
                   <Text style={styles.label}>No Status</Text>
                   <CheckBox
                     value={noStatus}
-                    onValueChange={setNoStatus}
+                    onValueChange={value => {
+                      noStatus = value;
+                      handleCheckBox();
+                    }}
                     style={styles.checkbox}
-                    onChange={handleCheckBox}
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
                 </View>
@@ -487,9 +489,11 @@ const Withdrawal = () => {
                 <Text style={styles.label}>Accepted</Text>
                 <CheckBox
                   value={accepted}
-                  onValueChange={setAccepted}
+                  onValueChange={value => {
+                      accepted = value;
+                      handleCheckBox();
+                    }}
                   style={styles.checkbox}
-                  onChange={handleCheckBox}
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
                  </View>
@@ -498,9 +502,11 @@ const Withdrawal = () => {
                   {transType == "Today" ? <Text style={styles.label}>Pending</Text> : <Text style={styles.label}>No Status</Text>}
                   <CheckBox
                     value={transType == "Today" ? pending : noStatus}
-                    onValueChange={transType == "Today" ? setPending : setNoStatus}
+                    onValueChange={value => {
+                      transType == "Today" ? pending = value : noStatus = value;
+                      handleCheckBox();
+                    }}
                     style={styles.checkbox}
-                    onChange={handleCheckBox}
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
               </View>
@@ -513,9 +519,11 @@ const Withdrawal = () => {
                 <Text style={styles.label}>Accepted</Text>
                 <CheckBox
                   value={accepted}
-                  onValueChange={setAccepted}
+                  onValueChange={value => {
+                      accepted = value;
+                      handleCheckBox();
+                    }}
                   style={styles.checkbox}
-                  onChange={handleCheckBox}
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
               </View>
@@ -524,9 +532,11 @@ const Withdrawal = () => {
                 {transType == "Today" ? <Text style={styles.label}>Pending</Text> : <Text style={styles.label}>No Status</Text>}
                   <CheckBox
                     value={transType == "Today" ? pending : noStatus}
-                    onValueChange={transType == "Today" ? setPending : setNoStatus}
+                    onValueChange={value => {
+                      transType == "Today" ? pending = value : noStatus = value;
+                      handleCheckBox();
+                    }}
                     style={styles.checkbox}
-                    onChange={handleCheckBox}
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
               </View>

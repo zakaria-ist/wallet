@@ -57,7 +57,7 @@ const SummaryReport = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     renderTablesData();
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, []);
 
   useEffect(() => {

@@ -43,13 +43,13 @@ let authType = "";
 let transType = "withdrawal";
 let authToken = "";
 let walletType = 1;
+let accepted = true;
+let rejected = true;
 
 const TodaysReport = () => {
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [walletData, setWalletData] = useStateIfMounted([]);
-  const [rejected, setRejected] = useStateIfMounted(true);
-  const [accepted, setAccepted] = useStateIfMounted(true);
   const [acceptedTotal, setAcceptedTotal] = useStateIfMounted("");
   const [tableData, setTableData] = useStateIfMounted([]);
   const [refreshing, setRefreshing] = React.useState(false);
@@ -72,7 +72,7 @@ const TodaysReport = () => {
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
     renderTablesData();
-    wait(2000).then(() => setRefreshing(false));
+    wait(1000).then(() => setRefreshing(false));
   }, []);
 
   useEffect(() => {
@@ -156,7 +156,6 @@ const TodaysReport = () => {
       let messages = content.msg.filter((msg) => {
         if (accepted && msg.status == 'accepted') return true;
         if (rejected && msg.status == 'rejected') return true;
-         //if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter
@@ -247,9 +246,11 @@ const TodaysReport = () => {
                 <Text style={styles.label}>Accepted</Text>
                 <CheckBox
                   value={accepted}
-                  onValueChange={setAccepted}
+                  onValueChange={value => {
+                    accepted = value;
+                    handleCheckBox();
+                  }}
                   style={styles.checkbox}
-                  onChange={handleCheckBox}
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
               </View>
@@ -257,9 +258,11 @@ const TodaysReport = () => {
                 <Text style={styles.label}>Rejected</Text>
                 <CheckBox
                   value={rejected}
-                  onValueChange={setRejected}
+                  onValueChange={value => {
+                    rejected = value;
+                    handleCheckBox();
+                  }}
                   style={styles.checkbox}
-                  onChange={handleCheckBox}
                   tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                 />
               </View>
