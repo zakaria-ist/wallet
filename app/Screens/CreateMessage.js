@@ -227,6 +227,7 @@ const CreateMessage = () => {
       let messages = line.replace('==', ',').replace('=', ',').replace('--', ',').replace('-', ',');
       let blocks = messages.split(',');
       if (blocks.length && blocks[0] != "" && blocks[1] != "") {
+        try{
           let code = blocks[0].trim();
           let amount = blocks[1].trim();
           let data = {
@@ -238,6 +239,9 @@ const CreateMessage = () => {
           else if (index == 2) setMessageThree(data);
           else if (index == 3) setMessageFour(data);
           else if (index == 4) setMessageFive(data);
+        } catch (e) {
+          
+        }
       }
     })
   }
@@ -359,11 +363,10 @@ const CreateMessage = () => {
                   multiline={true}
                   value={quickMessages}
                   onChangeText={(value) => {
-                    setQuickMessages(value);
+                    setQuickMessages(value.replace(/[^/\r/\n/\s0-9,=-]/g, ''));
                   }}
                   textAlignVertical="top"
                   style={styles.modal_text_input}
-                  keyboardType={'numeric'}
                 ></TextInput>
                 <TouchableOpacity
                   style={styles.confirm}

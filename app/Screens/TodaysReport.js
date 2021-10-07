@@ -5,7 +5,7 @@
  * @format
  * @flow strict-local
  */
-import React, {useState, useEffect}  from 'react';
+import React, {useState, useEffect, useCallback}  from 'react';
 import {
   SafeAreaView,
   FlatList,
@@ -156,7 +156,7 @@ const TodaysReport = () => {
       let messages = content.msg.filter((msg) => {
         if (accepted && msg.status == 'accepted') return true;
         if (rejected && msg.status == 'rejected') return true;
-        // if (msg.status == 'new') return true;
+         //if (msg.status == 'new') return true;
         return false;
       })
       // wallet filter
@@ -176,7 +176,6 @@ const TodaysReport = () => {
         else if (msg.status == 'rejected') {
           msg.status == 'Rejected'
         }
-        // amount = format.separator(amount);
         let msg_data = {};
         if (purpose == 'deposit') {
           msg_data = {
@@ -209,9 +208,10 @@ const TodaysReport = () => {
     onSpinnerChanged(false);
   }
 
-  const renderItem = ({ item }) => (
+  const renderItem =  ({ item }) => (
     <TableRow rowData={item} />
   );
+  const keyExtractor = useCallback((item) => item.id.toString(), []);
 
   return (
     <SafeAreaView style={styles.header}>
@@ -273,7 +273,7 @@ const TodaysReport = () => {
             <FlatList
               data={tableData}
               renderItem={renderItem}
-              keyExtractor={item => item.id}
+              keyExtractor={keyExtractor}
               refreshControl={
                 <RefreshControl
                   refreshing={refreshing}

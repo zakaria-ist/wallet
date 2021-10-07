@@ -59,9 +59,10 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
                   <Text style={styles.view_message_text}> : </Text>
                   <TextInput 
                     style={styles.text_message_input}
-                    onChangeText={setRefCode}
+                    onChangeText={e => setRefCode(e.replace(/[^0-9]+/g, ''))}
                     value={refCode}
                     onBlur={handleChange}
+                    inputMode="numeric"
                     placeholderTextColor={WalletColors.grey}
                     keyboardType={'numeric'}
                   />
@@ -70,9 +71,10 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
                   <Text style={styles.view_message_text}> : </Text>
                   <TextInput 
                     style={styles.text_message_input}
-                    onChangeText={e => setAmount(e.replace(/[^0-9]/g, ''))}
+                    onChangeText={e => setAmount(e.replace(/[^0-9]+/g, ''))}
                     value={amount}
                     onBlur={handleChange}
+                    inputMode="numeric"
                     placeholderTextColor={WalletColors.grey}
                     keyboardType={'numeric'}
                     />
