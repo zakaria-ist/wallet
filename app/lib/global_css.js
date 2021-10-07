@@ -522,10 +522,9 @@ const styles = StyleSheet.create({
   },
   summary_report_body: {
     backgroundColor: Colors.white,
-    flex:5.6,
+    flex:5.5,
     flexDirection: 'column',
     alignItems: "center",
-    marginTop:-heightPercentageToDP("0.8%"),
     paddingBottom: heightPercentageToDP("1%"),
   },
 
