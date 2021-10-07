@@ -341,13 +341,13 @@ const styles = StyleSheet.create({
     marginTop: heightPercentageToDP("1%"),
   },
   checkbox: {
-    transform: [{ scaleX: 0.5 }, { scaleY: 0.5 }],
+    transform: [{ scaleX: 0.55 }, { scaleY: 0.55 }],
     marginLeft: widthPercentageToDP("-2%"),
-    marginRight: widthPercentageToDP("2%"),
+    marginRight: widthPercentageToDP("1.5%"),
   },
   label: {
     marginTop: widthPercentageToDP("-1%"),
-    marginLeft: widthPercentageToDP("2%"),
+    marginLeft: widthPercentageToDP("1.8%"),
     fontSize: RFValue(14)
   },
   agent_container: {
@@ -516,16 +516,15 @@ const styles = StyleSheet.create({
 
   //SummaryReport
   summary_report_nav_top:{
-    flex:1.25, 
+    flex:1.2, 
     flexDirection:"row", 
     alignSelf:"center"
   },
   summary_report_body: {
     backgroundColor: Colors.white,
-    flex:6.25,
+    flex:6.4,
     flexDirection: 'column',
     alignItems: "center",
-    paddingBottom: heightPercentageToDP("1%"),
   },
 
   //SummaryReportTableRow

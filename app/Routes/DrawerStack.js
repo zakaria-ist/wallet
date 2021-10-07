@@ -106,9 +106,8 @@ export default function DrawerStack() {
         drawerContent={(props) => <CustomDrawerContent {...props} />}
         style={styles.drawerItem}
         screenOptions={{
-            // drawerActiveTintColor: '#265684',
             headerShown: false,
-            drawerStyle: {width: widthPercentageToDP("60%")},
+            drawerStyle: {width: widthPercentageToDP("70%")},
             drawerItemStyle: styles.drawerItem,
             drawerLabelStyle:{fontSize: RFValue(15)},
         }}
