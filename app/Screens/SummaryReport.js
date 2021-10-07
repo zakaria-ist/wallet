@@ -15,6 +15,7 @@ import {
   InteractionManager,
   RefreshControl,
 } from 'react-native';
+import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
@@ -203,18 +204,20 @@ const SummaryReport = () => {
         </View>
       </View>
       <View style={styles.summary_report_body}> 
-        <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-            <FlatList
-              data={tableData}
-              renderItem={renderItem}
-              keyExtractor={item => item.id}
-              refreshControl={
-                <RefreshControl
-                  refreshing={refreshing}
-                  onRefresh={onRefresh}
-                />
-              }
-            />
+        <View style={{ marginTop:-heightPercentageToDP("1%")}}> 
+          <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+              <FlatList
+                data={tableData}
+                renderItem={renderItem}
+                keyExtractor={item => item.id}
+                refreshControl={
+                  <RefreshControl
+                    refreshing={refreshing}
+                    onRefresh={onRefresh}
+                  />
+                }
+              />
+          </View>
         </View>
       </View>
     </SafeAreaView>

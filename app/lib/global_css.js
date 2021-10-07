@@ -286,10 +286,10 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("5%")
   },
   client_ms_picker: {
-    width: widthPercentageToDP("34%"),
+    width: widthPercentageToDP("35%"),
   },
   client_ms_dropdownpicker: {
-    width: widthPercentageToDP("34%"),
+    width: widthPercentageToDP("35%"),
     height: heightPercentageToDP("5%")
   },
   client_ls_picker: {

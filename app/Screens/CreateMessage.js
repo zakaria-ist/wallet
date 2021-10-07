@@ -343,7 +343,7 @@ const CreateMessage = () => {
           <KeyboardAvoidingView
             style={{flex: 1}}
           >
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 1, paddingBottom: heightPercentageToDP("3.5%")}}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
                 <View styles={styles.modal_header}>
