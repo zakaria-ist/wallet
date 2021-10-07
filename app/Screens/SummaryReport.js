@@ -204,20 +204,18 @@ const SummaryReport = () => {
         </View>
       </View>
       <View style={styles.summary_report_body}> 
-        <View style={{ marginTop:-heightPercentageToDP("1%")}}> 
-          <View style={styles.view_deposit_withdrawel_treport_rectangle}>
-              <FlatList
-                data={tableData}
-                renderItem={renderItem}
-                keyExtractor={item => item.id}
-                refreshControl={
-                  <RefreshControl
-                    refreshing={refreshing}
-                    onRefresh={onRefresh}
-                  />
-                }
+        <View style={styles.view_deposit_withdrawel_treport_rectangle}>
+          <FlatList
+            data={tableData}
+            renderItem={renderItem}
+            keyExtractor={item => item.id}
+            refreshControl={
+              <RefreshControl
+                refreshing={refreshing}
+                onRefresh={onRefresh}
               />
-          </View>
+              }
+          />
         </View>
       </View>
     </SafeAreaView>
