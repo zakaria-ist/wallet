@@ -286,10 +286,10 @@ const styles = StyleSheet.create({
     height: heightPercentageToDP("5%")
   },
   client_ms_picker: {
-    width: widthPercentageToDP("34%"),
+    width: widthPercentageToDP("35%"),
   },
   client_ms_dropdownpicker: {
-    width: widthPercentageToDP("34%"),
+    width: widthPercentageToDP("35%"),
     height: heightPercentageToDP("5%")
   },
   client_ls_picker: {
@@ -516,13 +516,13 @@ const styles = StyleSheet.create({
 
   //SummaryReport
   summary_report_nav_top:{
-    flex:1.5, 
+    flex:1.25, 
     flexDirection:"row", 
     alignSelf:"center"
   },
   summary_report_body: {
     backgroundColor: Colors.white,
-    flex:5.5,
+    flex:6.25,
     flexDirection: 'column',
     alignItems: "center",
     paddingBottom: heightPercentageToDP("1%"),

@@ -506,58 +506,41 @@ const Deposit = () => {
                 <View></View>
               ]
             :
-            ([(authType == "admin" || authType == "subadmin") ?
-              <View style={styles.status_row_container}>
-              <View style={styles.status_row}>
-                <View style={styles.checkboxContainer}>
-                    <Text style={styles.label}>Status:   </Text>
-                    <Text style={styles.label}>Pending</Text>
-                    <CheckBox
-                      value={pending}
-                      onValueChange={value => {
-                        pending = value;
-                        handleCheckBox();
-                      }}
-                      style={styles.checkbox}
-                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                    />
-                  </View>
-                </View>
-                <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>Accepted</Text>
-                  <CheckBox
-                    value={accepted}
-                    onValueChange={value => {
-                      accepted = value;
-                      handleCheckBox();
-                    }}
-                    style={styles.checkbox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
-                </View>
-                <View style={styles.checkboxContainer}>
-                  {transType == "Today" ? <Text style={styles.label}>Rejected</Text> : <Text style={styles.label}>No Status</Text>}
-                  <CheckBox
-                    value={transType == "Today" ? rejected : noStatus}
-                    onValueChange={value => {
-                      transType == "Today" ? rejected = value : noStatus = value;
-                      handleCheckBox();
-                    }}
-                    style={styles.checkbox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
-                </View>
-              </View>
-              :
-              <View style={(authType == "client") ? styles.status_row_container : styles.status_agent_user_row_container}>
+              [transType == 'Today' ?
+                <View style={[(authType == "admin" || authType == "subadmin" || authType == "client") ? styles.status_row_container : styles.status_agent_user_row_container]}>
                 <View style={styles.status_row}>
                   <View style={styles.checkboxContainer}>
-                    <Text style={styles.label}>Status:   </Text>
-                    <Text style={styles.label}>Pending</Text>
+                      <Text style={styles.label}>Status:   </Text>
+                      <Text style={styles.label}>Pending</Text>
+                      <CheckBox
+                        value={pending}
+                        onValueChange={value => {
+                          pending = value;
+                          handleCheckBox();
+                        }}
+                        style={styles.checkbox}
+                        tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                      />
+                    </View>
+                  </View>
+                  <View style={styles.checkboxContainer}>
+                    <Text style={styles.label}>Accepted</Text>
                     <CheckBox
-                      value={pending}
+                      value={accepted}
                       onValueChange={value => {
-                        pending = value;
+                        accepted = value;
+                        handleCheckBox();
+                      }}
+                      style={styles.checkbox}
+                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                    />
+                  </View>
+                  <View style={styles.checkboxContainer}>
+                    <Text style={styles.label}>Rejected</Text>
+                    <CheckBox
+                      value={rejected}
+                      onValueChange={value => {
+                        rejected = value;
                         handleCheckBox();
                       }}
                       style={styles.checkbox}
@@ -565,32 +548,49 @@ const Deposit = () => {
                     />
                   </View>
                 </View>
-                <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>Accepted</Text>
+               :
+               <View style={[(authType == "admin" || authType == "subadmin" || authType == "client") ? styles.status_row_container : styles.status_agent_user_row_container]}>
+               <View style={styles.status_row}>
+                 <View style={styles.checkboxContainer}>
+                   <Text style={styles.label}>Status:   </Text>
+                   <Text style={styles.label}>Accepted</Text>
+                   <CheckBox
+                     value={accepted}
+                     onValueChange={value => {
+                       accepted = value;
+                       handleCheckBox();
+                     }}
+                     style={styles.checkbox}
+                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                   />
+                   </View>
+                 </View>
+                 <View style={styles.checkboxContainer}>
+                   <Text style={styles.label}>Rejected</Text>
+                   <CheckBox
+                     value={rejected}
+                     onValueChange={value => {
+                       rejected = value;
+                       handleCheckBox();
+                     }}
+                     style={styles.checkbox}
+                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
+                   />
+                 </View>
+                 <View style={styles.checkboxContainer}>
+                  <Text style={styles.label}>No Status</Text>
                   <CheckBox
-                    value={accepted}
+                    value={noStatus}
                     onValueChange={value => {
-                      accepted = value;
-                      handleCheckBox();
-                    }}
-                    style={styles.checkbox}
-                    tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
-                  />
-                </View>
-                <View style={styles.checkboxContainer}>
-                  {transType == "Today" ? <Text style={styles.label}>Rejected</Text> : <Text style={styles.label}>No Status</Text>}
-                  <CheckBox
-                    value={transType == "Today" ? rejected : noStatus}
-                    onValueChange={value => {
-                      transType == "Today" ? rejected = value : noStatus = value;
+                      noStatus = value;
                       handleCheckBox();
                     }}
                     style={styles.checkbox}
                     tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                   />
                   </View>
-              </View>
-            ])
+               </View>
+            ]
           }
           {authType == 'agent' ?
             [transType == 'Today' ? 
