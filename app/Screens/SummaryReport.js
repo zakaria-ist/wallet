@@ -204,6 +204,7 @@ const SummaryReport = () => {
         </View>
       </View>
       <View style={styles.summary_report_body}> 
+        <View style={{paddingBottom: heightPercentageToDP("1%")}}> 
         <View style={styles.view_deposit_withdrawel_treport_rectangle}>
           <FlatList
             data={tableData}
@@ -216,6 +217,7 @@ const SummaryReport = () => {
               />
               }
           />
+          </View>
         </View>
       </View>
     </SafeAreaView>
