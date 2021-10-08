@@ -8,10 +8,8 @@
 import React, {useState, useEffect}  from 'react';
 import {
   SafeAreaView,
-  FlatList,
   StatusBar,
   Text,
-  Dimensions,
   TextInput,
   useColorScheme,
   View,
@@ -19,29 +17,25 @@ import {
   TouchableOpacity,
   KeyboardAvoidingView
 } from 'react-native';
-import {heightPercentageToDP, widthPercentageToDP} from "react-native-responsive-screen";
+import {heightPercentageToDP} from "react-native-responsive-screen";
 import Modal from "react-native-modal";
 import { useStateIfMounted } from "use-state-if-mounted";
-import { RFValue } from "react-native-responsive-fontsize";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
 import Spinner from "react-native-loading-spinner-overlay";
 import firebase from "@react-native-firebase/app";
 import firestore from '@react-native-firebase/firestore';
+import Request from "../lib/request";
+import CustomAlert from "../lib/alert";
+import CustomHeader from "../Components/CustomHeader";
+import CommonTop from "../Components/CommonTop";
+import MessageBlock from "../Components/MessageBlock";
+import { WalletColors } from "../assets/Colors.js";
+import styles from '../lib/global_css';
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
-
-import Request from "../lib/request";
-import CustomAlert from "../lib/alert";
-
-import CustomHeader from "../Components/CustomHeader";
-import CommonTop from "../Components/CommonTop";
-import MessageBlock from "../Components/MessageBlock";
-import { Colors } from 'react-native/Libraries/NewAppScreen';
-import { WalletColors } from "../assets/Colors.js";
-import styles from '../lib/global_css';
 
 const request = new Request();
 const alert = new CustomAlert();
@@ -298,7 +292,6 @@ const CreateMessage = () => {
           />
         </View>
         </View>
-        <View style={{flex:0.3}}>
         <View style={styles.message_quick_insert}>
           <TouchableOpacity
             style={styles.insert_button}
@@ -309,40 +302,26 @@ const CreateMessage = () => {
             </Text>
           </TouchableOpacity>
         </View>
-        </View>
-        <View
-          style={styles.create_message_body}>
-          <FlatList data={[{key: 'item1' }]}
-           style={{height: heightPercentageToDP("57%")}}
-           renderItem={() => (
+        <View style={styles.create_message_body}>
+          <View style={styles.header}>
             <TouchableOpacity>
-              <View style={styles.header}>
                 <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
                 <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
                 <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
                 <MessageBlock transType={transType} mData={messageFour} lineNumber={4} key={"lineNumber4"} parentReference={handleMessageFour} />
                 <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
-              </View>
-            </TouchableOpacity>)}
-          />
-          <TouchableOpacity
-            onPress={handleSubmit}
-          >
+            </TouchableOpacity>
+          </View>
+          <TouchableOpacity style={{flex:0.13}} onPress={handleSubmit}>
             <View style={styles.sumbit_button}>
-              <Text style={styles.sumbit_confirm_text}>
-                Submit
-              </Text>
+              <Text style={styles.sumbit_confirm_text}>Submit</Text>
             </View>
           </TouchableOpacity>
         </View>
-    
-      <Modal 
-          isVisible={isModalVisible}
+      <Modal isVisible={isModalVisible}
           // onBackdropPress={handleQuickInsert}
-        >
-          <KeyboardAvoidingView
-            style={{flex: 1}}
-          >
+      >
+        <KeyboardAvoidingView style={{flex: 1}}>
           <View style={{ flex: 1, paddingBottom: heightPercentageToDP("3.5%")}}>
             <View style={styles.centeredView}>
               <View style={styles.modalView}>
