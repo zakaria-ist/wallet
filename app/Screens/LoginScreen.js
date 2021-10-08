@@ -152,9 +152,8 @@ const LoginScreen = ({navigation}) => {
     }
     onSpinnerChanged(true);
     const auth_url = request.getAuthUrl();
-    let params = JSON.stringify({username: userName, password: password}); //admin username=kenny & password=KN@July21
+    let params = JSON.stringify({username: userName, password: password});
     const content = await request.post(auth_url, params);
-    //await request.get(auth_url + "?username=" + userName + "&password=" + password)
     console.log('content', content);
     if (content.authorizeToken && content.authorizeToken != '') {
       // update the async storage
@@ -162,7 +161,6 @@ const LoginScreen = ({navigation}) => {
       AsyncStorage.setItem('username', userName);
       AsyncStorage.setItem('password', password);
       AsyncStorage.setItem('authType', content.userRole);
-      // AsyncStorage.setItem('authType', 'agent');
       AsyncStorage.setItem('token', content.authorizeToken);
       let clientUrl = null;
       if (content.userRole == 'admin') {

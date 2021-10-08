@@ -28,6 +28,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import Spinner from "react-native-loading-spinner-overlay";
 import firebase from "@react-native-firebase/app";
 import firestore from '@react-native-firebase/firestore';
+import { useIsFocused } from "@react-navigation/native";
 
 if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
@@ -48,6 +49,7 @@ const alert = new CustomAlert();
 const db = firestore();
 
 const CreateMessage = () => {
+  const isFocused = useIsFocused();
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [transType, setTransType] = useStateIfMounted("Withdrawal");
@@ -77,7 +79,7 @@ const CreateMessage = () => {
         setSuperiorAgent(JSON.parse(superiorAgent));
       })
     })
-  }, []);
+  }, [isFocused]);
 
   const handleLeftButton = () => {
     setTransType("Deposit");
