@@ -38,6 +38,7 @@ let transType = "Today";
 let authToken = "";
 let walletType = 1;
 let refreshTimeout;
+let autoRefresh = false;
 
 const SummaryReport = () => {
   const isFocused = useIsFocused();
@@ -76,6 +77,7 @@ const SummaryReport = () => {
         if (auth_type != null) {
           authType = auth_type;
           transType = "Today";
+          autoRefresh = false;
           renderTablesData();
         }
       })
@@ -108,11 +110,15 @@ const SummaryReport = () => {
   }
 
   const handleSetTimeout = () => {
-    isFocused ? refreshTimeout = setTimeout(() => renderTablesData(), 5000) : clearTimeout(refreshTimeout);
+    isFocused ? refreshTimeout = setTimeout(() => {
+      autoRefresh = true;
+      renderTablesData();
+    }
+    , 5000) : clearTimeout(refreshTimeout);
   }
 
   const renderTablesData = async () => {
-    onSpinnerChanged(true);
+    if (!autoRefresh) onSpinnerChanged(true);
     const statisticUrl = request.getStatisticUrl();
     let when = 'Yesterday';
     if (transType == 'Today') {
@@ -177,6 +183,7 @@ const SummaryReport = () => {
        handleSetTimeout();
     }
     onSpinnerChanged(false);
+    autoRefresh = false;
   }
 
   const renderItem = ({ item }) => (

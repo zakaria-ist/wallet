@@ -54,6 +54,7 @@ let pending = true;
 let noStatus = true;
 let accepted = true;
 let refreshTimeout;
+let autoRefresh = false;
 
 const Withdrawal = () => {
   const isFocused = useIsFocused();
@@ -166,6 +167,7 @@ const Withdrawal = () => {
               }
             });
           }
+          autoRefresh = false;
           renderTablesData();
         }
       });
@@ -202,11 +204,15 @@ const Withdrawal = () => {
   }
 
   const handleSetTimeout = () => {
-    isFocused ? refreshTimeout = setTimeout(() => renderTablesData(), 5000) : clearTimeout(refreshTimeout);
+    isFocused ? refreshTimeout = setTimeout(() => {
+      autoRefresh = true;
+      renderTablesData();
+    }
+    , 5000) : clearTimeout(refreshTimeout);
   }
 
   const renderTablesData = async () => {
-    onSpinnerChanged(true);
+    if (!autoRefresh) onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
     let when = 'today';
     if (transType == 'Yesterday') {
@@ -339,6 +345,7 @@ const Withdrawal = () => {
       }
     }
     onSpinnerChanged(false);
+    autoRefresh = false;
   }
 
   const renderItem = useCallback(({ item }) => (

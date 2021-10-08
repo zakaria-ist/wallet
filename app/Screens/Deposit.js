@@ -52,6 +52,7 @@ let noStatus = true;
 let accepted = true;
 let rejected = true;
 let refreshTimeout;
+let autoRefresh = false;
 
 const Deposit = () => {
   const isFocused = useIsFocused();
@@ -162,6 +163,7 @@ const Deposit = () => {
               }
             });
           }
+          autoRefresh = false;
           renderTablesData();
         }
       });
@@ -198,11 +200,15 @@ const Deposit = () => {
   }
 
   const handleSetTimeout = () => {
-    isFocused ? refreshTimeout = setTimeout(() => renderTablesData(), 5000) : clearTimeout(refreshTimeout);
+    isFocused ? refreshTimeout = setTimeout(() => {
+      autoRefresh = true;
+      renderTablesData();
+    }
+    , 5000) : clearTimeout(refreshTimeout);
   }
 
   const renderTablesData = async () => {
-    onSpinnerChanged(true);
+    if (!autoRefresh) onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
     let when = 'yesterday';
     if (transType == 'Today') {
@@ -338,6 +344,7 @@ const Deposit = () => {
       }
     }
     onSpinnerChanged(false);
+    autoRefresh = false;
   }
 
   const renderItem = useCallback(({ item }) => (
