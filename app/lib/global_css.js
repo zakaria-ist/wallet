@@ -619,7 +619,7 @@ const styles = StyleSheet.create({
     flex:1,
   },
   view_message_left: {
-    flex: 0.5,
+    flex: 0.3,
     alignItems: "flex-end",
     justifyContent: "flex-end",
   },
@@ -657,7 +657,7 @@ const styles = StyleSheet.create({
   view_message_input_box:{
     flex: 1, 
     flexDirection:"column",
-    marginRight:heightPercentageToDP("6%")
+    marginRight:heightPercentageToDP("3%")
   },
   view_message_lineNumber: {
     flex: 1, 
