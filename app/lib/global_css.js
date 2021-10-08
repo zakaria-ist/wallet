@@ -308,14 +308,14 @@ const styles = StyleSheet.create({
     marginLeft: widthPercentageToDP("6%"),
   },
   picker_ms_admin: {
-    flex:0.46, 
+    flex:0.47, 
     flexDirection: "row",
     alignItems: "center",
     marginRight: widthPercentageToDP("6%"), 
     marginLeft: widthPercentageToDP("6%"),
   },
   picker_ls_admin: {
-    flex:0.50,
+    flex:0.51,
     flexDirection: "row",
     alignItems: "center",
     marginRight: widthPercentageToDP("6%"), 
@@ -613,19 +613,20 @@ const styles = StyleSheet.create({
     borderColor: WalletColors.Wblue,
     borderStyle: 'solid',
     justifyContent: 'center',
-    height: heightPercentageToDP("12%"),
+    margin: heightPercentageToDP("0.5%"),
+    padding: heightPercentageToDP("0.2%"),
     width: widthPercentageToDP("90%"),
-    marginBottom: heightPercentageToDP("1%"),
+    flex:1,
   },
   view_message_left: {
-    flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 0.5,
+    alignItems: "flex-end",
+    justifyContent: "flex-end",
   },
   view_message_right: {
-    flex: 10,
-    alignItems: "center",
-    justifyContent: "center",
+    flex: 3.5,
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
   },
   view_message_dot:{
     fontSize: RFValue(13),
@@ -650,14 +651,15 @@ const styles = StyleSheet.create({
     fontSize: RFValue(12),
   },
   view_message_input_label:{
+    flex: 0.5, 
     flexDirection:"column",
   },
   view_message_input_box:{
+    flex: 1, 
     flexDirection:"column",
-    marginRight:heightPercentageToDP("4%")
+    marginRight:heightPercentageToDP("6%")
   },
   view_message_lineNumber: {
-    flexDirection: "column", 
     flex: 1, 
     alignItems: "center",
     justifyContent: "center",
