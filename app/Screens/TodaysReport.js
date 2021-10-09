@@ -27,6 +27,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import CheckBox from "@react-native-community/checkbox";
 import styles from '../lib/global_css';
 import Spinner from "react-native-loading-spinner-overlay";
+import { useIsFocused } from "@react-navigation/native";
 import CustomHeader from "../Components/CustomHeader";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
@@ -45,8 +46,11 @@ let authToken = "";
 let walletType = 1;
 let accepted = true;
 let rejected = true;
+let refreshTimeout;
+let autoRefresh = false;
 
 const TodaysReport = () => {
+  const isFocused = useIsFocused();
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [walletData, setWalletData] = useStateIfMounted([]);
@@ -81,46 +85,40 @@ const TodaysReport = () => {
         setWalletData(JSON.parse(walletData));
       })
       AsyncStorage.getItem('token').then((token) => {
-        // setToken(token);
         authToken = token;
       })
       AsyncStorage.getItem('authType').then((auth_type) => {
         if (auth_type != null) {
-          // setAuthType(auth_type);
           authType = auth_type;
           transType = "withdrawal";
+          autoRefresh = false;
           renderTablesData();
         }
       })
     })
-  }, []);
+  }, [isFocused]);
 
   const handleLeftButton = () => {
-    // setTransType("deposit");
     transType = "deposit";
     renderTablesData();
   }
 
   const handleRightButton = () => {
-    // setTransType("withdrawal");
     transType = "withdrawal";
     renderTablesData();
   }
 
   const handleWalLeftButton = () => {
-    // setWalletType(1);
     walletType = 1;
     renderTablesData();
   }
 
   const handleWalMidButton = () => {
-    // setWalletType(2);
     walletType = 2;
     renderTablesData();
   }
 
   const handleWalRightButton = () => {
-    // setWalletType(3);
     walletType = 3;
     renderTablesData();
   }
@@ -128,8 +126,17 @@ const TodaysReport = () => {
   const handleCheckBox = () => {
     renderTablesData();
   }
+
+  const handleSetTimeout = () => {
+    isFocused ? refreshTimeout = setTimeout(() => {
+      autoRefresh = true;
+      renderTablesData();
+    }
+    , 5000) : clearTimeout(refreshTimeout);
+  }
+
   const renderTablesData = async () => {
-    onSpinnerChanged(true);
+    if (!autoRefresh) onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
     let purpose = 'deposit';
     if (transType == 'withdrawal') {
@@ -205,8 +212,10 @@ const TodaysReport = () => {
       })
       setTableData(msg_list);
       setAcceptedTotal(total);
+      handleSetTimeout();
     }
     onSpinnerChanged(false);
+    autoRefresh = false;
   }
 
   const renderItem =  ({ item }) => (

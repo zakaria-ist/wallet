@@ -20,6 +20,7 @@ import { useStateIfMounted } from "use-state-if-mounted";
 import Fontisto from 'react-native-vector-icons/Fontisto';
 import AsyncStorage from "@react-native-community/async-storage";
 import Spinner from "react-native-loading-spinner-overlay";
+import { useIsFocused } from "@react-navigation/native";
 import SummaryTableRow from "../Components/SummaryTableRow";
 import CustomHeader from "../Components/CustomHeader";
 import CommonTop from "../Components/CommonTop";
@@ -36,8 +37,11 @@ let authType = "";
 let transType = "Today";
 let authToken = "";
 let walletType = 1;
+let refreshTimeout;
+let autoRefresh = false;
 
 const SummaryReport = () => {
+  const isFocused = useIsFocused();
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [walletData, setWalletData] = useStateIfMounted([]);
@@ -73,11 +77,12 @@ const SummaryReport = () => {
         if (auth_type != null) {
           authType = auth_type;
           transType = "Today";
+          autoRefresh = false;
           renderTablesData();
         }
       })
     })
-  }, []);
+  }, [isFocused]);
 
   const handleLeftButton = () => {
     transType = "Yesterday";
@@ -104,8 +109,16 @@ const SummaryReport = () => {
     renderTablesData();
   }
 
+  const handleSetTimeout = () => {
+    isFocused ? refreshTimeout = setTimeout(() => {
+      autoRefresh = true;
+      renderTablesData();
+    }
+    , 5000) : clearTimeout(refreshTimeout);
+  }
+
   const renderTablesData = async () => {
-    onSpinnerChanged(true);
+    if (!autoRefresh) onSpinnerChanged(true);
     const statisticUrl = request.getStatisticUrl();
     let when = 'Yesterday';
     if (transType == 'Today') {
@@ -167,8 +180,10 @@ const SummaryReport = () => {
         setTableData(msg_list);
        // console.log('msg_list', msg_list);
        onSpinnerChanged(false);
+       handleSetTimeout();
     }
     onSpinnerChanged(false);
+    autoRefresh = false;
   }
 
   const renderItem = ({ item }) => (

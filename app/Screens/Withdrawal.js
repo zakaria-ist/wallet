@@ -27,6 +27,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 import CheckBox from "@react-native-community/checkbox";
 import DropDownPicker from 'react-native-dropdown-picker';
 import Spinner from "react-native-loading-spinner-overlay";
+import { useIsFocused } from "@react-navigation/native";
 import CustomHeader from "../Components/CustomHeader";
 import TableRowEditWithdra from "../Components/TableRowEditWithdrawel";
 import TableRow from "../Components/TableRow";
@@ -52,8 +53,11 @@ let walletType = 1;
 let pending = true;
 let noStatus = true;
 let accepted = true;
+let refreshTimeout;
+let autoRefresh = false;
 
 const Withdrawal = () => {
+  const isFocused = useIsFocused();
   const isDarkMode = useColorScheme() === 'dark';
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [walletPickerType, setWalletPickerType] = useStateIfMounted("");
@@ -163,11 +167,12 @@ const Withdrawal = () => {
               }
             });
           }
+          autoRefresh = false;
           renderTablesData();
         }
       });
     })
-  }, []);
+  }, [isFocused]);
 
   const handleLeftButton = () => {
     transType = "Yesterday";
@@ -198,8 +203,16 @@ const Withdrawal = () => {
     renderTablesData();
   }
 
+  const handleSetTimeout = () => {
+    isFocused ? refreshTimeout = setTimeout(() => {
+      autoRefresh = true;
+      renderTablesData();
+    }
+    , 5000) : clearTimeout(refreshTimeout);
+  }
+
   const renderTablesData = async () => {
-    onSpinnerChanged(true);
+    if (!autoRefresh) onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
     let when = 'today';
     if (transType == 'Yesterday') {
@@ -328,9 +341,11 @@ const Withdrawal = () => {
         setTableData(msg_list);
         setAcceptedTotal(accepted_total);
         setPendingTotal(pending_total);
+        handleSetTimeout();
       }
     }
     onSpinnerChanged(false);
+    autoRefresh = false;
   }
 
   const renderItem = useCallback(({ item }) => (
