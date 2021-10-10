@@ -1,5 +1,4 @@
 import React, {useState, useEffect} from "react";
-// import { NavigationContainer } from "@react-navigation/native";
 import { Text, Image, View} from 'react-native';
 import {
   createDrawerNavigator,
@@ -14,12 +13,6 @@ import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from "@react-native-community/async-storage";
 import CustomAlert from "../lib/alert";
-// import LoginScreen from "../Screens/LoginScreen";
-// import CreateMessage from "../Screens/CreateMessage";
-// import Deposit from "../Screens/Deposit";
-// import Withdrawal from "../Screens/Withdrawal";
-// import SummaryReport from "../Screens/SummaryReport";
-// import TodaysReport from "../Screens/TodaysReport";
 import { 
   TabNavigationAdmin, 
   TabNavigationAdminDeposit, 
@@ -33,8 +26,6 @@ import {
   TabNavigationGroup, 
   TabNavigationGroupWithdrawal} from "./TabStack";
 import styles from "../lib/global_css";
-
-const alert = new CustomAlert();
 // function CustomDrawerContent(props) {
 //   return (
 //     <DrawerContentScrollView {...props}>
@@ -48,7 +39,7 @@ const alert = new CustomAlert();
 //   );
 // }
 const Drawer = createDrawerNavigator();
-
+const alert = new CustomAlert();
 export default function DrawerStack() {
   const [authType, setAuthType] = useState("");
   const [userName, setUserName] = useState("Username");
@@ -101,7 +92,8 @@ export default function DrawerStack() {
     setAppVersion(DeviceInfo.getVersion());
   }, []);
 
-  return (
+  const DrawerNavigationAdmin = () => {
+    return (
       <Drawer.Navigator
         drawerContent={(props) => <CustomDrawerContent {...props} />}
         style={styles.drawerItem}
@@ -112,93 +104,125 @@ export default function DrawerStack() {
             drawerLabelStyle:{fontSize: RFValue(15)},
         }}
       >
-        {authType == ('admin' || 'subadmin') ? (
-          <>
-            <Drawer.Screen name="TabNavigationAdmin" component={TabNavigationAdmin} key={TabNavigationAdmin}
-              options={{
-                title: "Summary Report",
-                drawerIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size}/>,
-              }} 
-            />
-            <Drawer.Screen name="TabNavigationAdminDeposit" component={TabNavigationAdminDeposit} key={TabNavigationAdminDeposit}
-              options={{
-                title: "Deposit",
-                drawerIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
-              }} 
-            />
-            <Drawer.Screen name="TabNavigationAdminWithdrawal" component={TabNavigationAdminWithdrawal} key={TabNavigationAdminWithdrawal}
-              options={{
-                title: "Withdrawal",
-                drawerIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
-              }} 
-            />
-          </>
-        ) : (
-          [
-            authType == 'user' ? (
-              <>
-                <Drawer.Screen name="TabNavigationUser" component={TabNavigationUser} key={TabNavigationUser}
-                  options={{
-                    title: "Create Message",
-                    drawerIcon: ({ color, size }) => <Feather name="file-plus" color={color} size={size} />,
-                  }} 
-                />
-                <Drawer.Screen name="TabNavigationUserDeposit" component={TabNavigationUserDeposit} key={TabNavigationUserDeposit}
-                  options={{
-                    title: "Deposit",
-                    drawerIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
-                  }} 
-                />
-                <Drawer.Screen name="TabNavigationUserWithdrawal" component={TabNavigationUserWithdrawal} key={TabNavigationUserWithdrawal}
-                  options={{
-                    title: "Withdrawal",
-                    drawerIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
-                  }} 
-                />
-              </>
-            ) : (
-              [
-                authType == 'agent' ? (
-                  <>
-                    <Drawer.Screen name="TabNavigationAgent" component={TabNavigationAgent} key={TabNavigationAgent}
-                      options={{
-                        title: "Today's Report",
-                        drawerIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
-                      }} 
-                    />
-                    <Drawer.Screen name="TabNavigationAgentDeposit" component={TabNavigationAgentDeposit} key={TabNavigationAgentDeposit}
-                      options={{
-                        title: "Deposit",
-                        drawerIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
-                      }} 
-                    />
-                    <Drawer.Screen name="TabNavigationAgentWithdrawal" component={TabNavigationAgentWithdrawal} key={TabNavigationAgentWithdrawal}
-                      options={{
-                        title: "Withdrawal",
-                        drawerIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
-                      }} 
-                    />
-                  </>
-                ) : (
-                  <>
-                    <Drawer.Screen name="TabNavigationGroup" component={TabNavigationGroup} key={TabNavigationGroup}
-                      options={{
-                        title: "Deposit",
-                        drawerIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
-                      }} 
-                    />
-                    <Drawer.Screen name="TabNavigationGroupWithdrawal" component={TabNavigationGroupWithdrawal} key={TabNavigationGroupWithdrawal}
-                      options={{
-                        title: "Withdrawal",
-                        drawerIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
-                      }} 
-                    />
-                  </>
-                )
-              ]
-            )
-          ]
-        )}
+        <Drawer.Screen name="TabNavigationAdmin" component={TabNavigationAdmin} key={TabNavigationAdmin}
+          options={{
+            title: "Summary Report",
+            drawerIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size}/>,
+          }} 
+        />
+        <Drawer.Screen name="TabNavigationAdminDeposit" component={TabNavigationAdminDeposit} key={TabNavigationAdminDeposit}
+          options={{
+            title: "Deposit",
+            drawerIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
+          }} 
+        />
+        <Drawer.Screen name="TabNavigationAdminWithdrawal" component={TabNavigationAdminWithdrawal} key={TabNavigationAdminWithdrawal}
+          options={{
+            title: "Withdrawal",
+            drawerIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
+          }} 
+        />
       </Drawer.Navigator>
-  );
+    );
+  }
+  
+  const DrawerNavigationUser = () => {
+    return (
+      <Drawer.Navigator
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+        style={styles.drawerItem}
+        screenOptions={{
+            headerShown: false,
+            drawerStyle: {width: widthPercentageToDP("70%")},
+            drawerItemStyle: styles.drawerItem,
+            drawerLabelStyle:{fontSize: RFValue(15)},
+        }}
+      >
+        <Drawer.Screen name="TabNavigationUser" component={TabNavigationUser} key={TabNavigationUser}
+          options={{
+            title: "Create Message",
+            drawerIcon: ({ color, size }) => <Feather name="file-plus" color={color} size={size} />,
+          }} 
+        />
+        <Drawer.Screen name="TabNavigationUserDeposit" component={TabNavigationUserDeposit} key={TabNavigationUserDeposit}
+          options={{
+            title: "Deposit",
+            drawerIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
+          }} 
+        />
+        <Drawer.Screen name="TabNavigationUserWithdrawal" component={TabNavigationUserWithdrawal} key={TabNavigationUserWithdrawal}
+          options={{
+            title: "Withdrawal",
+            drawerIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
+          }} 
+        />
+      </Drawer.Navigator>
+    );
+  }
+  const DrawerNavigationAgent = () => {
+    return (
+      <Drawer.Navigator
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+        style={styles.drawerItem}
+        screenOptions={{
+            headerShown: false,
+            drawerStyle: {width: widthPercentageToDP("70%")},
+            drawerItemStyle: styles.drawerItem,
+            drawerLabelStyle:{fontSize: RFValue(15)},
+        }}
+      >
+          <Drawer.Screen name="TabNavigationAgent" component={TabNavigationAgent} key={TabNavigationAgent}
+            options={{
+              title: "Today's Report",
+              drawerIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
+            }} 
+          />
+          <Drawer.Screen name="TabNavigationAgentDeposit" component={TabNavigationAgentDeposit} key={TabNavigationAgentDeposit}
+            options={{
+              title: "Deposit",
+              drawerIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
+            }} 
+          />
+          <Drawer.Screen name="TabNavigationAgentWithdrawal" component={TabNavigationAgentWithdrawal} key={TabNavigationAgentWithdrawal}
+            options={{
+              title: "Withdrawal",
+              drawerIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
+            }} 
+          />
+      </Drawer.Navigator>
+    );
+  }
+  const DrawerNavigationClientandSubamin = () => {
+    return (
+      <Drawer.Navigator
+        drawerContent={(props) => <CustomDrawerContent {...props} />}
+        style={styles.drawerItem}
+        screenOptions={{
+            headerShown: false,
+            drawerStyle: {width: widthPercentageToDP("70%")},
+            drawerItemStyle: styles.drawerItem,
+            drawerLabelStyle:{fontSize: RFValue(15)},
+        }}
+      >
+        <Drawer.Screen name="TabNavigationGroup" component={TabNavigationGroup} key={TabNavigationGroup}
+          options={{
+            title: "Deposit",
+            drawerIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
+          }} 
+        />
+        <Drawer.Screen name="TabNavigationGroupWithdrawal" component={TabNavigationGroupWithdrawal} key={TabNavigationGroupWithdrawal}
+          options={{
+            title: "Withdrawal",
+            drawerIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
+          }} 
+        />
+      </Drawer.Navigator>
+    );
+  }
+
+    return (authType == 'admin' ? DrawerNavigationAdmin() 
+    : (authType == 'user' ? DrawerNavigationUser() 
+    : (authType == 'agent' ? DrawerNavigationAgent() 
+    : ([authType == 'client' || authType == 'subadmin'] ? DrawerNavigationClientandSubamin() : <></>))));
 }
+
