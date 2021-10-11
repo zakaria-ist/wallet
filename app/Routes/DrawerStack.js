@@ -92,7 +92,7 @@ export default function DrawerStack() {
     setAppVersion(DeviceInfo.getVersion());
   }, []);
 
-  const DrawerNavigationAdmin = () => {
+  const DrawerNavigationAdminandSubadmin = () => {
     return (
       <Drawer.Navigator
         drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -192,7 +192,7 @@ export default function DrawerStack() {
       </Drawer.Navigator>
     );
   }
-  const DrawerNavigationClientandSubamin = () => {
+  const DrawerNavigationClient = () => {
     return (
       <Drawer.Navigator
         drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -220,9 +220,9 @@ export default function DrawerStack() {
     );
   }
 
-    return (authType == 'admin' ? DrawerNavigationAdmin() 
+    return ([authType == 'admin' || authType == 'subadmin'] ? DrawerNavigationAdminandSubadmin() 
     : (authType == 'user' ? DrawerNavigationUser() 
     : (authType == 'agent' ? DrawerNavigationAgent() 
-    : ([authType == 'client' || authType == 'subadmin'] ? DrawerNavigationClientandSubamin() : <></>))));
+    : (authType == 'client' ? DrawerNavigationClient() : <></>))));
 }
 
