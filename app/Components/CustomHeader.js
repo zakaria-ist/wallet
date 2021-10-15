@@ -6,7 +6,7 @@
  * @flow strict-local
  */
 import React, {useEffect, useMemo} from 'react';
-import {useNavigation} from '@react-navigation/native';
+import {useNavigation, DrawerActions } from '@react-navigation/native';
 import {useStateIfMounted} from "use-state-if-mounted";
 import {RFValue} from "react-native-responsive-fontsize";
 import {View, Text} from 'react-native';
@@ -35,7 +35,10 @@ const CustomHeader = ({title}) => {
       <View style={styles.view_header_root}>
         <View style={{flex: 2, alignItems:"flex-start", justifyContent: 'center',}}>
           <Button 
-            onPress={() => navigation.openDrawer()}
+            onPress={ e => {
+              e.preventDefault();
+              navigation.dispatch(DrawerActions.openDrawer());
+            }}
             icon={<Feather name="menu" color={WalletColors.Wblue} size={isSmallRF || isMediumRF || isLargeRF} />}
             buttonStyle={{backgroundColor: "white"}}
           />

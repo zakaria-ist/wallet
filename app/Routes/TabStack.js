@@ -10,7 +10,6 @@ import Withdrawal from "../Screens/Withdrawal";
 import SummaryReport from "../Screens/SummaryReport";
 import TodaysReport from "../Screens/TodaysReport";
 import { WalletColors } from "../assets/Colors.js";
-import { borderRadius, styles } from "styled-system";
 import {heightPercentageToDP} from "react-native-responsive-screen";
 
 const Tab = createBottomTabNavigator();
@@ -54,12 +53,12 @@ const screenOptionStyle = {
   tabBarActiveTintColor: WalletColors.Wblue,
   tabBarInactiveTintColor: 'gray',
   headerLeft: () => (
-      <Button 
-        onPress={() => {}}  
-        icon={<Feather name="menu" color="black" size={RFValue(28)} />}
-        buttonStyle={{borderBottomWidth: StyleSheet.hairlineWidth,backgroundColor: "white", marginLeft: 10}}
-      />
-    ),
+    <Button 
+      onPress={() => {}}  
+      icon={<Feather name="menu" color="black" size={RFValue(28)} />}
+      buttonStyle={{borderBottomWidth: StyleSheet.hairlineWidth,backgroundColor: "white", marginLeft: 10}}
+    />
+  ),
   headerShown: false,
 };
 
@@ -87,6 +86,13 @@ const TabNavigationAdmin = (props) => {
          tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            // Prevent default action
+            e.preventDefault();
+            navigation.navigate("TabNavigationAdminDeposit");
+          },
+        })}
       />
       <Tab.Screen
         name="Withdrawal"
@@ -95,6 +101,12 @@ const TabNavigationAdmin = (props) => {
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationAdminWithdrawal");
+          },
+        })}
       />
     </Tab.Navigator>
   );
@@ -115,6 +127,12 @@ const TabNavigationAdminDeposit = (props) => {
           tabBarLabel: "Summary Report",
           tabBarIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationAdmin");
+          },
+        })}
       />
       <Tab.Screen
         name="Deposit"
@@ -131,6 +149,12 @@ const TabNavigationAdminDeposit = (props) => {
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationAdminWithdrawal");
+          },
+        })}
       />
     </Tab.Navigator>
   );
@@ -151,6 +175,12 @@ const TabNavigationAdminWithdrawal = (props) => {
           tabBarLabel: "Summary Report",
           tabBarIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationAdmin");
+          },
+        })}
       />
       <Tab.Screen
         name="Deposit"
@@ -159,6 +189,12 @@ const TabNavigationAdminWithdrawal = (props) => {
           tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationAdminDeposit");
+          },
+        })}
       />
       <Tab.Screen
         name="Withdrawal"
@@ -196,6 +232,12 @@ const TabNavigationUser = (props) => {
           tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationUserDeposit");
+          },
+        })}
       />
       <Tab.Screen
         name="Withdrawal"
@@ -204,6 +246,12 @@ const TabNavigationUser = (props) => {
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationUserWithdrawal");
+          },
+        })}
       />
     </Tab.Navigator>
   );
@@ -224,6 +272,12 @@ const TabNavigationUserDeposit = (props) => {
           tabBarLabel: "Create Message",
           tabBarIcon: ({ color, size }) => <Feather name="file-plus" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationUser");
+          },
+        })}
       />
       <Tab.Screen
         name="Deposit"
@@ -240,6 +294,12 @@ const TabNavigationUserDeposit = (props) => {
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationUserWithdrawal");
+          },
+        })}
       />
     </Tab.Navigator>
   );
@@ -260,6 +320,12 @@ const TabNavigationUserWithdrawal = (props) => {
           tabBarLabel: "Create Message",
           tabBarIcon: ({ color, size }) => <Feather name="file-plus" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationUser");
+          },
+        })}
       />
       <Tab.Screen
         name="Deposit"
@@ -268,6 +334,12 @@ const TabNavigationUserWithdrawal = (props) => {
           tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationUserDeposit");
+          },
+        })}
       />
       <Tab.Screen
         name="Withdrawal"
@@ -305,6 +377,12 @@ const TabNavigationAgent = (props) => {
           tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationAgentDeposit");
+          },
+        })}
       />
       <Tab.Screen
         name="Withdrawal"
@@ -313,6 +391,12 @@ const TabNavigationAgent = (props) => {
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationAgentWithdrawal");
+          },
+        })}
       />
     </Tab.Navigator>
   );
@@ -333,6 +417,12 @@ const TabNavigationAgentDeposit = (props) => {
           tabBarLabel: "Today's Report",
           tabBarIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationAgent");
+          },
+        })}
       />
       <Tab.Screen
         name="Deposit"
@@ -349,6 +439,12 @@ const TabNavigationAgentDeposit = (props) => {
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationAgentWithdrawal");
+          },
+        })}
       />
     </Tab.Navigator>
   );
@@ -369,6 +465,12 @@ const TabNavigationAgentWithdrawal = (props) => {
           tabBarLabel: "Today's Report",
           tabBarIcon: ({ color, size }) => <Feather name="file-text" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationAgent");
+          },
+        })}
       />
       <Tab.Screen
         name="Deposit"
@@ -377,6 +479,12 @@ const TabNavigationAgentWithdrawal = (props) => {
           tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationAgentDeposit");
+          },
+        })}
       />
       <Tab.Screen
         name="Withdrawal"
@@ -389,7 +497,6 @@ const TabNavigationAgentWithdrawal = (props) => {
     </Tab.Navigator>
   );
 }
-
 const TabNavigationGroup = (props) => {
   if (!props?.route) return null;
   
@@ -414,6 +521,12 @@ const TabNavigationGroup = (props) => {
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationGroupWithdrawal");
+          },
+        })}
       />
     </Tab.Navigator>
   );
@@ -434,6 +547,12 @@ const TabNavigationGroupWithdrawal = (props) => {
           tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
         }}
+        listeners={({ navigation})=>({
+          tabPress: (e) => {
+            e.preventDefault();
+            navigation.navigate("TabNavigationGroup");
+          },
+        })}
       />
       <Tab.Screen
         name="Withdrawal"
