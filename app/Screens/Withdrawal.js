@@ -229,7 +229,7 @@ const Withdrawal = () => {
         token: authToken, 
         role: authType,
         purpose: "widhdrwal",
-        // when: when
+        when: when
       }
     );
     const content = await request.post(msgsUrl, params);
@@ -251,9 +251,10 @@ const Withdrawal = () => {
       }
       // ftatus filter
       messages = messages.filter((msg) => {
-        if (accepted && msg.status == 'accepted') return true;
+        if (accepted && String(msg.status).toLowerCase() == 'accepted') return true;
         // if (rejected && msg.status == 'rejected') return true;
-        if (pending && (msg.status == 'pending' || msg.status == 'new')) return true;
+        if (pending && (String(msg.status).toLowerCase() == 'pending' || 
+            String(msg.status).toLowerCase() == 'outdated')) return true;
         if (noStatus && msg.status == null) return true;
         return false;
       })
@@ -300,7 +301,8 @@ const Withdrawal = () => {
         messages.map((msg) => {
           let msg_data = {};
           let amount = parseFloat(String(msg.amount).replace(',', ''));
-          if (msg.status == 'pending' || msg.status == 'new') {
+          if (String(msg.status).toLowerCase() == 'pending' || 
+                String(msg.status).toLowerCase() == 'outdated') {
             pending_total += amount;
             if (when == 'today') {
               msg.status = 'Pending'
@@ -308,7 +310,7 @@ const Withdrawal = () => {
               msg.status = ''
             }
           }
-          else if (msg.status == 'accepted') {
+          else if (String(msg.status).toLowerCase() == 'accepted') {
             accepted_total += amount;
             msg.status = 'Accepted'
           }

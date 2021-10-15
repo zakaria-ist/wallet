@@ -164,8 +164,12 @@ const TodaysReport = () => {
       })
       // status filter
       messages = messages.filter((msg) => {
-        if (accepted && (msg.status == 'accepted' || msg.status == 'Sent' || msg.status == "Updated & Accepted")) return true;
-        if (rejected && msg.status == 'rejected') return true;
+        if (accepted && (
+              String(msg.status).toLowerCase() == 'accepted' || 
+              String(msg.status).toLowerCase() == 'sent' || 
+              String(msg.status).toLowerCase() == "updated & accepted"
+            )) return true;
+        if (rejected && String(msg.status).toLowerCase() == 'rejected') return true;
         return false;
       })
       // wallet filter
@@ -178,11 +182,13 @@ const TodaysReport = () => {
       msg_list.push(tableHeader);
       messages.map((msg) => {
         let amount = parseFloat(String(msg.amount).replace(',', ''));
-        if (msg.status == 'accepted' || msg.status == 'Sent' || msg.status == "Updated & Accepted") {
+        if (String(msg.status).toLowerCase() == 'accepted' || 
+              String(msg.status).toLowerCase() == 'sent' || 
+              String(msg.status).toLowerCase() == "updated & accepted") {
           total += amount;
           msg.status = 'Accepted'
         }
-        else if (msg.status == 'rejected') {
+        else if (String(msg.status).toLowerCase() == 'rejected') {
           msg.status = 'Rejected'
         }
         let msg_data = {};
