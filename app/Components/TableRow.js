@@ -14,6 +14,7 @@ import styles from '../lib/global_css.js';
 const format = new Format();
 
 const TableRow = ({rowData}) => {
+  const amountSign = "->"
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
   const [cellThree, setCellThree] = useStateIfMounted([]);
@@ -81,6 +82,13 @@ const TableRow = ({rowData}) => {
             <View style={{flexDirection: "row"}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
+              {cellData.hasOwnProperty("oldAmount") && (cellData.oldAmount != cellData.amount) && (cellData.oldAmount != 0)? 
+                <>
+                  <Text style={styles.cell_text}>{amountSign}</Text> 
+                  <Text style={styles.cell_text}>{format.separator(cellData.oldAmount)}</Text> 
+                </>
+              : 
+              <></>}
             </View>   
           : <></>}
           {cellData.hasOwnProperty("wallet") ?      

@@ -199,6 +199,7 @@ const TodaysReport = () => {
             HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
             wallet: msg.walletName,
             amount: amount,
+            oldAmount: msg.oldamount ? msg.oldamount : 0,
             refNo: msg.refno ? msg.refno : "",
             status: msg.status,
           };
