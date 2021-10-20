@@ -286,6 +286,9 @@ const Withdrawal = () => {
       let accepted_total = 0;
       let pending_total = 0;
       if (authType == 'agent' && transType == 'Today') {
+        messages = messages.filter((msg) => {
+          return String(msg.status).toLowerCase() == 'pending';
+        })
         msg_list.push(agentTableHeader);
         messages.map((msg) => {
           let amount = parseFloat(String(msg.amount).replace(',', ''));
@@ -349,6 +352,17 @@ const Withdrawal = () => {
         setPendingTotal(pending_total);
         handleSetTimeout();
       }
+    } else {
+      let msg_list = [];
+      if (authType == 'agent' && transType == 'Today') {
+        msg_list.push(agentTableHeader);
+      } else {
+        msg_list.push(tableHeader);
+        handleSetTimeout();
+      }
+      setTableData(msg_list);
+      setAcceptedTotal(0);
+      setPendingTotal(0);
     }
     onSpinnerChanged(false);
     autoRefresh = false;
