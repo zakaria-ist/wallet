@@ -46,11 +46,8 @@ const SummaryTableRow = ({rowData}) => {
       <View style={styles.view_summary_border_line}>
         <View style={styles.view_sub_row}>
           <Text style={styles.cell_text_bold_start}>{group.group}</Text>
-          
           <Text style={styles.cell_text_bold_center}>     </Text>
-          
           <Text style={styles.cell_text_bold_center}>Count</Text>
-          
           <Text style={styles.cell_text_bold_end}>Amount</Text>
         </View> 
       </View>
