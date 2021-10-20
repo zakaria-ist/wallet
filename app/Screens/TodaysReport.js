@@ -263,7 +263,7 @@ const TodaysReport = () => {
                 <Text style={styles.label}>Status:   </Text>
                 <TouchableOpacity 
                       onPress={() => {
-                        accepted=!accepted
+                        accepted = !accepted;
                         handleCheckBox();
                       }}
                     >
@@ -282,7 +282,7 @@ const TodaysReport = () => {
               <View style={styles.checkboxContainer}>
                 <TouchableOpacity 
                   onPress={() => {
-                    rejected=!rejected
+                    rejected = !rejected;
                     handleCheckBox();
                   }}
                 >

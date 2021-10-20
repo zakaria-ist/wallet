@@ -490,7 +490,7 @@ const Withdrawal = () => {
                   <Text style={styles.label}>Status:   </Text>
                   <TouchableOpacity 
                       onPress={() => {
-                        accepted=!accepted
+                        accepted = !accepted;
                         handleCheckBox();
                       }}
                     >
@@ -509,7 +509,7 @@ const Withdrawal = () => {
                 <View style={styles.checkboxContainer}>
                   <TouchableOpacity 
                     onPress={() => {
-                      noStatus=!noStatus
+                      noStatus = !noStatus;
                       handleCheckBox();
                     }}
                   >
@@ -537,7 +537,7 @@ const Withdrawal = () => {
                 <Text style={styles.label}>Status:   </Text>
                 <TouchableOpacity 
                   onPress={() => {
-                    accepted=!accepted
+                    accepted = !accepted;
                     handleCheckBox();
                   }}
                 >
@@ -558,7 +558,7 @@ const Withdrawal = () => {
                 {transType == "Today" ? 
                   <TouchableOpacity 
                     onPress={() => {
-                      pending=!pending
+                      pending = !pending;
                       handleCheckBox();
                     }}
                   >
@@ -567,7 +567,7 @@ const Withdrawal = () => {
                 : 
                   <TouchableOpacity 
                     onPress={() => {
-                      noStatus=!noStatus
+                      noStatus = !noStatus;
                       handleCheckBox();
                     }}
                   >

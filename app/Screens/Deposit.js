@@ -489,7 +489,7 @@ const Deposit = () => {
                     <Text style={styles.label}>Status:  </Text>
                     <TouchableOpacity 
                       onPress={() => {
-                        accepted=!accepted
+                        accepted = !accepted;
                         handleCheckBox();
                       }}
                     >
@@ -508,7 +508,7 @@ const Deposit = () => {
                   <View style={styles.checkboxContainer}>
                     <TouchableOpacity 
                       onPress={() => {
-                        rejected=!rejected
+                        rejected = !rejected;
                         handleCheckBox();
                       }}
                     >
@@ -527,7 +527,7 @@ const Deposit = () => {
                   <View style={styles.checkboxContainer}>
                     <TouchableOpacity 
                       onPress={() => {
-                        noStatus=!noStatus
+                        noStatus = !noStatus;
                         handleCheckBox();
                       }}
                     >
@@ -556,7 +556,7 @@ const Deposit = () => {
                     <Text style={styles.label}>Status:   </Text>
                       <TouchableOpacity 
                         onPress={() => {
-                          pending=!pending
+                          pending = !pending;
                           handleCheckBox();
                         }}
                       >
@@ -579,7 +579,7 @@ const Deposit = () => {
                   <View style={styles.checkboxContainer}>
                     <TouchableOpacity 
                       onPress={() => {
-                        accepted=!accepted
+                        accepted = !accepted;
                         handleCheckBox();
                       }}
                     >
@@ -599,7 +599,7 @@ const Deposit = () => {
                   <View style={styles.checkboxContainer}>
                     <TouchableOpacity 
                       onPress={() => {
-                        rejected=!rejected
+                        rejected = !rejected;
                         handleCheckBox();
                       }}
                     >
@@ -623,7 +623,7 @@ const Deposit = () => {
                    <Text style={styles.label}>Status:   </Text>
                    <TouchableOpacity 
                       onPress={() => {
-                        accepted=!accepted
+                        accepted = !accepted;
                         handleCheckBox();
                       }}
                     >
@@ -643,7 +643,7 @@ const Deposit = () => {
                   <View style={styles.checkboxContainer}>
                     <TouchableOpacity 
                       onPress={() => {
-                        rejected=!rejected
+                        rejected = !rejected;
                         handleCheckBox();
                       }}
                     >
@@ -662,7 +662,7 @@ const Deposit = () => {
                  <View style={styles.checkboxContainer}>
                   <TouchableOpacity 
                     onPress={() => {
-                      noStatus=!noStatus
+                      noStatus = !noStatus;
                       handleCheckBox();
                     }}
                   >
