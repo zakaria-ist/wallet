@@ -563,16 +563,26 @@ const styles = StyleSheet.create({
   view_sub_row: {
     flexDirection: "row",
     alignItems: "center",
-    justifyContent: "space-between"
+    justifyContent: "flex-start"
   },
   view_sub_sub_row: {
     flexDirection: "row",
     alignSelf: "flex-start",
   },
   view_sub_column: {
+    flex:1,
     flexDirection: "column",
     alignItems: "center",
     justifyContent: "center"
+  },
+  cell_text_start: {
+    fontSize: RFValue(13),
+    alignSelf: "flex-start",
+  },
+  cell_text_center: {
+    fontSize: RFValue(13),
+    alignSelf: "center",
+    flex:1,
   },
   cell_text_end: {
     fontSize: RFValue(13),
@@ -583,13 +593,27 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  cell_text_bold: {
+  cell_text_bold_end: {
     fontSize: RFValue(13),
     fontWeight: "bold",
+    alignSelf: "flex-end",
+  },
+  cell_text_bold_center: {
+    fontSize: RFValue(13),
+    fontWeight: "bold",
+    alignSelf: "center",
+    flex:1,
   },
   cell_text_bold_start: {
     fontSize: RFValue(13),
     fontWeight: "bold",
+    alignSelf: "flex-start",
+    flex:1,
+  },
+  cell_text_bold: {
+    fontSize: RFValue(13),
+    fontWeight: "bold",
+    alignSelf: "flex-start",
   },
   text_ss_width: {
     marginLeft:widthPercentageToDP("18.5%"), 
