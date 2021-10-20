@@ -50,10 +50,12 @@ const SummaryReport = () => {
 
   const LeftButton = "Yesterday";
   const RightButton = "Today";
-  const tableHeader = [
-    ["Group Details"],
-    ["Total(TK)"],
-  ];
+  const tableHeader = {
+    id: "0",
+    Header: true,
+    Group: "Group Details",
+    Total: "Total(TK)",
+  };
 
   const wait = (timeout) => {
     return new Promise(resolve => setTimeout(resolve, timeout));
@@ -120,9 +122,9 @@ const SummaryReport = () => {
   const renderTablesData = async () => {
     if (!autoRefresh) onSpinnerChanged(true);
     const statisticUrl = request.getStatisticUrl();
-    let when = 'Yesterday';
+    let when = 'yesterday';
     if (transType == 'Today') {
-      when = 'Today';
+      when = 'today';
     }
     const params = JSON.stringify(
       {
@@ -135,52 +137,12 @@ const SummaryReport = () => {
     if (content.ok) {
       let msg_list = [];
       msg_list.push(tableHeader);
-      messages = content.msg.filter((msg, grandTotal) => {
-        if (transType == 'Today') {
-           msg_data = {
-            id: msg.id,
-            wallet: msg.walletName,
-            amount: msg.amount,
-          };
-           sub_data ={ 
-            totalwithdrawamount: grandTotal.totalwithdrawamount,
-            totalwithdrawmsgcount: grandTotal.totalwithdrawmsgcount,
-            totaldepositamount: grandTotal.totaldepositamount,
-            totaldepositmsgcount: grandTotal.totaldepositmsgcount,
-            totalamount: grandTotal.totalamount,
-            totalmsgcount: grandTotal.totalmsgcount
-          };
-          msg_list.push(msg_data);
-          msg_list.push(sub_data);
-         // console.log('msg_data', msg_data);
-         // console.log('sub_data', sub_data);
-        } else {
-          msg_data = {
-            id: msg.id,
-            wallet: msg.walletName,
-            amount: msg.amount,
-          };
-           sub_data ={ 
-            totalwithdrawamount: grandTotal.totalwithdrawamount,
-            totalwithdrawmsgcount: grandTotal.totalwithdrawmsgcount,
-            totaldepositamount: grandTotal.totaldepositamount,
-            totaldepositmsgcount: grandTotal.totaldepositmsgcount,
-            totalamount: grandTotal.totalamount,
-            totalmsgcount: grandTotal.totalmsgcount
-          };
-          msg_list.push(msg_data);
-          msg_list.push(sub_data);
-         // console.log('msg_data', msg_data);
-          //console.log('sub_data', sub_data);
-          msg_list.push(msg_data);
-          msg_list.push(sub_data);
-        }
-        msg_list.push(msg_data);
+      messages = content.clientGroups.map((msg) => {
+        msg_list.push(msg);
       })
-        setTableData(msg_list);
-       // console.log('msg_list', msg_list);
-       onSpinnerChanged(false);
-       handleSetTimeout();
+      setTableData(msg_list);
+      onSpinnerChanged(false);
+      handleSetTimeout();
     }
     onSpinnerChanged(false);
     autoRefresh = false;
@@ -188,8 +150,7 @@ const SummaryReport = () => {
 
   const renderItem = ({ item }) => (
     <View style={styles.header}>
-     {/* <SummaryTableRow header={true} rowData={tableHeader} />*/}
-     {/*  <SummaryTableRow header={false} rowData={item} />*/}
+      <SummaryTableRow rowData={item} />
     </View>
   );
 

@@ -17,44 +17,47 @@ const screensize = new Screensize();
 const smallwidth = screensize.getSmallScreen() ? styles.text_ss_width : mediumwidth;
 const mediumwidth = screensize.getMediumScreen() ? styles.text_ms_width : largewidth;
 const largewidth = screensize.getLargeScreen() ? styles.text_ls_width : smallwidth;
-const SummaryTableRow = ({header, rowData}) => {
+const SummaryTableRow = ({rowData}) => {
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
 
   useEffect(() => {
-    if (header) {
-      setCellOne(handleHeaderCell(rowData[0]));
-      setCellTwo(handleHeaderCell(rowData[1]));
+    if (rowData.hasOwnProperty("Header")) {
+      handleHeaderCell(rowData);
     } else {
       handleDataCell(rowData);
     }
   }, [rowData]);
- 
 
-  const handleHeaderCell = (cellData) => {
-    let testCell = [];
-    testCell.push(
-      <Text style={styles.cell_summary_text_header}>{cellData[0]}</Text>
-    )
-    return testCell;
-  }
+    const handleHeaderCell = (group) => {
+      let cellLeft = [];
+      let cellRight = [];
+      cellLeft.push(
+        <Text style={styles.cell_summary_text_header}>{group.Group}</Text>
+      )
+      setCellOne(cellLeft);
+      cellRight.push(
+        <Text style={styles.cell_summary_text_header}>{group.Total}</Text>
+      )
+      setCellTwo(cellRight);
+    }
 
-  const handleDataCell = (cellData) => {
+
+  const handleDataCell = (group) => {
     let cellLeft = [];
     let cellRight = [];
-    cellData.map((group) => {
-      cellLeft.push(
-        <View style={styles.view_summary_border_line}>
-          <View style={styles.view_sub_row}>
-            <Text style={styles.cell_text_bold}>{group.group}</Text>
-            <Text style={styles.cell_text_bold}>     </Text>
-            <Text style={styles.cell_text_bold}>Count</Text>
-            <Text style={styles.cell_text_bold}>Amount</Text>
-          </View>
+    cellLeft.push(
+      <View style={styles.view_summary_border_line}>
+        <View style={styles.view_sub_row}>
+          <Text style={styles.cell_text_bold}>{group.group}</Text>
+          <Text style={styles.cell_text_bold}>     </Text>
+          <Text style={styles.cell_text_bold}>Count</Text>
+          <Text style={styles.cell_text_bold}>Amount</Text>
         </View>
-      )
+      </View>
+    )
 
-     cellLeft.push(
+    cellLeft.push(
       <View style={styles.view_summary_border_line}>
         <View style={styles.view_sub_row}>
           {group.walletData.map((wallet) => {
@@ -108,11 +111,10 @@ const SummaryTableRow = ({header, rowData}) => {
     )
     setCellOne(cellLeft);
 
-      cellRight.push(
-        <Text style={styles.cell_text_bold}>{format.separator(group.total)}</Text>
-     );
-      setCellTwo(cellRight)
-    });
+    cellRight.push(
+      <Text style={styles.cell_text_bold}>{format.separator(group.total)}</Text>
+    );
+    setCellTwo(cellRight);
   }
 
   return useMemo(() => {
