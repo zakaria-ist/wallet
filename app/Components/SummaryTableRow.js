@@ -10,13 +10,10 @@ import {useStateIfMounted} from "use-state-if-mounted";
 import {View, Text} from 'react-native';
 import Format from "../lib/format";
 import styles from '../lib/global_css.js';
-import Screensize from '../lib/screensize.js';
+import { widthPercentageToDP } from 'react-native-responsive-screen';
 
 const format = new Format();
-const screensize = new Screensize();
-const smallwidth = screensize.getSmallScreen() ? styles.text_ss_width : mediumwidth;
-const mediumwidth = screensize.getMediumScreen() ? styles.text_ms_width : largewidth;
-const largewidth = screensize.getLargeScreen() ? styles.text_ls_width : smallwidth;
+
 const SummaryTableRow = ({rowData}) => {
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
@@ -42,18 +39,20 @@ const SummaryTableRow = ({rowData}) => {
       setCellTwo(cellRight);
     }
 
-
   const handleDataCell = (group) => {
     let cellLeft = [];
     let cellRight = [];
     cellLeft.push(
       <View style={styles.view_summary_border_line}>
         <View style={styles.view_sub_row}>
-          <Text style={styles.cell_text_bold}>{group.group}</Text>
-          <Text style={styles.cell_text_bold}>     </Text>
-          <Text style={styles.cell_text_bold}>Count</Text>
-          <Text style={styles.cell_text_bold}>Amount</Text>
-        </View>
+          <Text style={styles.cell_text_bold_start}>{group.group}</Text>
+          
+          <Text style={styles.cell_text_bold_center}>     </Text>
+          
+          <Text style={styles.cell_text_bold_center}>Count</Text>
+          
+          <Text style={styles.cell_text_bold_end}>Amount</Text>
+        </View> 
       </View>
     )
 
@@ -65,21 +64,23 @@ const SummaryTableRow = ({rowData}) => {
               <View style={styles.view_summary_border_line}>
                 <View style={styles.view_sub_row}>
                   <View style={styles.view_sub_column}>
-                    <Text style={styles.cell_text_end}>{wallet.wallet}</Text>
-                  </View>
+                  <Text style={styles.cell_text_start}>{wallet.wallet}</Text>
+                  </View> 
                   <View style={styles.view_sub_column}>
+                    <View style={{alignSelf:"center"}}>
                     <View style={styles.view_sub_sub_row}>
-                      <Text style={styles.cell_text}>:</Text>
-                      <Text style={styles.cell_text}>(D)</Text>
+                      <Text style={styles.cell_text_start}>:</Text>
+                      <Text style={styles.cell_text_start}>(D)</Text>
                     </View>
                     <View style={styles.view_sub_sub_row}>
-                      <Text style={styles.cell_text}>:</Text>
-                      <Text style={styles.cell_text}>(W)</Text> 
+                      <Text style={styles.cell_text_start}>:</Text>
+                      <Text style={styles.cell_text_start}>(W)</Text> 
+                    </View>
                     </View>
                   </View>
                   <View style={styles.view_sub_column}>
-                    <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.count)}</Text>
-                    <Text style={styles.cell_text_end}>{format.separator(wallet.withdrawal.count)}</Text>
+                    <Text style={styles.cell_text_center}>{format.separator(wallet.deposit.count)}</Text>
+                    <Text style={styles.cell_text_center}>{format.separator(wallet.withdrawal.count)}</Text>
                   </View>
                   <View style={styles.view_sub_column}>
                     <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.amount)}</Text>
@@ -90,21 +91,23 @@ const SummaryTableRow = ({rowData}) => {
             )
           })}
           <View style={styles.view_sub_column}>
-            <Text style={styles.cell_text_bold}>Sub-Total</Text>
+            <Text style={styles.cell_text_bold_start}>Sub-Total</Text>
           </View>
-          <View style={smallwidth || mediumwidth || largewidth}>
+          <View style={styles.view_sub_column}>
+          <View style={{alignSelf:"flex-start", marginLeft:-widthPercentageToDP("0.5%")}}>
             <View style={styles.view_sub_sub_row}>
-              <Text style={styles.cell_text_bold_start}>:</Text>
-              <Text style={styles.cell_text_bold_start}>(D)</Text>
+              <Text style={styles.cell_text_bold}>:</Text>
+              <Text style={styles.cell_text_bold}>(D)</Text>
             </View>
             <View style={styles.view_sub_sub_row}>
-              <Text style={styles.cell_text_bold_start}>:</Text>
-              <Text style={styles.cell_text_bold_start}>(W)</Text>
+              <Text style={styles.cell_text_bold}>:</Text>
+              <Text style={styles.cell_text_bold}>(W)</Text>
+            </View>
             </View>
           </View> 
           <View style={styles.view_sub_column}>
-            <Text style={styles.cell_text_bold}>{format.separator(group.subtotal.deposit)}</Text>
-            <Text style={styles.cell_text_bold}>{format.separator(group.subtotal.withdrawal)}</Text>
+            <Text style={styles.cell_text_bold_end}>{format.separator(group.subtotal.deposit)}</Text>
+            <Text style={styles.cell_text_bold_end}>{format.separator(group.subtotal.withdrawal)}</Text>
           </View>
         </View>
       </View>

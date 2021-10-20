@@ -488,7 +488,14 @@ const Withdrawal = () => {
               <View style={styles.status_row}>
                 <View style={styles.checkboxContainer}>
                   <Text style={styles.label}>Status:   </Text>
-                  <Text style={styles.label}>Accepted</Text>
+                  <TouchableOpacity 
+                      onPress={() => {
+                        accepted = !accepted;
+                        handleCheckBox();
+                      }}
+                    >
+                    <Text style={styles.label}>Accepted</Text>
+                  </TouchableOpacity>
                   <CheckBox
                     value={accepted}
                     onValueChange={value => {
@@ -500,7 +507,14 @@ const Withdrawal = () => {
                   />
                 </View>
                 <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>No Status</Text>
+                  <TouchableOpacity 
+                    onPress={() => {
+                      noStatus = !noStatus;
+                      handleCheckBox();
+                    }}
+                  >
+                    <Text style={styles.label}>No Status</Text>
+                  </TouchableOpacity>
                   <CheckBox
                     value={noStatus}
                     onValueChange={value => {
@@ -521,7 +535,14 @@ const Withdrawal = () => {
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Status:   </Text>
-                <Text style={styles.label}>Accepted</Text>
+                <TouchableOpacity 
+                  onPress={() => {
+                    accepted = !accepted;
+                    handleCheckBox();
+                  }}
+                >
+                  <Text style={styles.label}>Accepted</Text>
+                </TouchableOpacity>
                 <CheckBox
                   value={accepted}
                   onValueChange={value => {
@@ -534,7 +555,24 @@ const Withdrawal = () => {
               </View>
             </View>
               <View style={styles.checkboxContainer}>
-                {transType == "Today" ? <Text style={styles.label}>Pending</Text> : <Text style={styles.label}>No Status</Text>}
+                {transType == "Today" ? 
+                  <TouchableOpacity 
+                    onPress={() => {
+                      pending = !pending;
+                      handleCheckBox();
+                    }}
+                  >
+                    <Text style={styles.label}>Pending</Text>
+                  </TouchableOpacity> 
+                : 
+                  <TouchableOpacity 
+                    onPress={() => {
+                      noStatus = !noStatus;
+                      handleCheckBox();
+                    }}
+                  >
+                    <Text style={styles.label}>No Status</Text>
+                  </TouchableOpacity>}
                   <CheckBox
                     value={transType == "Today" ? pending : noStatus}
                     onValueChange={value => {

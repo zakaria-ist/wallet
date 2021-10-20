@@ -487,7 +487,14 @@ const Deposit = () => {
                 <View style={styles.status_row}>
                   <View style={styles.checkboxContainer}>
                     <Text style={styles.label}>Status:  </Text>
-                    <Text style={styles.label}>Accepted</Text>
+                    <TouchableOpacity 
+                      onPress={() => {
+                        accepted = !accepted;
+                        handleCheckBox();
+                      }}
+                    >
+                      <Text style={styles.label}>Accepted</Text>
+                    </TouchableOpacity>
                     <CheckBox
                       value={accepted}
                       onValueChange={value => {
@@ -499,7 +506,14 @@ const Deposit = () => {
                     />
                   </View>
                   <View style={styles.checkboxContainer}>
-                    <Text style={styles.label}>Rejected</Text>
+                    <TouchableOpacity 
+                      onPress={() => {
+                        rejected = !rejected;
+                        handleCheckBox();
+                      }}
+                    >
+                      <Text style={styles.label}>Rejected</Text>
+                    </TouchableOpacity>
                     <CheckBox
                       value={rejected}
                       onValueChange={value => {
@@ -511,7 +525,14 @@ const Deposit = () => {
                     />
                   </View>
                   <View style={styles.checkboxContainer}>
-                    <Text style={styles.label}>No Status</Text>
+                    <TouchableOpacity 
+                      onPress={() => {
+                        noStatus = !noStatus;
+                        handleCheckBox();
+                      }}
+                    >
+                      <Text style={styles.label}>No Status</Text>
+                    </TouchableOpacity>
                     <CheckBox
                       value={noStatus}
                       onValueChange={value => {
@@ -532,23 +553,41 @@ const Deposit = () => {
                 <View style={[(authType == "admin" || authType == "subadmin" || authType == "client") ? styles.status_row_container : styles.status_agent_user_row_container]}>
                 <View style={styles.status_row}>
                   <View style={styles.checkboxContainer}>
-                      <Text style={styles.label}>Status:   </Text>
-                      <Text style={styles.label}>Pending</Text>
-                      <CheckBox
-                        value={pending}
-                        onValueChange={value => {
-                          pending = value;
+                    <Text style={styles.label}>Status:   </Text>
+                      <TouchableOpacity 
+                        onPress={() => {
+                          pending = !pending;
                           handleCheckBox();
                         }}
+                      >
+                        <Text style={styles.label}>Pending</Text>
+                     </TouchableOpacity> 
+                      <CheckBox
+                        value={pending}
+                        onValueChange={
+                          value => {
+                          pending = value;
+                          handleCheckBox();
+                          }
+                        }
                         style={styles.checkbox}
                         tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                       />
+                       
                     </View>
                   </View>
                   <View style={styles.checkboxContainer}>
-                    <Text style={styles.label}>Accepted</Text>
+                    <TouchableOpacity 
+                      onPress={() => {
+                        accepted = !accepted;
+                        handleCheckBox();
+                      }}
+                    >
+                      <Text style={styles.label}>Accepted</Text>
+                    </TouchableOpacity>
                     <CheckBox
                       value={accepted}
+                      // selected={isSelected}
                       onValueChange={value => {
                         accepted = value;
                         handleCheckBox();
@@ -558,7 +597,14 @@ const Deposit = () => {
                     />
                   </View>
                   <View style={styles.checkboxContainer}>
-                    <Text style={styles.label}>Rejected</Text>
+                    <TouchableOpacity 
+                      onPress={() => {
+                        rejected = !rejected;
+                        handleCheckBox();
+                      }}
+                    >
+                      <Text style={styles.label}>Rejected</Text>
+                    </TouchableOpacity>
                     <CheckBox
                       value={rejected}
                       onValueChange={value => {
@@ -571,11 +617,18 @@ const Deposit = () => {
                   </View>
                 </View>
                :
-               <View style={[(authType == "admin" || authType == "subadmin" || authType == "client") ? styles.status_row_container : styles.status_agent_user_row_container]}>
-               <View style={styles.status_row}>
-                 <View style={styles.checkboxContainer}>
+                <View style={[(authType == "admin" || authType == "subadmin" || authType == "client") ? styles.status_row_container : styles.status_agent_user_row_container]}>
+                <View style={styles.status_row}>
+                  <View style={styles.checkboxContainer}>
                    <Text style={styles.label}>Status:   </Text>
-                   <Text style={styles.label}>Accepted</Text>
+                   <TouchableOpacity 
+                      onPress={() => {
+                        accepted = !accepted;
+                        handleCheckBox();
+                      }}
+                    >
+                    <Text style={styles.label}>Accepted</Text>
+                   </TouchableOpacity>
                    <CheckBox
                      value={accepted}
                      onValueChange={value => {
@@ -586,9 +639,16 @@ const Deposit = () => {
                      tintColors={{ true: WalletColors.Wblue, false: WalletColors.Wblue }}
                    />
                    </View>
-                 </View>
-                 <View style={styles.checkboxContainer}>
-                   <Text style={styles.label}>Rejected</Text>
+                  </View>
+                  <View style={styles.checkboxContainer}>
+                    <TouchableOpacity 
+                      onPress={() => {
+                        rejected = !rejected;
+                        handleCheckBox();
+                      }}
+                    >
+                      <Text style={styles.label}>Rejected</Text>
+                    </TouchableOpacity>
                    <CheckBox
                      value={rejected}
                      onValueChange={value => {
@@ -600,7 +660,14 @@ const Deposit = () => {
                    />
                  </View>
                  <View style={styles.checkboxContainer}>
-                  <Text style={styles.label}>No Status</Text>
+                  <TouchableOpacity 
+                    onPress={() => {
+                      noStatus = !noStatus;
+                      handleCheckBox();
+                    }}
+                  >
+                    <Text style={styles.label}>No Status</Text>
+                  </TouchableOpacity>
                   <CheckBox
                     value={noStatus}
                     onValueChange={value => {
