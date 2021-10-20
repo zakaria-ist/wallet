@@ -261,7 +261,14 @@ const TodaysReport = () => {
             <View style={styles.status_row}>
               <View style={styles.checkboxContainer}>
                 <Text style={styles.label}>Status:   </Text>
-                <Text style={styles.label}>Accepted</Text>
+                <TouchableOpacity 
+                      onPress={() => {
+                        accepted=!accepted
+                        handleCheckBox();
+                      }}
+                    >
+                  <Text style={styles.label}>Accepted</Text>
+                </TouchableOpacity>
                 <CheckBox
                   value={accepted}
                   onValueChange={value => {
@@ -273,7 +280,14 @@ const TodaysReport = () => {
                 />
               </View>
               <View style={styles.checkboxContainer}>
-                <Text style={styles.label}>Rejected</Text>
+                <TouchableOpacity 
+                  onPress={() => {
+                    rejected=!rejected
+                    handleCheckBox();
+                  }}
+                >
+                  <Text style={styles.label}>Rejected</Text>
+                </TouchableOpacity>
                 <CheckBox
                   value={rejected}
                   onValueChange={value => {
