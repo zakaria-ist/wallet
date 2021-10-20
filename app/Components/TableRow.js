@@ -81,14 +81,15 @@ const TableRow = ({rowData}) => {
           {cellData.hasOwnProperty("amount") ?  
             <View style={{flexDirection: "row"}}>
               <Text style={styles.cell_text}> : </Text>
-              <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
               {cellData.hasOwnProperty("oldAmount") && (cellData.oldAmount != cellData.amount) && (cellData.oldAmount != 0)? 
                 <>
-                  <Text style={styles.cell_text}>{amountSign}</Text> 
-                  <Text style={styles.cell_text}>{format.separator(cellData.oldAmount)}</Text> 
+                  <Text style={styles.cell_text}>{format.separator(cellData.oldAmount)}</Text>
+                  <Text style={styles.cell_text}>{amountSign}</Text>
                 </>
               : 
-              <></>}
+                <></>
+              }
+              <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
             </View>   
           : <></>}
           {cellData.hasOwnProperty("wallet") ?      

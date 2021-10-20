@@ -228,7 +228,7 @@ const Withdrawal = () => {
       {
         token: authToken, 
         role: authType,
-        purpose: "widhdrwal",
+        purpose: "withdrawal",
         when: when
       }
     );
@@ -249,6 +249,10 @@ const Withdrawal = () => {
           return msg.fromuser == myUserName;
         })
       }
+      // porpose filter
+      messages = messages.filter((msg) => {
+        return (msg.purpose == "withdrawal")
+      })
       // ftatus filter
       messages = messages.filter((msg) => {
         if (accepted && String(msg.status).toLowerCase() == 'accepted') return true;
