@@ -53,6 +53,9 @@ let accepted = true;
 let rejected = true;
 let refreshTimeout;
 let autoRefresh = false;
+let picker_user = null;
+let picker_group = null;
+let picker_wallet = 1;
 
 const Deposit = () => {
   const isFocused = useIsFocused();
@@ -114,6 +117,7 @@ const Deposit = () => {
         data.map((wallet, index) => {
           if (index == 0) {
             setWalletPickerType(wallet.id);
+            picker_wallet = wallet.id;
           }
           wData.push({label: wallet.name, value: wallet.id})
         })
@@ -138,6 +142,7 @@ const Deposit = () => {
                 groups.map((group, index) => {
                   if (index == 0) {
                     setPickerGroup(group.username);
+                    picker_group = group.username;
                   }
                   pickerGroupList.push({label: group.username, value: group.username})
                 })
@@ -155,6 +160,7 @@ const Deposit = () => {
                   users.map((user, index) => {
                     if (index == 0) {
                       setPickerUser(user.username);
+                      picker_user = user.username;
                     }
                     pickerUserList.push({label: user.username, value: user.username})
                   })
@@ -261,7 +267,7 @@ const Deposit = () => {
       // wallet filter
       messages = messages.filter((msg) => {
         if (authType == 'admin' || authType == 'subadmin') {
-          return (parseInt(walletPickerType) == parseInt(msg.walletId))
+          return (parseInt(picker_wallet) == parseInt(msg.walletId))
         } else {
           return (parseInt(walletType) == parseInt(msg.walletId))
         }
@@ -270,13 +276,13 @@ const Deposit = () => {
       // user & client filter
       if (authType == 'admin' || authType == 'subadmin') {
         messages = messages.filter((msg) => {
-          return (pickerGroup && pickerGroup == msg.belongclient)
+          return (picker_group && picker_group == msg.belongclient)
         })
       }
 
       if (authType == 'client') {
         messages = messages.filter((msg) => {
-          return (pickerUser && pickerUser == msg.fromuser)
+          return (picker_user && picker_user == msg.fromuser)
         })
       }
       
@@ -432,6 +438,7 @@ const Deposit = () => {
                   listItemContainerStyle={{height: heightPercentageToDP("5%")}}
                   onChangeValue={(value) => {
                       setPickerUser(value); 
+                      picker_user = value;
                       renderTablesData();
                     }}
                     open={openClientPicker}
@@ -454,7 +461,8 @@ const Deposit = () => {
                       style={{height: heightPercentageToDP("5%")}}
                       listItemContainerStyle={{height: heightPercentageToDP("5%")}}
                       onChangeValue={(value) => {
-                        setPickerGroup(value); 
+                        setPickerGroup(value);
+                        picker_group = value;
                         renderTablesData();
                       }}
                       open={openAdminPickerGroup}
@@ -474,7 +482,8 @@ const Deposit = () => {
                       style={{height: heightPercentageToDP("5%")}}
                       listItemContainerStyle={{height: heightPercentageToDP("5%")}}
                       onChangeValue={(value) => {
-                        setWalletPickerType(value); 
+                        setWalletPickerType(value);
+                        picker_wallet = value;
                         renderTablesData();
                       }}
                       selectedValue={walletPickerType}
