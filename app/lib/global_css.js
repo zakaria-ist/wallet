@@ -576,15 +576,15 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   cell_text_start: {
-    fontSize: RFValue(12),
+    fontSize: RFValue(11),
     alignSelf: "flex-start",
   },
   cell_text_center: {
-    fontSize: RFValue(12),
+    fontSize: RFValue(11),
     alignSelf: "center",
   },
   cell_text_end: {
-    fontSize: RFValue(12),
+    fontSize: RFValue(11),
     alignSelf: "flex-end",
   },
   cell_summary_text_header: {
@@ -593,29 +593,29 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   cell_text_bold_end: {
-    fontSize: RFValue(12),
+    fontSize: RFValue(11),
     fontWeight: "bold",
     alignSelf: "flex-end",
   },
   cell_text_bold_center: {
-    fontSize: RFValue(12),
+    fontSize: RFValue(11),
     fontWeight: "bold",
     alignSelf: "flex-end",
     flex:1,
   },
   cell_text_bold_center_sub: {
-    fontSize: RFValue(12),
+    fontSize: RFValue(11),
     fontWeight: "bold",
     alignSelf: "center",
-    flex:1.2,
+    flex:1.25,
   },
   cell_text_bold_start: {
-    fontSize: RFValue(12),
+    fontSize: RFValue(11),
     fontWeight: "bold",
     alignSelf: "flex-start",
   },
   cell_text_bold: {
-    fontSize: RFValue(12),
+    fontSize: RFValue(11),
     fontWeight: "bold",
     alignSelf: "flex-start",
   },
