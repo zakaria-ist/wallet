@@ -551,7 +551,7 @@ const styles = StyleSheet.create({
   },
   view_summary_right: {
     flex: 1,
-    paddingRight:heightPercentageToDP("2%"),
+    paddingRight:heightPercentageToDP("0.5%"),
     alignItems: "center",
     justifyContent: "center",
   },
@@ -601,13 +601,13 @@ const styles = StyleSheet.create({
     fontSize: RFValue(11),
     fontWeight: "bold",
     alignSelf: "flex-end",
-    flex:1,
+    flex:3,
   },
   cell_text_bold_center_sub: {
     fontSize: RFValue(11),
     fontWeight: "bold",
-    alignSelf: "center",
-    flex:1.25,
+    alignSelf: "flex-end",
+    flex:1.8,
   },
   cell_text_bold_start: {
     fontSize: RFValue(11),
