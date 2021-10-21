@@ -250,6 +250,8 @@ const Deposit = () => {
         messages = content.msg.filter((msg) => {
           return msg.fromuser == myUserName;
         })
+      } else {
+        messages = content.msg;
       }
       // porpose filter
       messages = messages.filter((msg) => {
