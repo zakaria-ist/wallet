@@ -110,7 +110,7 @@ const SummaryTableRow = ({rowData}) => {
     setCellOne(cellLeft);
 
     cellRight.push(
-      <Text style={styles.cell_text_bold}>{format.separator(group.total)}</Text>
+      <Text style={styles.cell_text_bold_end}>{format.separator(group.total)}</Text>
     );
     setCellTwo(cellRight);
   }
