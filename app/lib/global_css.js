@@ -607,7 +607,7 @@ const styles = StyleSheet.create({
     fontSize: RFValue(12),
     fontWeight: "bold",
     alignSelf: "center",
-    flex:1.3,
+    flex:1.2,
   },
   cell_text_bold_start: {
     fontSize: RFValue(12),
