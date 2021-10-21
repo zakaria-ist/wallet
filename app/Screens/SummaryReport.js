@@ -141,10 +141,13 @@ const SummaryReport = () => {
         msg_list.push(msg);
       })
       setTableData(msg_list);
-      onSpinnerChanged(false);
-      handleSetTimeout();
+    } else {
+      let msg_list = [];
+      msg_list.push(tableHeader);
+      setTableData(msg_list);
     }
     onSpinnerChanged(false);
+    handleSetTimeout();
     autoRefresh = false;
   }
 

@@ -219,9 +219,14 @@ const TodaysReport = () => {
       })
       setTableData(msg_list);
       setAcceptedTotal(total);
-      handleSetTimeout();
+    } else {
+      let msg_list = [];
+      msg_list.push(tableHeader);
+      setTableData(msg_list);
+      setAcceptedTotal(0);
     }
     onSpinnerChanged(false);
+    handleSetTimeout();
     autoRefresh = false;
   }
 
