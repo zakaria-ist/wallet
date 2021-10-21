@@ -46,7 +46,7 @@ const SummaryTableRow = ({rowData}) => {
       <View style={styles.view_summary_border_line}>
         <View style={styles.view_sub_row}>
           <Text style={styles.cell_text_bold_start}>{group.group}</Text>
-          <Text style={styles.cell_text_bold_center}>     </Text>
+          <Text style={styles.cell_text_bold_center_sub}>     </Text>
           <Text style={styles.cell_text_bold_center}>Count</Text>
           <Text style={styles.cell_text_bold_end}>Amount</Text>
         </View> 
@@ -76,8 +76,8 @@ const SummaryTableRow = ({rowData}) => {
                     </View>
                   </View>
                   <View style={styles.view_sub_column}>
-                    <Text style={styles.cell_text_center}>{format.separator(wallet.deposit.count)}</Text>
-                    <Text style={styles.cell_text_center}>{format.separator(wallet.withdrawal.count)}</Text>
+                    <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.count)}</Text>
+                    <Text style={styles.cell_text_end}>{format.separator(wallet.withdrawal.count)}</Text>
                   </View>
                   <View style={styles.view_sub_column}>
                     <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.amount)}</Text>
@@ -91,7 +91,7 @@ const SummaryTableRow = ({rowData}) => {
             <Text style={styles.cell_text_bold_start}>Sub-Total</Text>
           </View>
           <View style={styles.view_sub_column}>
-          <View style={{alignSelf:"flex-start", marginLeft:-widthPercentageToDP("0.5%")}}>
+          <View style={{alignSelf:"flex-start", marginLeft:-widthPercentageToDP("0.3%")}}>
             <View style={styles.view_sub_sub_row}>
               <Text style={styles.cell_text_bold}>:</Text>
               <Text style={styles.cell_text_bold}>(D)</Text>
