@@ -576,60 +576,48 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   cell_text_start: {
-    fontSize: RFValue(13),
+    fontSize: RFValue(12),
     alignSelf: "flex-start",
   },
   cell_text_center: {
-    fontSize: RFValue(13),
+    fontSize: RFValue(12),
     alignSelf: "center",
   },
   cell_text_end: {
-    fontSize: RFValue(13),
+    fontSize: RFValue(12),
     alignSelf: "flex-end",
   },
   cell_summary_text_header: {
-    fontSize: RFValue(11),
+    fontSize: RFValue(12),
     fontWeight: "bold",
     textAlign: "center",
   },
   cell_text_bold_end: {
-    fontSize: RFValue(13),
+    fontSize: RFValue(12),
     fontWeight: "bold",
     alignSelf: "flex-end",
   },
   cell_text_bold_center: {
-    fontSize: RFValue(13),
+    fontSize: RFValue(12),
     fontWeight: "bold",
     alignSelf: "flex-end",
     flex:1,
   },
   cell_text_bold_center_sub: {
-    fontSize: RFValue(13),
+    fontSize: RFValue(12),
     fontWeight: "bold",
     alignSelf: "center",
-    flex:1.1,
+    flex:1.3,
   },
   cell_text_bold_start: {
-    fontSize: RFValue(13),
+    fontSize: RFValue(12),
     fontWeight: "bold",
     alignSelf: "flex-start",
   },
   cell_text_bold: {
-    fontSize: RFValue(13),
+    fontSize: RFValue(12),
     fontWeight: "bold",
     alignSelf: "flex-start",
-  },
-  text_ss_width: {
-    marginLeft:widthPercentageToDP("18.5%"), 
-    position:"absolute"
-  },
-  text_ms_width: {
-    marginLeft:widthPercentageToDP("17.9%"), 
-    position:"absolute"
-  },
-  text_ls_width: {
-    marginLeft:widthPercentageToDP("18%"), 
-    position:"absolute"
   },
 
   //MessageBlock
