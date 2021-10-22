@@ -262,14 +262,19 @@ const Withdrawal = () => {
         return (msg.purpose == "withdrawal")
       })
       // ftatus filter
+      // messages = messages.filter((msg) => {
+      //   if (accepted && String(msg.status).toLowerCase() == 'accepted' || 
+      //         String(msg.status).toLowerCase() == 'sent' || 
+      //         String(msg.status).toLowerCase() == "updated & accepted") return true;
+      //   // if (rejected && msg.status == 'rejected') return true;
+      //   if (pending && String(msg.status).toLowerCase() == 'pending') return true;
+      //   if (noStatus && String(msg.status).toLowerCase() == 'outdated') return true;
+      //   return false;
+      // })
       messages = messages.filter((msg) => {
-        if (accepted && String(msg.status).toLowerCase() == 'accepted' || 
-              String(msg.status).toLowerCase() == 'sent' || 
-              String(msg.status).toLowerCase() == "updated & accepted") return true;
-        // if (rejected && msg.status == 'rejected') return true;
-        if (pending && (String(msg.status).toLowerCase() == 'pending' || 
-            String(msg.status).toLowerCase() == 'outdated')) return true;
-        if (noStatus && msg.status == null) return true;
+        if (accepted && msg.statusId == 22 ) return true;
+        if (pending && (msg.statusId == 0 || msg.statusId == 11)) return true;
+        if (when == 'yesterday' && noStatus && msg.statusId == 33) return true;
         return false;
       })
       // wallet filter
@@ -297,7 +302,7 @@ const Withdrawal = () => {
       let pending_total = 0;
       if (authType == 'agent' && transType == 'Today') {
         messages = messages.filter((msg) => {
-          return String(msg.status).toLowerCase() == 'pending';
+          return (msg.statusId == 0 || msg.statusId == 11);
         })
         msg_list.push(agentTableHeader);
         messages.map((msg) => {
@@ -318,18 +323,14 @@ const Withdrawal = () => {
         messages.map((msg) => {
           let msg_data = {};
           let amount = parseFloat(String(msg.amount).replace(',', ''));
-          if (String(msg.status).toLowerCase() == 'pending' || 
-                String(msg.status).toLowerCase() == 'outdated') {
+          if (msg.statusId == 0 || msg.statusId == 11) {
             pending_total += amount;
-            if (when == 'today') {
-              msg.status = 'Pending'
-            } else {
-              msg.status = ''
-            }
+            msg.status = 'Pending'
           }
-          else if (String(msg.status).toLowerCase() == 'accepted' || 
-              String(msg.status).toLowerCase() == 'sent' || 
-              String(msg.status).toLowerCase() == "updated & accepted") {
+          else if (msg.statusId == 33) {
+            msg.status = ''
+          }
+          else if (msg.statusId == 22) {
             accepted_total += amount;
             msg.status = 'Accepted'
           }

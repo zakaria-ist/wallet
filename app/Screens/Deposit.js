@@ -230,7 +230,7 @@ const Deposit = () => {
       {
         token: authToken, 
         role: authType,
-        purpose: 'deposite',
+        purpose: 'deposit',
         when: when
       }
     );
@@ -258,14 +258,21 @@ const Deposit = () => {
         return (msg.purpose == "deposit")
       })
       // ftatus filter
+      // messages = messages.filter((msg) => {
+      //   if (accepted && String(msg.status).toLowerCase() == 'accepted' || 
+      //         String(msg.status).toLowerCase() == 'sent' || 
+      //         String(msg.status).toLowerCase() == "updated & accepted") return true;
+      //   if (rejected && String(msg.status).toLowerCase() == 'rejected') return true;
+      //   if (pending && (String(msg.status).toLowerCase() == 'pending' || 
+      //         String(msg.status).toLowerCase() == 'outdated')) return true;
+      //   if (noStatus && msg.status == null) return true;
+      //   return false;
+      // })
       messages = messages.filter((msg) => {
-        if (accepted && String(msg.status).toLowerCase() == 'accepted' || 
-              String(msg.status).toLowerCase() == 'sent' || 
-              String(msg.status).toLowerCase() == "updated & accepted") return true;
-        if (rejected && String(msg.status).toLowerCase() == 'rejected') return true;
-        if (pending && (String(msg.status).toLowerCase() == 'pending' || 
-              String(msg.status).toLowerCase() == 'outdated')) return true;
-        if (noStatus && msg.status == null) return true;
+        if (accepted && (msg.statusId == 1 || msg.statusId == 3)) return true;
+        if (rejected && msg.statusId == 2) return true;
+        if (pending && msg.statusId == 0) return true;
+        if (when == 'yesterday' && noStatus && msg.statusId == 4) return true;
         return false;
       })
       // wallet filter
@@ -295,7 +302,7 @@ const Deposit = () => {
       let pending_total = 0;
       if (authType == 'agent' && transType == 'Today') {
         messages = messages.filter((msg) => {
-          return String(msg.status).toLowerCase() == 'pending';
+          return msg.statusId == 0;
         })
         msg_list.push(agentTableHeader);
         messages.map((msg) => {
@@ -315,22 +322,18 @@ const Deposit = () => {
         messages.map((msg) => {
           let msg_data = {};
           let amount = parseFloat(String(msg.amount).replace(',', ''))
-          if (String(msg.status).toLowerCase() == 'pending' || 
-                String(msg.status) == 'outdated') {
+          if (msg.statusId == 0) {
             pending_total += amount;
-            if (when == 'today') {
-              msg.status = 'Pending'
-            } else {
-              msg.status = ''
-            }
+            msg.status = 'Pending'
           }
-          else if (String(msg.status).toLowerCase() == 'accepted' || 
-              String(msg.status).toLowerCase() == 'sent' || 
-              String(msg.status).toLowerCase() == "updated & accepted") {
+          else if (msg.statusId == 4) {
+            msg.status = ''
+          }
+          else if (msg.statusId == 1 || msg.statusId == 3) {
             accepted_total += amount;
             msg.status = 'Accepted'
           }
-          else if (String(msg.status).toLowerCase() == 'rejected') {
+          else if (msg.statusId == 2) {
             msg.status = 'Rejected'
           }
 
