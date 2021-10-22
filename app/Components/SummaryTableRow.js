@@ -77,7 +77,7 @@ const SummaryTableRow = ({rowData}) => {
                     <Text style={styles.cell_text_center}>{format.separator(wallet.deposit.count)}</Text>
                     <Text style={styles.cell_text_center}>{format.separator(wallet.withdrawal.count)}</Text>
                   </View> 
-                  <View style={{flex:1}}>
+                  <View style={{flex:1.5}}>
                     <Text style={styles.cell_text_end}>{format.separator(wallet.deposit.amount)}</Text>
                     <Text style={styles.cell_text_end}>{format.separator(wallet.withdrawal.amount)}</Text>
                   </View>
@@ -89,7 +89,7 @@ const SummaryTableRow = ({rowData}) => {
             <Text style={styles.cell_text_bold_start}>Sub-Total</Text>
           </View>
           <View style={styles.view_sub_column}>
-          <View style={{flex:1, alignSelf:"flex-start", marginLeft:-widthPercentageToDP("0.3%")}}>
+          <View style={{flex:1, alignSelf:"flex-start"}}>
             <View style={styles.view_sub_sub_row}>
               <Text style={styles.cell_text_bold}>:</Text>
               <Text style={styles.cell_text_bold}>(D)</Text>
@@ -100,7 +100,7 @@ const SummaryTableRow = ({rowData}) => {
             </View>
             </View>
           </View> 
-          <View style={styles.view_sub_column}>
+          <View style={{flex:1.6}}>
             <Text style={styles.cell_text_bold_end}>{format.separator(group.subtotal.deposit)}</Text>
             <Text style={styles.cell_text_bold_end}>{format.separator(group.subtotal.withdrawal)}</Text>
           </View>
@@ -124,9 +124,7 @@ const SummaryTableRow = ({rowData}) => {
           </View>
         </View>
         <View style={styles.view_summary_right}>
-          <View style={styles.view_summary_lineNumber}>
             {cellTwo}
-          </View>
         </View>
       </View> 
     );
