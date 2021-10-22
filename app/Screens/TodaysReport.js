@@ -153,6 +153,7 @@ const TodaysReport = () => {
         token: authToken, 
         role: authType,
         purpose: purpose,
+        when: 'today'
       }
     );
 
@@ -165,11 +166,11 @@ const TodaysReport = () => {
       // status filter
       messages = messages.filter((msg) => {
         if (accepted && (
-              String(msg.status).toLowerCase() == 'accepted' || 
-              String(msg.status).toLowerCase() == 'sent' || 
-              String(msg.status).toLowerCase() == "updated & accepted"
+              msg.statusId == 1 || 
+              msg.statusId == 3 || 
+              msg.statusId == 22
             )) return true;
-        if (rejected && String(msg.status).toLowerCase() == 'rejected') return true;
+        if (rejected && msg.statusId == 2) return true;
         return false;
       })
       // wallet filter
@@ -182,13 +183,11 @@ const TodaysReport = () => {
       msg_list.push(tableHeader);
       messages.map((msg) => {
         let amount = parseFloat(String(msg.amount).replace(',', ''));
-        if (String(msg.status).toLowerCase() == 'accepted' || 
-              String(msg.status).toLowerCase() == 'sent' || 
-              String(msg.status).toLowerCase() == "updated & accepted") {
+        if (msg.statusId == 1 || msg.statusId == 3 || msg.statusId == 22) {
           total += amount;
           msg.status = 'Accepted'
         }
-        else if (String(msg.status).toLowerCase() == 'rejected') {
+        else if (msg.statusId == 2) {
           msg.status = 'Rejected'
         }
         let msg_data = {};
