@@ -69,6 +69,12 @@ const SummaryReport = () => {
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
+      //clear all auto refresh
+      let timeoutLast = setTimeout(() => {}, 0);
+      while (timeoutLast--) {
+        clearTimeout(timeoutLast);
+      }
+      
       AsyncStorage.getItem('walletData').then((walletData) => {
         setWalletData(JSON.parse(walletData));
       })

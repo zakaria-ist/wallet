@@ -17,11 +17,16 @@ const SplashOut = ({navigation}) => {
       //Check if user_id is set or not
       //If not then send for Authentication
       //else send to Home Screen
-      AsyncStorage.getItem('isUser').then((value) =>
-        navigation.replace(
-          value === null ? 'Auth' : 'DrawerStack'
-        ),
-      );
+      AsyncStorage.getItem('isUser').then((value) => {
+        // navigation.replace(
+        //   value === null ? 'Auth' : 'DrawerStack'
+        // )
+        navigation.reset({
+          index: 0,
+          key: null,
+          routes: [{ name: value === null ? 'Auth' : 'DrawerStack' }],
+        });
+      });
     }, 2000);
   }, []);
 

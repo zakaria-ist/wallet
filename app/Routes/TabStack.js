@@ -90,7 +90,12 @@ const TabNavigationAdmin = (props) => {
           tabPress: (e) => {
             // Prevent default action
             e.preventDefault();
-            navigation.navigate("TabNavigationAdminDeposit");
+            // navigation.navigate("TabNavigationAdminDeposit");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAdminDeposit" }],
+            });
           },
         })}
       />
@@ -104,7 +109,12 @@ const TabNavigationAdmin = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationAdminWithdrawal");
+            // navigation.navigate("TabNavigationAdminWithdrawal");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAdminWithdrawal" }],
+            });
           },
         })}
       />
@@ -130,7 +140,12 @@ const TabNavigationAdminDeposit = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationAdmin");
+            // navigation.navigate("TabNavigationAdmin");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAdmin" }],
+            });
           },
         })}
       />
@@ -152,7 +167,12 @@ const TabNavigationAdminDeposit = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationAdminWithdrawal");
+            // navigation.navigate("TabNavigationAdminWithdrawal");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAdminWithdrawal" }],
+            });
           },
         })}
       />
@@ -178,7 +198,12 @@ const TabNavigationAdminWithdrawal = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationAdmin");
+            // navigation.navigate("TabNavigationAdmin");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAdmin" }],
+            });
           },
         })}
       />
@@ -192,7 +217,12 @@ const TabNavigationAdminWithdrawal = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationAdminDeposit");
+            // navigation.navigate("TabNavigationAdminDeposit");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAdminDeposit" }],
+            });
           },
         })}
       />
@@ -235,7 +265,12 @@ const TabNavigationUser = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationUserDeposit");
+            // navigation.navigate("TabNavigationUserDeposit");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationUserDeposit" }],
+            });
           },
         })}
       />
@@ -249,7 +284,12 @@ const TabNavigationUser = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationUserWithdrawal");
+            // navigation.navigate("TabNavigationUserWithdrawal");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationUserWithdrawal" }],
+            });
           },
         })}
       />
@@ -275,7 +315,12 @@ const TabNavigationUserDeposit = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationUser");
+            // navigation.navigate("TabNavigationUser");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationUser" }],
+            });
           },
         })}
       />
@@ -297,7 +342,12 @@ const TabNavigationUserDeposit = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationUserWithdrawal");
+            // navigation.navigate("TabNavigationUserWithdrawal");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationUserWithdrawal" }],
+            });
           },
         })}
       />
@@ -323,7 +373,12 @@ const TabNavigationUserWithdrawal = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationUser");
+            // navigation.navigate("TabNavigationUser");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationUser" }],
+            });
           },
         })}
       />
@@ -337,7 +392,12 @@ const TabNavigationUserWithdrawal = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationUserDeposit");
+            // navigation.navigate("TabNavigationUserDeposit");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationUserDeposit" }],
+            });
           },
         })}
       />
@@ -380,7 +440,12 @@ const TabNavigationAgent = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationAgentDeposit");
+            // navigation.navigate("TabNavigationAgentDeposit");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAgentDeposit" }],
+            });
           },
         })}
       />
@@ -394,7 +459,12 @@ const TabNavigationAgent = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationAgentWithdrawal");
+            // navigation.navigate("TabNavigationAgentWithdrawal");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAgentWithdrawal" }],
+            });
           },
         })}
       />
@@ -420,7 +490,12 @@ const TabNavigationAgentDeposit = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationAgent");
+            // navigation.navigate("TabNavigationAgent");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAgent" }],
+            });
           },
         })}
       />
@@ -442,7 +517,12 @@ const TabNavigationAgentDeposit = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationAgentWithdrawal");
+            // navigation.navigate("TabNavigationAgentWithdrawal");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAgentWithdrawal" }],
+            });
           },
         })}
       />
@@ -468,7 +548,12 @@ const TabNavigationAgentWithdrawal = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationAgent");
+            // navigation.navigate("TabNavigationAgent");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAgent" }],
+            });
           },
         })}
       />
@@ -482,7 +567,12 @@ const TabNavigationAgentWithdrawal = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationAgentDeposit");
+            // navigation.navigate("TabNavigationAgentDeposit");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAgentDeposit" }],
+            });
           },
         })}
       />
@@ -524,7 +614,12 @@ const TabNavigationGroup = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationGroupWithdrawal");
+            // navigation.navigate("TabNavigationGroupWithdrawal");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationGroupWithdrawal" }],
+            });
           },
         })}
       />
@@ -550,7 +645,12 @@ const TabNavigationGroupWithdrawal = (props) => {
         listeners={({ navigation})=>({
           tabPress: (e) => {
             e.preventDefault();
-            navigation.navigate("TabNavigationGroup");
+            // navigation.navigate("TabNavigationGroup");
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationGroup" }],
+            });
           },
         })}
       />

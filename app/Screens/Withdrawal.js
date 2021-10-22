@@ -114,6 +114,12 @@ const Withdrawal = () => {
 
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
+      //clear all auto refresh
+      let timeoutLast = setTimeout(() => {}, 0);
+      while (timeoutLast--) {
+        clearTimeout(timeoutLast);
+      }
+      
       AsyncStorage.getItem('walletData').then((walletData) => {
         setWalletData(JSON.parse(walletData));
         let data = JSON.parse(walletData);
@@ -122,6 +128,7 @@ const Withdrawal = () => {
           if (index == 0) {
             setWalletPickerType(wallet.id);
             picker_wallet = wallet.id;
+            walletType = wallet.id;
           }
           wData.push({label: wallet.name, value: wallet.id})
         })

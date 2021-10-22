@@ -69,7 +69,12 @@ export default function DrawerStack() {
           onPress={() => {
             alert.ask('Are you sure? You want to sign out?', ()=>{
               AsyncStorage.clear();
-              props.navigation.replace('Auth');
+              // props.navigation.replace('Auth');
+              props.navigation.reset({
+                index: 0,
+                key: null,
+                routes: [{ name: "Auth" }],
+              });
             })
           }}
         />

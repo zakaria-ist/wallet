@@ -88,8 +88,12 @@ const LoginScreen = ({navigation}) => {
   });
 
   const processNoti = (remoteMessage) => {
-    if (remoteMessage) {
-      console.log('remoteMessage', remoteMessage.data);
+    if (remoteMessage && remoteMessage.channelId && remoteMessage.channelId == 'kenny_wallet') {
+      if (remoteMessage.title && remoteMessage.title.includes('withdrawal')) {
+
+      } else if (remoteMessage.title && remoteMessage.title.includes('deposit')) {
+        
+      }
       // let groupID = remoteMessage.data.groupID;
       // let groupName = remoteMessage.data.groupName;
       // let groupType = remoteMessage.data.groupType;
@@ -103,7 +107,7 @@ const LoginScreen = ({navigation}) => {
 
   async function createNotificationChannel() {
     Notifications.setNotificationChannel({
-      channelId: 'message',
+      channelId: 'kenny_wallet',
       name: 'Message Channel',
       description: 'Message Channel',
       importance: 5
@@ -193,7 +197,12 @@ const LoginScreen = ({navigation}) => {
       }
       onSpinnerChanged(false);
       // navigate to user pages
-      navigation.replace('DrawerStack');
+      // navigation.replace('DrawerStack');
+      navigation.reset({
+        index: 0,
+        key: null,
+        routes: [{ name: "DrawerStack" }],
+      });
     } else {
       onSpinnerChanged(false);
       alert.warning("Sign in is unsuccessful. Check the username or password. ");
