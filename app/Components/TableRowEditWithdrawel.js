@@ -100,7 +100,7 @@ const TableRowEditWithdra = ({rowData}) => {
               <Text style={styles.cell_text_input_colon}> : </Text>
               <TextInput 
                 style={styles.text_input}
-                onChangeText={pinNo => { rowData.pinNo = pinNo; handleCell(rowData); }}
+                onChangeText={pinNo => { rowData.pinNo = pinNo.replace(/[^0-9]+/g, ''); handleCell(rowData); }}
                 value={rowData.pinNo}
                 textAlign={'left'}
                 placeholderTextColor={WalletColors.grey}

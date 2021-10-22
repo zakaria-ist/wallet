@@ -600,19 +600,20 @@ const styles = StyleSheet.create({
   cell_text_bold_center: {
     fontSize: RFValue(11),
     fontWeight: "bold",
-    alignSelf: "flex-end",
-    flex:3,
+    alignSelf: "center",
+    flex:2,
   },
   cell_text_bold_center_sub: {
     fontSize: RFValue(11),
     fontWeight: "bold",
-    alignSelf: "flex-end",
-    flex:1.8,
+    alignSelf: "center",
+    flex:0.5,
   },
   cell_text_bold_start: {
     fontSize: RFValue(11),
     fontWeight: "bold",
     alignSelf: "flex-start",
+    flex:2,
   },
   cell_text_bold: {
     fontSize: RFValue(11),

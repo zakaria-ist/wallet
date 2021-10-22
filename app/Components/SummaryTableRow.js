@@ -86,7 +86,7 @@ const SummaryTableRow = ({rowData}) => {
             )
           })}
           <View style={styles.view_sub_column}>
-            <Text style={styles.cell_text_bold_start}>Sub-Total</Text>
+            <Text style={styles.cell_text_bold}>Sub-Total</Text>
           </View>
           <View style={styles.view_sub_column}>
           <View style={{flex:1, alignSelf:"flex-start"}}>
