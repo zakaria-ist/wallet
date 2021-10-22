@@ -259,7 +259,9 @@ const Deposit = () => {
       })
       // ftatus filter
       messages = messages.filter((msg) => {
-        if (accepted && String(msg.status).toLowerCase() == 'accepted') return true;
+        if (accepted && String(msg.status).toLowerCase() == 'accepted' || 
+              String(msg.status).toLowerCase() == 'sent' || 
+              String(msg.status).toLowerCase() == "updated & accepted") return true;
         if (rejected && String(msg.status).toLowerCase() == 'rejected') return true;
         if (pending && (String(msg.status).toLowerCase() == 'pending' || 
               String(msg.status).toLowerCase() == 'outdated')) return true;
@@ -322,7 +324,9 @@ const Deposit = () => {
               msg.status = ''
             }
           }
-          else if (String(msg.status).toLowerCase() == 'accepted') {
+          else if (String(msg.status).toLowerCase() == 'accepted' || 
+              String(msg.status).toLowerCase() == 'sent' || 
+              String(msg.status).toLowerCase() == "updated & accepted") {
             accepted_total += amount;
             msg.status = 'Accepted'
           }
