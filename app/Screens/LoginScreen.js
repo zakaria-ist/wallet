@@ -65,7 +65,8 @@ const LoginScreen = ({navigation}) => {
     // (required) Called when a remote is received or opened, or local notification is opened
     onNotification: function (notification) {
       console.log("NOTIFICATION:", notification);
-      notification.userInteraction && processNoti(notification)
+      // notification.userInteraction && processNoti(notification)
+      processNoti(notification);
     },
 
     // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)
@@ -88,26 +89,31 @@ const LoginScreen = ({navigation}) => {
   });
 
   const processNoti = (remoteMessage) => {
-    if (remoteMessage && remoteMessage.channelId && remoteMessage.channelId == 'kenny_wallet') {
-      if (remoteMessage.title && remoteMessage.title.includes('withdrawal')) {
-
-      } else if (remoteMessage.title && remoteMessage.title.includes('deposit')) {
-        
+    AsyncStorage.getItem('authType').then((authType) => {
+      if (authType == 'agent') {
+        if (remoteMessage && remoteMessage.channelId && remoteMessage.channelId == 'message') {
+          if (remoteMessage.title && remoteMessage.title.includes('withdrawal')) {
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAgentWithdrawal" }],
+            });
+          } else if (remoteMessage.title && remoteMessage.title.includes('deposit')) {
+            navigation.reset({
+              index: 0,
+              key: null,
+              routes: [{ name: "TabNavigationAgentDeposit" }],
+            });
+          }
+        }
       }
-      // let groupID = remoteMessage.data.groupID;
-      // let groupName = remoteMessage.data.groupName;
-      // let groupType = remoteMessage.data.groupType;
-      // props.navigation.navigate("ChatScreen", {
-      //   type: String(groupType),
-      //   groupID: String(groupID),
-      //   groupName: String(groupName),
-      // });
-    }
+    })
+    
   }
 
   async function createNotificationChannel() {
     Notifications.setNotificationChannel({
-      channelId: 'kenny_wallet',
+      channelId: 'message',
       name: 'Message Channel',
       description: 'Message Channel',
       importance: 5
@@ -119,13 +125,13 @@ const LoginScreen = ({navigation}) => {
       .getInitialNotification()
       .then((remoteMessage) => {
         console.log('remoteMessage', 'getInitialNotification', remoteMessage);
-        processNoti(remoteMessage)
+        // processNoti(remoteMessage)
       });
 
     messaging()
       .onNotificationOpenedApp((remoteMessage) => {
         console.log('remoteMessage', 'onNotificationOpenedApp', remoteMessage);
-        processNoti(remoteMessage)
+        // processNoti(remoteMessage)
       });
 
    messaging()

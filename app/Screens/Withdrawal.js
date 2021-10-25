@@ -119,7 +119,7 @@ const Withdrawal = () => {
       while (timeoutLast--) {
         clearTimeout(timeoutLast);
       }
-      
+
       AsyncStorage.getItem('walletData').then((walletData) => {
         setWalletData(JSON.parse(walletData));
         let data = JSON.parse(walletData);
