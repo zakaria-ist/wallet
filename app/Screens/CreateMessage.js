@@ -75,7 +75,7 @@ const CreateMessage = () => {
       AsyncStorage.getItem('token').then((token) => {
         setToken(token);
       })
-      AsyncStorage.getItem('superiorAgent').then((superiorAgent) => {
+      AsyncStorage.getItem('superiorAgent').then(async(superiorAgent) => {
         setSuperiorAgent(JSON.parse(superiorAgent));
         let agent = JSON.parse(superiorAgent);
         const tokenDB = await getUserTokenPromise(agent.username);
