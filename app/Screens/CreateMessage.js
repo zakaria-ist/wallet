@@ -77,7 +77,8 @@ const CreateMessage = () => {
       })
       AsyncStorage.getItem('superiorAgent').then((superiorAgent) => {
         setSuperiorAgent(JSON.parse(superiorAgent));
-        const tokenDB = await getUserTokenPromise(superiorAgent.username);
+        let agent = JSON.parse(superiorAgent);
+        const tokenDB = await getUserTokenPromise(agent.username);
         setAgentDeviceId(tokenDB._data.deviceId);
       })
     })
