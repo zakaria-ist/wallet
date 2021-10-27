@@ -159,6 +159,7 @@ const CreateMessage = () => {
             console.log('results', results);
             return true;
           }
+          return true;
         } else {
           onSpinnerChanged(false);
         }
@@ -182,38 +183,47 @@ const CreateMessage = () => {
 
   const handleSubmit = async () => {
     let sent = false;
+    let data = {
+      refCode: "",
+      amount: ""
+    }
     const userSendMessageUrl = request.getUserSendMessageUrl();
     if (messageOne.refCode != "" && messageOne.amount != "") {
       sent = await sendMessageToAgent(messageOne, userSendMessageUrl);
+      if (sent) {
+        setMessageOne(data);
+      }
     }
     if (messageTwo.refCode != "" && messageTwo.amount != "") {
       sent = await sendMessageToAgent(messageTwo, userSendMessageUrl);
+      if (sent) {
+        setMessageTwo(data);
+      }
     }
     if (messageThree.refCode != "" && messageThree.amount != "") {
       sent = await sendMessageToAgent(messageThree, userSendMessageUrl);
+      if (sent) {
+        setMessageThree(data);
+      }
     }
     if (messageFour.refCode != "" && messageFour.amount != "") {
       sent = await sendMessageToAgent(messageFour, userSendMessageUrl);
+      if (sent) {
+        setMessageFour(data);
+      }
     }
     if (messageFive.refCode != "" && messageFive.amount != "") {
       sent = await sendMessageToAgent(messageFive, userSendMessageUrl);
+      if (sent) {
+        setMessageFive(data);
+      }
     }
 
     if (sent) {
       onSpinnerChanged(false);
       alert.info("Messages have been sent.");
-      let data = {
-        refCode: "",
-        amount: ""
-      }
-      setMessageOne(data);
-      setMessageTwo(data);
-      setMessageThree(data);
-      setMessageFour(data);
-      setMessageFive(data);
-    } else {
-      onSpinnerChanged(false);
     }
+    onSpinnerChanged(false);
   }
 
   const handleQuickInsert = () => {
@@ -268,7 +278,6 @@ const CreateMessage = () => {
   }
 
   const handleMessageFive = (data) => {
-    console.log('handleMessageFive', data);
     setMessageFive(data);
   }
 
