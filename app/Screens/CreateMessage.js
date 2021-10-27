@@ -157,12 +157,15 @@ const CreateMessage = () => {
             let pushUrl = request.getPushNotificationUrl();
             const results = await request.post(pushUrl, params);
             console.log('results', results);
+            onSpinnerChanged(false);
             return true;
           }
+          onSpinnerChanged(false);
           return true;
         } else {
           onSpinnerChanged(false);
         }
+        onSpinnerChanged(false);
         return false;
       } else {
         onSpinnerChanged(false);
