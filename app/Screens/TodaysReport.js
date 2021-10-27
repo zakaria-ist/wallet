@@ -89,6 +89,12 @@ const TodaysReport = () => {
       
       AsyncStorage.getItem('walletData').then((walletData) => {
         setWalletData(JSON.parse(walletData));
+        let data = JSON.parse(walletData);
+        data.map((wallet, index) => {
+          if (index == 0) {
+            walletType = wallet.id;
+          }
+        })
       })
       AsyncStorage.getItem('token').then((token) => {
         authToken = token;

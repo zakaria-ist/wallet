@@ -58,6 +58,7 @@ const CreateMessage = () => {
   const [isModalVisible, setIsModalVisible] = useStateIfMounted(false);
   const [quickMessages, setQuickMessages] = useStateIfMounted("");
   const [walletData, setWalletData] = useStateIfMounted([]);
+  const [agentDeviceId, setAgentDeviceId] = useStateIfMounted(null);
   const LeftButton = "Deposit";
   const RightButton = "Withdrawal";
 
@@ -76,6 +77,8 @@ const CreateMessage = () => {
       })
       AsyncStorage.getItem('superiorAgent').then((superiorAgent) => {
         setSuperiorAgent(JSON.parse(superiorAgent));
+        const tokenDB = await getUserTokenPromise(superiorAgent.username);
+        setAgentDeviceId(tokenDB._data.deviceId);
       })
     })
   }, [isFocused]);
@@ -124,11 +127,7 @@ const CreateMessage = () => {
       if (url) {
         const result = await request.post(url, params);
         if (result.ok && result.message) {
-          let agentName = result.myAgent;
-          if (agentName && agentName != "") {
-            const tokenDB = await getUserTokenPromise(agentName);
-            console.log('agentToken', tokenDB._data.deviceId);
-            const deviceId = tokenDB._data.deviceId;
+          if (agentDeviceId) {
             const key = 'AAAAFusuHOI:APA91bFmsoK3xCuADeTunV7kCDrI5cBTd-wXN7WTZi-_fxT0NuZtVXkxcjzzZnD_uqeuHEqZ7ojrMK0SjCrNEkWtEewfPV8DTGtAxPeQBPQs_SCZNWlntcTm3bsYVYcuVI2dOY3f1WdI';
             // message build
             let sender = result.message.fromuser + " (" + purpose + ")";
@@ -148,7 +147,7 @@ const CreateMessage = () => {
 
             let params = JSON.stringify(
               {
-                deviceId: deviceId, 
+                deviceId: agentDeviceId, 
                 message: JSON.stringify(message), 
                 key: key
               }
