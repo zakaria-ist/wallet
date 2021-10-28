@@ -93,8 +93,7 @@ export default function DrawerStack() {
     AsyncStorage.getItem('username').then((value) => {
       setUserName(value);
     })
-    console.log("drawerCustomDrawerContent", CustomDrawerContent)
-    console.log("Drawer.Navigator", Drawer.Navigator)
+
     setAppVersion(DeviceInfo.getVersion());
   }, []);
 
