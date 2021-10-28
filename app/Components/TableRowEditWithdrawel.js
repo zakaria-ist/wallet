@@ -89,33 +89,36 @@ const TableRowEditWithdra = ({rowData}) => {
             <>
               <Text style={styles.cell_text_pin}>Pin No.</Text>
               <Text style={styles.cell_text}>Amount</Text>
-              <Text style={styles.cell_text}>Wallet</Text>
+              {/* <Text style={styles.cell_text}>Wallet</Text> */}
               <Text style={styles.cell_text}>Mobile No.</Text>
             </>
           }
         </View>
         {cellData.hasOwnProperty("Header") ? <></> :
           <View style={{flexDirection: "column"}}>
-            <View style={{flexDirection: "row"}}>
+            <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text_input_colon}> : </Text>
               <TextInput 
                 style={styles.text_input}
-                onChangeText={pinNo => { rowData.pinNo = pinNo.replace(/[^0-9]+/g, ''); handleCell(rowData); }}
+                onChangeText={pinNo => { 
+                  rowData.pinNo = pinNo.replace(/[^0-9]+/g, ''); 
+                  handleCell(rowData); 
+                }}
                 value={rowData.pinNo}
                 textAlign={'left'}
                 placeholderTextColor={WalletColors.grey}
                 keyboardType={'numeric'}
               />
             </View>        
-            <View style={{flexDirection: "row"}}>
+            <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
             </View>         
-            <View style={{flexDirection: "row"}}>
+            {/*<View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{cellData.wallet}</Text>
-            </View>         
-            <View style={{flexDirection: "row"}}>
+            </View>          */}
+             <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{cellData.mobile}</Text>
             </View>         
@@ -133,18 +136,18 @@ const TableRowEditWithdra = ({rowData}) => {
     else if (rowData.sent) {
       rightCell.push([]);
     } else {
-      rightCell.push(
-        <TouchableOpacity
-          onPress={ () => alert.ask('Are you sure?', ()=>{ onSend(); }) }
-        >
-          <View style={styles.send_button}>
-            <Text style={styles.send_button_text}>
-              Send
-            </Text>
-          </View>
-        </TouchableOpacity>
-      )
-    }
+        rightCell.push(
+          <TouchableOpacity
+            onPress={ () => alert.ask('Are you sure?', ()=>{ onSend(); }) }
+          >
+            <View style={styles.send_button}>
+              <Text style={styles.send_button_text}>
+                Send
+              </Text>
+            </View>
+          </TouchableOpacity>
+        )
+    } 
     setCellThree(rightCell);
   }
 
@@ -160,10 +163,15 @@ const TableRowEditWithdra = ({rowData}) => {
       }
     );
 
-    const result = await request.post(sendUrl, params);
-    if (result.ok) {
-      rowData['sent'] = true;
-      handleCell(rowData);
+    if (rowData.pinNo !=null) {
+      const result = await request.post(sendUrl, params);
+      if (result.ok) {
+        rowData['sent'] = true;
+        handleCell(rowData);
+      }
+    } else {
+      alert.info("Pin No. must be filled out");
+      return false
     }
   }
 

@@ -12,7 +12,7 @@ const navigationHelper = {
     try {
       this.navigationRef.current.navigate(route, params)
     } catch (error) {
-
+      console.log("drawer error...")
     }
    }
 }
