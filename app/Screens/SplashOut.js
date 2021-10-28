@@ -27,7 +27,7 @@ const SplashOut = ({navigation}) => {
           routes: [{ name: value === null ? 'Auth' : 'DrawerStack' }],
         });
       });
-    }, 2000);
+    }, 1000);
   }, []);
 
   return (

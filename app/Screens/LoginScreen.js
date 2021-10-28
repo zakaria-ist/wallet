@@ -66,7 +66,7 @@ const LoginScreen = ({navigation}) => {
     onNotification: function (notification) {
       console.log("NOTIFICATION:", notification);
       // notification.userInteraction && processNoti(notification)
-      processNoti(notification);
+      // processNoti(notification);
     },
 
     // (optional) Called when Registered Action is pressed and invokeApp is false, if true onNotification will be called (Android)

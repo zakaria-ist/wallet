@@ -26,42 +26,33 @@ import {
   TabNavigationGroup, 
   TabNavigationGroupWithdrawal} from "./TabStack";
 import styles from "../lib/global_css";
-// function CustomDrawerContent(props) {
-//   return (
-//     <DrawerContentScrollView {...props}>
-//       <DrawerItemList {...props} />
-//       <DrawerItem
-//         label="Sign Out"
-//         icon={({ color, size }) => <AntDesign name="logout" color={color} size={size} />}
-//         onPress={() => props.navigation.navigate("LoginScreen")}
-//       />
-//     </DrawerContentScrollView>
-//   );
-// }
+
 const Drawer = createDrawerNavigator();
 const alert = new CustomAlert();
-export default function DrawerStack() {
+
+const DrawerStack = () => {
   const [authType, setAuthType] = useState("");
   const [userName, setUserName] = useState("Username");
   const [appVersion, setAppVersion] = useState("");
   const [isUser, setIsUser] = useState(false);
 
-  const CustomDrawerContent = (props) => (
-    <DrawerContentScrollView {...props}>
-      <View style={styles.drawercontainer}> 
-        <View style={styles.drawerHeader}> 
-          <Text style={styles.version}>Version: {appVersion}</Text>
-          <View style={{ flexDirection: 'column'} }> 
-            <Text style={styles.version}></Text>
-            <Image
-              style={styles.drawerImage}
-              source={require('../assets/icons/user.png')} />
-            <Text style={styles.userName}>{userName}</Text>
+  const CustomDrawerContent = (props) => {
+    return (
+      <DrawerContentScrollView {...props}>
+        <View style={styles.drawercontainer}> 
+          <View style={styles.drawerHeader}> 
+            <Text style={styles.version}>Version: {appVersion}</Text>
+            <View style={{ flexDirection: 'column'} }> 
+              <Text style={styles.version}></Text>
+              <Image
+                style={styles.drawerImage}
+                source={require('../assets/icons/user.png')} />
+              <Text style={styles.userName}>{userName}</Text>
+            </View>   
           </View>   
-        </View>   
-      </View>
-    <DrawerItemList {...props} />
-    <DrawerItem
+        </View>
+        <DrawerItemList {...props} />
+        <DrawerItem
           style={styles.drawerItem}
           label="Sign Out"
           labelStyle={{fontSize: RFValue(15)}}
@@ -78,8 +69,9 @@ export default function DrawerStack() {
             })
           }}
         />
-    </DrawerContentScrollView>
-  );
+      </DrawerContentScrollView>
+    );
+  }
   
   useEffect(() => {
     AsyncStorage.getItem('isUser').then((value) => {
@@ -103,6 +95,8 @@ export default function DrawerStack() {
       style={styles.drawerItem}
       screenOptions={{
           headerShown: false,
+          drawerType: 'back',
+          unmountOnBlur: true,
           drawerStyle: {width: widthPercentageToDP("70%")},
           drawerItemStyle: styles.drawerItem,
           drawerLabelStyle:{fontSize: RFValue(15)},
@@ -199,3 +193,4 @@ export default function DrawerStack() {
   );
 }
 
+export default DrawerStack;
