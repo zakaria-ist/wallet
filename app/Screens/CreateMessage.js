@@ -41,6 +41,7 @@ if (!firebase.apps.length) {
 const request = new Request();
 const alert = new CustomAlert();
 const db = firestore();
+let notiMessages = [];
 
 const CreateMessage = () => {
   const isFocused = useIsFocused();
@@ -104,6 +105,46 @@ const CreateMessage = () => {
     setWalletType(3);
   }
 
+  const sendNotificationToAgent = async () => {
+    if (agentDeviceId) {
+      let purpose = "deposit";
+      if (transType == "Withdrawal") {
+        purpose = "withdrawal";
+      }
+      notiMessages.map( async(message) => {
+        const key = 'AAAAFusuHOI:APA91bFmsoK3xCuADeTunV7kCDrI5cBTd-wXN7WTZi-_fxT0NuZtVXkxcjzzZnD_uqeuHEqZ7ojrMK0SjCrNEkWtEewfPV8DTGtAxPeQBPQs_SCZNWlntcTm3bsYVYcuVI2dOY3f1WdI';
+        // message build
+        let sender = message.fromuser + " (" + purpose + ")";
+        let refNo = purpose == "deposit" ? message.refno ? message.refno : "" : "";
+        let mobile = purpose == "withdrawal" ? message.mobile ? message.mobile : "" : "";
+        let walletName = "";
+        walletData.map((wallet) => {
+          if (message.payment == wallet.id) {
+            walletName = wallet.name;
+          }
+        })
+        let body = "Ref No.: " + refNo + "\r\nMobile No.: " + mobile + "\r\nWallet: " + walletName + "\r\nAmount: " + message.amount;
+        const aMessage = {
+          sender: sender,
+          body: body
+        };
+
+        let params = JSON.stringify(
+          {
+            deviceId: agentDeviceId, 
+            message: JSON.stringify(aMessage), 
+            key: key
+          }
+        );
+        // call the API to send push notification
+        let pushUrl = request.getPushNotificationUrl();
+        const results = await request.post(pushUrl, params);
+        console.log('results', results);
+      })
+      notiMessages.length = 0;
+    }
+  }
+
   const sendMessageToAgent = async (message, url) => {
     if (token == "") {
       token = await AsyncStorage.getItem('token');
@@ -128,42 +169,9 @@ const CreateMessage = () => {
       if (url) {
         const result = await request.post(url, params);
         if (result.ok && result.message) {
-          if (agentDeviceId) {
-            const key = 'AAAAFusuHOI:APA91bFmsoK3xCuADeTunV7kCDrI5cBTd-wXN7WTZi-_fxT0NuZtVXkxcjzzZnD_uqeuHEqZ7ojrMK0SjCrNEkWtEewfPV8DTGtAxPeQBPQs_SCZNWlntcTm3bsYVYcuVI2dOY3f1WdI';
-            // message build
-            let sender = result.message.fromuser + " (" + purpose + ")";
-            let refNo = purpose == "deposit" ? result.message.refno ? result.message.refno : "" : "";
-            let mobile = purpose == "withdrawal" ? result.message.mobile ? result.message.mobile : "" : "";
-            let walletName = "";
-            walletData.map((wallet) => {
-              if (result.message.payment == wallet.id) {
-                walletName = wallet.name;
-              }
-            })
-            let body = "Ref No.: " + refNo + "\r\nMobile No.: " + mobile + "\r\nWallet: " + walletName + "\r\nAmount: " + result.message.amount;
-            const message = {
-              sender: sender,
-              body: body
-            };
-
-            let params = JSON.stringify(
-              {
-                deviceId: agentDeviceId, 
-                message: JSON.stringify(message), 
-                key: key
-              }
-            );
-            // call the API to send push notification
-            let pushUrl = request.getPushNotificationUrl();
-            const results = await request.post(pushUrl, params);
-            console.log('results', results);
-            onSpinnerChanged(false);
-            return true;
-          }
+          notiMessages.push(result.message);
           onSpinnerChanged(false);
           return true;
-        } else {
-          onSpinnerChanged(false);
         }
         onSpinnerChanged(false);
         return false;
@@ -235,6 +243,7 @@ const CreateMessage = () => {
       alert.info("Messages have been sent.");
     }
     onSpinnerChanged(false);
+    if (notiMessages.length) sendNotificationToAgent();
   }
 
   const handleQuickInsert = () => {
