@@ -89,6 +89,8 @@ const DrawerStack = () => {
     setAppVersion(DeviceInfo.getVersion());
   }, []);
 
+  const showDrawer = false;
+  
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
@@ -97,7 +99,7 @@ const DrawerStack = () => {
           headerShown: false,
           drawerType: 'back',
           unmountOnBlur: true,
-          drawerStyle: {width: widthPercentageToDP("70%")},
+          drawerStyle: {width: !showDrawer ? null : widthPercentageToDP("70%")},
           drawerItemStyle: styles.drawerItem,
           drawerLabelStyle:{fontSize: RFValue(15)},
       }}
