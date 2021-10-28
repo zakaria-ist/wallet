@@ -24,7 +24,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: heightPercentageToDP("1%"),
     marginBottom: heightPercentageToDP("15%"),
-    flexDirection: 'column'
+    flexDirection: 'column',
   },
   drawerHeader: {
     height: heightPercentageToDP("10%"),
@@ -467,17 +467,23 @@ const styles = StyleSheet.create({
     textAlign: "left",
     fontSize: RFValue(13),
   },
+  cell_text_value: {
+    alignSelf: "flex-start",
+    textAlign: "left",
+    fontSize: RFValue(13),
+    maxWidth: heightPercentageToDP("10%"),
+  },
   cell_text_header: {
     alignSelf: "flex-start",
     fontSize: RFValue(11),
-    fontWeight: "bold"
+    fontWeight: "bold",
   },
   button_view: {
     flexDirection: "row",
   },
   send_button_accept: {
-    width: widthPercentageToDP("10%"),
-    height: heightPercentageToDP("4%"),
+    width: widthPercentageToDP("9.5%"),
+    height: heightPercentageToDP("3.5%"),
     marginLeft: heightPercentageToDP("1%"),
     borderRadius: 5,
     borderWidth: StyleSheet.hairlineWidth,
@@ -488,8 +494,8 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
   send_button_reject: {
-    width: widthPercentageToDP("10%"),
-    height: heightPercentageToDP("4%"),
+    width: widthPercentageToDP("9.5%"),
+    height: heightPercentageToDP("3.5%"),
     borderRadius: 5,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wred,
@@ -499,8 +505,8 @@ const styles = StyleSheet.create({
     backgroundColor: WalletColors.Wred,
   },
   send_button: {
-    width: widthPercentageToDP("15%"),
-    height: heightPercentageToDP("4%"),
+    width: widthPercentageToDP("10%"),
+    height: heightPercentageToDP("3.5%"),
     borderRadius: 5,
     borderWidth: StyleSheet.hairlineWidth,
     borderColor: WalletColors.Wgreen,

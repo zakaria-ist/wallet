@@ -191,35 +191,43 @@ const CreateMessage = () => {
       amount: ""
     }
     const userSendMessageUrl = request.getUserSendMessageUrl();
-    if (messageOne.refCode != "" && messageOne.amount != "") {
+
+    if (messageOne.refCode != "" && messageOne.amount != "" && messageOne.amount >= 100) {
       sent = await sendMessageToAgent(messageOne, userSendMessageUrl);
       if (sent) {
         setMessageOne(data);
       }
-    }
-    if (messageTwo.refCode != "" && messageTwo.amount != "") {
+    } 
+    if (messageTwo.refCode != "" && messageTwo.amount != "" && messageTwo.amount >= 100) {
       sent = await sendMessageToAgent(messageTwo, userSendMessageUrl);
       if (sent) {
         setMessageTwo(data);
       }
-    }
-    if (messageThree.refCode != "" && messageThree.amount != "") {
+    } 
+    if (messageThree.refCode != "" && messageThree.amount != "" && messageThree.amount >= 100) {
       sent = await sendMessageToAgent(messageThree, userSendMessageUrl);
       if (sent) {
         setMessageThree(data);
       }
     }
-    if (messageFour.refCode != "" && messageFour.amount != "") {
+    if (messageFour.refCode != "" && messageFour.amount != "" && messageFour.amount >= 100) {
       sent = await sendMessageToAgent(messageFour, userSendMessageUrl);
       if (sent) {
         setMessageFour(data);
       }
-    }
-    if (messageFive.refCode != "" && messageFive.amount != "") {
+    } 
+    if (messageFive.refCode != "" && messageFive.amount != "" && messageFive.amount >= 100) {
       sent = await sendMessageToAgent(messageFive, userSendMessageUrl);
       if (sent) {
         setMessageFive(data);
       }
+    } 
+    if (messageOne.refCode == "" || messageOne.amount == "" || messageOne.amount <= 99 ||
+        messageTwo.refCode == "" || messageTwo.amount == ""|| messageTwo.amount <= 99 || 
+        messageThree.refCode == "" || messageThree.amount == "" || messageThree.amount <= 99 ||
+        messageFour.refCode == "" || messageFour.amount == ""|| messageFour.amount <= 99 || 
+        messageFive.refCode == "" || messageFive.amount == "" || messageFive.amount <= 99) {
+          alert.info("All fields must be filled out and amount at least TK 100.");
     }
 
     if (sent) {

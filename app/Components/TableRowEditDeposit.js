@@ -53,8 +53,8 @@ const TableRowEditDeposit = ({rowData}) => {
   }, [rowData]);
 
   const ctime = ((cellData) => {
-    return cellData.HDLTime == "";
-  }
+      return cellData.HDLTime == "";
+    }
   );
 
   const handleCell = (cellData) => {
@@ -92,19 +92,21 @@ const TableRowEditDeposit = ({rowData}) => {
             (<Text style={styles.cell_text_header}>{cellData.Message}</Text>) 
           :
             <>
-              <Text style={styles.cell_text_ref}>Ref. No.</Text>
-              <Text style={styles.cell_text_input}>Amount</Text>
-              <Text style={styles.cell_text}>Wallet</Text>
+              {/* <Text style={styles.cell_text_ref}>Ref. No.</Text>
+              <Text style={styles.cell_text_input}>Amount</Text> */}
+              {/* <Text style={styles.cell_text}>Wallet</Text> */}
             </>
           }
         </View>
         {cellData.hasOwnProperty("Header") ? <></> :
           <View style={{flexDirection: "column"}}>
-            <View style={{flexDirection: "row"}}>
+            <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
+              <Text style={styles.cell_text}>Ref. No.</Text>
               <Text style={styles.cell_text}> : </Text>
-              <Text style={styles.cell_text}>{cellData.refNo}</Text>
+              <Text style={styles.cell_text_value}>{cellData.refNo}</Text>
             </View>        
-            <View style={{flexDirection: "row"}}>
+            <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
+            <Text style={styles.cell_text_input}>Amount</Text>
               <Text style={styles.cell_text_input}> : </Text>
               <TextInput 
                 style={styles.text_input}
@@ -118,10 +120,10 @@ const TableRowEditDeposit = ({rowData}) => {
                 keyboardType={'numeric'}
               />
             </View>         
-            <View style={{flexDirection: "row"}}>
+            {/* <View style={{flexDirection: "row"}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{cellData.wallet}</Text>
-            </View>    
+            </View>     */}
           </View>
         }
       </View>       

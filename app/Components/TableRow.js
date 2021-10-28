@@ -10,8 +10,10 @@ import {useStateIfMounted} from "use-state-if-mounted";
 import {View,Text} from 'react-native';
 import Format from "../lib/format";
 import styles from '../lib/global_css.js';
+import AsyncStorage from "@react-native-community/async-storage";
 
 const format = new Format();
+let authType = "";
 
 const TableRow = ({rowData}) => {
   const amountSign = "->"
@@ -20,7 +22,11 @@ const TableRow = ({rowData}) => {
   const [cellThree, setCellThree] = useStateIfMounted([]);
  
   useEffect(() => {
-      handleCell(rowData);
+    AsyncStorage.getItem('authType').then((auth_type) => {
+      authType = auth_type;
+    })
+
+    handleCell(rowData);
   }, [rowData]);
 
   const ctime = ((cellData) => {
@@ -31,7 +37,7 @@ const TableRow = ({rowData}) => {
     let leftCell = [];
     let midCell = [];
     let rightCell = [];
-
+    
     leftCell.push(
       <View style={{flexDirection:"row"}}>
         <View style={{flexDirection: "column"}}>
@@ -61,51 +67,54 @@ const TableRow = ({rowData}) => {
           {cellData.hasOwnProperty("pinNo") ? (<Text style={styles.cell_text}>Pin No.</Text>) : <></>}
           {cellData.hasOwnProperty("refNo") ? (<Text style={styles.cell_text}>Ref. No.</Text>) : <></>}
           {cellData.hasOwnProperty("amount") ? (<Text style={styles.cell_text}>Amount</Text>) : <></>}
-          {cellData.hasOwnProperty("wallet") ? (<Text style={styles.cell_text}>Wallet</Text>) : <></>}
+          {((authType == 'agent') || (authType == 'user')) ? <></> :
+          [cellData.hasOwnProperty("wallet") ? (<Text style={styles.cell_text}>Wallet</Text>) : <></>]}
           {cellData.hasOwnProperty("mobile") ? (<Text style={styles.cell_text}>Mobile</Text>) : <></>}
           {cellData.hasOwnProperty("user") ? (<Text style={styles.cell_text}>User</Text>) : <></>}
         </View>
         <View style={{flexDirection: "column"}}>
           {cellData.hasOwnProperty("pinNo") ? 
-            <View style={{flexDirection: "row"}}>
+             <View style={{flexDirection:"row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{cellData.pinNo}</Text>
             </View>
           : <></>}
           {cellData.hasOwnProperty("refNo") ? 
-            <View style={{flexDirection: "row"}}>
+             <View style={{flexDirection:"row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{cellData.refNo}</Text>
             </View>
           : <></>}
           {cellData.hasOwnProperty("amount") ?  
-            <View style={{flexDirection: "row"}}>
+             <View style={{flexDirection:"row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
               {cellData.hasOwnProperty("oldAmount") && (cellData.oldAmount != cellData.amount) && (cellData.oldAmount != 0)? 
                 <>
-                  <Text style={styles.cell_text}>{format.separator(cellData.oldAmount)}</Text>
-                  <Text style={styles.cell_text}>{amountSign}</Text>
+                  <Text style={styles.cell_text_value}>{format.separator(cellData.oldAmount)}</Text>
+                  <Text style={styles.cell_text_value}>{amountSign}</Text>
                 </>
               : 
                 <></>
               }
-              <Text style={styles.cell_text}>{format.separator(cellData.amount)}</Text>
+              <Text style={styles.cell_text_value}>{format.separator(cellData.amount)}</Text>
             </View>   
           : <></>}
-          {cellData.hasOwnProperty("wallet") ?      
-            <View style={{flexDirection: "row"}}>
+          {((authType == 'agent') || (authType == 'user')) ? <></> :
+            [cellData.hasOwnProperty("wallet") ?     
+            <View style={{flexDirection:"row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{cellData.wallet}</Text>
             </View>
-          : <></>}
+          :
+            <></>]}
           {cellData.hasOwnProperty("mobile") ?      
-            <View style={{flexDirection: "row"}}>
+             <View style={{flexDirection:"row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{cellData.mobile}</Text>
             </View>
           : <></>}
           {cellData.hasOwnProperty("user") ?      
-            <View style={{flexDirection: "row"}}>
+             <View style={{flexDirection:"row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{cellData.user}</Text>
             </View>
