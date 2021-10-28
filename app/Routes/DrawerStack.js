@@ -45,7 +45,6 @@ export default function DrawerStack() {
   const [userName, setUserName] = useState("Username");
   const [appVersion, setAppVersion] = useState("");
   const [isUser, setIsUser] = useState(false);
-
   const CustomDrawerContent = (props) => (
     <DrawerContentScrollView {...props}>
       <View style={styles.drawercontainer}> 
@@ -96,14 +95,14 @@ export default function DrawerStack() {
 
     setAppVersion(DeviceInfo.getVersion());
   }, []);
-
+  const showDrawer = false;
   return (
     <Drawer.Navigator
       drawerContent={(props) => <CustomDrawerContent {...props} />}
       style={styles.drawerItem}
       screenOptions={{
           headerShown: false,
-          drawerStyle: {width: widthPercentageToDP("70%")},
+          drawerStyle: {width: !showDrawer ? null : widthPercentageToDP("70%")},
           drawerItemStyle: styles.drawerItem,
           drawerLabelStyle:{fontSize: RFValue(15)},
       }}
