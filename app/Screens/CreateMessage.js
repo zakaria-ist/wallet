@@ -60,6 +60,7 @@ const CreateMessage = () => {
   const [quickMessages, setQuickMessages] = useStateIfMounted("");
   const [walletData, setWalletData] = useStateIfMounted([]);
   const [agentDeviceId, setAgentDeviceId] = useStateIfMounted(null);
+  const [disable, setDisable] = React.useState(false);
   const LeftButton = "Deposit";
   const RightButton = "Withdrawal";
 
@@ -243,6 +244,7 @@ const CreateMessage = () => {
       alert.info("Messages have been sent.");
     }
     onSpinnerChanged(false);
+    setDisable(false);
     if (notiMessages.length) sendNotificationToAgent();
   }
 
@@ -348,7 +350,15 @@ const CreateMessage = () => {
                 <MessageBlock transType={transType} mData={messageFive} lineNumber={5} key={"lineNumber5"} parentReference={handleMessageFive} />
             </TouchableOpacity>
           </View>
-          <TouchableOpacity style={{flex:0.13}} onPress={handleSubmit}>
+          <TouchableOpacity 
+            disabled={disable}
+            style={{flex:0.13}} 
+            onPress={() => {
+              onSpinnerChanged(true);
+              setDisable(true);
+              handleSubmit();
+            }}
+          >
             <View style={styles.sumbit_button}>
               <Text style={styles.sumbit_confirm_text}>Submit</Text>
             </View>
