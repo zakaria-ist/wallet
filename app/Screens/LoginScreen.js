@@ -30,6 +30,7 @@ import {
 import { WalletColors } from "../assets/Colors.js";
 import CustomAlert from "../lib/alert";
 import Request from "../lib/request";
+import resetTimeout from "../lib/resetTimeout";
 import notificationHelper from "../lib/notificationHelper";
 import { RFValue } from "react-native-responsive-fontsize";
 import { firebaseConfig } from "../../firebaseConfig.js";
@@ -39,6 +40,7 @@ import messaging from "@react-native-firebase/messaging";
 import firebase from "@react-native-firebase/app";
 import firestore from '@react-native-firebase/firestore';
 import { useStateIfMounted } from 'use-state-if-mounted';
+import { useIsFocused } from "@react-navigation/native";
 import Screensize from '../lib/screensize.js';
 import styles from '../lib/global_css.js';
 import Spinner from "react-native-loading-spinner-overlay";
@@ -54,6 +56,7 @@ const alert = new CustomAlert();
 const db = firestore();
 
 const LoginScreen = ({navigation}) => {
+  const isFocused = useIsFocused();
   const [spinner, onSpinnerChanged] = useStateIfMounted(false);
   const [userName, setUserName] = useState('');
   const [password, setPassword] = useState('');
@@ -121,6 +124,8 @@ const LoginScreen = ({navigation}) => {
   }
 
   useEffect(() => {
+    resetTimeout();
+    
     messaging()
       .getInitialNotification()
       .then((remoteMessage) => {
@@ -134,7 +139,7 @@ const LoginScreen = ({navigation}) => {
         // processNoti(remoteMessage)
       });
 
-   messaging()
+    messaging()
       .onMessage(({ notification,data, messageId }) => {
         notificationHelper.sendLocalNotification({
           title: notification.title,

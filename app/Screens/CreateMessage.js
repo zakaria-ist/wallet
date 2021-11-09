@@ -71,8 +71,18 @@ const CreateMessage = () => {
       while (timeoutLast--) {
         clearTimeout(timeoutLast);
       }
-      AsyncStorage.getItem('walletData').then((walletData) => {
-        setWalletData(JSON.parse(walletData));
+      AsyncStorage.getItem('walletData').then( async(walletData) => {
+        if (walletData == null || walletData == undefined) {
+          const walletUrl = request.getWalletUrl();  
+          await request.get(walletUrl)
+            .then(data => {
+              setWalletData(Object.values(data['wallets']));
+              AsyncStorage.setItem('walletData', JSON.stringify(Object.values(data['wallets'])));
+            })
+        }
+        else {
+          setWalletData(JSON.parse(walletData));
+        }
       })
       AsyncStorage.getItem('token').then((token) => {
         setToken(token);
@@ -84,7 +94,7 @@ const CreateMessage = () => {
         setAgentDeviceId(tokenDB._data.deviceId);
       })
     })
-  }, [isFocused]);
+  }, []);
 
   const handleLeftButton = () => {
     setTransType("Deposit");

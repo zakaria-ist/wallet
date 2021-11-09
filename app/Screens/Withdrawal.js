@@ -39,6 +39,7 @@ import Request from "../lib/request";
 import KTime from '../lib/formatTime';
 import Format from "../lib/format";
 import Picker from '../lib/picker';
+import resetTimeout from '../lib/resetTimeout';
 
 const picker = new Picker();
 
@@ -108,6 +109,7 @@ const Withdrawal = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    resetTimeout();
     renderTablesData();
     wait(1000).then(() => setRefreshing(false));
   }, []);
@@ -115,14 +117,24 @@ const Withdrawal = () => {
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       //clear all auto refresh
-      let timeoutLast = setTimeout(() => {}, 0);
-      while (timeoutLast--) {
-        clearTimeout(timeoutLast);
-      }
+      resetTimeout();
 
-      AsyncStorage.getItem('walletData').then((walletData) => {
-        setWalletData(JSON.parse(walletData));
-        let data = JSON.parse(walletData);
+      AsyncStorage.getItem('walletData').then( async (walletData) => {
+        let data = [];
+        if (walletData == null || walletData == undefined) {
+          const walletUrl = request.getWalletUrl();  
+          await request.get(walletUrl)
+            .then(wdata => {
+              data = Object.values(wdata['wallets']);
+              setWalletData(Object.values(wdata['wallets']));
+              AsyncStorage.setItem('walletData', JSON.stringify(Object.values(wdata['wallets'])));
+            })
+        }
+        else {
+          data = JSON.parse(walletData);
+          setWalletData(JSON.parse(walletData));
+        }
+
         let wData = [];
         data.map((wallet, index) => {
           if (index == 0) {
@@ -185,34 +197,45 @@ const Withdrawal = () => {
         }
       });
     })
-  }, [isFocused]);
+  }, []);
 
   const handleLeftButton = () => {
     transType = "Yesterday";
+    resetTimeout();
     renderTablesData();
   }
 
   const handleRightButton = () => {
     transType = "Today";
+    resetTimeout();
     renderTablesData();
   }
 
   const handleWalLeftButton = () => {
     walletType = 1;
+    resetTimeout();
     renderTablesData();
   }
 
   const handleWalMidButton = () => {
     walletType = 2;
+    resetTimeout();
     renderTablesData();
   }
 
   const handleWalRightButton = () => {
     walletType = 3;
+    resetTimeout();
     renderTablesData();
   }
 
   const handleCheckBox = () => {
+    resetTimeout();
+    renderTablesData();
+  }
+
+  const refreshEditScreen = () => {
+    resetTimeout();
     renderTablesData();
   }
 
@@ -395,7 +418,7 @@ const Withdrawal = () => {
   ));
   const renderItemEdit = useCallback(({ item }) => (
     <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
-       <TableRowEditWithdra rowData={item} />
+       <TableRowEditWithdra rowData={item} parentRefresh={refreshEditScreen} />
     </TouchableOpacity> 
   ));
   const memoizedItemValue = useMemo(() => renderItem);

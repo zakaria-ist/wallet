@@ -32,7 +32,7 @@ const alert = new CustomAlert();
 
 let authToken = "";
 
-const TableRowEditWithdra = ({rowData}) => {
+const TableRowEditWithdra = ({rowData, parentRefresh}) => {
   const [rowId, setRowId] = useStateIfMounted(rowData.id);
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
@@ -49,8 +49,7 @@ const TableRowEditWithdra = ({rowData}) => {
   
   const ctime = ((cellData) => {
     return cellData.HDLTime == "";
-  }
-  );
+  });
 
   const handleCell = (cellData) => {
     let leftCell = [];
@@ -168,6 +167,9 @@ const TableRowEditWithdra = ({rowData}) => {
       if (result.ok) {
         rowData['sent'] = true;
         handleCell(rowData);
+        setTimeout(() => {
+          parentRefresh();
+        }, 100);
       }
     } else {
       alert.info("Pin No. must be filled out");

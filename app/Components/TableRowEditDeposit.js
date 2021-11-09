@@ -34,7 +34,7 @@ const alert = new CustomAlert();
 
 let authToken = "";
 
-const TableRowEditDeposit = ({rowData}) => {
+const TableRowEditDeposit = ({rowData, parentRefresh}) => {
   const [rowId, setRowId] = useStateIfMounted(rowData.id);
   const [amount, setAmount] = useState('');
   const [cellOne, setCellOne] = useStateIfMounted([]);
@@ -53,9 +53,8 @@ const TableRowEditDeposit = ({rowData}) => {
   }, [rowData]);
 
   const ctime = ((cellData) => {
-      return cellData.HDLTime == "";
-    }
-  );
+    return cellData.HDLTime == "";
+  });
 
   const handleCell = (cellData) => {
     let leftCell = [];
@@ -191,6 +190,9 @@ const TableRowEditDeposit = ({rowData}) => {
     if (result.ok) {
       rowData['sent'] = true;
       handleCell(rowData);
+      setTimeout(() => {
+        parentRefresh();
+      }, 100);
     }
   }
 

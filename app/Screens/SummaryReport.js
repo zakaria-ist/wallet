@@ -28,6 +28,7 @@ import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
 import Format from "../lib/format";
+import resetTimeout from "../lib/resetTimeout";
 
 const format = new Format();
 const request = new Request();
@@ -63,6 +64,7 @@ const SummaryReport = () => {
 
   const onRefresh = React.useCallback(() => {
     setRefreshing(true);
+    resetTimeout();
     renderTablesData();
     wait(1000).then(() => setRefreshing(false));
   }, []);
@@ -70,13 +72,20 @@ const SummaryReport = () => {
   useEffect(() => {
     InteractionManager.runAfterInteractions(() => {
       //clear all auto refresh
-      let timeoutLast = setTimeout(() => {}, 0);
-      while (timeoutLast--) {
-        clearTimeout(timeoutLast);
-      }
+      resetTimeout();
       
-      AsyncStorage.getItem('walletData').then((walletData) => {
-        setWalletData(JSON.parse(walletData));
+      AsyncStorage.getItem('walletData').then( async(walletData) => {
+        if (walletData == null || walletData == undefined) {
+          const walletUrl = request.getWalletUrl();  
+          await request.get(walletUrl)
+            .then(data => {
+              setWalletData(Object.values(data['wallets']));
+              AsyncStorage.setItem('walletData', JSON.stringify(Object.values(data['wallets'])));
+            })
+        }
+        else {
+          setWalletData(JSON.parse(walletData));
+        }
       })
       AsyncStorage.getItem('token').then((token) => {
         authToken = token;
@@ -90,30 +99,35 @@ const SummaryReport = () => {
         }
       })
     })
-  }, [isFocused]);
+  }, []);
 
   const handleLeftButton = () => {
     transType = "Yesterday";
+    resetTimeout();
     renderTablesData();
   }
 
   const handleRightButton = () => {
     transType = "Today";
+    resetTimeout();
     renderTablesData();
   }
 
   const handleWalLeftButton = () => {
     walletType = 1;
+    resetTimeout();
     renderTablesData();
   }
 
   const handleWalMidButton = () => {
     walletType = 2;
+    resetTimeout();
     renderTablesData();
   }
 
   const handleWalRightButton = () => {
     walletType = 3;
+    resetTimeout();
     renderTablesData();
   }
 
