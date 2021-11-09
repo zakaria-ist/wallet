@@ -204,6 +204,42 @@ const CreateMessage = () => {
   }
 
   const handleSubmit = async () => {
+    if (messageOne.refCode != "" || messageOne.amount != "")
+      if (messageOne.refCode == "" || messageOne.amount <= 99) {
+        alert.info("All fields must be filled out and amount at least TK 100.");
+        onSpinnerChanged(false);
+        setDisable(false);
+        return;
+    }
+    if (messageTwo.refCode != "" || messageTwo.amount != "")
+      if (messageTwo.refCode == "" || messageTwo.amount <= 99) {
+        alert.info("All fields must be filled out and amount at least TK 100.");
+        onSpinnerChanged(false);
+        setDisable(false);
+        return;
+    }
+    if (messageThree.refCode != "" || messageThree.amount != "")
+      if (messageThree.refCode == "" || messageThree.amount <= 99) {
+        alert.info("All fields must be filled out and amount at least TK 100.");
+        onSpinnerChanged(false);
+        setDisable(false);
+        return;
+    }
+    if (messageFour.refCode != "" || messageFour.amount != "")
+      if (messageFour.refCode == "" || messageFour.amount <= 99) {
+        alert.info("All fields must be filled out and amount at least TK 100.");
+        onSpinnerChanged(false);
+        setDisable(false);
+        return;
+    }
+    if (messageFive.refCode != "" || messageFive.amount != "")
+      if (messageFive.refCode == "" || messageFive.amount <= 99) {
+        alert.info("All fields must be filled out and amount at least TK 100.");
+        onSpinnerChanged(false);
+        setDisable(false);
+        return;
+    }
+
     let sent = false;
     let data = {
       refCode: "",
@@ -241,13 +277,6 @@ const CreateMessage = () => {
         setMessageFive(data);
       }
     } 
-    if (messageOne.refCode == "" || messageOne.amount == "" || messageOne.amount <= 99 ||
-        messageTwo.refCode == "" || messageTwo.amount == ""|| messageTwo.amount <= 99 || 
-        messageThree.refCode == "" || messageThree.amount == "" || messageThree.amount <= 99 ||
-        messageFour.refCode == "" || messageFour.amount == ""|| messageFour.amount <= 99 || 
-        messageFive.refCode == "" || messageFive.amount == "" || messageFive.amount <= 99) {
-          alert.info("All fields must be filled out and amount at least TK 100.");
-    }
 
     if (sent) {
       onSpinnerChanged(false);
