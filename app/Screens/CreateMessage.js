@@ -319,26 +319,27 @@ const CreateMessage = () => {
   }
 
   const handleMessageOne = (data) => {
-    console.log('handleMessageOne', data);
+    // console.log('handleMessageOne', data);
     setMessageOne(data);
   }
   
   const handleMessageTwo = (data) => {
-    console.log('handleMessageTwo', data);
+    // console.log('handleMessageTwo', data);
     setMessageTwo(data);
   }
 
   const handleMessageThree = (data) => {
-    console.log('handleMessageThree', data);
+    // console.log('handleMessageThree', data);
     setMessageThree(data);
   }
 
   const handleMessageFour = (data) => {
-    console.log('handleMessageFour', data);
+    // console.log('handleMessageFour', data);
     setMessageFour(data);
   }
 
   const handleMessageFive = (data) => {
+    // console.log('handleMessageFive', data);
     setMessageFive(data);
   }
 

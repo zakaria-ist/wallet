@@ -21,16 +21,18 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
   const [amount, setAmount] = useStateIfMounted(mData.amount);
 
   useEffect(() => {
-    setRefCode(mData.refCode);
-    setAmount(mData.amount);
+    if (mData.refCode == "" && mData.amount == "") {
+      setRefCode(mData.refCode);
+      setAmount(mData.amount);
+    }
   }, [mData]);
 
-  const handleChange = () => {
+  const handleChange = async () => {
     let data = {
       refCode: refCode,
       amount: amount
     }
-    parentReference(data);
+    await parentReference(data);
   }
 
   return useMemo(() => {
@@ -61,9 +63,8 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
                     style={styles.text_message_input}
                     onChangeText={e => setRefCode(e.replace(/[^0-9]+/g, ''))}
                     value={refCode}
-                    onBlur={handleChange}
+                    onEndEditing={handleChange}
                     inputMode="numeric"
-                    placeholderTextColor={WalletColors.grey}
                     keyboardType={'numeric'}
                   />
                 </View>
@@ -73,9 +74,8 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
                     style={styles.text_message_input}
                     onChangeText={e => setAmount(e.replace(/[^0-9]+/g, ''))}
                     value={amount}
-                    onBlur={handleChange}
+                    onEndEditing={handleChange}
                     inputMode="numeric"
-                    placeholderTextColor={WalletColors.grey}
                     keyboardType={'numeric'}
                     />
                 </View>
