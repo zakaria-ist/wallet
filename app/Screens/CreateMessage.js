@@ -305,7 +305,7 @@ const CreateMessage = () => {
         for(let i=0; i<messageCount; i++) {
           let index = i + 1;
           let key = 'message' + index;
-          console.log(key, result[key])
+          // console.log(key, result[key])
           notiMessages.push(result[key]);
         }
         onSpinnerChanged(false);
