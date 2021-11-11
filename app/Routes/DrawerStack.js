@@ -35,7 +35,7 @@ const DrawerStack = () => {
   const [userName, setUserName] = useState("Username");
   const [appVersion, setAppVersion] = useState("");
   const [isUser, setIsUser] = useState(false);
-  const [initRender, setInitRender] = useState(true);
+  // const [initRender, setInitRender] = useState(true);
 
   const CustomDrawerContent = (props) => {
     return (
@@ -74,9 +74,9 @@ const DrawerStack = () => {
     );
   }
 
-  useEffect(() => {
-    setInitRender(false);
-  }, [initRender]);
+  // useEffect(() => {
+  //   setInitRender(false);
+  // }, [initRender]);
   
   useEffect(() => {
     AsyncStorage.getItem('isUser').then((value) => {
@@ -94,7 +94,7 @@ const DrawerStack = () => {
     setAppVersion(DeviceInfo.getVersion());
   }, []);
 
-  // const showDrawer = false;
+  const showDrawer = false;
   
   return (
     <Drawer.Navigator
@@ -104,8 +104,8 @@ const DrawerStack = () => {
           headerShown: false,
           drawerType: 'back',
           unmountOnBlur: true,
-          // drawerStyle: {width: !showDrawer ? null : widthPercentageToDP("70%")},
-          drawerStyle: {width: initRender ? null : widthPercentageToDP("70%")},
+          drawerStyle: {width: !showDrawer ? null : widthPercentageToDP("70%")},
+          // drawerStyle: {width: initRender ? null : widthPercentageToDP("70%")},
           drawerItemStyle: styles.drawerItem,
           drawerLabelStyle:{fontSize: RFValue(15)},
       }}
