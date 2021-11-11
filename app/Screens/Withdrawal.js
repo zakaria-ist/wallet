@@ -304,7 +304,7 @@ const Withdrawal = () => {
       messages = messages.filter((msg) => {
         if (accepted && msg.statusId == 22 ) return true;
         if (pending && (msg.statusId == 0 || msg.statusId == 11)) return true;
-        if (when == 'yesterday' && noStatus && msg.statusId == 33) return true;
+        if (when == 'yesterday' && noStatus && msg.statusId == 33 || msg.statusId == 0 || msg.statusId == 11) return true;
         return false;
       })
       // wallet filter
@@ -354,8 +354,12 @@ const Withdrawal = () => {
           let msg_data = {};
           let amount = parseFloat(String(msg.amount).replace(',', ''));
           if (msg.statusId == 0 || msg.statusId == 11) {
-            pending_total += amount;
-            msg.status = 'Pending'
+            if (when == 'yesterday') {
+              msg.status = ''
+            } else {
+              pending_total += amount;
+              msg.status = 'Pending'
+            }
           }
           else if (msg.statusId == 33) {
             msg.status = ''

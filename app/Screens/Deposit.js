@@ -301,7 +301,7 @@ const Deposit = () => {
         if (accepted && (msg.statusId == 1 || msg.statusId == 3)) return true;
         if (rejected && msg.statusId == 2) return true;
         if (pending && msg.statusId == 0) return true;
-        if (when == 'yesterday' && noStatus && msg.statusId == 4) return true;
+        if (when == 'yesterday' && noStatus && (msg.statusId == 4 || msg.statusId == 0)) return true;
         return false;
       })
       // wallet filter
@@ -352,8 +352,12 @@ const Deposit = () => {
           let msg_data = {};
           let amount = parseFloat(String(msg.amount).replace(',', ''))
           if (msg.statusId == 0) {
-            pending_total += amount;
-            msg.status = 'Pending'
+            if (when == 'yesterday') {
+              msg.status = ''
+            } else {
+              pending_total += amount;
+              msg.status = 'Pending'
+            }
           }
           else if (msg.statusId == 4) {
             msg.status = ''
