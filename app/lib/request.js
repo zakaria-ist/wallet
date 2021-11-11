@@ -8,6 +8,7 @@ const subAdminClientListUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/sub
 const clientUserListUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/clientListOwnUsers";
 const agentUserListUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/agentListOwnUsers";
 const userSendMessageUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/userSendMessage";
+const userSendMultiMessageUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/userSendMessagesObj";
 const pushNotificationUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/pushNotification";
 const agentReplyMessageUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/agentReplyMessage";
 const allMessageUrl = "https://kenny.hoelee.com/wp-json/hoeleeapi/v1/readMessages";
@@ -34,6 +35,9 @@ class Request {
   }
   getUserSendMessageUrl() {
     return userSendMessageUrl;
+  }
+  getUserSendMultiMessageUrl() {
+    return userSendMultiMessageUrl;
   }
   getPushNotificationUrl() {
     return pushNotificationUrl;

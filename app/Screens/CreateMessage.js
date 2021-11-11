@@ -156,46 +156,46 @@ const CreateMessage = () => {
     }
   }
 
-  const sendMessageToAgent = async (message, url) => {
-    if (token == "") {
-      token = await AsyncStorage.getItem('token');
-    }
-    onSpinnerChanged(true);
-    if (superiorAgent.username) {
-      let purpose = "deposit";
-      if (transType == "Withdrawal") {
-        purpose = "withdrawal";
-      }
-      let params = JSON.stringify(
-        {
-          token: token, 
-          receiveUsername: superiorAgent.username, 
-          walletId: walletType, 
-          purpose: purpose,
-          refNo: message.refCode,
-          mobile: message.refCode,
-          amount: message.amount,
-        }
-      );
-      if (url) {
-        const result = await request.post(url, params);
-        if (result.ok && result.message) {
-          notiMessages.push(result.message);
-          onSpinnerChanged(false);
-          return true;
-        }
-        onSpinnerChanged(false);
-        return false;
-      } else {
-        onSpinnerChanged(false);
-      }
-    } else {
-      onSpinnerChanged(false);
-      alert.warning("Superior Agent is missing");
-    }
-    onSpinnerChanged(false);
-    return false;
-  }
+  // const sendMessageToAgent = async (message, url) => {
+  //   if (token == "") {
+  //     token = await AsyncStorage.getItem('token');
+  //   }
+  //   onSpinnerChanged(true);
+  //   if (superiorAgent.username) {
+  //     let purpose = "deposit";
+  //     if (transType == "Withdrawal") {
+  //       purpose = "withdrawal";
+  //     }
+  //     let params = JSON.stringify(
+  //       {
+  //         token: token, 
+  //         receiveUsername: superiorAgent.username, 
+  //         walletId: walletType, 
+  //         purpose: purpose,
+  //         refNo: message.refCode,
+  //         mobile: message.refCode,
+  //         amount: message.amount,
+  //       }
+  //     );
+  //     if (url) {
+  //       const result = await request.post(url, params);
+  //       if (result.ok && result.message) {
+  //         notiMessages.push(result.message);
+  //         onSpinnerChanged(false);
+  //         return true;
+  //       }
+  //       onSpinnerChanged(false);
+  //       return false;
+  //     } else {
+  //       onSpinnerChanged(false);
+  //     }
+  //   } else {
+  //     onSpinnerChanged(false);
+  //     alert.warning("Superior Agent is missing");
+  //   }
+  //   onSpinnerChanged(false);
+  //   return false;
+  // }
 
   const getUserTokenPromise = (userName) => {
     return db.collection("users")
@@ -203,89 +203,180 @@ const CreateMessage = () => {
         .get()
   }
 
+  const invalidMessage = (message) => {
+    let result = false;
+    if (message.refCode != "" || message.amount != "")
+      if (message.refCode == "" || message.amount <= 99) {
+        result = true;
+    }
+    return result;
+  }
+
   const handleSubmit = async () => {
-    if (messageOne.refCode != "" || messageOne.amount != "")
-      if (messageOne.refCode == "" || messageOne.amount <= 99) {
-        alert.info("All fields must be filled out and amount at least TK 100.");
-        onSpinnerChanged(false);
-        setDisable(false);
-        return;
-    }
-    if (messageTwo.refCode != "" || messageTwo.amount != "")
-      if (messageTwo.refCode == "" || messageTwo.amount <= 99) {
-        alert.info("All fields must be filled out and amount at least TK 100.");
-        onSpinnerChanged(false);
-        setDisable(false);
-        return;
-    }
-    if (messageThree.refCode != "" || messageThree.amount != "")
-      if (messageThree.refCode == "" || messageThree.amount <= 99) {
-        alert.info("All fields must be filled out and amount at least TK 100.");
-        onSpinnerChanged(false);
-        setDisable(false);
-        return;
-    }
-    if (messageFour.refCode != "" || messageFour.amount != "")
-      if (messageFour.refCode == "" || messageFour.amount <= 99) {
-        alert.info("All fields must be filled out and amount at least TK 100.");
-        onSpinnerChanged(false);
-        setDisable(false);
-        return;
-    }
-    if (messageFive.refCode != "" || messageFive.amount != "")
-      if (messageFive.refCode == "" || messageFive.amount <= 99) {
+    // validate inputs
+    if (invalidMessage(messageOne) || invalidMessage(messageTwo) || invalidMessage(messageThree) ||
+          invalidMessage(messageFour) || invalidMessage(messageFive)) {
         alert.info("All fields must be filled out and amount at least TK 100.");
         onSpinnerChanged(false);
         setDisable(false);
         return;
     }
 
-    let sent = false;
     let data = {
       refCode: "",
       amount: ""
     }
-    const userSendMessageUrl = request.getUserSendMessageUrl();
-
+    const userSendMultiMessageUrl = request.getUserSendMultiMessageUrl();
+    let messageCount = 0;
+    if (token == "") {
+      token = await AsyncStorage.getItem('token');
+    }
+    onSpinnerChanged(true);
+    // build api params
+    let purpose = 1;
+    if (transType == "Withdrawal") {
+      purpose = 2;
+    }
+    let messages = [];
     if (messageOne.refCode != "" && messageOne.amount != "" && messageOne.amount >= 100) {
-      sent = await sendMessageToAgent(messageOne, userSendMessageUrl);
-      if (sent) {
-        setMessageOne(data);
-      }
-    } 
+      messages.push({
+        refNo: messageOne.refCode,
+        mobile: messageOne.refCode,
+        amount: messageOne.amount,
+      })
+      messageCount++;
+      setMessageOne(data);
+    }
     if (messageTwo.refCode != "" && messageTwo.amount != "" && messageTwo.amount >= 100) {
-      sent = await sendMessageToAgent(messageTwo, userSendMessageUrl);
-      if (sent) {
-        setMessageTwo(data);
-      }
-    } 
+      messages.push({
+        refNo: messageTwo.refCode,
+        mobile: messageTwo.refCode,
+        amount: messageTwo.amount,
+      })
+      messageCount++;
+      setMessageTwo(data);
+    }
     if (messageThree.refCode != "" && messageThree.amount != "" && messageThree.amount >= 100) {
-      sent = await sendMessageToAgent(messageThree, userSendMessageUrl);
-      if (sent) {
-        setMessageThree(data);
-      }
+      messages.push({
+        refNo: messageThree.refCode,
+        mobile: messageThree.refCode,
+        amount: messageThree.amount,
+      })
+      messageCount++;
+      setMessageThree(data);
     }
     if (messageFour.refCode != "" && messageFour.amount != "" && messageFour.amount >= 100) {
-      sent = await sendMessageToAgent(messageFour, userSendMessageUrl);
-      if (sent) {
-        setMessageFour(data);
-      }
-    } 
+      messages.push({
+        refNo: messageFour.refCode,
+        mobile: messageFour.refCode,
+        amount: messageFour.amount,
+      })
+      messageCount++;
+      setMessageFour(data);
+    }
     if (messageFive.refCode != "" && messageFive.amount != "" && messageFive.amount >= 100) {
-      sent = await sendMessageToAgent(messageFive, userSendMessageUrl);
-      if (sent) {
-        setMessageFive(data);
-      }
-    } 
-
-    if (sent) {
+      messages.push({
+        refNo: messageFive.refCode,
+        mobile: messageFive.refCode,
+        amount: messageFive.amount,
+      })
+      messageCount++;
+      setMessageFive(data);
+    }
+    if (messages.length == 0) {
+      alert.info("Nothing to send. Please add item first.");
       onSpinnerChanged(false);
-      alert.info("Messages have been sent.");
+      setDisable(false);
+      return;
+    }
+    // call message api
+    let params = JSON.stringify(
+      {
+        token: token,  
+        walletId: walletType, 
+        purpose: purpose,
+        messages: JSON.stringify(messages)
+      }
+    );
+    if (userSendMultiMessageUrl) {
+      const result = await request.post(userSendMultiMessageUrl, params);
+      // console.log('userSendMultiMessageUrl', result)
+      if (result.ok) {
+        for(let i=0; i<messageCount; i++) {
+          let index = i + 1;
+          let key = 'message' + index;
+          console.log(key, result[key])
+          notiMessages.push(result[key]);
+        }
+        onSpinnerChanged(false);
+        alert.info("Messages have been sent.");
+      } else {
+        onSpinnerChanged(false);
+        alert.info("Error, Messages could not be sent.");
+      }
+    } else {
+      onSpinnerChanged(false);
     }
     onSpinnerChanged(false);
     setDisable(false);
     if (notiMessages.length) sendNotificationToAgent();
   }
+
+  // const handleSubmit = async () => {
+    // if (invalidMessage(messageOne) || invalidMessage(messageTwo) || invalidMessage(messageThree) ||
+    //       invalidMessage(messageFour) || invalidMessage(messageFive)) {
+    //     alert.info("All fields must be filled out and amount at least TK 100.");
+    //     onSpinnerChanged(false);
+    //     setDisable(false);
+    //     return;
+    // }
+
+  //   let sent = false;
+  //   let data = {
+  //     refCode: "",
+  //     amount: ""
+  //   }
+  //   const userSendMessageUrl = request.getUserSendMessageUrl();
+
+  //   if (messageOne.refCode != "" && messageOne.amount != "" && messageOne.amount >= 100) {
+  //     sent = await sendMessageToAgent(messageOne, userSendMessageUrl);
+  //     if (sent) {
+  //       setMessageOne(data);
+  //     }
+  //   } 
+  //   if (messageTwo.refCode != "" && messageTwo.amount != "" && messageTwo.amount >= 100) {
+  //     sent = await sendMessageToAgent(messageTwo, userSendMessageUrl);
+  //     if (sent) {
+  //       setMessageTwo(data);
+  //     }
+  //   } 
+  //   if (messageThree.refCode != "" && messageThree.amount != "" && messageThree.amount >= 100) {
+  //     sent = await sendMessageToAgent(messageThree, userSendMessageUrl);
+  //     if (sent) {
+  //       setMessageThree(data);
+  //     }
+  //   }
+  //   if (messageFour.refCode != "" && messageFour.amount != "" && messageFour.amount >= 100) {
+  //     sent = await sendMessageToAgent(messageFour, userSendMessageUrl);
+  //     if (sent) {
+  //       setMessageFour(data);
+  //     }
+  //   } 
+  //   if (messageFive.refCode != "" && messageFive.amount != "" && messageFive.amount >= 100) {
+  //     sent = await sendMessageToAgent(messageFive, userSendMessageUrl);
+  //     if (sent) {
+  //       setMessageFive(data);
+  //     }
+  //   } 
+
+  //   if (sent) {
+  //     onSpinnerChanged(false);
+  //     alert.info("Messages have been sent.");
+  //   }
+  //   onSpinnerChanged(false);
+  //   setDisable(false);
+  //   if (notiMessages.length) sendNotificationToAgent();
+  // }
 
   const handleQuickInsert = () => {
     setIsModalVisible(!isModalVisible);
