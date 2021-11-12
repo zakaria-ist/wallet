@@ -46,10 +46,6 @@ const TableRowEditWithdra = ({rowData, parentRefresh}) => {
     setRowId(rowData.id);
     handleCell(rowData);
   }, [rowData]);
-  
-  const ctime = ((cellData) => {
-    return cellData.HDLTime == "";
-  });
 
   const handleCell = (cellData) => {
     let leftCell = [];
@@ -65,14 +61,7 @@ const TableRowEditWithdra = ({rowData, parentRefresh}) => {
               <Text style={styles.cell_text_header}>{cellData.HDLTime}</Text>
             </>
           :
-            <>
-            {ctime ? <Text style={styles.cell_text}>{cellData.time}</Text> :
-              <>
-                <Text style={styles.cell_text}>{cellData.time}</Text>
-                <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
-              </>
-            }
-            </>
+            <Text style={styles.cell_text}>{cellData.time}</Text>
           }
         </View>
     </View>

@@ -309,7 +309,7 @@ const CreateMessage = () => {
           notiMessages.push(result[key]);
         }
         onSpinnerChanged(false);
-        alert.info("Messages have been sent.");
+       // alert.info("Messages have been sent.");
       } else {
         onSpinnerChanged(false);
         alert.info("Error, Messages could not be sent.");

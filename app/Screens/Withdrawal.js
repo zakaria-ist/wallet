@@ -303,7 +303,7 @@ const Withdrawal = () => {
       // })
       messages = messages.filter((msg) => {
         if (accepted && msg.statusId == 22 ) return true;
-        if (pending && (msg.statusId == 0 || msg.statusId == 11)) return true;
+        if (when == 'today' && pending && (msg.statusId == 0 || msg.statusId == 11)) return true;
         if (when == 'yesterday' && noStatus && (msg.statusId == 33 || msg.statusId == 0 || msg.statusId == 11)) return true;
         return false;
       })

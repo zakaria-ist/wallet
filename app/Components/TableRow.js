@@ -29,10 +29,6 @@ const TableRow = ({rowData}) => {
     handleCell(rowData);
   }, [rowData]);
 
-  const ctime = ((cellData) => {
-    return cellData.HDLTime == "";
-  });
-
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
@@ -48,10 +44,11 @@ const TableRow = ({rowData}) => {
             </>
           :
             <>
-            {ctime ? <Text style={styles.cell_text}>{cellData.time}</Text> :
+            {(cellData.HDLTime == "null" || cellData.status == "Pending") ? 
+            <Text style={styles.cell_text}>{cellData.time}</Text> :
               <>
                 <Text style={styles.cell_text}>{cellData.time}</Text>
-                <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+                <Text style={styles.cell_text}>({cellData.HDLtime})</Text>
               </>
             }
             </>
