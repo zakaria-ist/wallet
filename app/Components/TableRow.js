@@ -14,7 +14,6 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 const format = new Format();
 let authType = "";
-let pending = true;
 
 const TableRow = ({rowData}) => {
   const amountSign = "->"
