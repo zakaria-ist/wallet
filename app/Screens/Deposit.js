@@ -300,7 +300,7 @@ const Deposit = () => {
       messages = messages.filter((msg) => {
         if (accepted && (msg.statusId == 1 || msg.statusId == 3)) return true;
         if (rejected && msg.statusId == 2) return true;
-        if (pending && msg.statusId == 0) return true;
+        if (when == 'today' && pending && msg.statusId == 0) return true;
         if (when == 'yesterday' && noStatus && (msg.statusId == 4 || msg.statusId == 0)) return true;
         return false;
       })
