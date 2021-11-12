@@ -14,6 +14,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 const format = new Format();
 let authType = "";
+let pending = true;
 
 const TableRow = ({rowData}) => {
   const amountSign = "->"
@@ -30,7 +31,11 @@ const TableRow = ({rowData}) => {
   }, [rowData]);
 
   const ctime = ((cellData) => {
-    return cellData.HDLTime == "";
+        messages = messages.filter((msg) => {
+        if (pending && String(msg.status).toLowerCase() == 'pending') return true;
+        return false;
+      })
+    //return cellData.HDLTime == "";
   });
 
   const handleCell = (cellData) => {
@@ -48,10 +53,11 @@ const TableRow = ({rowData}) => {
             </>
           :
             <>
-            {ctime ? <Text style={styles.cell_text}>{cellData.time}</Text> :
+            {(cellData.HDLTime == "null" || cellData.status == "Pending") ? 
+            <Text style={styles.cell_text}>{cellData.time}</Text> :
               <>
                 <Text style={styles.cell_text}>{cellData.time}</Text>
-                <Text style={styles.cell_text}>{cellData.HDLtime}</Text>
+                <Text style={styles.cell_text}>({cellData.HDLtime})</Text>
               </>
             }
             </>
