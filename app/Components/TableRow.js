@@ -30,14 +30,6 @@ const TableRow = ({rowData}) => {
     handleCell(rowData);
   }, [rowData]);
 
-  const ctime = ((cellData) => {
-        messages = messages.filter((msg) => {
-        if (pending && String(msg.status).toLowerCase() == 'pending') return true;
-        return false;
-      })
-    //return cellData.HDLTime == "";
-  });
-
   const handleCell = (cellData) => {
     let leftCell = [];
     let midCell = [];
