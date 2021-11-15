@@ -439,8 +439,9 @@ const CreateMessage = () => {
   return (
     <SafeAreaView style={styles.header}>
       <KeyboardAvoidingView style={styles.header}
-      behavior={Platform.OS === "ios" ? "padding" : "absolute"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
+      behavior={Platform.OS === "ios" ? "padding" : "position"}
+      contentContainerStyle={styles.header}
+      // keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
       enabled={true}>   
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
@@ -448,20 +449,20 @@ const CreateMessage = () => {
         // textContent={"Loading..."}
         textStyle={styles.spinnerTextStyle}
       />
-      <View style={styles.header}>
-        <CustomHeader title={"Create Message"}/>
-        <View style={styles.message_nav_top}>
-          <CommonTop
-            admin={false}
-            LeftButton={LeftButton}
-            RightButton={RightButton}
-            handleLeftButton={handleLeftButton}
-            handleRightButton={handleRightButton}
-            handleWalLeftButton={handleWalLeftButton}
-            handleWalMidButton={handleWalMidButton}
-            handleWalRightButton={handleWalRightButton}
-          />
-        </View>
+        <View style={styles.header}>
+          <CustomHeader title={"Create Message"}/>
+          <View style={styles.message_nav_top}>
+            <CommonTop
+              admin={false}
+              LeftButton={LeftButton}
+              RightButton={RightButton}
+              handleLeftButton={handleLeftButton}
+              handleRightButton={handleRightButton}
+              handleWalLeftButton={handleWalLeftButton}
+              handleWalMidButton={handleWalMidButton}
+              handleWalRightButton={handleWalRightButton}
+            />
+          </View>
         </View>
         <View style={styles.message_quick_insert}>
           <TouchableOpacity
