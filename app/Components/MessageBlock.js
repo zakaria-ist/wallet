@@ -27,12 +27,19 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
     }
   }, [mData]);
 
-  const handleChange = async () => {
+  useEffect(() => {
+      setRefCode(mData.refCode);
+  }, [mData.refCode]);
+  useEffect(() => {
+      setAmount(mData.amount);
+  }, [mData.amount]);
+
+  const handleChange = () => {
     let data = {
       refCode: refCode,
       amount: amount
     }
-    await parentReference(data);
+    parentReference(data);
   }
 
   return useMemo(() => {
@@ -48,14 +55,14 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
             <View style={styles.view_input}>
               {transType == "Deposit" ? 
                 (<View style={styles.view_message_input_label}>
-                    <Text style={styles.view_message_text}>Ref. Code</Text>
-                    <Text style={styles.view_message_text}>Amount</Text>
-                  </View>)
+                  <Text style={styles.view_message_text}>Ref. Code</Text>
+                  <Text style={styles.view_message_text}>Amount</Text>
+                </View>)
                 :
                 (<View style={styles.view_message_input_label}>
-                    <Text style={styles.view_message_text}>Mobile No.</Text>
-                    <Text style={styles.view_message_text}>Amount</Text>
-                  </View>)}
+                  <Text style={styles.view_message_text}>Mobile No.</Text>
+                  <Text style={styles.view_message_text}>Amount</Text>
+                </View>)}
               <View style={styles.view_message_input_box}>
                 <View style={styles.view_input}>
                   <Text style={styles.view_message_text}> : </Text>
@@ -63,7 +70,7 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
                     style={styles.text_message_input}
                     onChangeText={e => setRefCode(e.replace(/[^0-9]+/g, ''))}
                     value={refCode}
-                    onEndEditing={handleChange}
+                    onBlur={handleChange}
                     inputMode="numeric"
                     keyboardType={'numeric'}
                   />
@@ -74,10 +81,10 @@ const MessageBlock = ({transType, mData, lineNumber, parentReference}) => {
                     style={styles.text_message_input}
                     onChangeText={e => setAmount(e.replace(/[^0-9]+/g, ''))}
                     value={amount}
-                    onEndEditing={handleChange}
+                    onBlur={handleChange}
                     inputMode="numeric"
                     keyboardType={'numeric'}
-                    />
+                  />
                 </View>
               </View>
             </View>

@@ -390,6 +390,7 @@ const Deposit = () => {
               amount: amount,
               refNo: msg.refno ? msg.refno : "",
               status: msg.status,
+              oldAmount: msg.oldamount ? msg.oldamount : 0,
             };
           }
           msg_list.push(msg_data);

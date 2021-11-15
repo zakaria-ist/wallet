@@ -180,7 +180,7 @@ const TableRowEditDeposit = ({rowData, parentRefresh}) => {
       rowData['sent'] = true;
       handleCell(rowData);
       setTimeout(() => {
-        parentRefresh();
+        // parentRefresh();
       }, 100);
     }
   }
@@ -191,23 +191,27 @@ const TableRowEditDeposit = ({rowData, parentRefresh}) => {
         enabled={true}
         style={styles.header}
       >
-      <View style={styles.table_view_rectangle}>
-        <View style={styles.table_view_left}>
-          <View style={styles.view_lineNumber}>
-            {cellOne}
+        {rowData['sent'] == false ? 
+          <View style={styles.table_view_rectangle}>
+            <View style={styles.table_view_left}>
+              <View style={styles.view_lineNumber}>
+                {cellOne}
+              </View>
+            </View>
+            <View style={styles.table_view_center}>
+              <View style={styles.view_lineNumber_center}>
+                {cellTwo}
+              </View>
+            </View>
+            <View style={styles.table_view_right}>
+              <View style={styles.view_lineNumber}>
+                {cellThree}
+              </View>
+            </View>
           </View>
-        </View>
-        <View style={styles.table_view_center}>
-          <View style={styles.view_lineNumber_center}>
-            {cellTwo}
-          </View>
-        </View>
-        <View style={styles.table_view_right}>
-          <View style={styles.view_lineNumber}>
-            {cellThree}
-          </View>
-        </View>
-      </View>
+        :
+          <></>
+        }
     </KeyboardAvoidingView>
     );
   })
