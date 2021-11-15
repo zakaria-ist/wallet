@@ -476,7 +476,7 @@ const CreateMessage = () => {
         </View>
         <View style={styles.create_message_body}>
           <View style={styles.header}>
-            <TouchableOpacity>
+            <TouchableOpacity onPress={()=> Keyboard.dismiss()}>
                 <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
                 <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
                 <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
@@ -520,7 +520,7 @@ const CreateMessage = () => {
                 <TextInput
                   placeholderTextColor="gray"
                   backgroundColor="white"
-                  placeholder="Please insert only upto 5 messages only"
+                  placeholder="Please insert only up to 5 messages only"
                   maxLength={300}
                   multiline={true}
                   value={quickMessages}
