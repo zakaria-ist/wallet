@@ -15,7 +15,8 @@ import {
   View,
   InteractionManager,
   TouchableOpacity,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Keyboard
 } from 'react-native';
 import {heightPercentageToDP} from "react-native-responsive-screen";
 import Modal from "react-native-modal";
@@ -379,6 +380,7 @@ const CreateMessage = () => {
   // }
 
   const handleQuickInsert = () => {
+    Keyboard.dismiss();
     setIsModalVisible(!isModalVisible);
     setQuickMessages("");
   }
@@ -487,6 +489,7 @@ const CreateMessage = () => {
             onPress={() => {
               onSpinnerChanged(true);
               setDisable(true);
+              Keyboard.dismiss();
               handleSubmit();
             }}
           >
