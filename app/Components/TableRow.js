@@ -44,7 +44,7 @@ const TableRow = ({rowData}) => {
             </>
           :
             <>
-            {(cellData.HDLTime == "null" || cellData.status == "Pending") ? 
+            {(cellData.HDLTime == "null" || cellData.status == "Pending" || cellData.status == "") ? 
             <Text style={styles.cell_text}>{cellData.time}</Text> :
               <>
                 <Text style={styles.cell_text}>{cellData.time}</Text>

@@ -15,7 +15,8 @@ import {
   View,
   InteractionManager,
   TouchableOpacity,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  Keyboard
 } from 'react-native';
 import {heightPercentageToDP} from "react-native-responsive-screen";
 import Modal from "react-native-modal";
@@ -436,10 +437,10 @@ const CreateMessage = () => {
 
   return (
     <SafeAreaView style={styles.header}>
-      <KeyboardAvoidingView style={styles.header}
-      behavior={Platform.OS === "ios" ? "padding" : "absolute"}
-      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
-      enabled={true}>   
+      <KeyboardAvoidingView style={styles.header} 
+      behavior='padding' 
+      enabled={false}
+      >   
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
@@ -472,8 +473,8 @@ const CreateMessage = () => {
           </TouchableOpacity>
         </View>
         <View style={styles.create_message_body}>
-          <View style={styles.header}>
-            <TouchableOpacity>
+          <View style={styles.header} keyboardShouldPersistTaps={'always'}>
+            <TouchableOpacity onPress={()=> Keyboard.dismiss()}>
                 <MessageBlock transType={transType} mData={messageOne} lineNumber={1} key={"lineNumber1"} parentReference={handleMessageOne} />
                 <MessageBlock transType={transType} mData={messageTwo} lineNumber={2} key={"lineNumber2"} parentReference={handleMessageTwo} />
                 <MessageBlock transType={transType} mData={messageThree} lineNumber={3} key={"lineNumber3"} parentReference={handleMessageThree} />
@@ -516,7 +517,7 @@ const CreateMessage = () => {
                 <TextInput
                   placeholderTextColor="gray"
                   backgroundColor="white"
-                  placeholder="Please insert only upto 5 messages only"
+                  placeholder="Please insert only up to 5 messages only"
                   maxLength={300}
                   multiline={true}
                   value={quickMessages}
