@@ -380,6 +380,7 @@ const CreateMessage = () => {
   // }
 
   const handleQuickInsert = () => {
+    Keyboard.dismiss();
     setIsModalVisible(!isModalVisible);
     setQuickMessages("");
   }
@@ -488,6 +489,7 @@ const CreateMessage = () => {
             onPress={() => {
               onSpinnerChanged(true);
               setDisable(true);
+              Keyboard.dismiss();
               handleSubmit();
             }}
           >
