@@ -441,8 +441,8 @@ const CreateMessage = () => {
       <KeyboardAvoidingView style={styles.header}
       behavior={Platform.OS === "ios" ? "padding" : "position"}
       contentContainerStyle={styles.header}
-      // keyboardVerticalOffset={Platform.OS === "ios" ? 64 : 0}
-      enabled={true}>   
+      keyboardVerticalOffset={Platform.OS === "ios" ? 64 : -50}
+      enabled={true}>
       <StatusBar barStyle={isDarkMode ? 'light-content' : 'dark-content'} />
       <Spinner
         visible={spinner}
