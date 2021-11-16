@@ -85,7 +85,7 @@ const TableRow = ({rowData}) => {
           {cellData.hasOwnProperty("amount") ?  
              <View style={{flexDirection:"row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
-              {cellData.hasOwnProperty("oldAmount") && (cellData.oldAmount != cellData.amount) && (cellData.oldAmount != 0)? 
+              {cellData.hasOwnProperty("oldAmount") && (cellData.status != 'Rejected') && (cellData.oldAmount != cellData.amount) && (cellData.oldAmount != 0)? 
                 <>
                   <Text style={styles.cell_text_value}>{format.separator(cellData.oldAmount)}</Text>
                   <Text style={styles.cell_text_value}>{amountSign}</Text>
