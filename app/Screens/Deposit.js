@@ -79,6 +79,7 @@ const Deposit = () => {
   const [tableData, setTableData] = useStateIfMounted([]);
   const [tableEditData, setTableEditData] = useStateIfMounted([]);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [badgeCount, setBadgeCount] = useStateIfMounted(null);
 
   const LeftButton = "Yesterday";
   const RightButton = "Today";
@@ -242,6 +243,34 @@ const Deposit = () => {
     , 5000) : clearTimeout(refreshTimeout);
   }
 
+  const resetBadgeCount = () => {
+    console.log('resetBadgeCount');
+    if(badgeCount) {
+      if (parseInt(walletType) == 1) {
+        if (badgeCount[0] > 0) {
+          let temp = badgeCount;
+          temp[0] = temp[0] - 1;
+          setBadgeCount(temp);
+        }
+      }
+      else if (parseInt(walletType) == 2) {
+        if (badgeCount[1] > 0) {
+          let temp = badgeCount;
+          temp[1] = temp[1] - 1;
+          setBadgeCount(temp);
+          console.log('temp', temp)
+        }
+      }
+      else if (parseInt(walletType) == 3) {
+        if (badgeCount[2] > 0) {
+          let temp = badgeCount;
+          temp[2] = temp[2] - 1;
+          setBadgeCount(temp);
+        }
+      }
+    }
+  }
+
   const renderTablesData = async () => {
     if (!autoRefresh) onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
@@ -286,6 +315,28 @@ const Deposit = () => {
       messages = messages.filter((msg) => {
         return (msg.purpose == "deposit")
       })
+      // badge count
+      let bOne = 0;
+      let bTwo = 0;
+      let bThree = 0;
+      if (authType == 'agent' && when == 'today') {
+        messages.map((msg) => {
+          if ((msg.statusId == 0)) {
+            if (parseInt(msg.walletId) == 1) {
+              bOne++;
+            }
+            else if (parseInt(msg.walletId) == 2) {
+              bTwo++;
+            }
+            else if (parseInt(msg.walletId) == 3) {
+              bThree++;
+            }
+          }
+        })
+        setBadgeCount([bOne, bTwo, bThree])
+      } else {
+        setBadgeCount(null)
+      }
       // ftatus filter
       // messages = messages.filter((msg) => {
       //   if (accepted && String(msg.status).toLowerCase() == 'accepted' || 
@@ -423,7 +474,7 @@ const Deposit = () => {
   ));
   const renderItemEdit = useCallback(({ item }) => (
     <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
-      <TableRowEditDeposit rowData={item} parentRefresh={refreshEditScreen} />
+      <TableRowEditDeposit rowData={item} parentRefresh={refreshEditScreen} resetBadgeCount={resetBadgeCount} />
     </TouchableOpacity> 
   ));
   const memoizedItemValue = useMemo(() => renderItem);
@@ -470,6 +521,7 @@ const Deposit = () => {
                   handleWalLeftButton={handleWalLeftButton}
                   handleWalMidButton={handleWalMidButton}
                   handleWalRightButton={handleWalRightButton}
+                  badgeCount={badgeCount}
                 />
               </View> 
           </View>

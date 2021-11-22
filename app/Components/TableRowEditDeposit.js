@@ -34,7 +34,7 @@ const alert = new CustomAlert();
 
 let authToken = "";
 
-const TableRowEditDeposit = ({rowData, parentRefresh}) => {
+const TableRowEditDeposit = ({rowData, parentRefresh, resetBadgeCount}) => {
   const [rowId, setRowId] = useStateIfMounted(rowData.id);
   const [amount, setAmount] = useState('');
   const [cellOne, setCellOne] = useStateIfMounted([]);
@@ -179,6 +179,7 @@ const TableRowEditDeposit = ({rowData, parentRefresh}) => {
     if (result.ok) {
       rowData['sent'] = true;
       handleCell(rowData);
+      resetBadgeCount();
       setTimeout(() => {
         // parentRefresh();
       }, 100);

@@ -14,6 +14,7 @@ import {
   TouchableOpacity,
   InteractionManager
 } from 'react-native';
+import { Badge } from 'react-native-elements'
 import styles from '../lib/global_css.js';
 
 const CommonTop = ({
@@ -25,6 +26,7 @@ const CommonTop = ({
   handleWalLeftButton,
   handleWalMidButton,
   handleWalRightButton,
+  badgeCount
 }) => {
   const [topLeftFocused, setTopLeftFocused] = useStateIfMounted(false);
   const [topRightFocused, setTopRightFocused] = useStateIfMounted(true);
@@ -46,6 +48,11 @@ const CommonTop = ({
       })
     })
   }, []);
+  useEffect(() => {
+    InteractionManager.runAfterInteractions(() => {
+      console.log('badgeCount', badgeCount)
+    })
+  }, [badgeCount]);
 
   return (
     <View style={admin ? styles.view_root_admin : styles.view_root}>
@@ -85,6 +92,14 @@ const CommonTop = ({
             >
               <View style={walLeftFocused ? styles.wal_left_button_focus : styles.wal_left_button}>
                 <Text style={walLeftFocused ? styles.button_text_focus : styles.button_text}>{walLeftButton}</Text>
+                {badgeCount ?
+                  <Badge
+                    value={badgeCount[0]} status="error"
+                    containerStyle={styles.badgeStyle}
+                  />
+                :
+                  <></>
+                }
               </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -97,6 +112,14 @@ const CommonTop = ({
             >
               <View style={walMidFocused ? styles.wal_right_button_focus : styles.wal_right_button}>
                  <Text style={walMidFocused ? styles.button_text_focus : styles.button_text}>{walMidButton}</Text>
+                 {badgeCount ?
+                    <Badge
+                      value={badgeCount[1]} status="error"
+                      containerStyle={styles.badgeStyle}
+                    />
+                  :
+                    <></>
+                  }
                </View>
             </TouchableOpacity>
             <TouchableOpacity
@@ -109,6 +132,14 @@ const CommonTop = ({
             >
               <View style={walRightFocused ? styles.wal_right_button_focus : styles.wal_right_button}>
                 <Text style={walRightFocused ? styles.button_text_focus : styles.button_text}>{walRightButton}</Text>
+                {badgeCount ?
+                  <Badge
+                    value={badgeCount[2]} status="error"
+                    containerStyle={styles.badgeStyle}
+                  />
+                :
+                  <></>
+                }
               </View>
             </TouchableOpacity>
           </View>

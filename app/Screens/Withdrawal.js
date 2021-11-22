@@ -82,6 +82,7 @@ const Withdrawal = () => {
   const [tableEditData, setTableEditData] = useStateIfMounted([]);
   const [keyboard, setKeyboard] = useState(Boolean);
   const [refreshing, setRefreshing] = React.useState(false);
+  const [badgeCount, setBadgeCount] = useStateIfMounted(null);
 
   const LeftButton = "Yesterday";
   const RightButton = "Today";
@@ -291,6 +292,29 @@ const Withdrawal = () => {
       messages = messages.filter((msg) => {
         return (msg.purpose == "withdrawal")
       })
+
+      // badge count
+      let bOne = 0;
+      let bTwo = 0;
+      let bThree = 0;
+      if (authType == 'agent' && when == 'today') {
+        messages.map((msg) => {
+          if ((msg.statusId == 0 || msg.statusId == 11)) {
+            if (parseInt(msg.walletId) == 1) {
+              bOne++;
+            }
+            else if (parseInt(msg.walletId) == 2) {
+              bTwo++;
+            }
+            else if (parseInt(msg.walletId) == 3) {
+              bThree++;
+            }
+          }
+        })
+        setBadgeCount([bOne, bTwo, bThree])
+      } else {
+        setBadgeCount(null)
+      }
       // ftatus filter
       // messages = messages.filter((msg) => {
       //   if (accepted && String(msg.status).toLowerCase() == 'accepted' || 
@@ -469,6 +493,7 @@ const Withdrawal = () => {
                 handleWalLeftButton={handleWalLeftButton}
                 handleWalMidButton={handleWalMidButton}
                 handleWalRightButton={handleWalRightButton}
+                badgeCount={badgeCount}
             />
           </View> 
         </View>

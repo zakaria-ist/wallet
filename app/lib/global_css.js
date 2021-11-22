@@ -860,6 +860,11 @@ const styles = StyleSheet.create({
   },
   spinnerTextStyle: {
     color: WalletColors.Wblue,
+  },
+  badgeStyle: {
+    position: 'absolute', 
+    top: -10, 
+    right: -5
   }
 });
 
