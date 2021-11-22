@@ -14,6 +14,7 @@ import AsyncStorage from "@react-native-community/async-storage";
 
 const format = new Format();
 let authType = "";
+let transType = "withdrawal";
 
 const TableRow = ({rowData}) => {
   const amountSign = "->"
@@ -24,8 +25,8 @@ const TableRow = ({rowData}) => {
   useEffect(() => {
     AsyncStorage.getItem('authType').then((auth_type) => {
       authType = auth_type;
+      transType = "withdrawal";
     })
-
     handleCell(rowData);
   }, [rowData]);
 
@@ -64,10 +65,11 @@ const TableRow = ({rowData}) => {
           {cellData.hasOwnProperty("pinNo") ? (<Text style={styles.cell_text}>Pin No.</Text>) : <></>}
           {cellData.hasOwnProperty("refNo") ? (<Text style={styles.cell_text}>Ref. No.</Text>) : <></>}
           {cellData.hasOwnProperty("amount") ? (<Text style={styles.cell_text}>Amount</Text>) : <></>}
-          {((authType == 'agent') || (authType == 'user')) ? <></> :
+          {((authType == 'agent') || (authType == 'user') || (authType == 'client')) ? <></> :
           [cellData.hasOwnProperty("wallet") ? (<Text style={styles.cell_text}>Wallet</Text>) : <></>]}
           {cellData.hasOwnProperty("mobile") ? (<Text style={styles.cell_text}>Mobile</Text>) : <></>}
-          {cellData.hasOwnProperty("user") ? (<Text style={styles.cell_text}>User</Text>) : <></>}
+          {((authType == 'user') && (transType == 'withdrawal')) ? <></> :
+          [cellData.hasOwnProperty("user") ? (<Text style={styles.cell_text}>User</Text>) : <></>]}
         </View>
         <View style={{flexDirection: "column"}}>
           {cellData.hasOwnProperty("pinNo") ? 
@@ -85,7 +87,7 @@ const TableRow = ({rowData}) => {
           {cellData.hasOwnProperty("amount") ?  
              <View style={{flexDirection:"row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
-              {cellData.hasOwnProperty("oldAmount") && (cellData.oldAmount != cellData.amount) && (cellData.oldAmount != 0)? 
+              {cellData.hasOwnProperty("oldAmount") && (cellData.status != 'Rejected') && (cellData.oldAmount != cellData.amount) && (cellData.oldAmount != 0)? 
                 <>
                   <Text style={styles.cell_text_value}>{format.separator(cellData.oldAmount)}</Text>
                   <Text style={styles.cell_text_value}>{amountSign}</Text>
@@ -96,7 +98,7 @@ const TableRow = ({rowData}) => {
               <Text style={styles.cell_text_value}>{format.separator(cellData.amount)}</Text>
             </View>   
           : <></>}
-          {((authType == 'agent') || (authType == 'user')) ? <></> :
+          {((authType == 'agent') || (authType == 'user') || (authType == 'client')) ? <></> :
             [cellData.hasOwnProperty("wallet") ?     
             <View style={{flexDirection:"row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
@@ -110,12 +112,13 @@ const TableRow = ({rowData}) => {
               <Text style={styles.cell_text}>{cellData.mobile}</Text>
             </View>
           : <></>}
-          {cellData.hasOwnProperty("user") ?      
+          {((authType == 'user') && (transType == 'withdrawal')) ? <></> :
+            [cellData.hasOwnProperty("user") ?      
              <View style={{flexDirection:"row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{cellData.user}</Text>
             </View>
-          : <></>}
+          : <></>]}
         </View>  
       </View>       
     )

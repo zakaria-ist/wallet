@@ -746,17 +746,21 @@ const Withdrawal = () => {
                       <Text style={styles.total_text}>Accepted</Text>
                     </View>  
                     <View style={{flexDirection: "column"}}>
-                    <View style={{flexDirection: "row"}}>
-                      <Text style={styles.total_text}> : </Text>
-                      <Text style={styles.total_text}>TK  </Text>
-                      <Text style={styles.total_text}>{format.separator(pendingTotal)}</Text>
-                    </View> 
-                    <View style={{flexDirection: "row"}}>
-                      <Text style={styles.total_text}> : </Text>
-                      <Text style={styles.total_text}>TK  </Text>
-                      <Text style={styles.total_text}>{format.separator(acceptedTotal)}</Text>
-                    </View>
-                    </View>    
+                      <View style={{flexDirection: "row"}}>
+                        <Text style={styles.total_text}> : TK </Text>
+                      </View> 
+                      <View style={{flexDirection: "row"}}>
+                        <Text style={styles.total_text}> : TK </Text>
+                      </View>
+                    </View>  
+                    <View style={{flexDirection: "column"}}>
+                      <View style={{flexDirection: "row", alignSelf: "flex-end"}}>
+                        <Text style={styles.total_text}> {format.separator(pendingTotal)} </Text>
+                      </View> 
+                      <View style={{flexDirection: "row", alignSelf: "flex-end"}}>
+                        <Text style={styles.total_text}> {format.separator(acceptedTotal)} </Text>
+                      </View>
+                    </View>     
                   </View>
                 </View>                
             : 
