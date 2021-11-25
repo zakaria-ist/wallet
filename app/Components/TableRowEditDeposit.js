@@ -109,7 +109,7 @@ const TableRowEditDeposit = ({rowData, parentRefresh, resetBadgeCount}) => {
               />
             </View>
             <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
-              <Text style={styles.cell_text}>User</Text>
+              <Text style={styles.cell_text}>User   </Text>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text_value}>{cellData.user}</Text>
             </View>           
