@@ -392,6 +392,7 @@ const Deposit = () => {
             wallet: msg.walletName,
             amount: msg.amount,
             refNo: msg.refno,
+            user: msg.fromuser,
             sent: false
           };
           msg_list.push(msg_data);
@@ -431,6 +432,7 @@ const Deposit = () => {
               refNo: msg.refno ? msg.refno : "",
               user: msg.fromuser,
               status: msg.status,
+              oldAmount: msg.oldamount ? msg.oldamount : 0,
             };
           } else {
             msg_data = {

@@ -94,7 +94,7 @@ const TableRowEditDeposit = ({rowData, parentRefresh, resetBadgeCount}) => {
               <Text style={styles.cell_text_value}>{cellData.refNo}</Text>
             </View>        
             <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
-            <Text style={styles.cell_text_input}>Amount</Text>
+              <Text style={styles.cell_text_input}>Amount</Text>
               <Text style={styles.cell_text_input}> : </Text>
               <TextInput 
                 style={styles.text_input}
@@ -107,7 +107,12 @@ const TableRowEditDeposit = ({rowData, parentRefresh, resetBadgeCount}) => {
                 placeholderTextColor={WalletColors.grey}
                 keyboardType={'numeric'}
               />
-            </View>         
+            </View>
+            <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
+              <Text style={styles.cell_text}>User</Text>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text_value}>{cellData.user}</Text>
+            </View>           
             {/* <View style={{flexDirection: "row"}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{cellData.wallet}</Text>
