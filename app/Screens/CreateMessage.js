@@ -248,63 +248,57 @@ const CreateMessage = () => {
       purpose = 2;
     }
     let messages = [];
-
-    switch (true)
-    {
-      case validMessage(messageOne):
-        messages.push({
-          refNo: messageOne.refCode,
-          mobile: messageOne.refCode,
-          amount: messageOne.amount,
-        })
-        messageCount++;
-        setMessageOne(data);
-    }
-    switch (true)
-    {
-      case validMessage(messageTwo):
-        messages.push({
-          refNo: messageTwo.refCode,
-          mobile: messageTwo.refCode,
-          amount: messageTwo.amount,
-        })
-        messageCount++;
-        setMessageTwo(data);
-    }
-    switch (true)
-    {
-      case validMessage(messageThree):
-        messages.push({
-          refNo: messageThree.refCode,
-          mobile: messageThree.refCode,
-          amount: messageThree.amount,
-        })
-        messageCount++;
-        setMessageThree(data);
-    }
-    switch (true)
-    {
-      case validMessage(messageFour):
-        messages.push({
-          refNo: messageFour.refCode,
-          mobile: messageFour.refCode,
-          amount: messageFour.amount,
-        })
-        messageCount++;
-        setMessageFour(data);
-    }
-    switch (true)
-    {
-      case validMessage(messageFive):
-        messages.push({
-          refNo: messageFive.refCode,
-          mobile: messageFive.refCode,
-          amount: messageFive.amount,
-        })
-        messageCount++;
-        setMessageFive(data);
-    }
-
+    for (i=0; i < 5; i++) {
+      switch (i)
+      {
+        case validMessage(messageOne):
+          messages.push({
+            refNo: messageOne.refCode,
+            mobile: messageOne.refCode,
+            amount: messageOne.amount,
+          })
+          messageCount++;
+          setMessageOne(data);
+          break;
+        case validMessage(messageTwo):
+          messages.push({
+            refNo: messageTwo.refCode,
+            mobile: messageTwo.refCode,
+            amount: messageTwo.amount,
+          })
+          messageCount++;
+          setMessageTwo(data);
+          break;
+        case validMessage(messageThree):
+          messages.push({
+            refNo: messageThree.refCode,
+            mobile: messageThree.refCode,
+            amount: messageThree.amount,
+          })
+          messageCount++;
+          setMessageThree(data);
+          break;
+        case validMessage(messageFour):
+          messages.push({
+            refNo: messageFour.refCode,
+            mobile: messageFour.refCode,
+            amount: messageFour.amount,
+          })
+          messageCount++;
+          setMessageFour(data);
+          break;
+        case validMessage(messageFive):
+          messages.push({
+            refNo: messageFive.refCode,
+            mobile: messageFive.refCode,
+            amount: messageFive.amount,
+          })
+          messageCount++;
+          setMessageFive(data);
+          break;
+      }
+    };
+    
     if (messages.length == 0) {
       alert.info("Nothing to send. Please add item first.");
       onSpinnerChanged(false);
@@ -323,19 +317,26 @@ const CreateMessage = () => {
     if (userSendMultiMessageUrl) {
       const result = await request.post(userSendMultiMessageUrl, params);
       // console.log('userSendMultiMessageUrl', result)
-      if (result.ok) {
-        for(let i=0; i<messageCount; i++) {
-          let index = i + 1;
-          let key = 'message' + index;
-          // console.log(key, result[key])
-          notiMessages.push(result[key]);
-        }
-        onSpinnerChanged(false);
-       // alert.info("Messages have been sent.");
+        if (result.ok) {
+          notiMessages.push(result.message);
+          onSpinnerChanged(false);
       } else {
         onSpinnerChanged(false);
         alert.info("Error, Messages could not be sent.");
       }
+      // if (result.ok) {
+      //   for(let i=0; i<messageCount; i++) {
+      //     let index = i + 1;
+      //     let key = 'message' + index;
+      //     // console.log(key, result[key])
+      //     notiMessages.push(result[key]);
+      //   }
+      //   onSpinnerChanged(false);
+      //  // alert.info("Messages have been sent.");
+      // } else {
+      //   onSpinnerChanged(false);
+      //   alert.info("Error, Messages could not be sent.");
+      // }
     } else {
       onSpinnerChanged(false);
     }
