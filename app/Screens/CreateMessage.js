@@ -212,6 +212,7 @@ const CreateMessage = () => {
     }
     return result;
   }
+  
   const validMessage = (message) => {
     let result = false;
     if (message.refCode != "" || message.amount != "")
