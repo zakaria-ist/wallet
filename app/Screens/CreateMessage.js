@@ -212,6 +212,14 @@ const CreateMessage = () => {
     }
     return result;
   }
+  const validMessage = (message) => {
+    let result = false;
+    if (message.refCode != "" || message.amount != "")
+      if (message.refCode != "" || message.amount >= 100) {
+        result = true;
+    }
+    return result;
+  }
 
   const handleSubmit = async () => {
     // validate inputs
@@ -239,50 +247,54 @@ const CreateMessage = () => {
       purpose = 2;
     }
     let messages = [];
-    if (messageOne.refCode != "" && messageOne.amount != "" && messageOne.amount >= 100) {
-      messages.push({
-        refNo: messageOne.refCode,
-        mobile: messageOne.refCode,
-        amount: messageOne.amount,
-      })
-      messageCount++;
-      setMessageOne(data);
-    }
-    if (messageTwo.refCode != "" && messageTwo.amount != "" && messageTwo.amount >= 100) {
-      messages.push({
-        refNo: messageTwo.refCode,
-        mobile: messageTwo.refCode,
-        amount: messageTwo.amount,
-      })
-      messageCount++;
-      setMessageTwo(data);
-    }
-    if (messageThree.refCode != "" && messageThree.amount != "" && messageThree.amount >= 100) {
-      messages.push({
-        refNo: messageThree.refCode,
-        mobile: messageThree.refCode,
-        amount: messageThree.amount,
-      })
-      messageCount++;
-      setMessageThree(data);
-    }
-    if (messageFour.refCode != "" && messageFour.amount != "" && messageFour.amount >= 100) {
-      messages.push({
-        refNo: messageFour.refCode,
-        mobile: messageFour.refCode,
-        amount: messageFour.amount,
-      })
-      messageCount++;
-      setMessageFour(data);
-    }
-    if (messageFive.refCode != "" && messageFive.amount != "" && messageFive.amount >= 100) {
-      messages.push({
-        refNo: messageFive.refCode,
-        mobile: messageFive.refCode,
-        amount: messageFive.amount,
-      })
-      messageCount++;
-      setMessageFive(data);
+
+    switch (true)
+    {
+      case validMessage(messageOne):
+        messages.push({
+          refNo: messageOne.refCode,
+          mobile: messageOne.refCode,
+          amount: messageOne.amount,
+        })
+        messageCount++;
+        setMessageOne(data);
+        break;
+      case validMessage(messageTwo):
+        messages.push({
+          refNo: messageTwo.refCode,
+          mobile: messageTwo.refCode,
+          amount: messageTwo.amount,
+        })
+        messageCount++;
+        setMessageTwo(data);
+        break;
+      case validMessage(messageThree):
+        messages.push({
+          refNo: messageThree.refCode,
+          mobile: messageThree.refCode,
+          amount: messageThree.amount,
+        })
+        messageCount++;
+        setMessageThree(data);
+        break;
+      case validMessage(messageFour):
+        messages.push({
+          refNo: messageFour.refCode,
+          mobile: messageFour.refCode,
+          amount: messageFour.amount,
+        })
+        messageCount++;
+        setMessageFour(data);
+        break;
+      case validMessage(messageFive):
+        messages.push({
+          refNo: messageFive.refCode,
+          mobile: messageFive.refCode,
+          amount: messageFive.amount,
+        })
+        messageCount++;
+        setMessageFive(data);
+        break;
     }
     if (messages.length == 0) {
       alert.info("Nothing to send. Please add item first.");
@@ -399,11 +411,24 @@ const CreateMessage = () => {
             refCode: code,
             amount: amount
           }
-          if (index == 0) setMessageOne(data);
-          else if (index == 1) setMessageTwo(data);
-          else if (index == 2) setMessageThree(data);
-          else if (index == 3) setMessageFour(data);
-          else if (index == 4) setMessageFive(data);
+          switch (index)
+          {
+            case 0:
+              setMessageOne(data);
+              break;
+            case 1:
+              setMessageTwo(data);
+              break;
+            case 2: 
+              setMessageThree(data);
+              break;
+            case 3:
+              setMessageFour(data);  
+              break;
+            case 4:   
+              setMessageFive(data);
+              break;
+          }
         } catch (e) {
           
         }
