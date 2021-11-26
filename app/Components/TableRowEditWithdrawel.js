@@ -32,7 +32,7 @@ const alert = new CustomAlert();
 
 let authToken = "";
 
-const TableRowEditWithdra = ({rowData, parentRefresh}) => {
+const TableRowEditWithdra = ({rowData, parentRefresh, resetBadgeCount}) => {
   const [rowId, setRowId] = useStateIfMounted(rowData.id);
   const [cellOne, setCellOne] = useStateIfMounted([]);
   const [cellTwo, setCellTwo] = useStateIfMounted([]);
@@ -156,6 +156,7 @@ const TableRowEditWithdra = ({rowData, parentRefresh}) => {
       if (result.ok) {
         rowData['sent'] = true;
         handleCell(rowData);
+        resetBadgeCount();
         setTimeout(() => {
           // parentRefresh();
         }, 100);

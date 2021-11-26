@@ -59,6 +59,7 @@ let autoRefresh = false;
 let picker_user = null;
 let picker_group = null;
 let picker_wallet = 1;
+let tempBadgeCount = [];
 
 const Withdrawal = () => {
   const isFocused = useIsFocused();
@@ -248,6 +249,35 @@ const Withdrawal = () => {
     , 5000) : clearTimeout(refreshTimeout);
   }
 
+  const resetBadgeCount = () => {
+    if(badgeCount) {
+      if (parseInt(walletType) == 1) {
+        if (tempBadgeCount[0] > 0) {
+          let temp = [...tempBadgeCount];
+          temp[0] = temp[0] - 1;
+          setBadgeCount(temp);
+          tempBadgeCount = [...temp];
+        }
+      }
+      else if (parseInt(walletType) == 2) {
+        if (tempBadgeCount[1] > 0) {
+          let temp = [...tempBadgeCount];
+          temp[1] = temp[1] - 1;
+          setBadgeCount(temp);
+          tempBadgeCount = [...temp];
+        }
+      }
+      else if (parseInt(walletType) == 3) {
+        if (tempBadgeCount[2] > 0) {
+          let temp = [...tempBadgeCount];
+          temp[2] = temp[2] - 1;
+          setBadgeCount(temp);
+          tempBadgeCount = [...temp];
+        }
+      }
+    }
+  }
+
   const renderTablesData = async () => {
     if (!autoRefresh) onSpinnerChanged(true);
     const msgsUrl = request.getAllMessageUrl();
@@ -311,9 +341,10 @@ const Withdrawal = () => {
             }
           }
         })
-        setBadgeCount([bOne, bTwo, bThree])
+        setBadgeCount([bOne, bTwo, bThree]);
+        tempBadgeCount = [bOne, bTwo, bThree];
       } else {
-        setBadgeCount(null)
+        setBadgeCount(null);
       }
       // ftatus filter
       // messages = messages.filter((msg) => {
@@ -446,7 +477,7 @@ const Withdrawal = () => {
   ));
   const renderItemEdit = useCallback(({ item }) => (
     <TouchableOpacity onPress={() => false || onWalletPickerOpen() || onGroupPickerOpen() || onClientPickerOpen()} activeOpacity={1}> 
-       <TableRowEditWithdra rowData={item} parentRefresh={refreshEditScreen} />
+       <TableRowEditWithdra rowData={item} parentRefresh={refreshEditScreen} resetBadgeCount={resetBadgeCount} />
     </TouchableOpacity> 
   ));
   const memoizedItemValue = useMemo(() => renderItem);

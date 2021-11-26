@@ -57,6 +57,7 @@ let autoRefresh = false;
 let picker_user = null;
 let picker_group = null;
 let picker_wallet = 1;
+let tempBadgeCount = [];
 
 const Deposit = () => {
   const isFocused = useIsFocused();
@@ -244,28 +245,29 @@ const Deposit = () => {
   }
 
   const resetBadgeCount = () => {
-    console.log('resetBadgeCount');
     if(badgeCount) {
       if (parseInt(walletType) == 1) {
-        if (badgeCount[0] > 0) {
-          let temp = badgeCount;
+        if (tempBadgeCount[0] > 0) {
+          let temp = [...tempBadgeCount];
           temp[0] = temp[0] - 1;
           setBadgeCount(temp);
+          tempBadgeCount = [...temp];
         }
       }
       else if (parseInt(walletType) == 2) {
-        if (badgeCount[1] > 0) {
-          let temp = badgeCount;
+        if (tempBadgeCount[1] > 0) {
+          let temp = [...tempBadgeCount];
           temp[1] = temp[1] - 1;
           setBadgeCount(temp);
-          console.log('temp', temp)
+          tempBadgeCount = [...temp];
         }
       }
       else if (parseInt(walletType) == 3) {
-        if (badgeCount[2] > 0) {
-          let temp = badgeCount;
+        if (tempBadgeCount[2] > 0) {
+          let temp = [...tempBadgeCount];
           temp[2] = temp[2] - 1;
           setBadgeCount(temp);
+          tempBadgeCount = [...temp];
         }
       }
     }
@@ -333,9 +335,10 @@ const Deposit = () => {
             }
           }
         })
-        setBadgeCount([bOne, bTwo, bThree])
+        setBadgeCount([bOne, bTwo, bThree]);
+        tempBadgeCount = [bOne, bTwo, bThree];
       } else {
-        setBadgeCount(null)
+        setBadgeCount(null);
       }
       // ftatus filter
       // messages = messages.filter((msg) => {
