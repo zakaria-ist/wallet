@@ -317,26 +317,19 @@ const CreateMessage = () => {
     if (userSendMultiMessageUrl) {
       const result = await request.post(userSendMultiMessageUrl, params);
       // console.log('userSendMultiMessageUrl', result)
-        if (result.ok) {
-          notiMessages.push(result.message);
-          onSpinnerChanged(false);
+      if (result.ok) {
+        for(let i=0; i<messageCount; i++) {
+          let index = i + 1;
+          let key = 'message' + index;
+          // console.log(key, result[key])
+          notiMessages.push(result[key]);
+        }
+        onSpinnerChanged(false);
+       // alert.info("Messages have been sent.");
       } else {
         onSpinnerChanged(false);
         alert.info("Error, Messages could not be sent.");
       }
-      // if (result.ok) {
-      //   for(let i=0; i<messageCount; i++) {
-      //     let index = i + 1;
-      //     let key = 'message' + index;
-      //     // console.log(key, result[key])
-      //     notiMessages.push(result[key]);
-      //   }
-      //   onSpinnerChanged(false);
-      //  // alert.info("Messages have been sent.");
-      // } else {
-      //   onSpinnerChanged(false);
-      //   alert.info("Error, Messages could not be sent.");
-      // }
     } else {
       onSpinnerChanged(false);
     }
