@@ -259,7 +259,9 @@ const CreateMessage = () => {
         })
         messageCount++;
         setMessageOne(data);
-        break;
+    }
+    switch (true)
+    {
       case validMessage(messageTwo):
         messages.push({
           refNo: messageTwo.refCode,
@@ -268,7 +270,9 @@ const CreateMessage = () => {
         })
         messageCount++;
         setMessageTwo(data);
-        break;
+    }
+    switch (true)
+    {
       case validMessage(messageThree):
         messages.push({
           refNo: messageThree.refCode,
@@ -277,7 +281,9 @@ const CreateMessage = () => {
         })
         messageCount++;
         setMessageThree(data);
-        break;
+    }
+    switch (true)
+    {
       case validMessage(messageFour):
         messages.push({
           refNo: messageFour.refCode,
@@ -286,7 +292,9 @@ const CreateMessage = () => {
         })
         messageCount++;
         setMessageFour(data);
-        break;
+    }
+    switch (true)
+    {
       case validMessage(messageFive):
         messages.push({
           refNo: messageFive.refCode,
@@ -295,8 +303,8 @@ const CreateMessage = () => {
         })
         messageCount++;
         setMessageFive(data);
-        break;
     }
+
     if (messages.length == 0) {
       alert.info("Nothing to send. Please add item first.");
       onSpinnerChanged(false);
