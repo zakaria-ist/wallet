@@ -14,7 +14,7 @@ import {
   TouchableOpacity,
   InteractionManager
 } from 'react-native';
-import { Badge } from 'react-native-elements'
+import { Badge } from 'react-native-elements';
 import styles from '../lib/global_css.js';
 
 const CommonTop = ({

@@ -11,6 +11,50 @@ import SummaryReport from "../Screens/SummaryReport";
 import TodaysReport from "../Screens/TodaysReport";
 import { WalletColors } from "../assets/Colors.js";
 import {heightPercentageToDP} from "react-native-responsive-screen";
+import AsyncStorage from "@react-native-community/async-storage";
+import Request from "../lib/request";
+
+const request = new Request();
+
+let depositBadgeCount = 0;
+let WithdrawalBadgeCount = 0;
+
+const getBadgeCount = async () => {
+  const msgsUrl = request.getAllMessageUrl();
+  const authToken = await AsyncStorage.getItem('token');
+  const authType = await AsyncStorage.getItem('authType');
+  const when = 'today';
+  if (authType == 'agent') {
+    const params = JSON.stringify(
+      {
+        token: authToken, 
+        role: authType,
+        purpose: 'any',
+        when: 'today'
+      }
+    );
+    const content = await request.post(msgsUrl, params);
+    if (content.ok) {
+      let myUserName = content.myUsername;
+      let messages = [];
+      messages = content.msg.filter((msg) => {
+        return msg.toagent == myUserName;
+      })
+      depositBadgeCount = 0;
+      WithdrawalBadgeCount = 0;
+      if (authType == 'agent' && when == 'today') {
+        messages.map((msg) => {
+          if (msg.purpose == "deposit" && msg.statusId == 0) {
+            depositBadgeCount++;
+          }
+          if(msg.purpose == "withdrawal" && (msg.statusId == 0 || msg.statusId == 11)) {
+            WithdrawalBadgeCount++;
+          }
+        })
+      }
+    }
+  }
+}
 
 const Tab = createBottomTabNavigator();
 // class CustomTabButton extends React.Component {
@@ -415,6 +459,7 @@ const TabNavigationUserWithdrawal = (props) => {
 
 const TabNavigationAgent = (props) => {
   if (!props?.route) return null;
+  getBadgeCount();
   
   return (
     <Tab.Navigator
@@ -436,6 +481,7 @@ const TabNavigationAgent = (props) => {
         options={{
           tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
+          tabBarBadge: depositBadgeCount
         }}
         listeners={({ navigation})=>({
           tabPress: (e) => {
@@ -455,6 +501,7 @@ const TabNavigationAgent = (props) => {
         options={{
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
+          tabBarBadge: WithdrawalBadgeCount
         }}
         listeners={({ navigation})=>({
           tabPress: (e) => {
@@ -473,6 +520,7 @@ const TabNavigationAgent = (props) => {
 }
 const TabNavigationAgentDeposit = (props) => {
   if (!props?.route) return null;
+  getBadgeCount();
   
   return (
     <Tab.Navigator
@@ -505,6 +553,7 @@ const TabNavigationAgentDeposit = (props) => {
         options={{
           tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
+          tabBarBadge: depositBadgeCount
         }}
       />
       <Tab.Screen
@@ -513,6 +562,7 @@ const TabNavigationAgentDeposit = (props) => {
         options={{
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
+          tabBarBadge: WithdrawalBadgeCount
         }}
         listeners={({ navigation})=>({
           tabPress: (e) => {
@@ -531,6 +581,7 @@ const TabNavigationAgentDeposit = (props) => {
 }
 const TabNavigationAgentWithdrawal = (props) => {
   if (!props?.route) return null;
+  getBadgeCount();
   
   return (
     <Tab.Navigator
@@ -563,6 +614,7 @@ const TabNavigationAgentWithdrawal = (props) => {
         options={{
           tabBarLabel: "Deposit",
           tabBarIcon: ({ color, size }) => <Feather name="download" color={color} size={size} />,
+          tabBarBadge: depositBadgeCount
         }}
         listeners={({ navigation})=>({
           tabPress: (e) => {
@@ -582,6 +634,7 @@ const TabNavigationAgentWithdrawal = (props) => {
         options={{
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
+          tabBarBadge: WithdrawalBadgeCount
         }}
       />
     </Tab.Navigator>
