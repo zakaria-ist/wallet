@@ -43,8 +43,6 @@ const request = new Request();
 const alert = new CustomAlert();
 const db = firestore();
 let notiMessages = [];
-let messageCount = 0;
-let messages = [];
 
 const CreateMessage = () => {
   const isFocused = useIsFocused();
@@ -215,37 +213,15 @@ const CreateMessage = () => {
     return result;
   }
   
-  const validMessage = (message) => {
-    let result = false;
-    if (message.refCode != "" || message.amount != "")
-      if (message.refCode != "" || message.amount >= 100) {
-        result = true;
+  const buildMessageList = (message, messages) => {
+    if (message.refCode != "" && message.amount != "" && message.amount >= 100) {
+      messages.push({
+        refNo: message.refCode,
+        mobile: message.refCode,
+        amount: message.amount,
+      })
     }
-    return result;
-  }
-
-  const readMessage = (message) => {
-    messages.push({
-      refNo: message.refCode,
-      mobile: message.refCode,
-      amount: message.amount,
-    })
-    messageCount++;
-  }
-
-  const allMessage = (message) => {
-    let data = {
-      refCode: "",
-      amount: ""
-    }
-    if (validMessage(message)){
-      readMessage(message)
-      setMessageOne(data);
-      setMessageTwo(data);
-      setMessageThree(data);
-      setMessageFour(data);
-      setMessageFive(data);
-    }
+    return messages;
   }
 
   const handleSubmit = async () => {
@@ -268,18 +244,32 @@ const CreateMessage = () => {
     if (transType == "Withdrawal") {
       purpose = 2;
     }
+    let messageCount = 0;
+    let messages = [];
+    let data = {
+      refCode: "",
+      amount: ""
+    }
 
-    allMessage(messageOne)
-    allMessage(messageTwo)
-    allMessage(messageThree)
-    allMessage(messageFour)
-    allMessage(messageFive)
-    
+    messages = buildMessageList(messageOne, messages);
+    messages = buildMessageList(messageTwo, messages);
+    messages = buildMessageList(messageThree, messages);
+    messages = buildMessageList(messageFour, messages);
+    messages = buildMessageList(messageFive, messages);
+
+    setMessageOne(data);
+    setMessageTwo(data);
+    setMessageThree(data);
+    setMessageFour(data);
+    setMessageFive(data);
+
     if (messages.length == 0) {
       alert.info("Nothing to send. Please add item first.");
       onSpinnerChanged(false);
       setDisable(false);
       return;
+    } else {
+      messageCount = messages.length;
     }
     // call message api
     let params = JSON.stringify(
