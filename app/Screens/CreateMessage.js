@@ -212,6 +212,17 @@ const CreateMessage = () => {
     }
     return result;
   }
+  
+  const buildMessageList = (message, messages) => {
+    if (message.refCode != "" && message.amount != "" && message.amount >= 100) {
+      messages.push({
+        refNo: message.refCode,
+        mobile: message.refCode,
+        amount: message.amount,
+      })
+    }
+    return messages;
+  }
 
   const handleSubmit = async () => {
     // validate inputs
@@ -223,12 +234,7 @@ const CreateMessage = () => {
         return;
     }
 
-    let data = {
-      refCode: "",
-      amount: ""
-    }
     const userSendMultiMessageUrl = request.getUserSendMultiMessageUrl();
-    let messageCount = 0;
     if (token == "") {
       token = await AsyncStorage.getItem('token');
     }
@@ -238,57 +244,32 @@ const CreateMessage = () => {
     if (transType == "Withdrawal") {
       purpose = 2;
     }
+    let messageCount = 0;
     let messages = [];
-    if (messageOne.refCode != "" && messageOne.amount != "" && messageOne.amount >= 100) {
-      messages.push({
-        refNo: messageOne.refCode,
-        mobile: messageOne.refCode,
-        amount: messageOne.amount,
-      })
-      messageCount++;
-      setMessageOne(data);
+    let data = {
+      refCode: "",
+      amount: ""
     }
-    if (messageTwo.refCode != "" && messageTwo.amount != "" && messageTwo.amount >= 100) {
-      messages.push({
-        refNo: messageTwo.refCode,
-        mobile: messageTwo.refCode,
-        amount: messageTwo.amount,
-      })
-      messageCount++;
-      setMessageTwo(data);
-    }
-    if (messageThree.refCode != "" && messageThree.amount != "" && messageThree.amount >= 100) {
-      messages.push({
-        refNo: messageThree.refCode,
-        mobile: messageThree.refCode,
-        amount: messageThree.amount,
-      })
-      messageCount++;
-      setMessageThree(data);
-    }
-    if (messageFour.refCode != "" && messageFour.amount != "" && messageFour.amount >= 100) {
-      messages.push({
-        refNo: messageFour.refCode,
-        mobile: messageFour.refCode,
-        amount: messageFour.amount,
-      })
-      messageCount++;
-      setMessageFour(data);
-    }
-    if (messageFive.refCode != "" && messageFive.amount != "" && messageFive.amount >= 100) {
-      messages.push({
-        refNo: messageFive.refCode,
-        mobile: messageFive.refCode,
-        amount: messageFive.amount,
-      })
-      messageCount++;
-      setMessageFive(data);
-    }
+
+    messages = buildMessageList(messageOne, messages);
+    messages = buildMessageList(messageTwo, messages);
+    messages = buildMessageList(messageThree, messages);
+    messages = buildMessageList(messageFour, messages);
+    messages = buildMessageList(messageFive, messages);
+
+    setMessageOne(data);
+    setMessageTwo(data);
+    setMessageThree(data);
+    setMessageFour(data);
+    setMessageFive(data);
+
     if (messages.length == 0) {
       alert.info("Nothing to send. Please add item first.");
       onSpinnerChanged(false);
       setDisable(false);
       return;
+    } else {
+      messageCount = messages.length;
     }
     // call message api
     let params = JSON.stringify(
@@ -399,11 +380,24 @@ const CreateMessage = () => {
             refCode: code,
             amount: amount
           }
-          if (index == 0) setMessageOne(data);
-          else if (index == 1) setMessageTwo(data);
-          else if (index == 2) setMessageThree(data);
-          else if (index == 3) setMessageFour(data);
-          else if (index == 4) setMessageFive(data);
+          switch (index)
+          {
+            case 0:
+              setMessageOne(data);
+              break;
+            case 1:
+              setMessageTwo(data);
+              break;
+            case 2: 
+              setMessageThree(data);
+              break;
+            case 3:
+              setMessageFour(data);  
+              break;
+            case 4:   
+              setMessageFive(data);
+              break;
+          }
         } catch (e) {
           
         }

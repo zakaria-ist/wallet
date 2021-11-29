@@ -425,7 +425,7 @@ const Deposit = () => {
             msg.status = 'Rejected'
           }
 
-          if (authType == 'client' || authType == 'admin' || authType == 'subadmin') {
+          if ((authType == 'client') || (authType == 'agent') || (authType == 'admin') || (authType == 'subadmin')) {
             msg_data = {
               id: msg.id,
               time: time.format(msg.createdatetime),

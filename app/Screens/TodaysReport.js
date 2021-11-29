@@ -230,6 +230,7 @@ const TodaysReport = () => {
             amount: amount,
             oldAmount: msg.oldamount ? msg.oldamount : 0,
             refNo: msg.refno ? msg.refno : "",
+            user: msg.fromuser,
             status: msg.status,
           };
         } else {
@@ -241,6 +242,7 @@ const TodaysReport = () => {
             amount: amount,
             pinNo: msg.pinno ? msg.pinno : "-",
             mobile: msg.mobile ? msg.mobile : "",
+            user: msg.fromuser,
             status: msg.status,
           };
         }
