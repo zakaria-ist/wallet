@@ -398,6 +398,7 @@ const Withdrawal = () => {
             wallet: msg.walletName,
             amount: amount,
             mobile: msg.mobile,
+            user: msg.fromuser,
             sent: false
           };
           msg_list.push(msg_data);
@@ -432,6 +433,7 @@ const Withdrawal = () => {
               amount: amount,
               pinNo: msg.pinno ? msg.pinno : "",
               mobile: msg.mobile ? msg.mobile : "",
+              user: msg.fromuser,
               status: msg.status,
             };
           } else {

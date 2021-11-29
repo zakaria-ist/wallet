@@ -43,6 +43,8 @@ const request = new Request();
 const alert = new CustomAlert();
 const db = firestore();
 let notiMessages = [];
+let messageCount = 0;
+let messages = [];
 
 const CreateMessage = () => {
   const isFocused = useIsFocused();
@@ -222,6 +224,30 @@ const CreateMessage = () => {
     return result;
   }
 
+  const readMessage = (message) => {
+    messages.push({
+      refNo: message.refCode,
+      mobile: message.refCode,
+      amount: message.amount,
+    })
+    messageCount++;
+  }
+
+  const allMessage = (message) => {
+    let data = {
+      refCode: "",
+      amount: ""
+    }
+    if (validMessage(message)){
+      readMessage(message)
+      setMessageOne(data);
+      setMessageTwo(data);
+      setMessageThree(data);
+      setMessageFour(data);
+      setMessageFive(data);
+    }
+  }
+
   const handleSubmit = async () => {
     // validate inputs
     if (invalidMessage(messageOne) || invalidMessage(messageTwo) || invalidMessage(messageThree) ||
@@ -232,12 +258,7 @@ const CreateMessage = () => {
         return;
     }
 
-    let data = {
-      refCode: "",
-      amount: ""
-    }
     const userSendMultiMessageUrl = request.getUserSendMultiMessageUrl();
-    let messageCount = 0;
     if (token == "") {
       token = await AsyncStorage.getItem('token');
     }
@@ -247,57 +268,12 @@ const CreateMessage = () => {
     if (transType == "Withdrawal") {
       purpose = 2;
     }
-    let messages = [];
-    for (i=0; i < 5; i++) {
-      switch (i)
-      {
-        case validMessage(messageOne):
-          messages.push({
-            refNo: messageOne.refCode,
-            mobile: messageOne.refCode,
-            amount: messageOne.amount,
-          })
-          messageCount++;
-          setMessageOne(data);
-          break;
-        case validMessage(messageTwo):
-          messages.push({
-            refNo: messageTwo.refCode,
-            mobile: messageTwo.refCode,
-            amount: messageTwo.amount,
-          })
-          messageCount++;
-          setMessageTwo(data);
-          break;
-        case validMessage(messageThree):
-          messages.push({
-            refNo: messageThree.refCode,
-            mobile: messageThree.refCode,
-            amount: messageThree.amount,
-          })
-          messageCount++;
-          setMessageThree(data);
-          break;
-        case validMessage(messageFour):
-          messages.push({
-            refNo: messageFour.refCode,
-            mobile: messageFour.refCode,
-            amount: messageFour.amount,
-          })
-          messageCount++;
-          setMessageFour(data);
-          break;
-        case validMessage(messageFive):
-          messages.push({
-            refNo: messageFive.refCode,
-            mobile: messageFive.refCode,
-            amount: messageFive.amount,
-          })
-          messageCount++;
-          setMessageFive(data);
-          break;
-      }
-    };
+
+    allMessage(messageOne)
+    allMessage(messageTwo)
+    allMessage(messageThree)
+    allMessage(messageFour)
+    allMessage(messageFive)
     
     if (messages.length == 0) {
       alert.info("Nothing to send. Please add item first.");
