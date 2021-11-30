@@ -79,6 +79,7 @@ const TableRowEditWithdra = ({rowData, parentRefresh, resetBadgeCount}) => {
               <Text style={styles.cell_text}>Amount</Text>
               {/* <Text style={styles.cell_text}>Wallet</Text> */}
               <Text style={styles.cell_text}>Mobile No.</Text>
+              <Text style={styles.cell_text}>User</Text>
             </>
           }
         </View>
@@ -109,7 +110,11 @@ const TableRowEditWithdra = ({rowData, parentRefresh, resetBadgeCount}) => {
              <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text}>{cellData.mobile}</Text>
-            </View>         
+            </View>
+            <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
+              <Text style={styles.cell_text}> : </Text>
+              <Text style={styles.cell_text_value}>{cellData.user}</Text>
+            </View>          
           </View>
         }
       </View>

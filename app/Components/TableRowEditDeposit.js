@@ -80,21 +80,20 @@ const TableRowEditDeposit = ({rowData, parentRefresh, resetBadgeCount}) => {
             (<Text style={styles.cell_text_header}>{cellData.Message}</Text>) 
           :
             <>
-              {/* <Text style={styles.cell_text_ref}>Ref. No.</Text>
-              <Text style={styles.cell_text_input}>Amount</Text> */}
+              <Text style={styles.cell_text_ref}>Ref. No.</Text>
+              <Text style={styles.cell_text_input}>Amount</Text>
               {/* <Text style={styles.cell_text}>Wallet</Text> */}
+              <Text style={styles.cell_text}>User</Text>
             </>
           }
         </View>
         {cellData.hasOwnProperty("Header") ? <></> :
           <View style={{flexDirection: "column"}}>
             <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
-              <Text style={styles.cell_text}>Ref. No.</Text>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text_value}>{cellData.refNo}</Text>
             </View>        
             <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
-              <Text style={styles.cell_text_input}>Amount</Text>
               <Text style={styles.cell_text_input}> : </Text>
               <TextInput 
                 style={styles.text_input}
@@ -109,7 +108,6 @@ const TableRowEditDeposit = ({rowData, parentRefresh, resetBadgeCount}) => {
               />
             </View>
             <View style={{flexDirection: "row", flex: 1, flexWrap: 'wrap'}}>
-              <Text style={styles.cell_text}>User      </Text>
               <Text style={styles.cell_text}> : </Text>
               <Text style={styles.cell_text_value}>{cellData.user}</Text>
             </View>           
