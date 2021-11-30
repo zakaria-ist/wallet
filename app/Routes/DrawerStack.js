@@ -12,6 +12,9 @@ import {widthPercentageToDP} from "react-native-responsive-screen";
 import Feather from 'react-native-vector-icons/Feather';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 import AsyncStorage from "@react-native-community/async-storage";
+import { firebaseConfig } from "../../firebaseConfig.js";
+import firebase from "@react-native-firebase/app";
+import firestore from '@react-native-firebase/firestore';
 import CustomAlert from "../lib/alert";
 import { 
   TabNavigationAdmin, 
@@ -29,6 +32,11 @@ import styles from "../lib/global_css";
 
 const Drawer = createDrawerNavigator();
 const alert = new CustomAlert();
+
+if (!firebase.apps.length) {
+  firebase.initializeApp(firebaseConfig);
+}
+const db = firestore();
 
 const DrawerStack = () => {
   const [authType, setAuthType] = useState("");
@@ -60,7 +68,25 @@ const DrawerStack = () => {
           icon={({ color, size }) => <AntDesign name="logout" color={color} size={size} />}
           onPress={() => {
             alert.ask('Are you sure? You want to sign out?', ()=>{
-              AsyncStorage.clear();
+              AsyncStorage.getItem('authType').then((value) => {
+                if (value == 'agent') {
+                  AsyncStorage.getItem('username').then((userName) => {
+                    db.collection("users")
+                      .doc(String(userName))
+                      .set({
+                        deviceId: '',
+                      })
+                      .then(() => {
+                        console.log("tokenID successfully removed!");
+                      })
+                      .catch((error) => {
+                        console.error("Error removing tokenID: ", error);
+                      });
+                  })
+                }
+                AsyncStorage.clear();
+              })
+              
               // props.navigation.replace('Auth');
               props.navigation.reset({
                 index: 0,
