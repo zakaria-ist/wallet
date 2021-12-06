@@ -16,6 +16,7 @@ import { firebaseConfig } from "../../firebaseConfig.js";
 import firebase from "@react-native-firebase/app";
 import firestore from '@react-native-firebase/firestore';
 import CustomAlert from "../lib/alert";
+import Request from "../lib/request";
 import { 
   TabNavigationAdmin, 
   TabNavigationAdminDeposit, 
@@ -37,6 +38,7 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);
 }
 const db = firestore();
+const request = new Request();
 
 const DrawerStack = () => {
   const [authType, setAuthType] = useState("");
@@ -70,6 +72,12 @@ const DrawerStack = () => {
             alert.ask('Are you sure? You want to sign out?', ()=>{
               AsyncStorage.getItem('authType').then((value) => {
                 if (value == 'agent') {
+                  AsyncStorage.getItem('token').then(async (token) => {
+                    // sending agent device id to server
+                    let params = JSON.stringify({token: token, myDeviceId: ''});
+                    const content = await request.post(request.getSendDeviceIdUrl(), params);
+                    console.log('content', content);
+                  })
                   AsyncStorage.getItem('username').then((userName) => {
                     db.collection("users")
                       .doc(String(userName))
@@ -78,13 +86,16 @@ const DrawerStack = () => {
                       })
                       .then(() => {
                         console.log("tokenID successfully removed!");
+                        AsyncStorage.clear();
                       })
                       .catch((error) => {
                         console.error("Error removing tokenID: ", error);
+                        AsyncStorage.clear();
                       });
                   })
+                } else {
+                  AsyncStorage.clear();
                 }
-                AsyncStorage.clear();
               })
               
               // props.navigation.replace('Auth');

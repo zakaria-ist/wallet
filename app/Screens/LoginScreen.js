@@ -204,7 +204,7 @@ const LoginScreen = ({navigation}) => {
       }
       if (content.userRole == 'agent') {
         //get user permission and save user device token
-        requestUserPermission(userName);
+        requestUserPermission(userName, content.authorizeToken);
       }
       onSpinnerChanged(false);
       // navigate to user pages
@@ -220,7 +220,7 @@ const LoginScreen = ({navigation}) => {
     }
   }
 
-  async function requestUserPermission(userName) {
+  async function requestUserPermission(userName, token) {
     await messaging().requestPermission()
       .then((authStatus) => {
         const enabled =
@@ -234,8 +234,12 @@ const LoginScreen = ({navigation}) => {
                 .set({
                   deviceId: deviceToken,
                 })
-                .then(() => {
+                .then( async () => {
                   console.log("tokenID successfully written!", deviceToken);
+                  // sending agent device id to server
+                  let params = JSON.stringify({token: token, myDeviceId: deviceToken});
+                  const content = await request.post(request.getSendDeviceIdUrl(), params);
+                  console.log('content', content);
                 })
                 .catch((error) => {
                   console.error("Error writing tokenID: ", error);
