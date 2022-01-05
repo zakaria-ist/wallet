@@ -17,6 +17,7 @@ import {
   View,
   InteractionManager,
   KeyboardAvoidingView,
+  DeviceEventEmitter
 } from 'react-native';
 import {heightPercentageToDP} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
@@ -32,6 +33,7 @@ import TableRowEditDeposit from "../Components/TableRowEditDeposit";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
 import { WalletColors } from "../assets/Colors.js";
+import GLOBAL from "../lib/globals";
 import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
@@ -250,6 +252,9 @@ const Deposit = () => {
         if (tempBadgeCount[0] > 0) {
           let temp = [...tempBadgeCount];
           temp[0] = temp[0] - 1;
+          if (GLOBAL.depositBadgeCount > 0) {
+            GLOBAL.depositBadgeCount--;
+          }
           setBadgeCount(temp);
           tempBadgeCount = [...temp];
         }
@@ -258,6 +263,9 @@ const Deposit = () => {
         if (tempBadgeCount[1] > 0) {
           let temp = [...tempBadgeCount];
           temp[1] = temp[1] - 1;
+          if (GLOBAL.depositBadgeCount > 0) {
+            GLOBAL.depositBadgeCount--;
+          }
           setBadgeCount(temp);
           tempBadgeCount = [...temp];
         }
@@ -266,11 +274,15 @@ const Deposit = () => {
         if (tempBadgeCount[2] > 0) {
           let temp = [...tempBadgeCount];
           temp[2] = temp[2] - 1;
+          if (GLOBAL.depositBadgeCount > 0) {
+            GLOBAL.depositBadgeCount--;
+          }
           setBadgeCount(temp);
           tempBadgeCount = [...temp];
         }
       }
     }
+    DeviceEventEmitter.emit('updateBadgeCount',  {depositBadgeCount:GLOBAL.depositBadgeCount, withdrawalBadgeCount: GLOBAL.withdrawalBadgeCount})
   }
 
   const renderTablesData = async () => {

@@ -17,7 +17,8 @@ import {
   RefreshControl,
   TouchableOpacity,
   TouchableWithoutFeedback,
-  KeyboardAvoidingView
+  KeyboardAvoidingView,
+  DeviceEventEmitter
 } from 'react-native';
 import {heightPercentageToDP, widthPercentageToDP,} from "react-native-responsive-screen";
 import { useStateIfMounted } from "use-state-if-mounted";
@@ -34,6 +35,7 @@ import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
 import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
+import GLOBAL from "../lib/globals";
 import styles from '../lib/global_css';
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
@@ -255,6 +257,9 @@ const Withdrawal = () => {
         if (tempBadgeCount[0] > 0) {
           let temp = [...tempBadgeCount];
           temp[0] = temp[0] - 1;
+          if (GLOBAL.withdrawalBadgeCount > 0) {
+            GLOBAL.withdrawalBadgeCount--;
+          }
           setBadgeCount(temp);
           tempBadgeCount = [...temp];
         }
@@ -263,6 +268,9 @@ const Withdrawal = () => {
         if (tempBadgeCount[1] > 0) {
           let temp = [...tempBadgeCount];
           temp[1] = temp[1] - 1;
+          if (GLOBAL.withdrawalBadgeCount > 0) {
+            GLOBAL.withdrawalBadgeCount--;
+          }
           setBadgeCount(temp);
           tempBadgeCount = [...temp];
         }
@@ -271,11 +279,15 @@ const Withdrawal = () => {
         if (tempBadgeCount[2] > 0) {
           let temp = [...tempBadgeCount];
           temp[2] = temp[2] - 1;
+          if (GLOBAL.withdrawalBadgeCount > 0) {
+            GLOBAL.withdrawalBadgeCount--;
+          }
           setBadgeCount(temp);
           tempBadgeCount = [...temp];
         }
       }
     }
+    DeviceEventEmitter.emit('updateBadgeCount',  {depositBadgeCount:GLOBAL.depositBadgeCount, withdrawalBadgeCount: GLOBAL.withdrawalBadgeCount})
   }
 
   const renderTablesData = async () => {

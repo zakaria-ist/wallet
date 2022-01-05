@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Button } from 'react-native-elements';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, DeviceEventEmitter} from 'react-native';
+import { useStateIfMounted } from "use-state-if-mounted";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Feather from 'react-native-vector-icons/Feather';
 import { RFValue } from "react-native-responsive-fontsize";
@@ -13,11 +14,9 @@ import { WalletColors } from "../assets/Colors.js";
 import {heightPercentageToDP} from "react-native-responsive-screen";
 import AsyncStorage from "@react-native-community/async-storage";
 import Request from "../lib/request";
+import GLOBAL from "../lib/globals";
 
 const request = new Request();
-
-let depositBadgeCount = 0;
-let WithdrawalBadgeCount = 0;
 
 const getBadgeCount = async () => {
   const msgsUrl = request.getAllMessageUrl();
@@ -40,47 +39,27 @@ const getBadgeCount = async () => {
       messages = content.msg.filter((msg) => {
         return msg.toagent == myUserName;
       })
-      depositBadgeCount = 0;
-      WithdrawalBadgeCount = 0;
+      let depositBadgeCount = 0;
+      let withdrawalBadgeCount = 0;
       if (authType == 'agent' && when == 'today') {
         messages.map((msg) => {
           if (msg.purpose == "deposit" && msg.statusId == 0) {
             depositBadgeCount++;
           }
           if(msg.purpose == "withdrawal" && (msg.statusId == 0 || msg.statusId == 11)) {
-            WithdrawalBadgeCount++;
+            withdrawalBadgeCount++;
           }
         })
+        GLOBAL.depositBadgeCount = depositBadgeCount;
+        GLOBAL.withdrawalBadgeCount = withdrawalBadgeCount;
+        DeviceEventEmitter.emit('updateBadgeCount',  {depositBadgeCount:GLOBAL.depositBadgeCount, withdrawalBadgeCount: GLOBAL.withdrawalBadgeCount})
       }
     }
   }
 }
 
 const Tab = createBottomTabNavigator();
-// class CustomTabButton extends React.Component {
-//   render() {
-//     const {
-//       onPress,
-//       onLongPress,
-//       show,
-//       accessibilityLabel,
-//       ...props
-//     } = this.props;
 
-//     if (!show) return null;
-
-//     return (
-//       <TouchableOpacity
-//         onPress={onPress}
-//         onLongPress={onLongPress}
-//         hitSlop={{ left: 15, right: 15, top: 5, bottom: 5 }}
-//         accessibilityLabel={accessibilityLabel}
-//       >
-//         <View {...props} />
-//       </TouchableOpacity>
-//     );
-//   }
-// }
 const screenOptionStyle = {
   headerStyle: {
     backgroundColor: WalletColors.white,
@@ -459,7 +438,22 @@ const TabNavigationUserWithdrawal = (props) => {
 
 const TabNavigationAgent = (props) => {
   if (!props?.route) return null;
+  // get new badge count
   getBadgeCount();
+
+  const [depositBadgeCount, setDepositBadgeCount] = useStateIfMounted(GLOBAL.depositBadgeCount);
+  const [withdrawalBadgeCount, setWithdrawalBadgeCount] = useStateIfMounted(GLOBAL.withdrawalBadgeCount);
+  
+  const handleBadgeCount = (value) => {
+    setDepositBadgeCount(value.depositBadgeCount);
+    setWithdrawalBadgeCount(value.withdrawalBadgeCount);
+  };
+
+  useEffect(() => {
+    const listener = DeviceEventEmitter.addListener("updateBadgeCount", handleBadgeCount);
+    return () =>
+      listener.remove();
+  }, []);
   
   return (
     <Tab.Navigator
@@ -501,7 +495,7 @@ const TabNavigationAgent = (props) => {
         options={{
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
-          tabBarBadge: WithdrawalBadgeCount
+          tabBarBadge: withdrawalBadgeCount
         }}
         listeners={({ navigation})=>({
           tabPress: (e) => {
@@ -520,7 +514,22 @@ const TabNavigationAgent = (props) => {
 }
 const TabNavigationAgentDeposit = (props) => {
   if (!props?.route) return null;
+  // get new badge count
   getBadgeCount();
+
+  const [depositBadgeCount, setDepositBadgeCount] = useStateIfMounted(GLOBAL.depositBadgeCount);
+  const [withdrawalBadgeCount, setWithdrawalBadgeCount] = useStateIfMounted(GLOBAL.withdrawalBadgeCount);
+  
+  const handleBadgeCount = (value) => {
+    setDepositBadgeCount(value.depositBadgeCount);
+    setWithdrawalBadgeCount(value.withdrawalBadgeCount);
+  };
+
+  useEffect(() => {
+    const listener = DeviceEventEmitter.addListener("updateBadgeCount", handleBadgeCount);
+    return () =>
+      listener.remove();
+  }, []);
   
   return (
     <Tab.Navigator
@@ -562,7 +571,7 @@ const TabNavigationAgentDeposit = (props) => {
         options={{
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
-          tabBarBadge: WithdrawalBadgeCount
+          tabBarBadge: withdrawalBadgeCount
         }}
         listeners={({ navigation})=>({
           tabPress: (e) => {
@@ -581,7 +590,22 @@ const TabNavigationAgentDeposit = (props) => {
 }
 const TabNavigationAgentWithdrawal = (props) => {
   if (!props?.route) return null;
+  // get new badge count
   getBadgeCount();
+
+  const [depositBadgeCount, setDepositBadgeCount] = useStateIfMounted(GLOBAL.depositBadgeCount);
+  const [withdrawalBadgeCount, setWithdrawalBadgeCount] = useStateIfMounted(GLOBAL.withdrawalBadgeCount);
+
+  const handleBadgeCount = (value) => {
+    setDepositBadgeCount(value.depositBadgeCount);
+    setWithdrawalBadgeCount(value.withdrawalBadgeCount);
+  };
+
+  useEffect(() => {
+    const listener = DeviceEventEmitter.addListener("updateBadgeCount", handleBadgeCount);
+    return () =>
+      listener.remove();
+  }, []);
   
   return (
     <Tab.Navigator
@@ -634,7 +658,7 @@ const TabNavigationAgentWithdrawal = (props) => {
         options={{
           tabBarLabel: "Withdrawal",
           tabBarIcon: ({ color, size }) => <Feather name="upload" color={color} size={size} />,
-          tabBarBadge: WithdrawalBadgeCount
+          tabBarBadge: withdrawalBadgeCount
         }}
       />
     </Tab.Navigator>
