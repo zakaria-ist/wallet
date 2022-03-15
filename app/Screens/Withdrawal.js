@@ -37,6 +37,7 @@ import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { WalletColors } from "../assets/Colors.js";
 import GLOBAL from "../lib/globals";
 import styles from '../lib/global_css';
+import CustomAlert from "../lib/alert";
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
 import Format from "../lib/format";
@@ -46,6 +47,7 @@ import resetTimeout from '../lib/resetTimeout';
 const picker = new Picker();
 
 const format = new Format();
+const alert = new CustomAlert();
 const request = new Request();
 const time = new KTime();
 
@@ -311,177 +313,184 @@ const Withdrawal = () => {
         when: when
       }
     );
-    const content = await request.post(msgsUrl, params);
-    if (content.ok) {
-      let myUserName = content.myUsername;
-      let messages = [];
-      if (authType == 'agent') {
-        messages = content.msg.filter((msg) => {
-          return msg.toagent == myUserName;
-        })
-      } else if (authType == 'client') {
-        messages = content.msg.filter((msg) => {
-          return msg.belongclient == myUserName;
-        })
-      } else if (authType == 'user') {
-        messages = content.msg.filter((msg) => {
-          return msg.fromuser == myUserName;
-        })
-      } else {
-        messages = content.msg;
-      }
-      // porpose filter
-      messages = messages.filter((msg) => {
-        return (msg.purpose == "withdrawal")
-      })
-
-      // badge count
-      let bOne = 0;
-      let bTwo = 0;
-      let bThree = 0;
-      if (authType == 'agent' && when == 'today') {
-        messages.map((msg) => {
-          if ((msg.statusId == 0 || msg.statusId == 11)) {
-            if (parseInt(msg.walletId) == 1) {
-              bOne++;
-            }
-            else if (parseInt(msg.walletId) == 2) {
-              bTwo++;
-            }
-            else if (parseInt(msg.walletId) == 3) {
-              bThree++;
-            }
-          }
-        })
-        setBadgeCount([bOne, bTwo, bThree]);
-        tempBadgeCount = [bOne, bTwo, bThree];
-      } else {
-        setBadgeCount(null);
-      }
-      // ftatus filter
-      // messages = messages.filter((msg) => {
-      //   if (accepted && String(msg.status).toLowerCase() == 'accepted' || 
-      //         String(msg.status).toLowerCase() == 'sent' || 
-      //         String(msg.status).toLowerCase() == "updated & accepted") return true;
-      //   // if (rejected && msg.status == 'rejected') return true;
-      //   if (pending && String(msg.status).toLowerCase() == 'pending') return true;
-      //   if (noStatus && String(msg.status).toLowerCase() == 'outdated') return true;
-      //   return false;
-      // })
-      messages = messages.filter((msg) => {
-        if (accepted && msg.statusId == 22 ) return true;
-        if (when == 'today' && pending && (msg.statusId == 0 || msg.statusId == 11)) return true;
-        if (when == 'yesterday' && noStatus && (msg.statusId == 33 || msg.statusId == 0 || msg.statusId == 11)) return true;
-        return false;
-      })
-      // wallet filter
-      messages = messages.filter((msg) => {
-        if (authType == 'admin' || authType == 'subadmin') {
-          return (parseInt(picker_wallet) == parseInt(msg.walletId))
+    try {
+      const content = await request.post(msgsUrl, params);
+      if (content.ok) {
+        let myUserName = content.myUsername;
+        let messages = [];
+        if (authType == 'agent') {
+          messages = content.msg.filter((msg) => {
+            return msg.toagent == myUserName;
+          })
+        } else if (authType == 'client') {
+          messages = content.msg.filter((msg) => {
+            return msg.belongclient == myUserName;
+          })
+        } else if (authType == 'user') {
+          messages = content.msg.filter((msg) => {
+            return msg.fromuser == myUserName;
+          })
         } else {
-          return (parseInt(walletType) == parseInt(msg.walletId))
+          messages = content.msg;
         }
-      })
-      // user & client filter
-      if (authType == 'admin' || authType == 'subadmin') {
+        // porpose filter
         messages = messages.filter((msg) => {
-          return (picker_group && picker_group == msg.belongclient)
+          return (msg.purpose == "withdrawal")
         })
-      }
-      if (authType == 'client') {
-        messages = messages.filter((msg) => {
-          return (picker_user && picker_user == msg.fromuser)
-        })
-      }
-      
-      let msg_list = [];
-      let accepted_total = 0;
-      let pending_total = 0;
-      if (authType == 'agent' && transType == 'Today') {
-        messages = messages.filter((msg) => {
-          return (msg.statusId == 0 || msg.statusId == 11);
-        })
-        msg_list.push(agentTableHeader);
-        messages.map((msg) => {
-          let amount = parseFloat(String(msg.amount).replace(',', ''));
-          let msg_data = {
-            id: msg.id,
-            time: time.format(msg.createdatetime),
-            wallet: msg.walletName,
-            amount: amount,
-            mobile: msg.mobile,
-            user: msg.fromuser,
-            sent: false
-          };
-          msg_list.push(msg_data);
-        })
-        setTableEditData(msg_list);
-      } else {
-        msg_list.push(tableHeader);
-        messages.map((msg) => {
-          let msg_data = {};
-          let amount = parseFloat(String(msg.amount).replace(',', ''));
-          if (msg.statusId == 0 || msg.statusId == 11) {
-            if (when == 'yesterday') {
-              msg.status = ''
-            } else {
-              pending_total += amount;
-              msg.status = 'Pending'
+
+        // badge count
+        let bOne = 0;
+        let bTwo = 0;
+        let bThree = 0;
+        if (authType == 'agent' && when == 'today') {
+          messages.map((msg) => {
+            if ((msg.statusId == 0 || msg.statusId == 11)) {
+              if (parseInt(msg.walletId) == 1) {
+                bOne++;
+              }
+              else if (parseInt(msg.walletId) == 2) {
+                bTwo++;
+              }
+              else if (parseInt(msg.walletId) == 3) {
+                bThree++;
+              }
             }
-          }
-          else if (msg.statusId == 33) {
-            msg.status = ''
-          }
-          else if (msg.statusId == 22) {
-            accepted_total += amount;
-            msg.status = 'Accepted'
-          }
-          if (authType == 'agent') {
-            msg_data = {
-              id: msg.id,
-              time: time.format(msg.createdatetime),
-              HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
-              wallet: msg.walletName,
-              amount: amount,
-              pinNo: msg.pinno ? msg.pinno : "",
-              mobile: msg.mobile ? msg.mobile : "",
-              user: msg.fromuser,
-              status: msg.status,
-            };
-          } else {
-            msg_data = {
-              id: msg.id,
-              time: time.format(msg.createdatetime),
-              HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
-              wallet: msg.walletName,
-              amount: amount,
-              pinNo: msg.pinno ? msg.pinno : "",
-              mobile: msg.mobile ? msg.mobile : "",
-              user: msg.fromuser,
-              status: msg.status,
-            };
-          }
-          msg_list.push(msg_data);
+          })
+          setBadgeCount([bOne, bTwo, bThree]);
+          tempBadgeCount = [bOne, bTwo, bThree];
+        } else {
+          setBadgeCount(null);
+        }
+        // ftatus filter
+        // messages = messages.filter((msg) => {
+        //   if (accepted && String(msg.status).toLowerCase() == 'accepted' || 
+        //         String(msg.status).toLowerCase() == 'sent' || 
+        //         String(msg.status).toLowerCase() == "updated & accepted") return true;
+        //   // if (rejected && msg.status == 'rejected') return true;
+        //   if (pending && String(msg.status).toLowerCase() == 'pending') return true;
+        //   if (noStatus && String(msg.status).toLowerCase() == 'outdated') return true;
+        //   return false;
+        // })
+        messages = messages.filter((msg) => {
+          if (accepted && msg.statusId == 22 ) return true;
+          if (when == 'today' && pending && (msg.statusId == 0 || msg.statusId == 11)) return true;
+          if (when == 'yesterday' && noStatus && (msg.statusId == 33 || msg.statusId == 0 || msg.statusId == 11)) return true;
+          return false;
         })
-        setTableData(msg_list);
-        setAcceptedTotal(accepted_total);
-        setPendingTotal(pending_total);
-        handleSetTimeout();
-      }
-    } else {
-      let msg_list = [];
-      if (authType == 'agent' && transType == 'Today') {
-        msg_list.push(agentTableHeader);
+        // wallet filter
+        messages = messages.filter((msg) => {
+          if (authType == 'admin' || authType == 'subadmin') {
+            return (parseInt(picker_wallet) == parseInt(msg.walletId))
+          } else {
+            return (parseInt(walletType) == parseInt(msg.walletId))
+          }
+        })
+        // user & client filter
+        if (authType == 'admin' || authType == 'subadmin') {
+          messages = messages.filter((msg) => {
+            return (picker_group && picker_group == msg.belongclient)
+          })
+        }
+        if (authType == 'client') {
+          messages = messages.filter((msg) => {
+            return (picker_user && picker_user == msg.fromuser)
+          })
+        }
+        
+        let msg_list = [];
+        let accepted_total = 0;
+        let pending_total = 0;
+        if (authType == 'agent' && transType == 'Today') {
+          messages = messages.filter((msg) => {
+            return (msg.statusId == 0 || msg.statusId == 11);
+          })
+          msg_list.push(agentTableHeader);
+          messages.map((msg) => {
+            let amount = parseFloat(String(msg.amount).replace(',', ''));
+            let msg_data = {
+              id: msg.id,
+              time: time.format(msg.createdatetime),
+              wallet: msg.walletName,
+              amount: amount,
+              mobile: msg.mobile,
+              user: msg.fromuser,
+              sent: false
+            };
+            msg_list.push(msg_data);
+          })
+          setTableEditData(msg_list);
+        } else {
+          msg_list.push(tableHeader);
+          messages.map((msg) => {
+            let msg_data = {};
+            let amount = parseFloat(String(msg.amount).replace(',', ''));
+            if (msg.statusId == 0 || msg.statusId == 11) {
+              if (when == 'yesterday') {
+                msg.status = ''
+              } else {
+                pending_total += amount;
+                msg.status = 'Pending'
+              }
+            }
+            else if (msg.statusId == 33) {
+              msg.status = ''
+            }
+            else if (msg.statusId == 22) {
+              accepted_total += amount;
+              msg.status = 'Accepted'
+            }
+            if (authType == 'agent') {
+              msg_data = {
+                id: msg.id,
+                time: time.format(msg.createdatetime),
+                HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+                wallet: msg.walletName,
+                amount: amount,
+                pinNo: msg.pinno ? msg.pinno : "",
+                mobile: msg.mobile ? msg.mobile : "",
+                user: msg.fromuser,
+                status: msg.status,
+              };
+            } else {
+              msg_data = {
+                id: msg.id,
+                time: time.format(msg.createdatetime),
+                HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+                wallet: msg.walletName,
+                amount: amount,
+                pinNo: msg.pinno ? msg.pinno : "",
+                mobile: msg.mobile ? msg.mobile : "",
+                user: msg.fromuser,
+                status: msg.status,
+              };
+            }
+            msg_list.push(msg_data);
+          })
+          setTableData(msg_list);
+          setAcceptedTotal(accepted_total);
+          setPendingTotal(pending_total);
+          handleSetTimeout();
+        }
       } else {
-        msg_list.push(tableHeader);
-        handleSetTimeout();
+        let msg_list = [];
+        if (authType == 'agent' && transType == 'Today') {
+          msg_list.push(agentTableHeader);
+        } else {
+          msg_list.push(tableHeader);
+          handleSetTimeout();
+        }
+        setTableData(msg_list);
+        setAcceptedTotal(0);
+        setPendingTotal(0);
       }
-      setTableData(msg_list);
-      setAcceptedTotal(0);
-      setPendingTotal(0);
+    } catch(e) {
+      console.log('ERROR', e);
+      alert.info("Check your internet connection.");
+      handleSetTimeout();
+    } finally {
+      onSpinnerChanged(false);
+      autoRefresh = false;
     }
-    onSpinnerChanged(false);
-    autoRefresh = false;
   }
 
   const renderItem = useCallback(({ item }) => (

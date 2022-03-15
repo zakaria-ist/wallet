@@ -32,6 +32,7 @@ import CustomHeader from "../Components/CustomHeader";
 import TableRow from "../Components/TableRow";
 import CommonTop from "../Components/CommonTop";
 import { WalletColors } from "../assets/Colors.js";
+import CustomAlert from "../lib/alert";
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
 import Format from "../lib/format";
@@ -39,6 +40,7 @@ import resetTimeout from "../lib/resetTimeout";
 
 const format = new Format();
 const request = new Request();
+const alert = new CustomAlert();
 const time = new KTime();
 
 let authType = "";
@@ -186,79 +188,87 @@ const TodaysReport = () => {
         when: 'today'
       }
     );
-
-    const content = await request.post(msgsUrl, params);
-    if (content.ok) {
-      let myUserName = content.myUsername;
-      let messages = content.msg.filter((msg) => {
-        return msg.toagent == myUserName;
-      })
-      // status filter
-      messages = messages.filter((msg) => {
-        if (accepted && (
-              msg.statusId == 1 || 
-              msg.statusId == 3 || 
-              msg.statusId == 22
-            )) return true;
-        if (rejected && msg.statusId == 2) return true;
-        return false;
-      })
-      // wallet filter
-      messages = messages.filter((msg) => {
-        return (parseInt(walletType) == parseInt(msg.walletId))
-      })
-      
-      let msg_list = [];
-      let total = 0;
-      msg_list.push(tableHeader);
-      messages.map((msg) => {
-        let amount = parseFloat(String(msg.amount).replace(',', ''));
-        if (msg.statusId == 1 || msg.statusId == 3 || msg.statusId == 22) {
-          total += amount;
-          msg.status = 'Accepted'
-        }
-        else if (msg.statusId == 2) {
-          msg.status = 'Rejected'
-        }
-        let msg_data = {};
-        if (purpose == 'deposit') {
-          msg_data = {
-            id: msg.id,
-            time: time.format(msg.createdatetime),
-            HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
-            wallet: msg.walletName,
-            amount: amount,
-            oldAmount: msg.oldamount ? msg.oldamount : 0,
-            refNo: msg.refno ? msg.refno : "",
-            user: msg.fromuser,
-            status: msg.status,
-          };
-        } else {
-          msg_data = {
-            id: msg.id,
-            time: time.format(msg.createdatetime),
-            HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
-            wallet: msg.walletName,
-            amount: amount,
-            pinNo: msg.pinno ? msg.pinno : "-",
-            mobile: msg.mobile ? msg.mobile : "",
-            user: msg.fromuser,
-            status: msg.status,
-          };
-        }
-        msg_list.push(msg_data);
-      })
-      setTableData(msg_list);
-      setAcceptedTotal(total);
-    } else {
-      let msg_list = [];
-      msg_list.push(tableHeader);
-      setTableData(msg_list);
-      setAcceptedTotal(0);
+    try{
+      const content = await request.post(msgsUrl, params);
+      if (content.ok) {
+        let myUserName = content.myUsername;
+        let messages = content.msg.filter((msg) => {
+          return msg.toagent == myUserName;
+        })
+        // status filter
+        messages = messages.filter((msg) => {
+          if (accepted && (
+                msg.statusId == 1 || 
+                msg.statusId == 3 || 
+                msg.statusId == 22
+              )) return true;
+          if (rejected && msg.statusId == 2) return true;
+          return false;
+        })
+        // wallet filter
+        messages = messages.filter((msg) => {
+          return (parseInt(walletType) == parseInt(msg.walletId))
+        })
+        
+        let msg_list = [];
+        let total = 0;
+        msg_list.push(tableHeader);
+        messages.map((msg) => {
+          let amount = parseFloat(String(msg.amount).replace(',', ''));
+          if (msg.statusId == 1 || msg.statusId == 3 || msg.statusId == 22) {
+            total += amount;
+            msg.status = 'Accepted'
+          }
+          else if (msg.statusId == 2) {
+            msg.status = 'Rejected'
+          }
+          let msg_data = {};
+          if (purpose == 'deposit') {
+            msg_data = {
+              id: msg.id,
+              time: time.format(msg.createdatetime),
+              HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+              wallet: msg.walletName,
+              amount: amount,
+              oldAmount: msg.oldamount ? msg.oldamount : 0,
+              refNo: msg.refno ? msg.refno : "",
+              user: msg.fromuser,
+              status: msg.status,
+            };
+          } else {
+            msg_data = {
+              id: msg.id,
+              time: time.format(msg.createdatetime),
+              HDLtime: "(" + msg.updatedatetime ? time.format(msg.updatedatetime) : "" + ")",
+              wallet: msg.walletName,
+              amount: amount,
+              pinNo: msg.pinno ? msg.pinno : "-",
+              mobile: msg.mobile ? msg.mobile : "",
+              user: msg.fromuser,
+              status: msg.status,
+            };
+          }
+          msg_list.push(msg_data);
+        })
+        setTableData(msg_list);
+        setAcceptedTotal(total);
+      } else {
+        let msg_list = [];
+        msg_list.push(tableHeader);
+        setTableData(msg_list);
+        setAcceptedTotal(0);
+      }
+      // onSpinnerChanged(false);
+      // handleSetTimeout();
+      // autoRefresh = false;
+    } catch(e) {
+      console.log('ERROR', e);
+      alert.info("Check your internet connection.");
+    } finally {
+      onSpinnerChanged(false);
+      handleSetTimeout();
+      autoRefresh = false;
     }
-    onSpinnerChanged(false);
-    handleSetTimeout();
-    autoRefresh = false;
   }
 
   const renderItem =  ({ item }) => (

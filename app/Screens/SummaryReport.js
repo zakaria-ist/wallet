@@ -25,12 +25,14 @@ import SummaryTableRow from "../Components/SummaryTableRow";
 import CustomHeader from "../Components/CustomHeader";
 import CommonTop from "../Components/CommonTop";
 import styles from '../lib/global_css';
+import CustomAlert from "../lib/alert";
 import Request from "../lib/request";
 import KTime from '../lib/formatTime';
 import Format from "../lib/format";
 import resetTimeout from "../lib/resetTimeout";
 
 const format = new Format();
+const alert = new CustomAlert();
 const request = new Request();
 const time = new KTime();
 
@@ -153,22 +155,28 @@ const SummaryReport = () => {
         when: when
       }
     );
-    const content = await request.post(statisticUrl, params);
-    if (content.ok) {
-      let msg_list = [];
-      msg_list.push(tableHeader);
-      messages = content.clientGroups.map((msg) => {
-        msg_list.push(msg);
-      })
-      setTableData(msg_list);
-    } else {
-      let msg_list = [];
-      msg_list.push(tableHeader);
-      setTableData(msg_list);
+    try {
+      const content = await request.post(statisticUrl, params);
+      if (content.ok) {
+        let msg_list = [];
+        msg_list.push(tableHeader);
+        messages = content.clientGroups.map((msg) => {
+          msg_list.push(msg);
+        })
+        setTableData(msg_list);
+      } else {
+        let msg_list = [];
+        msg_list.push(tableHeader);
+        setTableData(msg_list);
+      }
+    } catch(e) {
+      console.log('ERROR', e);
+      alert.info("Check your internet connection.");
+    } finally {
+      onSpinnerChanged(false);
+      handleSetTimeout();
+      autoRefresh = false;
     }
-    onSpinnerChanged(false);
-    handleSetTimeout();
-    autoRefresh = false;
   }
 
   const renderItem = ({ item }) => (

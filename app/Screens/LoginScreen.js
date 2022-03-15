@@ -166,57 +166,64 @@ const LoginScreen = ({navigation}) => {
       return;
     }
     onSpinnerChanged(true);
-    const auth_url = request.getAuthUrl();
-    let params = JSON.stringify({username: userName, password: password});
-    const content = await request.post(auth_url, params);
-    console.log('content', content);
-    if (content.authorizeToken && content.authorizeToken != '') {
-      // update the async storage
-      AsyncStorage.setItem('isUser', '1');
-      AsyncStorage.setItem('username', userName);
-      AsyncStorage.setItem('password', password);
-      AsyncStorage.setItem('authType', content.userRole);
-      AsyncStorage.setItem('token', content.authorizeToken);
-      let clientUrl = null;
-      if (content.userRole == 'admin') {
-        clientUrl = request.getAdminClientListUrl();
-      } else if (content.userRole == 'subadmin') {
-        clientUrl = request.getSubAdminClientListUrl();
-      } else if (content.userRole == 'client') {
-        clientUrl = request.getClientUserListUrl();
-      } else if (content.userRole == 'agent') {
-        clientUrl = request.getAgentUserListUrl();
-        AsyncStorage.setItem('superiorClient', JSON.stringify(content.superiorClient));
-      } else if (content.userRole == 'user') {
-        clientUrl = request.getAgentUserListUrl();
-        AsyncStorage.setItem('superiorClient', JSON.stringify(content.superiorClient));
-        AsyncStorage.setItem('superiorAgent', JSON.stringify(content.superiorAgent));
+    try {
+      const auth_url = request.getAuthUrl();
+      let params = JSON.stringify({username: userName, password: password});
+      const content = await request.post(auth_url, params);
+      console.log('content', content);
+      if (content.authorizeToken && content.authorizeToken != '') {
+        // update the async storage
+        AsyncStorage.setItem('isUser', '1');
+        AsyncStorage.setItem('username', userName);
+        AsyncStorage.setItem('password', password);
+        AsyncStorage.setItem('authType', content.userRole);
+        AsyncStorage.setItem('token', content.authorizeToken);
+        let clientUrl = null;
+        if (content.userRole == 'admin') {
+          clientUrl = request.getAdminClientListUrl();
+        } else if (content.userRole == 'subadmin') {
+          clientUrl = request.getSubAdminClientListUrl();
+        } else if (content.userRole == 'client') {
+          clientUrl = request.getClientUserListUrl();
+        } else if (content.userRole == 'agent') {
+          clientUrl = request.getAgentUserListUrl();
+          AsyncStorage.setItem('superiorClient', JSON.stringify(content.superiorClient));
+        } else if (content.userRole == 'user') {
+          clientUrl = request.getAgentUserListUrl();
+          AsyncStorage.setItem('superiorClient', JSON.stringify(content.superiorClient));
+          AsyncStorage.setItem('superiorAgent', JSON.stringify(content.superiorAgent));
+        }
+        if (clientUrl) {
+          await request.get(clientUrl + '?token=' + content.authorizeToken)
+            .then(result => {
+              if (content.userRole == 'admin' || content.userRole == 'subadmin') {
+                AsyncStorage.setItem('groupList', JSON.stringify(Object.values(result['clients'])));
+              } else if (content.userRole == 'client' || content.userRole == 'agent') {
+                AsyncStorage.setItem('userList', JSON.stringify(Object.values(result['users'])));
+              }
+            })
+        }
+        if (content.userRole == 'agent') {
+          //get user permission and save user device token
+          requestUserPermission(userName, content.authorizeToken);
+        }
+        onSpinnerChanged(false);
+        // navigate to user pages
+        // navigation.replace('DrawerStack');
+        navigation.reset({
+          index: 0,
+          key: null,
+          routes: [{ name: "DrawerStack" }],
+        });
+      } else {
+        onSpinnerChanged(false);
+        alert.warning("Sign in is unsuccessful. Check the username or password. ");
       }
-      if (clientUrl) {
-        await request.get(clientUrl + '?token=' + content.authorizeToken)
-          .then(result => {
-            if (content.userRole == 'admin' || content.userRole == 'subadmin') {
-              AsyncStorage.setItem('groupList', JSON.stringify(Object.values(result['clients'])));
-            } else if (content.userRole == 'client' || content.userRole == 'agent') {
-              AsyncStorage.setItem('userList', JSON.stringify(Object.values(result['users'])));
-            }
-          })
-      }
-      if (content.userRole == 'agent') {
-        //get user permission and save user device token
-        requestUserPermission(userName, content.authorizeToken);
-      }
+    } catch(e) {
+      console.log('ERROR', e);
+      alert.info("Check your internet connection.");
+    } finally {
       onSpinnerChanged(false);
-      // navigate to user pages
-      // navigation.replace('DrawerStack');
-      navigation.reset({
-        index: 0,
-        key: null,
-        routes: [{ name: "DrawerStack" }],
-      });
-    } else {
-      onSpinnerChanged(false);
-      alert.warning("Sign in is unsuccessful. Check the username or password. ");
     }
   }
 
