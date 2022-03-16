@@ -253,6 +253,46 @@ const Withdrawal = () => {
     , 5000) : clearTimeout(refreshTimeout);
   }
 
+  const updateTabBarBadgeCount = async () => {
+    const msgsUrl = request.getAllMessageUrl();
+    const authToken = await AsyncStorage.getItem('token');
+    const authType = await AsyncStorage.getItem('authType');
+    const when = 'today';
+    if (authType == 'agent') {
+      const params = JSON.stringify(
+        {
+          token: authToken, 
+          role: authType,
+          purpose: 'any',
+          when: 'today'
+        }
+      );
+      const content = await request.post(msgsUrl, params);
+      if (content.ok) {
+        let myUserName = content.myUsername;
+        let messages = [];
+        messages = content.msg.filter((msg) => {
+          return msg.toagent == myUserName;
+        })
+        let depositBadgeCount = 0;
+        let withdrawalBadgeCount = 0;
+        if (authType == 'agent' && when == 'today') {
+          messages.map((msg) => {
+            if (msg.purpose == "deposit" && msg.statusId == 0) {
+              depositBadgeCount++;
+            }
+            if(msg.purpose == "withdrawal" && (msg.statusId == 0 || msg.statusId == 11)) {
+              withdrawalBadgeCount++;
+            }
+          })
+          GLOBAL.depositBadgeCount = depositBadgeCount;
+          GLOBAL.withdrawalBadgeCount = withdrawalBadgeCount;
+          DeviceEventEmitter.emit('updateBadgeCount',  {depositBadgeCount:GLOBAL.depositBadgeCount, withdrawalBadgeCount: GLOBAL.withdrawalBadgeCount})
+        }
+      }
+    }
+  }
+
   const resetBadgeCount = () => {
     if(badgeCount) {
       if (parseInt(walletType) == 1) {
@@ -361,6 +401,8 @@ const Withdrawal = () => {
         } else {
           setBadgeCount(null);
         }
+        // update tabbar badge count
+        updateTabBarBadgeCount();
         // ftatus filter
         // messages = messages.filter((msg) => {
         //   if (accepted && String(msg.status).toLowerCase() == 'accepted' || 
