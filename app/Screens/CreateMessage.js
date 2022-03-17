@@ -206,15 +206,15 @@ const CreateMessage = () => {
 
   const invalidMessage = (message) => {
     let result = false;
-    if (message.refCode != "" || message.amount != "")
-      if (message.refCode == "" || message.amount <= 99) {
+    if (String(message.refCode).trim() != "" || String(message.amount).trim() != "")
+      if (String(message.refCode).trim() == "" || String(message.amount).trim() <= 99) {
         result = true;
     }
     return result;
   }
   
   const buildMessageList = (message, messages) => {
-    if (message.refCode != "" && message.amount != "" && message.amount >= 100) {
+    if (String(message.refCode).trim() != "" && String(message.amount).trim() != "" && parseInt(String(message.amount).trim()) >= 100) {
       messages.push({
         refNo: message.refCode,
         mobile: message.refCode,
