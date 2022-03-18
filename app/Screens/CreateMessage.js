@@ -206,15 +206,32 @@ const CreateMessage = () => {
 
   const invalidMessage = (message) => {
     let result = false;
-    if ((message.refCode && String(message.refCode).trim() !== "") || (message.amount && String(message.amount).trim() !== ""))
-      if (String(message.refCode).trim() === "" || (message.amount && parseInt(String(message.amount).trim()) <= 99)) {
+    let refCode = message.refCode;
+    let amount = message.amount;
+    if(refCode === null || refCode === undefined){
+      refCode = "";
+    }
+    if(amount === null || amount === undefined){
+      amount = "";
+    }
+    
+    if ((refCode && refCode.length != 0) || (amount && amount.length != 0))
+      if (refCode.length == 0 || (amount && parseInt(amount) <= 99)) {
         result = true;
     }
     return result;
   }
   
   const buildMessageList = (message, messages) => {
-    if (String(message.refCode).trim() !== "" && String(message.amount).trim() !== "" && parseInt(String(message.amount).trim()) >= 100) {
+    let refCode = message.refCode;
+    let amount = message.amount;
+    if(refCode === null || refCode === undefined){
+      refCode = "";
+    }
+    if(amount === null || amount === undefined){
+      amount = "";
+    }
+    if ((refCode && refCode.length != 0) && (amount && amount.length != 0 && parseInt(amount) >= 100)) {
       messages.push({
         refNo: message.refCode,
         mobile: message.refCode,
