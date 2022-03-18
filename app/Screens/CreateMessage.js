@@ -206,15 +206,15 @@ const CreateMessage = () => {
 
   const invalidMessage = (message) => {
     let result = false;
-    if (String(message.refCode).trim() != "" || String(message.amount).trim() != "")
-      if (String(message.refCode).trim() == "" || String(message.amount).trim() <= 99) {
+    if ((message.refCode && String(message.refCode).trim() !== "") || (message.amount && String(message.amount).trim() !== ""))
+      if (String(message.refCode).trim() === "" || (message.amount && parseInt(String(message.amount).trim()) <= 99)) {
         result = true;
     }
     return result;
   }
   
   const buildMessageList = (message, messages) => {
-    if (String(message.refCode).trim() != "" && String(message.amount).trim() != "" && parseInt(String(message.amount).trim()) >= 100) {
+    if (String(message.refCode).trim() !== "" && String(message.amount).trim() !== "" && parseInt(String(message.amount).trim()) >= 100) {
       messages.push({
         refNo: message.refCode,
         mobile: message.refCode,
@@ -303,62 +303,6 @@ const CreateMessage = () => {
     setDisable(false);
     if (notiMessages.length) sendNotificationToAgent();
   }
-
-  // const handleSubmit = async () => {
-    // if (invalidMessage(messageOne) || invalidMessage(messageTwo) || invalidMessage(messageThree) ||
-    //       invalidMessage(messageFour) || invalidMessage(messageFive)) {
-    //     alert.info("All fields must be filled out and amount at least TK 100.");
-    //     onSpinnerChanged(false);
-    //     setDisable(false);
-    //     return;
-    // }
-
-  //   let sent = false;
-  //   let data = {
-  //     refCode: "",
-  //     amount: ""
-  //   }
-  //   const userSendMessageUrl = request.getUserSendMessageUrl();
-
-  //   if (messageOne.refCode != "" && messageOne.amount != "" && messageOne.amount >= 100) {
-  //     sent = await sendMessageToAgent(messageOne, userSendMessageUrl);
-  //     if (sent) {
-  //       setMessageOne(data);
-  //     }
-  //   } 
-  //   if (messageTwo.refCode != "" && messageTwo.amount != "" && messageTwo.amount >= 100) {
-  //     sent = await sendMessageToAgent(messageTwo, userSendMessageUrl);
-  //     if (sent) {
-  //       setMessageTwo(data);
-  //     }
-  //   } 
-  //   if (messageThree.refCode != "" && messageThree.amount != "" && messageThree.amount >= 100) {
-  //     sent = await sendMessageToAgent(messageThree, userSendMessageUrl);
-  //     if (sent) {
-  //       setMessageThree(data);
-  //     }
-  //   }
-  //   if (messageFour.refCode != "" && messageFour.amount != "" && messageFour.amount >= 100) {
-  //     sent = await sendMessageToAgent(messageFour, userSendMessageUrl);
-  //     if (sent) {
-  //       setMessageFour(data);
-  //     }
-  //   } 
-  //   if (messageFive.refCode != "" && messageFive.amount != "" && messageFive.amount >= 100) {
-  //     sent = await sendMessageToAgent(messageFive, userSendMessageUrl);
-  //     if (sent) {
-  //       setMessageFive(data);
-  //     }
-  //   } 
-
-  //   if (sent) {
-  //     onSpinnerChanged(false);
-  //     alert.info("Messages have been sent.");
-  //   }
-  //   onSpinnerChanged(false);
-  //   setDisable(false);
-  //   if (notiMessages.length) sendNotificationToAgent();
-  // }
 
   const handleQuickInsert = () => {
     Keyboard.dismiss();
